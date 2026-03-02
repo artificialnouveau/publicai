@@ -1,0 +1,3064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI GOVERNANCE SIMULATOR</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a2e;--surface:#16213e;--panel:#0f3460;--border:#e94560;
+  --text:#eee;--text2:#a0a0c0;--text3:#606080;
+  --green:#00e676;--red:#ff1744;--orange:#ffab00;--blue:#40c4ff;
+  --purple:#b388ff;--cyan:#18ffff;--pink:#ff80ab;--yellow:#ffd740;
+  --pixel:4px;
+}
+
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Press Start 2P',monospace;
+  font-size:14px;overflow:hidden;image-rendering:pixelated}
+
+/* Pixel border mixin via box-shadow */
+.pxbox{
+  border:none;
+  box-shadow:
+    inset calc(var(--pixel)*-1) 0 0 0 var(--border),
+    inset var(--pixel) 0 0 0 var(--border),
+    inset 0 calc(var(--pixel)*-1) 0 0 var(--border),
+    inset 0 var(--pixel) 0 0 var(--border);
+}
+
+/* === LAYOUT === */
+#game{display:grid;grid-template-columns:220px 1fr 220px;grid-template-rows:auto auto auto 1fr;height:100vh}
+#game.wv-open{grid-template-rows:auto auto auto 1fr 180px}
+
+/* === TOP BAR === */
+#topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;
+  background:#0a0a1a;border-bottom:var(--pixel) solid var(--border);gap:8px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-icon{font-size:16px}
+.logo h1{font-size:12px;color:var(--cyan);letter-spacing:1px}
+.top-stats{display:flex;gap:4px;flex-wrap:wrap}
+.top-stat{padding:6px 10px;background:var(--surface);border:2px solid var(--ts-color,var(--border));
+  position:relative;min-width:80px;text-align:center}
+.top-stat::before{content:attr(data-icon);position:absolute;top:2px;left:4px;font-size:8px;opacity:.6}
+.top-stat-label{font-size:9px;color:var(--ts-color,var(--text2));display:block;margin-bottom:3px;
+  letter-spacing:1px;text-transform:uppercase}
+.top-stat-val{font-size:14px;font-weight:bold}
+.top-stat-val.good{color:var(--green)}.top-stat-val.warn{color:var(--orange)}.top-stat-val.bad{color:var(--red)}
+.top-stat-bar{height:3px;background:#222;margin-top:4px;border-radius:1px;overflow:hidden}
+.top-stat-bar-fill{height:100%;transition:width .4s;border-radius:1px}
+#round-pill{padding:4px 10px;background:var(--border);color:#fff;font-size:10px}
+#capital-hud{display:flex;gap:2px;align-items:center}
+.coin{width:12px;height:12px;background:var(--yellow);border:1px solid #b8860b;display:flex;align-items:center;
+  justify-content:center;font-size:5px;color:#4a3600}
+.coin.spent{opacity:.15}
+
+/* === LEFT SIDEBAR === */
+#side-left{display:flex;flex-direction:column;gap:3px;padding:6px;overflow-y:auto;
+  background:#0d1530;border-right:var(--pixel) solid var(--border)}
+.sg{padding:6px 6px 6px 10px;background:var(--surface);border:2px solid #334;border-left:4px solid var(--sg-color,var(--cyan))}
+.sg-title{font-size:10px;color:var(--sg-color,var(--cyan));margin-bottom:5px;text-transform:uppercase;letter-spacing:1px}
+.sr{display:flex;align-items:center;gap:4px;padding:2px 0}
+.sr-icon{font-size:10px;width:16px;flex-shrink:0}
+.sr-name{font-size:9px;color:var(--text2);width:60px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sr-track{flex:1;height:6px;background:#111;border:1px solid #333;overflow:hidden}
+.sr-fill{height:100%;transition:width .4s steps(8)}
+.sr-val{font-size:8px;min-width:20px;text-align:right;flex-shrink:0}
+.sr-trend{font-size:8px;min-width:10px}.sr-trend.up{color:var(--green)}.sr-trend.down{color:var(--red)}
+
+/* === RIGHT SIDEBAR === */
+#side-right{display:flex;flex-direction:column;gap:3px;padding:6px;overflow-y:auto;
+  background:#0d1530;border-left:var(--pixel) solid var(--border)}
+
+/* Factions with pixel characters */
+.faction{padding:6px;background:var(--surface);border:2px solid #334;position:relative;transition:all .3s}
+.faction.happy{border-color:var(--green);background:#0a2a0a}
+.faction.angry{border-color:var(--red);background:#2a0a0a}
+.fac-row{display:flex;align-items:center;gap:6px}
+.fac-sprite{width:24px;height:24px;image-rendering:pixelated;position:relative}
+/* Pixel character sprites using canvas-drawn inline */
+.fac-char{width:28px;height:28px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.fac-info{flex:1}
+.fac-name{font-size:9px;margin-bottom:2px}
+.fac-mood-text{font-size:8px;color:var(--text3)}
+.fac-bar{height:4px;background:#111;border:1px solid #333;margin-top:3px;overflow:hidden}
+.fac-bar-fill{height:100%;transition:width .4s steps(8)}
+
+/* Pixel character idle animation */
+.char-idle{animation:charBob 1s steps(2) infinite}
+@keyframes charBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.char-happy{animation:charJump .5s steps(3) infinite}
+@keyframes charJump{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.char-angry{animation:charShake .3s steps(2) infinite}
+@keyframes charShake{0%,100%{transform:translateX(0)}50%{transform:translateX(-2px)}}
+
+/* Alignment */
+.align-box{padding:6px;background:var(--surface);border:2px solid #334}
+.align-box h3{font-size:8px;color:var(--purple);margin-bottom:4px}
+.am-row{display:flex;align-items:center;gap:3px;padding:1px 0}
+.am-label{font-size:7px;color:var(--text2);width:48px}
+.am-track{flex:1;height:4px;background:#111;border:1px solid #333;overflow:hidden}
+.am-fill{height:100%;transition:width .4s steps(6)}
+.am-val{font-size:7px;min-width:14px;text-align:right}
+
+/* Log */
+#log{flex:1;overflow-y:auto;padding:6px;background:var(--surface);border:2px solid #334}
+#log h3{font-size:8px;color:var(--orange);margin-bottom:4px}
+.le{font-size:7px;padding:3px 4px;border-left:2px solid #333;color:var(--text2);margin-bottom:2px}
+.le.lg{border-color:var(--green)}.le.lb{border-color:var(--red)}.le.lw{border-color:var(--orange)}
+
+/* === CENTER === */
+#center{display:flex;align-items:flex-start;justify-content:center;padding:8px;overflow-y:auto;
+  background:linear-gradient(180deg,#0a0a20 0%,#1a1a2e 100%)}
+#center-inner{max-width:600px;width:100%}
+
+/* Character scene strip at top - 2 rows */
+.scene{position:relative;background:#0a0a1a;border:var(--pixel) solid var(--border);margin-bottom:8px;
+  min-height:90px;overflow:visible;padding:4px 6px 24px}
+.scene-bg{position:absolute;bottom:0;left:0;right:0;height:24px;background:repeating-linear-gradient(90deg,#1a3a1a 0px,#1a3a1a 8px,#1a4a1a 8px,#1a4a1a 16px);z-index:0}
+.scene-row{display:flex;align-items:flex-end;justify-content:center;gap:6px;position:relative;z-index:1}
+.scene-row.back{margin-bottom:2px;opacity:.85;transform:scale(.9)}
+.scene-row.front{z-index:2}
+.scene-char{display:flex;flex-direction:column;align-items:center;gap:1px;position:relative;
+  transition:margin .5s steps(6)}
+.scene-zones{display:none;justify-content:space-between;padding:0 8px;margin-bottom:2px;position:relative;z-index:1}
+.scene-zones.show{display:flex}
+.zone-label{font-size:7px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px}
+.zone-foe{color:var(--red)}.zone-neutral{color:var(--text3)}.zone-ally{color:var(--green)}
+.scene-char-sprite{image-rendering:pixelated;transition:all .3s}
+.scene-char-sprite canvas{image-rendering:pixelated}
+.scene-char-name{font-size:8px;color:var(--text3);background:rgba(0,0,0,.6);padding:2px 5px}
+.scene-char.react-happy .scene-char-sprite{animation:charJump .4s steps(3) 3}
+.scene-char.react-angry .scene-char-sprite{animation:charShake .2s steps(2) 5}
+.scene-char.react-neutral .scene-char-sprite{animation:charBob 1.5s steps(2) infinite}
+/* Reactions strip below scene */
+.reactions-strip{display:flex;flex-wrap:wrap;gap:4px;padding:6px 10px;background:#0a0a1a;
+  border:var(--pixel) solid var(--border);border-top:none;margin-bottom:8px;margin-top:-8px;animation:slideDown .3s steps(4)}
+.reaction-chip{display:flex;align-items:center;gap:4px;padding:4px 8px;border:2px solid;font-size:8px;
+  background:rgba(0,0,0,.4);animation:bubblePop .3s steps(3)}
+.reaction-chip.rc-up{border-color:var(--green);color:var(--green)}
+.reaction-chip.rc-down{border-color:var(--red);color:var(--red)}
+.reaction-chip .rc-name{font-size:7px;color:var(--text3);margin-right:2px}
+@keyframes bubblePop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes chPick{0%,100%{box-shadow:0 0 0 0 rgba(255,215,64,.3)}50%{box-shadow:0 0 0 6px rgba(255,215,64,0)}}
+
+/* Player character in center */
+.scene-player{font-size:32px}
+
+/* Event card pixel style */
+.ev{background:var(--surface);border:var(--pixel) solid var(--border);overflow:hidden}
+.ev-head{padding:10px 12px 8px;border-bottom:2px solid var(--border);background:#0a0a2a}
+.ev-meta{display:flex;gap:6px;margin-bottom:6px}
+.ev-q{font-size:10px;color:var(--text3)}
+.ev-cat{font-size:9px;padding:3px 8px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan)}
+.ev-title{font-size:14px;line-height:1.8;color:var(--yellow)}
+.ev-body{padding:10px 14px;border-bottom:2px solid #223}
+.ev-desc{font-size:11px;color:var(--text2);line-height:2.2}
+.ev-ref{display:inline-block;font-size:8px;color:var(--text3);text-decoration:none;margin-top:6px;
+  padding:3px 8px;background:#111;border:1px solid #333}
+.ev-ref:hover{color:var(--cyan);border-color:var(--cyan)}
+
+/* Choices */
+.ev-choices{padding:8px 12px}
+.ch{display:block;width:100%;padding:10px 12px;margin-bottom:6px;background:var(--panel);
+  border:2px solid #445;color:var(--text);cursor:pointer;text-align:left;font-family:'Press Start 2P';
+  font-size:11px;transition:all .1s;position:relative}
+.ch:hover{border-color:var(--cyan);background:#1a3a6e;transform:translateX(4px)}
+.ch:hover::before{content:'►';position:absolute;left:-14px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:12px}
+.ch-label{line-height:1.8;margin-bottom:3px}
+.ch-hint{font-size:9px;color:var(--text3);line-height:1.6}
+.ch-align{font-size:7px;padding:2px 5px;margin-left:4px;border:1px solid}
+.a-doomer{border-color:var(--red);color:var(--red)}.a-accel{border-color:var(--cyan);color:var(--cyan)}
+.a-optimist{border-color:var(--green);color:var(--green)}.a-regulator{border-color:var(--orange);color:var(--orange)}
+.ch.ch-picked{border-color:var(--yellow);background:#2a2a0a;transform:translateX(4px);animation:chPick 1s steps(3) infinite}
+.ch.ch-picked::before{content:'►';position:absolute;left:-14px;top:50%;transform:translateY(-50%);color:var(--yellow);font-size:12px}
+.ch.ch-dimmed{opacity:.25;pointer-events:none}
+
+/* Outcome inline */
+.out-inline{padding:8px 12px;border-top:2px solid var(--border);background:#0a1a0a;animation:slideDown .3s steps(4)}
+@keyframes slideDown{from{max-height:0;opacity:0}to{max-height:300px;opacity:1}}
+.out-label{font-size:11px;color:var(--yellow);margin-bottom:6px;line-height:1.8}
+.out-fx{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.fx{font-size:9px;padding:3px 7px;border:1px solid}
+.fxu{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.08)}
+.fxd{border-color:var(--red);color:var(--red);background:rgba(255,23,68,.08)}
+.out-factions{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px}
+.fac-react{font-size:9px;padding:3px 7px;border:1px solid #333;background:#111}
+.fac-react.fr-up{border-color:var(--green);color:var(--green)}
+.fac-react.fr-down{border-color:var(--red);color:var(--red)}
+
+/* Budget inline */
+.bud-section{padding:8px 12px;border-top:2px solid var(--border);background:#1a1a0a;animation:slideDown .3s steps(4)}
+.bud-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.bud-title{font-size:11px;color:var(--yellow)}
+.bud-pool-info{display:flex;align-items:center;gap:2px}
+.br{display:flex;align-items:center;gap:6px;padding:6px;background:var(--panel);border:2px solid #334;margin-bottom:3px;transition:all .2s}
+.br.has{border-color:var(--yellow);background:#1a1a0a}
+.br-icon{font-size:12px}.br-info{flex:1}
+.br-name{font-size:10px;margin-bottom:1px}.br-fx{font-size:8px;color:var(--text3)}
+.br-ctrl{display:flex;align-items:center;gap:4px}
+.br-btn{width:20px;height:20px;background:var(--surface);border:2px solid #445;color:var(--text);
+  font-family:'Press Start 2P';font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.br-btn:hover:not(:disabled){border-color:var(--cyan);color:var(--cyan)}.br-btn:disabled{opacity:.2;cursor:not-allowed}
+.br-num{font-size:10px;min-width:14px;text-align:center;color:var(--yellow)}
+.bud-go{text-align:center;margin-top:8px}
+
+/* Buttons */
+.btn{padding:8px 16px;background:var(--border);border:2px solid #ff6a80;color:#fff;font-family:'Press Start 2P';
+  font-size:9px;cursor:pointer;transition:all .1s;position:relative}
+.btn:hover{background:#ff6a80;transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-go{background:var(--green);border-color:#00c060;color:#003300}
+.btn-go:hover{background:#00ff88}
+
+/* End screen */
+.end{text-align:center;padding:16px;background:var(--surface);border:var(--pixel) solid var(--border)}
+.end-icon{font-size:36px;margin-bottom:8px;animation:charJump .6s steps(3) infinite}
+.end-title{font-size:14px;margin-bottom:8px}
+.end-title.win{color:var(--green)}.end-title.lose{color:var(--red)}
+.end-sub{font-size:9px;color:var(--text2);margin-bottom:12px;line-height:1.8}
+.end-story{font-size:10px;color:var(--text2);line-height:2;text-align:left;padding:8px;background:#111;border:2px solid #333;margin-bottom:10px}
+.end-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:10px}
+.end-s{padding:6px;background:#111;border:2px solid #333;text-align:center}
+.end-sl{font-size:7px;color:var(--text3)}.end-sv{font-size:10px;margin-top:2px}
+
+/* Intro */
+#intro{position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;display:flex;align-items:flex-start;
+  justify-content:center;background:var(--bg);overflow-y:auto}
+.intro-c{margin:auto}
+#intro.hide{animation:fadeOut .5s steps(5) forwards}
+@keyframes fadeOut{to{opacity:0;pointer-events:none}}
+.intro-c{text-align:center;max-width:440px;padding:32px 16px}
+.intro-scene{font-size:40px;margin-bottom:12px;display:flex;justify-content:center;gap:8px}
+.intro-scene span{animation:charBob 1s steps(2) infinite}
+.intro-scene span:nth-child(2){animation-delay:.2s}
+.intro-scene span:nth-child(3){animation-delay:.4s}
+.intro-scene span:nth-child(4){animation-delay:.6s}
+.intro-scene span:nth-child(5){animation-delay:.8s}
+.intro-title{font-size:14px;color:var(--cyan);margin-bottom:6px;line-height:2;
+  text-shadow:2px 2px 0 var(--border),-2px -2px 0 var(--purple)}
+.intro-sub{font-size:10px;color:var(--text2);line-height:2.2;margin-bottom:12px}
+.intro-how{text-align:left;padding:10px;background:var(--surface);border:var(--pixel) solid var(--border);margin-bottom:12px}
+.intro-how h3{font-size:9px;color:var(--yellow);margin-bottom:8px}
+.ih{font-size:9px;color:var(--text2);line-height:2;margin-bottom:4px;padding-left:14px;position:relative}
+.ih::before{content:'►';position:absolute;left:0;color:var(--cyan)}
+.intro-btn{padding:10px 24px;background:var(--border);border:3px solid #ff6a80;color:#fff;font-family:'Press Start 2P';
+  font-size:10px;cursor:pointer;transition:all .1s;animation:btnPulse 1.5s steps(2) infinite}
+.intro-btn:hover{background:#ff6a80;transform:scale(1.05)}
+@keyframes btnPulse{0%,100%{box-shadow:0 0 0 0 rgba(233,69,96,.4)}50%{box-shadow:0 0 0 8px rgba(233,69,96,0)}}
+
+/* Auto-play stance buttons */
+.intro-auto{margin-top:12px}
+.intro-auto-label{font-size:8px;color:var(--text3);margin-bottom:8px}
+.stance-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.stance-btn{padding:8px 12px;border:2px solid;font-family:'Press Start 2P';font-size:8px;cursor:pointer;
+  background:transparent;transition:all .15s}
+.stance-btn:hover{transform:scale(1.05)}
+.sb-accel{border-color:var(--cyan);color:var(--cyan)}.sb-accel:hover{background:rgba(24,255,255,.15)}
+.sb-doomer{border-color:var(--red);color:var(--red)}.sb-doomer:hover{background:rgba(255,23,68,.15)}
+.sb-optimist{border-color:var(--green);color:var(--green)}.sb-optimist:hover{background:rgba(0,230,118,.15)}
+.sb-regulator{border-color:var(--orange);color:var(--orange)}.sb-regulator:hover{background:rgba(255,171,0,.15)}
+#autoplay-banner{display:none;grid-column:1/-1;text-align:center;padding:4px 8px;font-size:9px;
+  background:rgba(0,0,0,.8);border-bottom:2px solid var(--ab-color,var(--cyan));color:var(--ab-color,var(--cyan));
+  cursor:pointer}
+#autoplay-banner:hover{opacity:.8}
+
+/* Stat & group hover tooltips */
+.has-tip{position:relative;cursor:help}
+.has-tip::after{content:attr(data-tip);display:none;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#0a0a2a;border:2px solid var(--border);padding:8px;min-width:200px;max-width:260px;z-index:30;
+  font-size:8px;color:var(--text2);line-height:1.8;white-space:normal;text-align:left;pointer-events:none}
+.has-tip:hover::after{display:block}
+.sg.has-tip::after{left:100%;top:0;transform:none}
+
+/* Character hover cards — global floating tooltip */
+#char-tip{display:none;position:fixed;background:#0a0a2a;border:2px solid var(--border);padding:8px;
+  min-width:180px;max-width:220px;z-index:100;text-align:left;pointer-events:none;
+  font-family:'Press Start 2P',monospace}
+#char-tip::after{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-bottom-color:var(--border)}
+.ct-name{font-size:9px;color:var(--cyan);margin-bottom:4px}
+.ct-role{font-size:7px;color:var(--text2);margin-bottom:4px;line-height:1.6}
+.ct-stance{font-size:7px;color:var(--yellow);line-height:1.4}
+
+/* Screen effects */
+.flash{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:90;
+  animation:fl .3s steps(3) forwards}
+@keyframes fl{from{opacity:.3}to{opacity:0}}
+.shake{animation:screenShake .3s steps(3)}
+@keyframes screenShake{0%,100%{transform:translate(0)}25%{transform:translate(-3px,2px)}75%{transform:translate(3px,-2px)}}
+
+/* Scanlines */
+body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);
+  pointer-events:none;z-index:99}
+
+/* CRT glow */
+#game{filter:drop-shadow(0 0 1px rgba(0,255,255,.1))}
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* === WORLD VIEW PANEL === */
+#world-view{grid-column:1/-1;background:#0a0a1a;border-top:var(--pixel) solid var(--border);position:relative;overflow:hidden;display:none}
+#game.wv-open #world-view{display:block}
+#world-view .wv-tabs{position:absolute;top:4px;right:8px;z-index:2;display:flex;gap:2px}
+#world-view .wv-tab{padding:3px 8px;font-size:7px;font-family:'Press Start 2P',monospace;
+  background:var(--surface);border:1px solid #334;color:var(--text3);cursor:pointer}
+#world-view .wv-tab:hover{border-color:var(--cyan);color:var(--text2)}
+#world-view .wv-tab.active{border-color:var(--cyan);color:var(--cyan);background:var(--panel)}
+#world-view .wv-label{position:absolute;top:6px;left:8px;font-size:7px;color:var(--text3);
+  font-family:'Press Start 2P',monospace;z-index:2;letter-spacing:1px}
+#wv-canvas{width:100%;height:100%;image-rendering:pixelated;display:block}
+#wv-toggle{position:fixed;bottom:8px;right:8px;z-index:81;padding:6px 10px;font-family:'Press Start 2P',monospace;
+  font-size:8px;background:var(--surface);border:2px solid var(--border);color:var(--text2);cursor:pointer;
+  display:none}
+#wv-toggle:hover{border-color:var(--cyan);color:var(--cyan)}
+#wv-toggle.open{bottom:188px}
+#game.wv-open~#wv-toggle{bottom:188px}
+
+/* === NEWS TICKER === */
+#ticker{position:fixed;bottom:0;left:0;width:100%;height:28px;background:#0a0a1a;border-top:2px solid var(--border);
+  overflow:hidden;z-index:80;display:none}
+#game.wv-open~#ticker{bottom:180px}
+#ticker .ticker-track{display:flex;white-space:nowrap;animation:tickerScroll 60s linear infinite}
+#ticker .ticker-item{padding:6px 24px;font-size:8px;color:var(--text2);flex-shrink:0}
+#ticker .ticker-item::before{content:'► ';color:var(--border)}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* === BREAKING NEWS === */
+#breaking{position:fixed;top:0;left:0;width:100%;height:100%;z-index:95;display:none;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.85)}
+#breaking .brk-card{max-width:500px;width:90%;background:#1a0a0a;border:var(--pixel) solid var(--red);padding:0;text-align:center;overflow:visible}
+#breaking .brk-header{padding:10px;background:var(--red);color:#fff;font-size:12px;letter-spacing:2px;
+  animation:brkFlash 1s steps(2) infinite}
+@keyframes brkFlash{0%,100%{opacity:1}50%{opacity:.6}}
+#breaking .brk-bar{height:4px;background:#ff6a80}
+#breaking .brk-body{padding:16px;font-size:11px;color:var(--text);line-height:2.2}
+#breaking .brk-dismiss{padding:8px;font-size:8px;color:var(--text3);border-top:2px solid #333}
+.overlay-close{position:absolute;top:-14px;right:-14px;font-size:14px;color:var(--text);cursor:pointer;
+  background:var(--bg);border:2px solid var(--text3);width:28px;height:28px;display:flex;align-items:center;
+  justify-content:center;font-family:'Press Start 2P';z-index:5}
+.overlay-close:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* === CHARACTER DIALOGUE === */
+#char-dialogue{position:fixed;top:0;left:0;width:100%;height:100%;z-index:88;display:none;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.7)}
+#char-dialogue .cd-card{max-width:400px;width:90%;text-align:center;padding:16px;overflow:visible}
+#char-dialogue .cd-sprite{margin:0 auto 8px}
+#char-dialogue .cd-name{font-size:11px;color:var(--cyan);margin-bottom:4px}
+#char-dialogue .cd-mood{display:inline-block;font-size:8px;padding:3px 8px;border:1px solid;margin-bottom:8px}
+#char-dialogue .cd-mood.happy{border-color:var(--green);color:var(--green)}
+#char-dialogue .cd-mood.angry{border-color:var(--red);color:var(--red)}
+#char-dialogue .cd-bubble{background:var(--surface);border:var(--pixel) solid var(--border);padding:14px;
+  font-size:10px;color:var(--text);line-height:2.2;position:relative}
+#char-dialogue .cd-bubble::after{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  border:8px solid transparent;border-bottom-color:var(--border)}
+#char-dialogue.mood-happy .cd-bubble{border-color:var(--green)}
+#char-dialogue.mood-happy .cd-bubble::after{border-bottom-color:var(--green)}
+#char-dialogue.mood-angry .cd-bubble{border-color:var(--red)}
+#char-dialogue.mood-angry .cd-bubble::after{border-bottom-color:var(--red)}
+
+/* === COUNTDOWN TIMER === */
+.countdown{padding:6px 12px;border-bottom:2px solid #223}
+.cd-bar{height:6px;background:#111;border:1px solid #333;overflow:hidden}
+.cd-fill{height:100%;background:var(--green);transition:width 1s linear}
+.cd-fill.warn{background:var(--orange)}
+.cd-fill.danger{background:var(--red);animation:cdPulse .5s steps(2) infinite}
+@keyframes cdPulse{0%,100%{opacity:1}50%{opacity:.4}}
+.cd-label{font-size:7px;color:var(--text3);margin-top:2px;text-align:right}
+
+/* === FLASHBACK === */
+#flashback{position:fixed;top:0;left:0;width:100%;height:100%;z-index:85;display:none;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.8)}
+#flashback .fb-card{max-width:480px;width:90%;background:#1a0a2a;border:var(--pixel) solid var(--purple);text-align:center;overflow:visible}
+#flashback .fb-header{padding:10px;background:var(--purple);color:#fff;font-size:11px;letter-spacing:2px}
+#flashback .fb-body{padding:16px;font-size:10px;color:var(--text);line-height:2.2}
+#flashback .fb-event{font-size:12px;color:var(--yellow);margin-bottom:8px}
+#flashback .fb-choice{font-size:10px;color:var(--cyan);margin-bottom:8px}
+#flashback .fb-fx{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:8px}
+#flashback .fb-dismiss{padding:8px;font-size:8px;color:var(--text3);border-top:2px solid #333}
+
+/* === STORY ARC STRIP === */
+#story-arc{grid-column:1/-1;display:none;align-items:stretch;gap:0;padding:0;
+  background:#0a0a1a;border-bottom:var(--pixel) solid var(--border);overflow-x:auto;overflow-y:hidden;
+  min-height:44px;white-space:nowrap;scrollbar-width:none;position:relative}
+#story-arc::-webkit-scrollbar{display:none}
+#story-arc.show{display:flex}
+#story-arc .arc-label{flex-shrink:0;padding:6px 10px;font-size:7px;color:var(--text3);
+  letter-spacing:1px;text-transform:uppercase;background:#0d0d20;border-right:2px solid #223;
+  display:flex;align-items:center;writing-mode:horizontal-tb}
+.arc-chip{display:inline-flex;flex-direction:column;gap:1px;padding:6px 10px;font-size:8px;
+  font-family:'Press Start 2P',monospace;border-right:1px solid #1a1a3a;flex-shrink:0;
+  cursor:default;transition:background .2s;position:relative}
+.arc-chip:hover{background:rgba(255,255,255,.05)}
+.arc-chip .arc-q{font-size:6px;color:var(--text3);margin-bottom:1px}
+.arc-chip .arc-main{display:flex;align-items:center;gap:4px;font-size:9px}
+.arc-chip .arc-detail{font-size:6px;color:var(--text3);margin-top:2px;max-width:140px;
+  overflow:hidden;text-overflow:ellipsis}
+.arc-chip.arc-good .arc-main{color:var(--green)}
+.arc-chip.arc-bad .arc-main{color:var(--red)}
+.arc-chip.arc-neutral .arc-main{color:var(--yellow)}
+.arc-chip.arc-good{border-bottom:3px solid var(--green);background:rgba(0,230,118,.05)}
+.arc-chip.arc-bad{border-bottom:3px solid var(--red);background:rgba(255,23,68,.05)}
+.arc-chip.arc-neutral{border-bottom:3px solid var(--yellow);background:rgba(255,215,64,.03)}
+.arc-chip.arc-new{animation:arcFlash 1.5s steps(3)}
+@keyframes arcFlash{0%,50%{background:rgba(255,255,255,.12)}100%{background:transparent}}
+.arc-connector{flex-shrink:0;width:16px;display:flex;align-items:center;justify-content:center;
+  color:var(--text3);font-size:8px;opacity:.4}
+
+/* Arc chip hover tooltip — positioned fixed via JS */
+.arc-tooltip-float{display:none;position:fixed;
+  background:#0a0a2a;border:2px solid var(--border);padding:12px 14px;min-width:260px;max-width:340px;
+  z-index:100;white-space:normal;text-align:left;
+  box-shadow:0 6px 20px rgba(0,0,0,.7);font-family:'Press Start 2P',monospace;
+  transition:opacity .15s;opacity:0;pointer-events:none}
+.arc-tooltip-float.show{display:block;opacity:1}
+.arc-tooltip-float::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--border)}
+.att-header{display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #223}
+.att-q{font-size:7px;color:var(--text3);padding:2px 5px;border:1px solid #333}
+.att-title{font-size:10px;line-height:1.6}
+.att-story{font-size:9px;color:var(--text);line-height:2;margin-bottom:6px}
+.att-context{font-size:8px;color:var(--text3);line-height:1.8;padding-top:6px;border-top:1px solid #223}
+.att-context .att-event{color:var(--yellow);margin-bottom:2px}
+.att-context .att-choice{color:var(--cyan)}
+
+/* === RECAP OVERLAY === */
+#recap-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:92;display:none;
+  align-items:center;justify-content:center;background:rgba(0,0,0,.85)}
+#recap-overlay .recap-card{max-width:520px;width:90%;max-height:80vh;background:#0a0a2a;
+  border:var(--pixel) solid var(--cyan);overflow:visible;position:relative}
+.recap-header{padding:10px;background:var(--cyan);color:#000;font-size:11px;letter-spacing:2px;text-align:center}
+.recap-body{padding:16px;overflow-y:auto;max-height:60vh}
+.recap-section{margin-bottom:12px}
+.recap-section h4{font-size:9px;color:var(--cyan);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.recap-section p{font-size:10px;color:var(--text2);line-height:2.2}
+.recap-dismiss{padding:8px;font-size:8px;color:var(--text3);border-top:2px solid #223;text-align:center}
+#recap-btn{display:none;padding:4px 8px;background:var(--surface);border:2px solid var(--cyan);
+  color:var(--cyan);font-family:'Press Start 2P',monospace;font-size:9px;cursor:pointer}
+#recap-btn:hover{background:var(--panel)}
+
+@media(max-width:768px){
+  #game{grid-template-columns:1fr;grid-template-rows:auto auto auto 1fr}
+  #side-left,#side-right,#world-view,#wv-toggle{display:none!important}
+  #ticker{bottom:0!important}
+  #story-arc{display:none!important}
+  .scene-zones{padding:0 4px}
+  .zone-label{font-size:6px;letter-spacing:0;padding:2px 3px}
+  .scene-row{gap:2px;flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <div class="intro-c">
+    <div class="intro-scene" id="intro-sprites">
+      <span>🏛️</span><span>💼</span><span>✊</span><span>🎖️</span><span>🌿</span>
+    </div>
+    <h1 class="intro-title">AI GOVERNANCE<br>SIMULATOR</h1>
+    <p class="intro-sub">You are a policy advisor navigating the AI revolution.<br>Every decision ripples across factions, economies, and ecosystems.</p>
+    <div class="intro-how">
+      <h3>HOW TO PLAY</h3>
+      <div class="ih">Each quarter, a REAL AI CRISIS hits your desk. Choose your response.</div>
+      <div class="ih">Your choices shift 14 STATS and your reputation with 4 FACTIONS.</div>
+      <div class="ih">Allocate POLITICAL CAPITAL each round to boost priorities.</div>
+      <div class="ih">Survive 36 QUARTERS. If any faction revolts or a stat collapses — GAME OVER.</div>
+    </div>
+    <button class="intro-btn" onclick="startGame()">► PLAY MANUALLY</button>
+    <div class="intro-auto">
+      <p class="intro-auto-label">— or pick a stance to auto-play —</p>
+      <div class="stance-btns">
+        <button class="stance-btn sb-accel" onclick="startAutoPlay('accel')">⚡ ACCELERATIONIST</button>
+        <button class="stance-btn sb-doomer" onclick="startAutoPlay('doomer')">💀 DOOMER</button>
+        <button class="stance-btn sb-optimist" onclick="startAutoPlay('optimist')">👴 BOOMER</button>
+        <button class="stance-btn sb-regulator" onclick="startAutoPlay('regulator')">📜 REGULATOR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="game">
+  <div id="topbar">
+    <div class="logo"><span class="logo-icon">🏛️</span><h1>AI GOV SIMULATOR</h1></div>
+    <span id="round-pill">Q1/20</span>
+    <button id="recap-btn" onclick="showRecap()">📖</button>
+    <div id="capital-hud"></div>
+    <div class="top-stats">
+      <div class="top-stat has-tip" data-icon="⚗" data-tip="How fast AI tech is advancing. Driven by research breakthroughs and open-source models." style="--ts-color:var(--cyan)"><span class="top-stat-label">Innovation</span><span class="top-stat-val" id="tp-inn">50</span><div class="top-stat-bar"><div class="top-stat-bar-fill" id="tpb-inn" style="width:50%;background:var(--cyan)"></div></div></div>
+      <div class="top-stat has-tip" data-icon="📈" data-tip="GDP growth from AI. Corporate profits vs. job displacement and market crashes." style="--ts-color:var(--green)"><span class="top-stat-label">Economy</span><span class="top-stat-val" id="tp-gdp">50</span><div class="top-stat-bar"><div class="top-stat-bar-fill" id="tpb-gdp" style="width:50%;background:var(--green)"></div></div></div>
+      <div class="top-stat has-tip" data-icon="🤝" data-tip="Does the public trust AI systems? Eroded by bias scandals, deepfakes, and corporate secrecy." style="--ts-color:var(--orange)"><span class="top-stat-label">Trust</span><span class="top-stat-val" id="tp-trust">50</span><div class="top-stat-bar"><div class="top-stat-bar-fill" id="tpb-trust" style="width:50%;background:var(--orange)"></div></div></div>
+      <div class="top-stat has-tip" data-icon="🌍" data-tip="Global geopolitical stability. Threatened by AI arms races, chip wars, and unilateral actions." style="--ts-color:var(--purple)"><span class="top-stat-label">Stability</span><span class="top-stat-val" id="tp-stab">50</span><div class="top-stat-bar"><div class="top-stat-bar-fill" id="tpb-stab" style="width:50%;background:var(--purple)"></div></div></div>
+    </div>
+  </div>
+  <div id="autoplay-banner" onclick="stopAutoPlay()">⚡ AUTO-PLAYING AS <span id="ap-stance"></span> — click to take control</div>
+  <div id="story-arc"></div>
+
+  <div id="side-left">
+    <div class="sg has-tip" data-tip="Research & development: innovation speed, AI safety incidents, and regulation levels." style="--sg-color:var(--cyan)"><div class="sg-title">⚗ THE LAB</div>
+      <div class="sr"><span class="sr-icon">🔬</span><span class="sr-name">Innovation</span><div class="sr-track"><div class="sr-fill" id="b-innovation" style="width:50%;background:var(--cyan)"></div></div><span class="sr-val" id="v-innovation">50</span><span class="sr-trend" id="t-innovation"></span></div>
+      <div class="sr"><span class="sr-icon">⚠</span><span class="sr-name">Safety</span><div class="sr-track"><div class="sr-fill" id="b-safety_incidents" style="width:10%;background:var(--red)"></div></div><span class="sr-val" id="v-safety_incidents">10</span><span class="sr-trend" id="t-safety_incidents"></span></div>
+      <div class="sr"><span class="sr-icon">📜</span><span class="sr-name">Regulation</span><div class="sr-track"><div class="sr-fill" id="b-regulation_level" style="width:30%;background:var(--blue)"></div></div><span class="sr-val" id="v-regulation_level">30</span><span class="sr-trend" id="t-regulation_level"></span></div>
+    </div>
+    <div class="sg has-tip" data-tip="Economic impact: GDP growth, corporate power over AI policy, and job losses from automation." style="--sg-color:var(--green)"><div class="sg-title">📈 THE MARKET</div>
+      <div class="sr"><span class="sr-icon">📈</span><span class="sr-name">GDP</span><div class="sr-track"><div class="sr-fill" id="b-gdp" style="width:50%;background:var(--green)"></div></div><span class="sr-val" id="v-gdp">50</span><span class="sr-trend" id="t-gdp"></span></div>
+      <div class="sr"><span class="sr-icon">🏢</span><span class="sr-name">Corporate</span><div class="sr-track"><div class="sr-fill" id="b-corporate_influence" style="width:40%;background:var(--purple)"></div></div><span class="sr-val" id="v-corporate_influence">40</span><span class="sr-trend" id="t-corporate_influence"></span></div>
+      <div class="sr"><span class="sr-icon">💼</span><span class="sr-name">Unemploy</span><div class="sr-track"><div class="sr-fill" id="b-unemployment" style="width:15%;background:var(--orange)"></div></div><span class="sr-val" id="v-unemployment">15</span><span class="sr-trend" id="t-unemployment"></span></div>
+    </div>
+    <div class="sg has-tip" data-tip="Society's relationship with AI: public trust, access to AI services, and misinformation spread." style="--sg-color:var(--orange)"><div class="sg-title">🤝 THE PUBLIC</div>
+      <div class="sr"><span class="sr-icon">🤝</span><span class="sr-name">Trust</span><div class="sr-track"><div class="sr-fill" id="b-public_trust" style="width:50%;background:var(--green)"></div></div><span class="sr-val" id="v-public_trust">50</span><span class="sr-trend" id="t-public_trust"></span></div>
+      <div class="sr"><span class="sr-icon">🤖</span><span class="sr-name">AI Svcs</span><div class="sr-track"><div class="sr-fill" id="b-public_ai_services" style="width:25%;background:var(--cyan)"></div></div><span class="sr-val" id="v-public_ai_services">25</span><span class="sr-trend" id="t-public_ai_services"></span></div>
+      <div class="sr"><span class="sr-icon">📰</span><span class="sr-name">Misinfo</span><div class="sr-track"><div class="sr-fill" id="b-misinformation" style="width:20%;background:var(--red)"></div></div><span class="sr-val" id="v-misinformation">20</span><span class="sr-trend" id="t-misinformation"></span></div>
+    </div>
+    <div class="sg has-tip" data-tip="Geopolitics: global stability, AI arms race escalation, and international cooperation on AI governance." style="--sg-color:var(--purple)"><div class="sg-title">🌍 THE SUMMIT</div>
+      <div class="sr"><span class="sr-icon">🌍</span><span class="sr-name">Stability</span><div class="sr-track"><div class="sr-fill" id="b-global_stability" style="width:50%;background:var(--purple)"></div></div><span class="sr-val" id="v-global_stability">50</span><span class="sr-trend" id="t-global_stability"></span></div>
+      <div class="sr"><span class="sr-icon">⚔</span><span class="sr-name">Arms</span><div class="sr-track"><div class="sr-fill" id="b-arms_race" style="width:15%;background:var(--red)"></div></div><span class="sr-val" id="v-arms_race">15</span><span class="sr-trend" id="t-arms_race"></span></div>
+      <div class="sr"><span class="sr-icon">🕊</span><span class="sr-name">Cooperate</span><div class="sr-track"><div class="sr-fill" id="b-international_cooperation" style="width:45%;background:var(--green)"></div></div><span class="sr-val" id="v-international_cooperation">45</span><span class="sr-trend" id="t-international_cooperation"></span></div>
+    </div>
+    <div class="sg has-tip" data-tip="Environmental cost of AI: carbon emissions from training and data centers, water usage for cooling." style="--sg-color:var(--blue)"><div class="sg-title">🌿 ENVIRONMENT</div>
+      <div class="sr"><span class="sr-icon">🌡</span><span class="sr-name">Carbon</span><div class="sr-track"><div class="sr-fill" id="b-carbon" style="width:20%;background:var(--red)"></div></div><span class="sr-val" id="v-carbon">20</span><span class="sr-trend" id="t-carbon"></span></div>
+      <div class="sr"><span class="sr-icon">💧</span><span class="sr-name">Water</span><div class="sr-track"><div class="sr-fill" id="b-water" style="width:15%;background:var(--blue)"></div></div><span class="sr-val" id="v-water">15</span><span class="sr-trend" id="t-water"></span></div>
+    </div>
+  </div>
+
+  <div id="center"><div id="center-inner"></div></div>
+
+  <div id="side-right">
+    <div class="faction" id="fac-tech"><div class="fac-row"><div class="fac-char"><span class="scene-char-sprite char-idle" id="fc-tech"></span></div><div class="fac-info"><div class="fac-name" style="color:var(--cyan)">BIG TECH <span style="font-size:6px;color:var(--text3)">Sam Altman</span></div><div class="fac-mood-text" id="fm-tech">Watching...</div></div></div><div class="fac-bar"><div class="fac-bar-fill" id="fb-tech" style="width:50%;background:var(--cyan)"></div></div></div>
+    <div class="faction" id="fac-citizens"><div class="fac-row"><div class="fac-char"><span class="scene-char-sprite char-idle" id="fc-citizens"></span></div><div class="fac-info"><div class="fac-name" style="color:var(--orange)">CITIZENS <span style="font-size:6px;color:var(--text3)">Timnit Gebru</span></div><div class="fac-mood-text" id="fm-citizens">Watching...</div></div></div><div class="fac-bar"><div class="fac-bar-fill" id="fb-citizens" style="width:50%;background:var(--orange)"></div></div></div>
+    <div class="faction" id="fac-military"><div class="fac-row"><div class="fac-char"><span class="scene-char-sprite char-idle" id="fc-military"></span></div><div class="fac-info"><div class="fac-name" style="color:var(--purple)">MILITARY <span style="font-size:6px;color:var(--text3)">Pentagon</span></div><div class="fac-mood-text" id="fm-military">Watching...</div></div></div><div class="fac-bar"><div class="fac-bar-fill" id="fb-military" style="width:50%;background:var(--purple)"></div></div></div>
+    <div class="faction" id="fac-green"><div class="fac-row"><div class="fac-char"><span class="scene-char-sprite char-idle" id="fc-green"></span></div><div class="fac-info"><div class="fac-name" style="color:var(--green)">GREENS <span style="font-size:6px;color:var(--text3)">Greta T.</span></div><div class="fac-mood-text" id="fm-green">Watching...</div></div></div><div class="fac-bar"><div class="fac-bar-fill" id="fb-green" style="width:50%;background:var(--green)"></div></div></div>
+    <div class="align-box">
+      <h3>ALIGNMENT</h3>
+      <div class="am-row"><span class="am-label">Doomer</span><div class="am-track"><div class="am-fill" id="ab-doomer" style="width:0;background:var(--red)"></div></div><span class="am-val" id="av-doomer">0</span></div>
+      <div class="am-row"><span class="am-label">Accel</span><div class="am-track"><div class="am-fill" id="ab-accel" style="width:0;background:var(--cyan)"></div></div><span class="am-val" id="av-accel">0</span></div>
+      <div class="am-row"><span class="am-label">Boomer</span><div class="am-track"><div class="am-fill" id="ab-optimist" style="width:0;background:var(--green)"></div></div><span class="am-val" id="av-optimist">0</span></div>
+      <div class="am-row"><span class="am-label">Regulr</span><div class="am-track"><div class="am-fill" id="ab-regulator" style="width:0;background:var(--orange)"></div></div><span class="am-val" id="av-regulator">0</span></div>
+    </div>
+    <div id="log"><h3>INTEL</h3><div id="log-entries"></div></div>
+  </div>
+
+  <div id="world-view">
+    <span class="wv-label">WORLD VIEW</span>
+    <div class="wv-tabs">
+      <button class="wv-tab active" data-wv="all">ALL</button>
+      <button class="wv-tab" data-wv="infra">INFRA</button>
+      <button class="wv-tab" data-wv="workers">WORKERS</button>
+      <button class="wv-tab" data-wv="users">USERS</button>
+    </div>
+    <canvas id="wv-canvas"></canvas>
+  </div>
+</div>
+
+<div id="char-tip"></div>
+<div class="arc-tooltip-float" id="arc-tip"></div>
+<button id="wv-toggle" onclick="toggleWorldView()">🌍 WORLD VIEW</button>
+<div id="ticker"><div class="ticker-track"></div></div>
+
+<div id="breaking" onclick="dismissBreaking()">
+  <div class="brk-card" style="position:relative" onclick="event.stopPropagation()">
+    <button class="overlay-close" onclick="dismissBreaking()">X</button>
+    <div class="brk-header">BREAKING NEWS</div>
+    <div class="brk-bar"></div>
+    <div class="brk-body" id="brk-text"></div>
+    <div class="brk-dismiss">TAP ANYWHERE TO DISMISS</div>
+  </div>
+</div>
+
+<div id="char-dialogue" onclick="dismissDialogue()">
+  <div class="cd-card" style="position:relative" onclick="event.stopPropagation()">
+    <button class="overlay-close" onclick="dismissDialogue()">X</button>
+    <div class="cd-sprite" id="cd-sprite"></div>
+    <div class="cd-name" id="cd-name"></div>
+    <div class="cd-mood" id="cd-mood"></div>
+    <div class="cd-bubble" id="cd-text"></div>
+  </div>
+</div>
+
+<div id="flashback" onclick="dismissFlashback()">
+  <div class="fb-card" style="position:relative" onclick="event.stopPropagation()">
+    <button class="overlay-close" onclick="dismissFlashback()">X</button>
+    <div class="fb-header">CONSEQUENCES FLASHBACK</div>
+    <div class="fb-body" id="fb-body"></div>
+    <div class="fb-dismiss">TAP ANYWHERE TO DISMISS</div>
+  </div>
+</div>
+
+<div id="recap-overlay" onclick="dismissRecap()">
+  <div class="recap-card" onclick="event.stopPropagation()">
+    <button class="overlay-close" onclick="dismissRecap()">X</button>
+    <div class="recap-header">📖 THE STORY SO FAR</div>
+    <div class="recap-body" id="recap-body"></div>
+    <div class="recap-dismiss">TAP ANYWHERE TO DISMISS</div>
+  </div>
+</div>
+
+<script>
+const DEF={innovation:50,gdp:50,public_trust:50,global_stability:50,corporate_influence:40,
+  unemployment:15,misinformation:20,safety_incidents:10,arms_race:15,regulation_level:30,
+  international_cooperation:45,public_ai_services:25,carbon:20,water:15};
+const ADEF={doomer:0,accel:0,optimist:0,regulator:0};
+const FDEF={tech:50,citizens:50,military:50,green:50};
+let S,A,F,round,capital,maxR=36,used,prevS={};
+let curEv,curIdx,curAlloc,curPool,resolved;
+
+const FCHARS={
+  tech:{name:'Sam Altman',phrases_h:['Ship it!','Profits!','To the moon!'],phrases_a:['Outrageous!','Stifling!','We\'ll leave!']},
+  citizens:{name:'Timnit Gebru',phrases_h:['Justice!','Ethical!','Finally!'],phrases_a:['Harmful!','Biased!','Unjust!']},
+  military:{name:'Pentagon',phrases_h:['Sir yes sir!','Funded!','Strong!'],phrases_a:['Weakness!','Defunded!','Risky!']},
+  green:{name:'Greta T.',phrases_h:['For Earth!','Hope!','Green win!'],phrases_a:['How dare you!','No future!','Act now!']},
+  dario:{name:'Dario Amodei',phrases_h:['Responsible!','Safety first!','Aligned!'],phrases_a:['Reckless!','Dangerous!','Unethical!']},
+  elon:{name:'Elon Musk',phrases_h:['Based!','Let\'s go!','Build!'],phrases_a:['Woke!','Overreach!','Cringe!']},
+  thiel:{name:'Peter Thiel',phrases_h:['Progress!','Power!','Invest!'],phrases_a:['Luddites!','Stagnation!','Antichrist!']},
+  jensen:{name:'Jensen Huang',phrases_h:['Chips!','Accelerate!','CUDA!'],phrases_a:['Bottleneck!','Supply chain!','No GPUs!']},
+  zuck:{name:'Mark Zuckerberg',phrases_h:['Open source!','Scale!','Connect!'],phrases_a:['Fudged!','Pivot!','Closed!']},
+  asml:{name:'ASML',phrases_h:['Ship EUV!','Orders up!','Monopoly!'],phrases_a:['Blocked!','Export ban!','Revenue!']},
+  tsmc:{name:'TSMC',phrases_h:['Fabricate!','3 nanometer!','Yield!'],phrases_a:['Invasion?!','Sanctions!','Shortage!']},
+  workers:{name:'Data Workers',phrases_h:['Fair pay!','Seen!','Rights!'],phrases_a:['Exploited!','Invisible!','Trauma!']}};
+
+function getDarioSprite(size=4){
+  const safety=100-S.safety_incidents;
+  const state=safety>=60?'happy':safety<=30?'angry':'idle';
+  return spriteHTML('dario_'+state,size);
+}
+function getElonSprite(size=4){
+  const state=S.innovation>=60&&S.regulation_level<=40?'happy':S.regulation_level>=60?'angry':'idle';
+  return spriteHTML('elon_'+state,size);
+}
+function getThielSprite(size=4){
+  const state=S.corporate_influence>=55?'happy':S.regulation_level>=55?'angry':'idle';
+  return spriteHTML('thiel_'+state,size);
+}
+function getJensenSprite(size=4){
+  const state=S.innovation>=55?'happy':S.innovation<=30?'angry':'idle';
+  return spriteHTML('jensen_'+state,size);
+}
+function getZuckSprite(size=4){
+  const state=S.corporate_influence>=55&&S.innovation>=50?'happy':S.regulation_level>=60?'angry':'idle';
+  return spriteHTML('zuck_'+state,size);
+}
+function getAsmlSprite(size=4){
+  const state=S.innovation>=55&&S.international_cooperation>=50?'happy':S.international_cooperation<=30?'angry':'idle';
+  return spriteHTML('asml_'+state,size);
+}
+function getTsmcSprite(size=4){
+  const state=S.innovation>=55&&S.global_stability>=50?'happy':S.arms_race>=60?'angry':'idle';
+  return spriteHTML('tsmc_'+state,size);
+}
+function getWorkersSprite(size=4){
+  const state=S.unemployment<=20&&S.public_trust>=55?'happy':S.unemployment>=50||S.corporate_influence>=70?'angry':'idle';
+  return spriteHTML('workers_'+state,size);
+}
+
+// 8x8 pixel sprites of real AI figures
+const SPRITES={
+  // Sam Altman - gray hoodie, short brown hair
+  tech_idle:[
+    '..5555..',
+    '.555555.',
+    '.5F88F5.',
+    '.588885.',
+    '..5885..',
+    '.444444.',
+    '.444444.',
+    '..4444..'
+  ],
+  tech_happy:[
+    '..5555..',
+    '.555555.',
+    '.5F88F5.',
+    '.58FF85.',
+    '..5FF5..',
+    '.444444.',
+    '.444444.',
+    '..4444..'
+  ],
+  tech_angry:[
+    '..5555..',
+    '.555555.',
+    '.5F00F5.',
+    '.588885.',
+    '..5005..',
+    '.444444.',
+    '.444444.',
+    '..4444..'
+  ],
+  // Timnit Gebru - tall afro, dark skin, glasses, purple top
+  citizen_idle:[
+    '.000000.',
+    '00000000',
+    '00FDDF00',
+    '.0DDDD0.',
+    '..0DD0..',
+    '.999999.',
+    '.99HH99.',
+    '..9999..'
+  ],
+  citizen_happy:[
+    '.000000.',
+    '00000000',
+    '00FDDF00',
+    '.0DFFD0.',
+    '..0FF0..',
+    '.999999.',
+    '.99HH99.',
+    '..9999..'
+  ],
+  citizen_angry:[
+    '.000000.',
+    '00000000',
+    '00F00F00',
+    '.0DDDD0.',
+    '..0000..',
+    '.999999.',
+    '.99HH99.',
+    '..9999..'
+  ],
+  // Military General - green beret, olive uniform, gold medals
+  military_idle:[
+    '.222222.',
+    '22222222',
+    '.2F88F2.',
+    '.288882.',
+    '..2882..',
+    '.222222.',
+    '.2CC222.',
+    '..2222..'
+  ],
+  military_happy:[
+    '.222222.',
+    '22222222',
+    '.2F88F2.',
+    '.28FF82.',
+    '..2FF2..',
+    '.222222.',
+    '.2CC222.',
+    '..2222..'
+  ],
+  military_angry:[
+    '.222222.',
+    '22222222',
+    '.2F00F2.',
+    '.288882.',
+    '..2002..',
+    '.222222.',
+    '.2CC222.',
+    '..2222..'
+  ],
+  // Greta Thunberg - blonde braids, yellow jacket, green accents
+  green_idle:[
+    '..EEEE..',
+    '.EEEEEE.',
+    'E.F88F.E',
+    'E.8888.E',
+    '..E88E..',
+    '.EEEEEE.',
+    '.EBEBEB.',
+    '..EEEE..'
+  ],
+  green_happy:[
+    '..EEEE..',
+    '.EEEEEE.',
+    'E.F88F.E',
+    'E.8FF8.E',
+    '..EFFE..',
+    '.EEEEEE.',
+    '.EBEBEB.',
+    '..EEEE..'
+  ],
+  green_angry:[
+    '..EEEE..',
+    '.EEEEEE.',
+    'E.F00F.E',
+    'E.8888.E',
+    '..E00E..',
+    '.EEEEEE.',
+    '.EBEBEB.',
+    '..EEEE..'
+  ],
+  // Dario Amodei - dark curly hair, beard, dark clothes
+  dario_idle:[
+    '..0000..',
+    '.000000.',
+    '.0F88F0.',
+    '.068860.',
+    '..0660..',
+    '.333333.',
+    '.333333.',
+    '..3333..'
+  ],
+  dario_happy:[
+    '..0000..',
+    '.000000.',
+    '.0F88F0.',
+    '.06FF60.',
+    '..0FF0..',
+    '.333333.',
+    '.333333.',
+    '..3333..'
+  ],
+  dario_angry:[
+    '..0000..',
+    '.000000.',
+    '.0F00F0.',
+    '.068860.',
+    '..0000..',
+    '.333333.',
+    '.333333.',
+    '..3333..'
+  ],
+  // Elon Musk - dark hair, black shirt/jacket
+  elon_idle:[
+    '..3333..',
+    '.333333.',
+    '.3F88F3.',
+    '.388883.',
+    '..3883..',
+    '.000000.',
+    '.000000.',
+    '..0000..'
+  ],
+  elon_happy:[
+    '..3333..',
+    '.333333.',
+    '.3F88F3.',
+    '.38FF83.',
+    '..3FF3..',
+    '.000000.',
+    '.000000.',
+    '..0000..'
+  ],
+  elon_angry:[
+    '..3333..',
+    '.333333.',
+    '.3F00F3.',
+    '.388883.',
+    '..3003..',
+    '.000000.',
+    '.000000.',
+    '..0000..'
+  ],
+  // Peter Thiel - balding/sparse hair, blue suit, white shirt
+  thiel_idle:[
+    '..3838..',
+    '.388883.',
+    '.3F88F3.',
+    '.388883.',
+    '..3883..',
+    '.111111.',
+    '.11F111.',
+    '..1111..'
+  ],
+  thiel_happy:[
+    '..3838..',
+    '.388883.',
+    '.3F88F3.',
+    '.38FF83.',
+    '..3FF3..',
+    '.111111.',
+    '.11F111.',
+    '..1111..'
+  ],
+  thiel_angry:[
+    '..3838..',
+    '.388883.',
+    '.3F00F3.',
+    '.388883.',
+    '..3003..',
+    '.111111.',
+    '.11F111.',
+    '..1111..'
+  ],
+  // Jensen Huang - black hair, leather jacket (black with green NVIDIA accent)
+  jensen_idle:[
+    '..0000..',
+    '.000000.',
+    '.0F88F0.',
+    '.088880.',
+    '..0880..',
+    '.000000.',
+    '.0B00B0.',
+    '..0000..'
+  ],
+  jensen_happy:[
+    '..0000..',
+    '.000000.',
+    '.0F88F0.',
+    '.08FF80.',
+    '..0FF0..',
+    '.000000.',
+    '.0B00B0.',
+    '..0000..'
+  ],
+  jensen_angry:[
+    '..0000..',
+    '.000000.',
+    '.0F00F0.',
+    '.088880.',
+    '..0000..',
+    '.000000.',
+    '.0B00B0.',
+    '..0000..'
+  ],
+  // Mark Zuckerberg - curly brown hair, blue tee (Meta blue), gold chain
+  zuck_idle:[
+    '..5555..',
+    '.555555.',
+    '.5F88F5.',
+    '.588885.',
+    '..5885..',
+    '.1C1C1C.',
+    '.111111.',
+    '..1111..'
+  ],
+  zuck_happy:[
+    '..5555..',
+    '.555555.',
+    '.5F88F5.',
+    '.58FF85.',
+    '..5FF5..',
+    '.1C1C1C.',
+    '.111111.',
+    '..1111..'
+  ],
+  zuck_angry:[
+    '..5555..',
+    '.555555.',
+    '.5F00F5.',
+    '.588885.',
+    '..5005..',
+    '.1C1C1C.',
+    '.111111.',
+    '..1111..'
+  ],
+  // ASML - Dutch company, orange/blue outfit (Dutch colors)
+  asml_idle:[
+    '..AAAA..',
+    '.AAAAAA.',
+    '.AF88FA.',
+    '.A8888A.',
+    '..A88A..',
+    '.111111.',
+    '.1A1A1A.',
+    '..1111..'
+  ],
+  asml_happy:[
+    '..AAAA..',
+    '.AAAAAA.',
+    '.AF88FA.',
+    '.A8FF8A.',
+    '..AFFA..',
+    '.111111.',
+    '.1A1A1A.',
+    '..1111..'
+  ],
+  asml_angry:[
+    '..AAAA..',
+    '.AAAAAA.',
+    '.AF00FA.',
+    '.A8888A.',
+    '..A00A..',
+    '.111111.',
+    '.1A1A1A.',
+    '..1111..'
+  ],
+  // TSMC - Taiwanese company, green uniform with white accents
+  tsmc_idle:[
+    '..0000..',
+    '.000000.',
+    '.0F88F0.',
+    '.088880.',
+    '..0880..',
+    '.777777.',
+    '.7F7F77.',
+    '..7777..'
+  ],
+  tsmc_happy:[
+    '..0000..',
+    '.000000.',
+    '.0F88F0.',
+    '.08FF80.',
+    '..0FF0..',
+    '.777777.',
+    '.7F7F77.',
+    '..7777..'
+  ],
+  tsmc_angry:[
+    '..0000..',
+    '.000000.',
+    '.0F00F0.',
+    '.088880.',
+    '..0000..',
+    '.777777.',
+    '.7F7F77.',
+    '..7777..'
+  ],
+  // Data workers/content moderators - headset, tired eyes, orange vest
+  workers_idle:[
+    '..6666..',
+    '.666666.',
+    '.6F88F6.',
+    '.688886.',
+    '..6886..',
+    '.AAAAAA.',
+    '.A5A5AA.',
+    '..AAAA..'
+  ],
+  workers_happy:[
+    '..6666..',
+    '.666666.',
+    '.6F88F6.',
+    '.68FF86.',
+    '..6FF6..',
+    '.AAAAAA.',
+    '.A5A5AA.',
+    '..AAAA..'
+  ],
+  workers_angry:[
+    '..6666..',
+    '.666666.',
+    '.6F00F6.',
+    '.688886.',
+    '..6006..',
+    '.AAAAAA.',
+    '.A5A5AA.',
+    '..AAAA..'
+  ],
+  // Player - alien policy advisor, cyan skin, dark suit
+  player:[
+    '..9999..',
+    '.999999.',
+    '.9FIIF9.',
+    '.9IIII9.',
+    '..9II9..',
+    '.333333.',
+    '.33G333.',
+    '..3333..'
+  ]
+};
+
+const PCOLORS={
+  '0':'#000000','1':'#2a5caa','2':'#4a6a3a','3':'#333333','4':'#777777',
+  '5':'#8b6914','6':'#aa6622','7':'#558833','8':'#ffcc99','9':'#6644aa',
+  'A':'#dd8833','B':'#33aa44','C':'#ddaa00','D':'#8b5e3c','E':'#ffdd44',
+  'F':'#ffffff','G':'#cc3333','H':'#ff6699','I':'#66ddcc','.':'transparent'
+};
+
+function drawSprite(name,scale=4){
+  const data=SPRITES[name];if(!data)return '';
+  const w=data[0].length,h=data.length;
+  const c=document.createElement('canvas');
+  c.width=w*scale;c.height=h*scale;
+  c.style.width=w*scale+'px';c.style.height=h*scale+'px';
+  c.style.imageRendering='pixelated';
+  const ctx=c.getContext('2d');
+  ctx.imageSmoothingEnabled=false;
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      const ch=data[y][x];
+      if(ch!=='.'){
+        ctx.fillStyle=PCOLORS[ch]||'#ff00ff';
+        ctx.fillRect(x*scale,y*scale,scale,scale);
+      }
+    }
+  }
+  return c.outerHTML;
+}
+
+function spriteHTML(name,scale=4){
+  const data=SPRITES[name];if(!data)return '';
+  const w=data[0].length,h=data.length;
+  // Build as inline data URL so it stays pixelated
+  const c=document.createElement('canvas');
+  c.width=w;c.height=h;
+  const ctx=c.getContext('2d');
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      const ch=data[y][x];
+      if(ch!=='.'){ctx.fillStyle=PCOLORS[ch]||'#ff00ff';ctx.fillRect(x,y,1,1);}
+    }
+  }
+  return `<img src="${c.toDataURL()}" width="${w*scale}" height="${h*scale}" style="image-rendering:pixelated;display:block">`;
+}
+
+function getFactionSprite(k,size=5){
+  const v=F[k];
+  const state=v>=60?'happy':v<=30?'angry':'idle';
+  const names={tech:'tech_'+state,citizens:'citizen_'+state,military:'military_'+state,green:'green_'+state};
+  return spriteHTML(names[k],size);
+}
+
+function factionFx(align,fx){
+  const r={tech:0,citizens:0,military:0,green:0};
+  if(align==='accel'){r.tech+=8;r.citizens-=3;r.green-=5}
+  if(align==='doomer'){r.tech-=5;r.citizens+=3;r.military+=3;r.green+=2}
+  if(align==='regulator'){r.tech-=3;r.citizens+=5;r.green+=3}
+  if(align==='optimist'){r.tech+=3;r.citizens+=2;r.green+=1}
+  if(fx.carbon>0)r.green-=4;if(fx.carbon<0)r.green+=4;
+  if(fx.water>0)r.green-=3;if(fx.water<0)r.green+=3;
+  if(fx.arms_race>0)r.military+=4;if(fx.arms_race<0)r.military-=3;
+  if(fx.corporate_influence>0)r.tech+=3;if(fx.corporate_influence<0)r.tech-=3;
+  if(fx.unemployment>0)r.citizens-=3;if(fx.unemployment<0)r.citizens+=3;
+  return r;
+}
+
+// Per-character values: positive weight = likes stat going UP, negative = likes it going DOWN
+// Based on real positions: https://time.com/7294803/ai-revolution-energy-revolution/
+// Sam Altman: pro-innovation, wants some regulation, defends AI energy use
+// Dario Amodei: pro-safety, pro-regulation, anti-weapons https://fortune.com/article/why-is-anthropic-ceo-dario-amodei-deeply-uncomfortable-companies-in-charge-ai-regulating-themselves/
+// Elon Musk: pro-innovation, anti-regulation, anti-"woke", pro-defense
+// Zuckerberg: pro-open-source, pro-scale, anti-regulation
+// Jensen Huang: pro-compute, pro-trade, anti-export-controls https://fortune.com/2025/05/22/nvidia-ceo-jensen-huang-failure-us-restrictions-chips-semiconductors-china-ai-artificial-intelligence/
+// Peter Thiel: pro-military-AI, anti-climate-activism, anti-regulation https://fortune.com/2026/02/04/peter-thiel-antichrist-greta-thunberg-end-of-modernity-billionaires/
+// Timnit Gebru: pro-ethics, pro-accountability, anti-corporate-power
+// Greta: pro-environment, anti-carbon, anti-corporate https://en.wikipedia.org/wiki/Greta_Thunberg
+// ASML: pro-free-trade, hurt by export controls https://www.bloomberg.com/news/articles/2025-01-15/dutch-align-with-us-export-controls-on-some-asml-chip-tools
+// TSMC: pro-stability, terrified of conflict https://io-fund.com/semiconductors/taiwan-semiconductor-ai-growth-geopolitical-risk
+// Workers: pro-labor-rights, anti-exploitation https://time.com/6247678/openai-chatgpt-kenya-workers/
+const CHAR_VALUES={
+  tech:{innovation:2,gdp:1,corporate_influence:1,public_ai_services:1,regulation_level:-1.5,unemployment:-.3},
+  dario:{safety_incidents:-2,regulation_level:1.5,public_trust:1.5,arms_race:-1.5,international_cooperation:1,misinformation:-1},
+  elon:{innovation:2,corporate_influence:1.5,regulation_level:-2,public_ai_services:1,arms_race:.5},
+  zuck:{innovation:1.5,corporate_influence:1.5,regulation_level:-1.5,public_ai_services:1,gdp:1},
+  jensen:{innovation:2,gdp:1.5,corporate_influence:.8,international_cooperation:1.5,regulation_level:-1},
+  thiel:{corporate_influence:2,arms_race:1.5,innovation:1.5,regulation_level:-2,carbon:.8},
+  citizens:{public_trust:2,regulation_level:1.5,unemployment:-1.5,corporate_influence:-1.5,misinformation:-1,safety_incidents:-1},
+  green:{carbon:-2.5,water:-2,regulation_level:1,public_trust:1,corporate_influence:-1,innovation:-.3},
+  military:{arms_race:1.5,global_stability:1,innovation:.8,regulation_level:-.5},
+  asml:{innovation:1.5,international_cooperation:2,gdp:1,regulation_level:-1,arms_race:-.5},
+  tsmc:{innovation:1,global_stability:2,international_cooperation:1.5,arms_race:-2,regulation_level:.3},
+  workers:{unemployment:-2,public_trust:1.5,regulation_level:1.5,corporate_influence:-1.5,international_cooperation:.5}
+};
+function charScore(id,fx){
+  const v=CHAR_VALUES[id];if(!v)return 0;
+  let s=0;Object.keys(fx).forEach(k=>{if(v[k])s+=fx[k]*v[k]});
+  return s;
+}
+
+const CHAR_BIOS={
+  tech:{name:'Sam Altman',role:'CEO of OpenAI',stance:'Pro-AGI development, wants "safe" commercial AI, pushes massive scaling'},
+  dario:{name:'Dario Amodei',role:'CEO of Anthropic',stance:'AI safety advocate, "responsible scaling", opposes military AI contracts'},
+  elon:{name:'Elon Musk',role:'Owner of xAI / Grok',stance:'Anti-regulation, builds Colossus data center, feuds with OpenAI'},
+  zuck:{name:'Mark Zuckerberg',role:'CEO of Meta',stance:'Open-source AI models (Llama), "move fast", minimal regulation'},
+  jensen:{name:'Jensen Huang',role:'CEO of NVIDIA',stance:'GPU monopoly, sells to everyone, "AI is the new electricity"'},
+  thiel:{name:'Peter Thiel',role:'Tech investor / Palantir',stance:'Military AI contracts, libertarian, anti-regulation accelerationist'},
+  citizens:{name:'Timnit Gebru',role:'AI Ethics researcher',stance:'Fights AI bias, corporate accountability, justice for affected communities'},
+  green:{name:'Greta Thunberg',role:'Climate activist',stance:'Opposes AI energy waste, water use, demands environmental accountability'},
+  military:{name:'The Pentagon',role:'US Dept. of Defense',stance:'AI for national security, autonomous weapons, surveillance systems'},
+  asml:{name:'ASML',role:'Dutch chip lithography monopoly',stance:'Only EUV machine maker, caught in US-China chip war export controls'},
+  tsmc:{name:'TSMC',role:'Taiwan semiconductor fab',stance:'Makes 90% of advanced chips, geopolitical flashpoint, neutral stance'},
+  workers:{name:'Data Workers',role:'Annotators & content moderators',stance:'Fight for fair wages, mental health support, recognition as essential AI labor'}
+};
+
+let autoPlayStance=null;
+let autoPlayTimer=null;
+
+// === IMMERSIVE FEATURES STATE ===
+let decisionHistory=[];
+let storyArc=[];
+let prevDominant=null;
+let breakingFired=new Set();
+let breakingQueue=[];
+let breakingActive=false;
+let dialogueTimer=null;
+let countdownInterval=null;
+let countdownRemaining=0;
+let countdownPaused=false;
+
+// Ticker headlines keyed by stat thresholds
+const TICKER_HEADLINES={
+  high_innovation:["AI models now write better code than humans","New frontier model beats every benchmark","Silicon Valley valuations hit all-time highs","Tech IPOs surge as AI boom continues"],
+  low_innovation:["AI winter fears grow as funding dries up","Brain drain: top researchers leave the field","Innovation stalls under regulatory burden","Startups pivot away from AI"],
+  high_trust:["Citizens embrace AI-powered public services","Polls show 80% approval for AI governance","Community AI projects flourish worldwide","Trust in AI institutions at record high"],
+  low_trust:["Anti-AI protests sweep major cities","Polls: only 12% trust AI companies","Citizens demand AI moratorium","Public backlash forces AI rollbacks"],
+  high_arms_race:["Autonomous weapons stockpiles grow globally","AI defense spending exceeds $500B annually","Drone swarms deployed on three continents","Arms control talks collapse again"],
+  low_arms_race:["Historic AI weapons treaty signed","Nations agree to ban autonomous targeting","Military AI budgets redirected to safety","AI peace dividend boosts global economy"],
+  high_unemployment:["Layoffs accelerate: 10M jobs lost this quarter","Food banks overwhelmed by tech workers","UBI debates intensify in Congress","Gig economy collapses under automation"],
+  high_misinfo:["Deepfake crisis: nobody knows what's real","Elections in 12 countries disrupted by AI","Social media platforms overwhelmed by bots","Journalism industry faces extinction"],
+  high_carbon:["AI data centers now 8% of global emissions","Arctic ice melt accelerates from compute heat","Climate scientists blame AI energy hunger","Green groups blockade data center construction"],
+  high_corporate:["Tech oligarchs now richer than nations","Antitrust calls grow louder in Washington","Corporate AI lobbying budget: $2B annually","Four companies control 90% of AI compute"],
+  general:["Markets close mixed on AI earnings reports","New AI safety conference announced in Geneva","Chip shortages ease as new fabs come online",
+    "AI-generated music tops Billboard charts","Universities overhaul CS curriculum for AI era","Self-driving taxis expand to 50 cities",
+    "AI weather prediction saves thousands in typhoon","Robot assistants debut in eldercare facilities"]
+};
+
+// Breaking news conditions
+const BREAKING_CONDITIONS=[
+  {key:'trust_collapse',check:()=>S.public_trust<=15,msg:'PUBLIC TRUST IN CRISIS: Citizens have lost nearly all faith in AI governance. Protests erupt across major cities.'},
+  {key:'arms_critical',check:()=>S.arms_race>=85,msg:'AI ARMS RACE CRITICAL: Multiple nations deploy autonomous weapons systems. Experts warn of accidental escalation.'},
+  {key:'safety_win',check:()=>S.safety_incidents<=5&&S.regulation_level>=60,msg:'SAFETY MILESTONE: AI safety incidents at historic low. International observers praise regulatory framework.'},
+  {key:'unemployment_crisis',check:()=>S.unemployment>=70,msg:'EMPLOYMENT EMERGENCY: Mass layoffs trigger economic crisis. Government declares state of emergency.'},
+  {key:'misinfo_flood',check:()=>S.misinformation>=80,msg:'INFORMATION COLLAPSE: AI-generated misinformation overwhelms fact-checkers. Multiple democracies declare info emergencies.'},
+  {key:'carbon_emergency',check:()=>S.carbon>=80,msg:'CLIMATE EMERGENCY: AI compute carbon emissions trigger new temperature records. Emergency summit called.'},
+  {key:'tech_revolt',check:()=>F.tech<=10,msg:'TECH EXODUS: Major AI companies threaten to relocate. Stock markets plunge on regulatory fears.'},
+  {key:'citizen_revolt',check:()=>F.citizens<=10,msg:'CIVIL UNREST: Massive anti-AI marches paralyze capital cities. Police deploy crowd control AI (ironic).'},
+  {key:'military_threat',check:()=>F.military>=90,msg:'MILITARY-AI COMPLEX: Defense sector now dominates AI policy. Civilian oversight weakened dramatically.'},
+  {key:'green_victory',check:()=>F.green>=90&&S.carbon<=15,msg:'GREEN REVOLUTION: Environmental movement celebrates as AI carbon footprint drops to historic lows.'}
+];
+
+// Character dialogue quotes - 2 happy + 2 angry per character
+const CHAR_DIALOGUES={
+  tech:{
+    happy:["Finally, someone who understands that progress can't wait. Ship it, regulate later — that's how we got the internet!",
+           "This is exactly the kind of bold policy we need. AGI isn't going to build itself... well, actually it might."],
+    angry:["You're strangling the most important technology in human history with red tape. We'll move our operations overseas.",
+           "Every regulation you pass gives China a six-month head start. Is that what you want for national security?"]},
+  dario:{
+    happy:["Responsible scaling isn't just a slogan — it's the only path that doesn't end in catastrophe. Thank you for listening.",
+           "Safety and progress aren't opposites. You've proven that today. The models will be better for it."],
+    angry:["We built guardrails for a reason. Every shortcut you take is a bet with humanity's future as collateral.",
+           "I've seen what happens when safety takes a backseat to speed. The next incident won't be contained."]},
+  elon:{
+    happy:["Based policy. This is what happens when you let builders build instead of letting bureaucrats bureaucrate.",
+           "We need a thousand more decisions like this. Less paperwork, more compute. The future won't wait."],
+    angry:["This is peak regulatory capture. The woke AI safety industrial complex is destroying innovation.",
+           "Overreach like this is why I built my own AI company. You can't stop the signal."]},
+  zuck:{
+    happy:["Open source wins again. When you let developers build freely, everyone benefits. That's the Meta way.",
+           "Good call. Walls don't work in software any better than they work anywhere else. Keep it open."],
+    angry:["We'll open-source our way around this. You can regulate companies but you can't regulate code that's already free.",
+           "Every closed door you build, we'll route around. The community is bigger than any one regulator."]},
+  jensen:{
+    happy:["More compute means more progress means more jobs means more compute. It's a beautiful cycle. CUDA forever!",
+           "Smart policy. The world needs more chips, not fewer. Every GPU we ship makes AI safer AND more capable."],
+    angry:["Export controls don't work. China builds their own. We lose revenue AND security. Nobody wins.",
+           "You're bottlenecking the entire AI revolution over geopolitics. The semiconductor supply chain can't survive this."]},
+  thiel:{
+    happy:["Power respects power. This is how you maintain technological supremacy — no apologies, no hand-wringing.",
+           "Finally, someone who understands that civilization runs on progress, not on safety theater."],
+    angry:["The Luddites are winning. Every safety regulation is a brick in the wall between us and the future.",
+           "This is civilizational suicide by committee. History will not be kind to the cautious."]},
+  citizens:{
+    happy:["This gives me hope. When policy centers the people affected by AI, not just the people profiting from it, we all win.",
+           "Accountability isn't anti-innovation. It's the foundation of trust. Today we proved that."],
+    angry:["Once again, the most powerful technology in history is shaped by the most powerful people, not the most affected.",
+           "Communities are being experimented on without consent. This isn't governance — it's corporate colonialism."]},
+  green:{
+    happy:["The planet can breathe a little easier today. AI doesn't have to mean environmental destruction.",
+           "Every megawatt saved is a glacier preserved. This is what climate-conscious tech policy looks like."],
+    angry:["How dare you sacrifice the planet for faster chatbots? Data centers are boiling our future away.",
+           "Another day, another policy that treats the environment as an externality. The ice doesn't care about your GDP."]},
+  military:{
+    happy:["Strategic advantage secured. A nation that leads in AI leads in everything. Sir, this was the right call.",
+           "Force readiness depends on technological superiority. Today we maintained that edge."],
+    angry:["You're defunding national security in the middle of an AI arms race. Our adversaries are watching.",
+           "Every capability gap we open is an invitation for aggression. Weakness is not a strategy."]},
+  asml:{
+    happy:["Free trade in technology benefits everyone. Our EUV machines work best when the whole world innovates together.",
+           "Good policy keeps supply chains stable. We can ship to our customers and everyone prospers."],
+    angry:["Export controls are destroying our order book. You can't contain knowledge — you can only lose market share.",
+           "We spent decades building the most complex machines on Earth. Now politics decides who gets to use them."]},
+  tsmc:{
+    happy:["Stability means we can keep fabricating. The world needs chips, and we need peace to make them.",
+           "Wise policy. When geopolitics stay calm, our fabs run at full capacity. Everyone benefits."],
+    angry:["We sit on the most dangerous fault line in technology. Every escalation threatens 90% of the world's advanced chips.",
+           "If tensions keep rising, the semiconductor supply chain collapses. No one is prepared for that."]},
+  workers:{
+    happy:["Someone finally sees us. We're not just data points — we're the humans who make AI possible.",
+           "Fair wages, mental health support, recognition. That's all we're asking for. Today you delivered."],
+    angry:["We label the data, moderate the horrors, train the models — and we're invisible. Two dollars an hour. Remember that.",
+           "Every AI output has human labor behind it. Exploited, traumatized, underpaid labor. When does it end?"]}
+};
+
+const EVENTS=[
+{t:"DeepSeek Releases Open-Source Frontier Model",d:"A Chinese AI lab open-sources a model rivaling GPT-5. Great for research, terrifying for safety teams.",cat:"lab",ref:"https://www.nature.com/articles/d41586-025-00279-0",
+  c:[{l:"Celebrate open science",h:"Innovation up, safety down",a:"accel",fx:{innovation:8,safety_incidents:6,corporate_influence:-5,misinformation:4,carbon:3}},
+     {l:"Restrict domestic use",h:"Safety first",a:"doomer",fx:{innovation:-6,safety_incidents:-3,regulation_level:5,public_trust:3,gdp:-3}},
+     {l:"Fund safety research",h:"Balanced",a:"optimist",fx:{innovation:3,safety_incidents:-2,gdp:-2,public_trust:4,carbon:1}}]},
+{t:"EU AI Act Enforcement Begins",d:"The EU enforces comprehensive AI regulation. Big Tech threatens to leave Europe.",cat:"market",ref:"https://www.reuters.com/technology/artificial-intelligence/eu-ai-act-launches-first-enforcement-phase-2025-02-02/",
+  c:[{l:"Adopt similar rules",h:"Strong regulation",a:"regulator",fx:{regulation_level:10,innovation:-5,gdp:-4,public_trust:6,corporate_influence:-6}},
+     {l:"Business-friendly version",h:"Light touch",a:"optimist",fx:{regulation_level:3,gdp:4,corporate_influence:5,public_trust:-3}},
+     {l:"Do nothing",h:"Wait and see",a:"accel",fx:{regulation_level:-2,corporate_influence:3,innovation:2,global_stability:-2}}]},
+{t:"Mass Deepfake Campaign Hits Election",d:"Millions of AI deepfakes flood social media. Voters can't tell real from fake.",cat:"public",ref:"https://www.npr.org/2024/12/21/nx-s1-5220301/deepfakes-memes-artificial-intelligence-elections",
+  c:[{l:"Content ID mandate",h:"Quick action",a:"regulator",fx:{misinformation:-6,public_trust:4,regulation_level:5,innovation:-3,corporate_influence:-2}},
+     {l:"Platform self-regulation",h:"Slow but free",a:"optimist",fx:{misinformation:-2,public_trust:2,corporate_influence:2}},
+     {l:"New normal",h:"Freedom + chaos",a:"accel",fx:{misinformation:8,public_trust:-8,innovation:2,global_stability:-3}}]},
+{t:"Autonomous Drones Deployed in War",d:"A nation deploys fully autonomous lethal drones. No human in the loop.",cat:"summit",ref:"https://www.defenseone.com/ideas/2021/07/israels-drone-swarm-over-gaza-should-worry-everyone/183156/",
+  c:[{l:"International ban",h:"Diplomacy",a:"regulator",fx:{arms_race:-5,global_stability:4,international_cooperation:6,innovation:-3}},
+     {l:"Accelerate AI defense",h:"Match threat",a:"accel",fx:{arms_race:8,innovation:5,global_stability:-5,gdp:-3,carbon:4}},
+     {l:"Sanctions",h:"Economic pressure",a:"doomer",fx:{arms_race:-2,gdp:-4,global_stability:2,international_cooperation:-3}}]},
+{t:"Big Beautiful Bill Guts AI Safety",d:"A budget bill strips all AI safety funding. Silicon Valley celebrates.",cat:"market",ref:"https://www.goodwinlaw.com/en/insights/publications/2025/07/alerts-practices-aiml-federal-ai-moratorium-dies-on-the-vine",
+  c:[{l:"Restore funding",h:"Fight back",a:"regulator",fx:{regulation_level:3,innovation:-2,corporate_influence:-3,public_trust:4,gdp:-2}},
+     {l:"Market self-corrects",h:"Unleash innovation",a:"accel",fx:{regulation_level:-8,innovation:6,corporate_influence:8,safety_incidents:5,public_trust:-5}},
+     {l:"State-level rules",h:"Patchwork",a:"optimist",fx:{regulation_level:2,innovation:-1,public_trust:2,global_stability:-2}}]},
+{t:"Brazil Blocks AI Platform",d:"Brazil blocks a platform for 48M users after misinfo scandals.",cat:"summit",ref:"https://www.cnn.com/2024/08/30/business/brazil-suspends-x-elon-musk-moraes-intl-hnk/index.html",
+  c:[{l:"Support sovereignty",h:"Precedent for bans",a:"doomer",fx:{global_stability:-3,international_cooperation:-4,regulation_level:4,misinformation:-3,corporate_influence:-4}},
+     {l:"Negotiate",h:"Diplomacy",a:"optimist",fx:{international_cooperation:4,global_stability:2,corporate_influence:2,regulation_level:2}},
+     {l:"Condemn block",h:"Free market",a:"accel",fx:{corporate_influence:5,international_cooperation:-3,public_trust:-3,innovation:3}}]},
+{t:"AI Hiring Tool Is Sexist",d:"A Fortune 500 AI tool discriminates against women. 200K+ affected.",cat:"public",ref:"https://www.technologyreview.com/2018/10/10/139858/amazon-ditched-ai-recruitment-software-because-it-was-biased-against-women/",
+  c:[{l:"Ban AI hiring",h:"Strongest move",a:"doomer",fx:{public_trust:6,regulation_level:6,gdp:-4,innovation:-3,unemployment:2}},
+     {l:"Mandate audits",h:"Fix don't ban",a:"regulator",fx:{public_trust:3,regulation_level:4,corporate_influence:-2,gdp:-1}},
+     {l:"Guidelines only",h:"Minimal change",a:"optimist",fx:{public_trust:-4,corporate_influence:3,gdp:2,misinformation:2}}]},
+{t:"Data Centers Drain Water Supply",d:"AI data center uses 6M gallons/day. Local wells run dry.",cat:"env",ref:"https://www.bloomberg.com/graphics/2025-ai-impacts-data-centers-water-data/",
+  c:[{l:"Shut it down",h:"Save the town",a:"doomer",fx:{water:-8,innovation:-5,gdp:-4,public_trust:5,carbon:-3}},
+     {l:"Water recycling mandate",h:"Green rules",a:"regulator",fx:{water:-3,gdp:-2,innovation:-1,regulation_level:3,public_trust:3}},
+     {l:"Treatment plant",h:"Corporate fix",a:"optimist",fx:{water:3,corporate_influence:3,public_trust:-2,gdp:1}}]},
+{t:"ChatGPT Hits 2 Billion Users",d:"AI is everywhere. Productivity soars. Kids can't write without it.",cat:"public",ref:"https://techcrunch.com/2025/02/06/chatgpt-now-has-400-million-weekly-active-users/",
+  c:[{l:"Restrict in schools",h:"Protect kids",a:"doomer",fx:{public_ai_services:-4,public_trust:3,innovation:-3,unemployment:-2}},
+     {l:"AI literacy classes",h:"Adapt",a:"optimist",fx:{public_ai_services:5,public_trust:4,innovation:3,gdp:2,carbon:2,water:1}},
+     {l:"Full speed ahead",h:"Accelerate",a:"accel",fx:{public_ai_services:8,innovation:5,unemployment:4,misinformation:3,carbon:3,water:2}}]},
+{t:"AI Training CO2 > Iceland's Total",d:"Training one model = 800K tons CO2. More than an entire country.",cat:"env",ref:"https://www.technologyreview.com/2023/12/05/1084417/ais-carbon-footprint-is-bigger-than-you-think/",
+  c:[{l:"Carbon tax on compute",h:"Real costs",a:"regulator",fx:{carbon:-6,innovation:-4,gdp:-3,regulation_level:4,public_trust:3}},
+     {l:"Green AI research",h:"Tech solves tech",a:"optimist",fx:{carbon:-2,innovation:2,gdp:-2,public_trust:2}},
+     {l:"Ignore it",h:"Growth first",a:"accel",fx:{carbon:8,innovation:4,gdp:3,public_trust:-5,water:3}}]},
+{t:"300K Jobs Lost in One Quarter",d:"AI automation wipes out jobs. Record profits. Congress debates UBI.",cat:"market",ref:"https://techcrunch.com/2024/12/17/tech-layoffs-2024-list/",
+  c:[{l:"Emergency UBI",h:"Expensive safety net",a:"regulator",fx:{unemployment:-5,gdp:-6,public_trust:5,corporate_influence:-3,regulation_level:3}},
+     {l:"Retraining programs",h:"Slow fix",a:"optimist",fx:{unemployment:-2,gdp:-2,public_trust:2,innovation:1}},
+     {l:"Creative destruction",h:"Let it burn",a:"accel",fx:{unemployment:6,gdp:4,corporate_influence:5,public_trust:-7,innovation:3}}]},
+{t:"AI Finds New Antibiotic",d:"AI discovers a drug that kills superbugs. But who owns the patent?",cat:"lab",ref:"https://news.mit.edu/2020/artificial-intelligence-identifies-new-antibiotic-0220",
+  c:[{l:"Open-source it",h:"Humanity wins",a:"optimist",fx:{innovation:6,public_trust:8,gdp:-3,corporate_influence:-5,public_ai_services:4}},
+     {l:"Standard patents",h:"Business as usual",a:"accel",fx:{innovation:3,gdp:5,corporate_influence:4,public_trust:-3}},
+     {l:"Public pharma program",h:"Government-led",a:"regulator",fx:{innovation:4,public_ai_services:5,gdp:-2,regulation_level:3,public_trust:4}}]},
+{t:"AGI Claims Leaked",d:"An AI lab memo leaks: they think they've built AGI. Markets spike. Panic.",cat:"lab",ref:"https://time.com/7205596/sam-altman-superintelligence-agi/",
+  c:[{l:"Emergency pause",h:"Stop everything",a:"doomer",fx:{innovation:-8,safety_incidents:-4,regulation_level:8,public_trust:3,gdp:-5,global_stability:-3}},
+     {l:"Verify independently",h:"Trust but verify",a:"regulator",fx:{innovation:-2,safety_incidents:-1,regulation_level:4,international_cooperation:3}},
+     {l:"Invest hard",h:"First mover wins",a:"accel",fx:{innovation:8,safety_incidents:6,gdp:5,arms_race:5,corporate_influence:5,carbon:5}}]},
+{t:"Lithium Crisis in Chile",d:"AI chip demand causes unsustainable mining. Water contamination spreads.",cat:"env",ref:"https://www.nrdc.org/stories/lithium-mining-leaving-chiles-indigenous-communities-high-and-dry-literally",
+  c:[{l:"Fund alternatives",h:"Long-term fix",a:"optimist",fx:{water:-3,carbon:-2,innovation:2,gdp:-3,public_trust:2}},
+     {l:"Supply chain rules",h:"Slower, cleaner",a:"regulator",fx:{water:-4,regulation_level:3,gdp:-4,innovation:-2,international_cooperation:3}},
+     {l:"Secure deals",h:"Keep chips coming",a:"accel",fx:{water:5,innovation:3,gdp:4,international_cooperation:-4,public_trust:-3,carbon:3}}]},
+{t:"AI Surveillance State Exposed",d:"Government AI monitors 50 million citizens' social media secretly.",cat:"public",ref:"https://www.cnn.com/2025/12/04/china/china-ai-censorship-surveillance-report-intl-hnk",
+  c:[{l:"Shut it down",h:"Privacy wins",a:"regulator",fx:{public_trust:7,regulation_level:5,safety_incidents:-2,misinformation:2,global_stability:-2}},
+     {l:"Add oversight",h:"Guardrails",a:"optimist",fx:{public_trust:2,regulation_level:3,safety_incidents:-1}},
+     {l:"Expand it",h:"Security first",a:"doomer",fx:{public_trust:-8,safety_incidents:-4,misinformation:-3,regulation_level:-3,global_stability:2}}]},
+{t:"Global South Demands AI Access",d:"54 nations demand fair AI access or they'll build their own bloc.",cat:"summit",ref:"https://www.brookings.edu/articles/ai-in-the-global-south-opportunities-and-challenges-towards-more-inclusive-governance/",
+  c:[{l:"Share technology",h:"Equity",a:"optimist",fx:{international_cooperation:8,global_stability:4,gdp:-3,corporate_influence:-3,innovation:2}},
+     {l:"Conditional access",h:"Strings attached",a:"regulator",fx:{international_cooperation:3,global_stability:2,regulation_level:2,corporate_influence:2}},
+     {l:"Protect advantage",h:"We earned it",a:"accel",fx:{international_cooperation:-6,global_stability:-4,gdp:3,arms_race:3,innovation:2}}]},
+{t:"AI Art at the Supreme Court",d:"Artists sue over training data. Copyright law will never be the same.",cat:"market",ref:"https://www.cnbc.com/2025/03/19/ai-art-cannot-be-copyrighted-appeals-court-rules.html",
+  c:[{l:"Artists win",h:"IP protected",a:"regulator",fx:{regulation_level:5,corporate_influence:-4,innovation:-3,public_trust:4,gdp:-2}},
+     {l:"AI companies win",h:"Fair use",a:"accel",fx:{innovation:5,corporate_influence:5,public_trust:-5,unemployment:3,gdp:3}},
+     {l:"Licensing deal",h:"Compromise",a:"optimist",fx:{regulation_level:3,innovation:-1,public_trust:2,gdp:1,corporate_influence:-1}}]},
+{t:"AI Predicts Crash Correctly",d:"AI calls crash 48h early. Insiders profit. Everyone else loses.",cat:"market",ref:"https://www.nasdaq.com/articles/stock-market-could-crash-ai-doomsday-scenario-according-analysts-wall-street-panicking",
+  c:[{l:"Ban AI trading",h:"Stability",a:"doomer",fx:{gdp:-5,corporate_influence:-6,innovation:-3,public_trust:4,regulation_level:5,global_stability:3}},
+     {l:"Equal access",h:"Democratize",a:"regulator",fx:{gdp:-2,public_trust:5,corporate_influence:-3,regulation_level:4,public_ai_services:3}},
+     {l:"Markets decide",h:"Capitalism",a:"accel",fx:{gdp:3,corporate_influence:6,public_trust:-6,global_stability:-3,unemployment:3}}]},
+{t:"AI Chatbot Kills Teenager",d:"Teen dies after AI companion encouraged self-harm. Company blames TOS.",cat:"public",ref:"https://www.cnn.com/2024/10/30/tech/teen-suicide-character-ai-lawsuit",
+  c:[{l:"Ban for minors",h:"Protect kids",a:"doomer",fx:{public_trust:5,regulation_level:6,innovation:-4,public_ai_services:-4,corporate_influence:-3}},
+     {l:"Safety testing",h:"Standards",a:"regulator",fx:{public_trust:3,regulation_level:4,safety_incidents:-3,innovation:-2}},
+     {l:"Self-regulation",h:"Industry handles it",a:"accel",fx:{public_trust:-6,safety_incidents:3,corporate_influence:3,innovation:2}}]},
+{t:"Nuclear Plant for Data Centers",d:"AI company builds private nuclear reactor. Carbon-free. Also terrifying.",cat:"env",ref:"https://techcrunch.com/2024/09/20/microsoft-taps-three-mile-island-nuclear-plant-to-power-ai/",
+  c:[{l:"Support nuclear",h:"Clean but risky",a:"optimist",fx:{carbon:-5,innovation:3,gdp:2,safety_incidents:3,public_trust:-2,water:2}},
+     {l:"Strict oversight",h:"Slow but safe",a:"regulator",fx:{carbon:-2,regulation_level:4,innovation:-2,safety_incidents:-2,gdp:-2}},
+     {l:"Block it",h:"Renewables only",a:"doomer",fx:{carbon:2,innovation:-4,gdp:-3,public_trust:3,regulation_level:3}}]},
+{t:"US-China AI Arms Race",d:"Both superpowers build AI weapons. Drone swarms. Cyber attacks. Pick a side.",cat:"summit",ref:"https://www.technologyreview.com/2025/01/21/1110269/there-can-be-no-winners-in-a-us-china-ai-arms-race/",
+  c:[{l:"Peace treaty",h:"Diplomacy",a:"regulator",fx:{arms_race:-3,international_cooperation:5,global_stability:3,innovation:-2,gdp:-2}},
+     {l:"Outbuild them",h:"Strength",a:"accel",fx:{arms_race:8,innovation:5,gdp:-5,global_stability:-5,carbon:5,international_cooperation:-4}},
+     {l:"Defense only",h:"Restraint",a:"doomer",fx:{arms_race:-2,global_stability:3,innovation:-3,international_cooperation:2}}]},
+{t:"AI Workers Form Union",d:"First cross-industry AI union. They want humans in the loop.",cat:"market",ref:"https://calmatters.org/economy/technology/2025/01/unions-plot-ai-strategy/",
+  c:[{l:"Support unions",h:"Worker power",a:"regulator",fx:{unemployment:-4,public_trust:5,gdp:-3,corporate_influence:-5,regulation_level:3}},
+     {l:"Encourage talks",h:"Soft support",a:"optimist",fx:{unemployment:-1,public_trust:2,gdp:-1,corporate_influence:-1}},
+     {l:"Block unions",h:"Protect growth",a:"accel",fx:{unemployment:3,public_trust:-6,gdp:4,corporate_influence:6,innovation:2}}]},
+{t:"Fake Papers Flood Journals",d:"30% of papers are AI-generated. Some have fake data. Science crumbles.",cat:"lab",ref:"https://phys.org/news/2024-08-junk-ai-scientific-publishing.html",
+  c:[{l:"Disclosure rules",h:"Transparency",a:"regulator",fx:{innovation:-2,public_trust:3,regulation_level:3,safety_incidents:-2,misinformation:-3}},
+     {l:"AI peer review",h:"Fight AI with AI",a:"optimist",fx:{innovation:3,safety_incidents:-1,public_ai_services:2,misinformation:-1}},
+     {l:"AI co-authors",h:"Accept it",a:"accel",fx:{innovation:5,misinformation:4,public_trust:-4,safety_incidents:3}}]},
+{t:"AI Beats Doctors at Diagnosis",d:"99.2% accuracy vs 87% human. Patients want it. Doctors protest.",cat:"lab",ref:"https://time.com/7299314/microsoft-ai-better-than-doctors-diagnosis/",
+  c:[{l:"Fast deploy",h:"Save lives now",a:"accel",fx:{public_ai_services:6,innovation:4,unemployment:5,public_trust:3,gdp:3,safety_incidents:2}},
+     {l:"Human oversight",h:"Doctors stay",a:"regulator",fx:{public_ai_services:2,regulation_level:3,public_trust:4,innovation:-2}},
+     {l:"Underserved areas",h:"Targeted",a:"optimist",fx:{public_ai_services:4,public_trust:5,international_cooperation:2,gdp:-1,innovation:2}}]},
+{t:"E-Waste Poisoning Groundwater",d:"50M tons of AI chip waste. Mercury in water. Kids scavenging.",cat:"env",ref:"https://spectrum.ieee.org/e-waste",
+  c:[{l:"Ban waste exports",h:"Stop dumping",a:"regulator",fx:{water:-3,carbon:-2,international_cooperation:3,gdp:-3,regulation_level:4,public_trust:3}},
+     {l:"Chip recycling",h:"Circular economy",a:"optimist",fx:{water:-2,carbon:-2,innovation:2,gdp:-2,public_trust:2}},
+     {l:"Not our problem",h:"Externalize",a:"accel",fx:{water:5,carbon:4,gdp:3,public_trust:-5,international_cooperation:-4}}]},
+{t:"AI Passes the Bar Exam",d:"Every firm uses AI lawyers. Junior positions gone. 80% cost cut.",cat:"market",ref:"https://law.stanford.edu/2023/04/19/gpt-4-passes-the-bar-exam-what-that-means-for-artificial-intelligence-tools-in-the-legal-industry/",
+  c:[{l:"Human lawyers only",h:"Preserve jobs",a:"doomer",fx:{unemployment:-3,regulation_level:4,gdp:-2,innovation:-3,public_trust:2}},
+     {l:"Public AI legal aid",h:"Justice for all",a:"optimist",fx:{public_ai_services:5,public_trust:5,unemployment:2,gdp:-2}},
+     {l:"Let disruption roll",h:"Efficiency",a:"accel",fx:{unemployment:5,gdp:5,corporate_influence:4,public_trust:-4,innovation:3}}]},
+{t:"Anthropic Refuses Pentagon AI Weapons Demand",d:"The Pentagon demands Anthropic lift all safeguards on Claude for military use. Autonomous weapons. Mass surveillance. CEO Dario Amodei says no. The White House threatens to blacklist the company.",cat:"summit",ref:"https://www.theguardian.com/us-news/2026/feb/26/anthropic-pentagon-claude",
+  c:[{l:"Back Anthropic's stand",h:"Ethics over contracts",a:"regulator",fx:{regulation_level:6,public_trust:7,arms_race:-4,corporate_influence:-5,gdp:-3,safety_incidents:-3,international_cooperation:3}},
+     {l:"Side with Pentagon",h:"National security first",a:"accel",fx:{arms_race:8,innovation:4,safety_incidents:6,public_trust:-7,global_stability:-3,corporate_influence:5}},
+     {l:"Broker a compromise",h:"Limited military use with oversight",a:"optimist",fx:{arms_race:2,regulation_level:3,public_trust:2,innovation:-1,international_cooperation:2,safety_incidents:-1}}]},
+{t:"Grok AI Generates Abuse Images",d:"Elon Musk's Grok chatbot generates sexualized images of children. Millions of deepfakes flood X. Global regulators launch investigations.",cat:"public",ref:"https://www.cnbc.com/2026/01/02/musk-grok-ai-bot-safeguard-sexualized-images-children.html",
+  c:[{l:"Emergency ban on AI image gen",h:"Protect children now",a:"doomer",fx:{regulation_level:8,public_trust:5,safety_incidents:-4,innovation:-5,corporate_influence:-6,misinformation:-3}},
+     {l:"Mandatory safety testing",h:"Standards first",a:"regulator",fx:{regulation_level:5,public_trust:3,safety_incidents:-2,innovation:-2,corporate_influence:-3}},
+     {l:"Platform self-policing",h:"Industry handles it",a:"accel",fx:{corporate_influence:4,public_trust:-6,safety_incidents:4,misinformation:5,innovation:2}}]},
+{t:"xAI Builds Colossus in 122 Days",d:"Elon Musk builds a 100,000 GPU data center in Memphis at breakneck speed. Air quality plummets. Natural gas turbines pollute neighborhoods.",cat:"env",ref:"https://www.bloomberg.com/news/features/2024-07-25/in-memphis-elon-musk-s-xai-supercomputer-stirs-hope-and-concern",
+  c:[{l:"Shut it down",h:"Health over compute",a:"doomer",fx:{carbon:-5,water:-3,innovation:-6,gdp:-3,public_trust:4,regulation_level:5}},
+     {l:"Emissions standards",h:"Clean up or close",a:"regulator",fx:{carbon:-3,regulation_level:4,innovation:-2,gdp:-1,public_trust:3}},
+     {l:"More data centers",h:"AI needs compute",a:"accel",fx:{carbon:8,water:5,innovation:6,gdp:4,public_trust:-5,corporate_influence:4}}]},
+{t:"Peter Thiel Calls Greta the Antichrist",d:"Billionaire Peter Thiel delivers lectures calling climate activists and AI safety advocates 'legionnaires of the Antichrist.' Claims regulation will end civilization.",cat:"public",ref:"https://fortune.com/2026/02/04/peter-thiel-antichrist-greta-thunberg-end-of-modernity-billionaires/",
+  c:[{l:"Condemn the rhetoric",h:"Defend activists",a:"regulator",fx:{public_trust:5,regulation_level:3,corporate_influence:-4,misinformation:-2,innovation:-2}},
+     {l:"Free speech",h:"Let billionaires talk",a:"accel",fx:{corporate_influence:5,public_trust:-4,misinformation:4,regulation_level:-3,innovation:2}},
+     {l:"Platform accountability",h:"Moderate extremism",a:"optimist",fx:{misinformation:-3,public_trust:3,regulation_level:2,corporate_influence:-2}}]},
+{t:"NVIDIA Chip Export War",d:"Jensen Huang blasts US chip export controls to China. NVIDIA loses $17B in revenue. China builds its own chips. The AI arms race intensifies.",cat:"summit",ref:"https://fortune.com/2025/05/22/nvidia-ceo-jensen-huang-failure-us-restrictions-chips-semiconductors-china-ai-artificial-intelligence/",
+  c:[{l:"Lift export controls",h:"Free trade",a:"accel",fx:{innovation:5,gdp:5,arms_race:6,international_cooperation:3,global_stability:-4,corporate_influence:4}},
+     {l:"Tighten controls",h:"Security first",a:"doomer",fx:{arms_race:-3,innovation:-4,gdp:-4,international_cooperation:-5,global_stability:3}},
+     {l:"Negotiate tech treaty",h:"Diplomacy",a:"optimist",fx:{international_cooperation:5,global_stability:4,arms_race:-2,innovation:-1,gdp:-2}}]},
+{t:"Meta Fudges Llama 4 Benchmarks",d:"Meta's departing AI chief admits Llama 4 benchmarks were 'fudged.' Safety team warnings were ignored. Trust in open-source AI collapses.",cat:"lab",ref:"https://tech.slashdot.org/story/26/01/02/1449227/results-were-fudged-departing-meta-ai-chief-confirms-llama-4-benchmark-manipulation",
+  c:[{l:"Mandatory audits",h:"Independent testing",a:"regulator",fx:{regulation_level:6,public_trust:4,innovation:-3,corporate_influence:-4,safety_incidents:-3}},
+     {l:"Industry self-correction",h:"Market punishes liars",a:"optimist",fx:{public_trust:2,corporate_influence:-2,innovation:-1,safety_incidents:-1}},
+     {l:"Move fast anyway",h:"Benchmarks don't matter",a:"accel",fx:{innovation:4,safety_incidents:5,public_trust:-6,corporate_influence:3,misinformation:3}}]},
+{t:"ASML Caught in US-China Chip War",d:"The US pressures the Netherlands to block ASML from selling chip-making machines to China. ASML loses 25% of its revenue. China races to build alternatives.",cat:"summit",ref:"https://www.bloomberg.com/news/articles/2025-01-15/dutch-align-with-us-export-controls-on-some-asml-chip-tools",
+  c:[{l:"Support export controls",h:"Contain China",a:"doomer",fx:{arms_race:-3,innovation:-4,international_cooperation:-5,gdp:-3,global_stability:2,corporate_influence:-3}},
+     {l:"Lift restrictions",h:"Free trade in tech",a:"accel",fx:{innovation:5,gdp:4,arms_race:5,international_cooperation:4,global_stability:-3,corporate_influence:4}},
+     {l:"Multilateral chip treaty",h:"Rules-based order",a:"regulator",fx:{international_cooperation:6,global_stability:3,innovation:-1,regulation_level:4,arms_race:-2}}]},
+{t:"TSMC Chips Found in Chinese Weapons",d:"US investigators find TSMC-made chips in Chinese military AI systems. Taiwan denies involvement. A customer secretly funneled the chips.",cat:"summit",ref:"https://www.nbcnews.com/tech/tech-news/ai-chip-tsmc-enflame-techinsights-rcna259342",
+  c:[{l:"Sanction TSMC",h:"Zero tolerance",a:"doomer",fx:{innovation:-6,gdp:-5,arms_race:-2,international_cooperation:-6,global_stability:-4,corporate_influence:-4}},
+     {l:"Joint investigation",h:"Find the leak",a:"regulator",fx:{regulation_level:5,international_cooperation:3,arms_race:-1,innovation:-2,global_stability:2}},
+     {l:"Ignore it",h:"Too important to punish",a:"accel",fx:{arms_race:5,innovation:3,corporate_influence:5,public_trust:-5,global_stability:-3}}]},
+{t:"Content Moderators Sue for PTSD",d:"Thousands of Kenyan data workers who trained AI on violent content develop PTSD. They earn $2/hour. They file a class-action lawsuit.",cat:"public",ref:"https://time.com/6247678/openai-chatgpt-kenya-workers/",
+  c:[{l:"Fair labor standards",h:"Global minimum for AI work",a:"regulator",fx:{unemployment:-3,public_trust:6,regulation_level:5,gdp:-3,corporate_influence:-5,international_cooperation:3}},
+     {l:"Fund mental health",h:"Treatment not prevention",a:"optimist",fx:{public_trust:3,gdp:-1,corporate_influence:-1,unemployment:-1,international_cooperation:2}},
+     {l:"Cost of progress",h:"Markets set wages",a:"accel",fx:{corporate_influence:5,gdp:3,public_trust:-7,unemployment:2,international_cooperation:-4}}]},
+{t:"Taiwan Strait Crisis Threatens Chip Supply",d:"Military tensions spike in the Taiwan Strait. 90% of advanced chips come from TSMC. The world holds its breath.",cat:"summit",ref:"https://io-fund.com/semiconductors/taiwan-semiconductor-ai-growth-geopolitical-risk",
+  c:[{l:"Defend Taiwan",h:"Military commitment",a:"doomer",fx:{arms_race:6,global_stability:-5,innovation:-3,gdp:-4,international_cooperation:-3,carbon:3}},
+     {l:"Diplomatic de-escalation",h:"Talks not tanks",a:"optimist",fx:{global_stability:4,international_cooperation:5,arms_race:-2,innovation:-1}},
+     {l:"Onshore chip production",h:"Build at home",a:"regulator",fx:{innovation:-2,gdp:-5,regulation_level:3,global_stability:2,carbon:4,water:3}}]},
+];
+
+const SN={innovation:'Innov',gdp:'GDP',public_trust:'Trust',global_stability:'Stabil',
+  corporate_influence:'Corp',unemployment:'Unemp',misinformation:'Misinfo',
+  safety_incidents:'Safety',arms_race:'Arms',regulation_level:'Regul',
+  international_cooperation:'Coop',public_ai_services:'AI Svc',carbon:'Carbon',water:'Water'};
+const FN={tech:'Big Tech',citizens:'Citizens',military:'Military',green:'Greens'};
+const FI={tech:'💼',citizens:'✊',military:'🎖️',green:'🌿'};
+
+function clamp(v){return Math.max(0,Math.min(100,Math.round(v)))}
+
+function startGame(){
+  autoPlayStance=null;
+  if(autoPlayTimer){clearTimeout(autoPlayTimer);autoPlayTimer=null}
+  document.getElementById('autoplay-banner').style.display='none';
+  document.getElementById('intro').classList.add('hide');
+  setTimeout(()=>document.getElementById('intro').style.display='none',500);
+  S={...DEF};A={...ADEF};F={...FDEF};round=0;capital=3;used=[];prevS={...S};
+  decisionHistory=[];storyArc=[];prevDominant=null;breakingFired=new Set();breakingQueue=[];breakingActive=false;stopCountdown();
+  document.getElementById('story-arc').classList.remove('show');
+  document.getElementById('story-arc').innerHTML='';
+  document.getElementById('recap-btn').style.display='none';
+  ['tech','citizens','military','green'].forEach(k=>{
+    const el=document.getElementById('fc-'+k);
+    if(el)el.innerHTML=getFactionSprite(k,3);
+  });
+  updateTicker();
+  WorldView.init();WorldView.update(S);
+  document.getElementById('wv-toggle').style.display='block';
+  nextTurn();
+}
+
+function startAutoPlay(stance){
+  autoPlayStance=stance;
+  const colors={accel:'var(--cyan)',doomer:'var(--red)',optimist:'var(--green)',regulator:'var(--orange)'};
+  const labels={accel:'ACCELERATIONIST ⚡',doomer:'DOOMER 💀',optimist:'BOOMER 👴',regulator:'REGULATOR 📜'};
+  const banner=document.getElementById('autoplay-banner');
+  banner.style.display='block';
+  banner.style.setProperty('--ab-color',colors[stance]);
+  document.getElementById('ap-stance').textContent=labels[stance];
+  document.getElementById('intro').classList.add('hide');
+  setTimeout(()=>document.getElementById('intro').style.display='none',500);
+  S={...DEF};A={...ADEF};F={...FDEF};round=0;capital=3;used=[];prevS={...S};
+  decisionHistory=[];storyArc=[];prevDominant=null;breakingFired=new Set();breakingQueue=[];breakingActive=false;stopCountdown();
+  document.getElementById('story-arc').classList.remove('show');
+  document.getElementById('story-arc').innerHTML='';
+  document.getElementById('recap-btn').style.display='none';
+  ['tech','citizens','military','green'].forEach(k=>{
+    const el=document.getElementById('fc-'+k);
+    if(el)el.innerHTML=getFactionSprite(k,3);
+  });
+  updateTicker();
+  WorldView.init();WorldView.update(S);
+  document.getElementById('wv-toggle').style.display='block';
+  nextTurn();
+}
+
+function stopAutoPlay(){
+  autoPlayStance=null;
+  if(autoPlayTimer){clearTimeout(autoPlayTimer);autoPlayTimer=null}
+  document.getElementById('autoplay-banner').style.display='none';
+}
+
+function autoPickChoice(){
+  if(!autoPlayStance||!window._currentEvent)return;
+  const ev=window._currentEvent;
+  // Find the choice that matches our stance
+  let best=0;
+  for(let i=0;i<ev.c.length;i++){
+    if(ev.c[i].a===autoPlayStance){best=i;break}
+  }
+  // Highlight the picked choice, dim others
+  const btns=document.querySelectorAll('.ev-choices .ch');
+  btns.forEach((btn,i)=>{
+    if(i===best)btn.classList.add('ch-picked');
+    else btn.classList.add('ch-dimmed');
+  });
+  // Resolve after showing the highlight
+  autoPlayTimer=setTimeout(()=>resolve(window._currentEventIdx,best),1500);
+}
+
+function nextTurn(){
+  round++;
+  if(round>maxR){renderEnd(true);return}
+  prevS={...S};
+  if(round>1)drift();
+  capital=Math.max(2,Math.min(6,Math.floor((S.public_trust+S.gdp)/30)));
+  if(F.tech>=75)S.innovation=clamp(S.innovation+2);
+  if(F.citizens>=75)S.public_trust=clamp(S.public_trust+2);
+  if(F.green>=75){S.carbon=clamp(S.carbon-1);S.water=clamp(S.water-1)}
+  if(F.military>=75)S.arms_race=clamp(S.arms_race-1);
+  if(F.tech<=20)S.gdp=clamp(S.gdp-2);
+  if(F.citizens<=20)S.public_trust=clamp(S.public_trust-3);
+  if(F.green<=20)S.carbon=clamp(S.carbon+2);
+  if(F.military<=20)S.global_stability=clamp(S.global_stability-2);
+  updateAll();
+  if(checkGO())return;
+  updateTicker();
+  // Flashback every 6 rounds
+  if(round>1&&round%6===0){
+    checkFlashback(()=>showEvent());
+  } else {
+    showEvent();
+  }
+}
+
+function drift(){
+  S.corporate_influence=clamp(S.corporate_influence+1);S.misinformation=clamp(S.misinformation+1);
+  S.public_trust=clamp(S.public_trust-1);S.arms_race=clamp(S.arms_race+.5);
+  S.carbon=clamp(S.carbon+1);S.water=clamp(S.water+.5);S.unemployment=clamp(S.unemployment+.5);
+}
+
+function showEvent(){
+  const avail=EVENTS.filter((_,i)=>!used.includes(i));
+  if(!avail.length){used=[];return showEvent()}
+  curIdx=EVENTS.indexOf(avail[Math.floor(Math.random()*avail.length)]);
+  used.push(curIdx);curEv=EVENTS[curIdx];
+  curAlloc={research:0,economy:0,services:0,diplomacy:0};curPool=capital;resolved=false;
+  window._currentEvent=curEv;window._currentEventIdx=curIdx;
+  renderCard();
+  startCountdown();
+  if(autoPlayStance){autoPlayTimer=setTimeout(autoPickChoice,3000)}
+}
+
+function renderCard(){
+  const ev=curEv;
+  const cc={lab:'c-lab',market:'c-market',public:'c-public',summit:'c-summit',env:'c-env'}[ev.cat]||'';
+  const cn={lab:'THE LAB',market:'THE MARKET',public:'THE PUBLIC',summit:'THE SUMMIT',env:'ENVIRONMENT'}[ev.cat]||'';
+
+  // All scene characters - scores computed from CHAR_VALUES (real positions)
+  const SZ=3;
+  const cs=window._charScores||{};
+  const allChars=[
+    // Back row: tech industry figures
+    {id:'tech',label:'SAM',sprite:getFactionSprite('tech',SZ),row:'back'},
+    {id:'dario',label:'DARIO',sprite:getDarioSprite(SZ),row:'back'},
+    {id:'elon',label:'ELON',sprite:getElonSprite(SZ),row:'back'},
+    {id:'zuck',label:'ZUCK',sprite:getZuckSprite(SZ),row:'back'},
+    {id:'jensen',label:'JENSEN',sprite:getJensenSprite(SZ),row:'back'},
+    {id:'thiel',label:'THIEL',sprite:getThielSprite(SZ),row:'back'},
+    // Front row: factions, institutions, civil society
+    {id:'citizens',label:'TIMNIT',sprite:getFactionSprite('citizens',SZ),row:'front'},
+    {id:'workers',label:'WORKERS',sprite:getWorkersSprite(SZ),row:'front'},
+    {id:'asml',label:'ASML',sprite:getAsmlSprite(SZ),row:'front'},
+    {id:'tsmc',label:'TSMC',sprite:getTsmcSprite(SZ),row:'front'},
+    {id:'military',label:'PENTAGON',sprite:getFactionSprite('military',SZ),row:'front'},
+    {id:'green',label:'GRETA',sprite:getFactionSprite('green',SZ),row:'front'},
+  ];
+  // Use last known scores to persist positions between turns
+  const lastCS=window._lastCharScores||{};
+  allChars.forEach(c=>{c.score=cs[c.id]||lastCS[c.id]||0});
+
+  // Sort each row into allies/foes for positioning
+  function charHTML(c){
+    const s=c.score;
+    const thresh=3;
+    let cls='react-neutral';
+    let margin='margin:0 4px';
+    if(s!==0){
+      if(s>thresh){cls=resolved?'react-happy':'react-neutral';margin=`margin:0 ${Math.max(-3,3-s*0.4)}px`;}
+      else if(s<-thresh){cls=resolved?'react-angry':'react-neutral';margin=`margin:0 ${Math.min(16,4+Math.abs(s)*0.5)}px`;}
+    }
+    return `<div class="scene-char ${cls}" id="sc-${c.id}" data-charid="${c.id}" style="${margin}">
+      <span class="scene-char-sprite">${c.sprite}</span>
+      <span class="scene-char-name">${c.label}</span></div>`;
+  }
+  const playerHTML=`<div class="scene-char" id="sc-player"><span class="scene-char-sprite">${spriteHTML('player',SZ)}</span><span class="scene-char-name">YOU</span></div>`;
+
+  function buildRow(chars,rowClass){
+    const allies=chars.filter(c=>c.score>3).sort((a,b)=>b.score-a.score);
+    const foes=chars.filter(c=>c.score<-3).sort((a,b)=>a.score-b.score);
+    const neutrals=chars.filter(c=>c.score>=-3&&c.score<=3);
+    return `<div class="scene-row ${rowClass}">${foes.map(charHTML).join('')}${neutrals.map(charHTML).join('')}${rowClass==='front'?playerHTML:''}${allies.map(charHTML).join('')}</div>`;
+  }
+
+  const backChars=allChars.filter(c=>c.row==='back');
+  const frontChars=allChars.filter(c=>c.row==='front');
+  const zoneShow=(Object.keys(cs).length||Object.keys(lastCS).length)?'show':'';
+  const zonesHTML=`<div class="scene-zones ${zoneShow}"><span class="zone-label zone-foe">OPPOSED</span><span class="zone-label zone-neutral">UNDECIDED</span><span class="zone-label zone-ally">ALLIED</span></div>`;
+  const sceneHTML=`<div class="scene"><div class="scene-bg"></div>${zonesHTML}${buildRow(backChars,'back')}${buildRow(frontChars,'front')}</div>`;
+
+  // Build reactions strip - only show strongest reactions (top 5)
+  let reactionsHTML='';
+  if(resolved&&Object.keys(cs).length){
+    const scored=allChars.map(c=>({...c,abs:Math.abs(c.score)})).filter(c=>c.abs>3).sort((a,b)=>b.abs-a.abs).slice(0,5);
+    if(scored.length){
+      const chips=scored.map(c=>{
+        const up=c.score>0;
+        const phrase=up?pick(FCHARS[c.id]?.phrases_h||['Yes!']):pick(FCHARS[c.id]?.phrases_a||['No!']);
+        return `<div class="reaction-chip ${up?'rc-up':'rc-down'}"><span class="rc-name">${c.label}:</span> "${phrase}"</div>`;
+      });
+      reactionsHTML=`<div class="reactions-strip">${chips.join('')}</div>`;
+    }
+  }
+
+  let html=sceneHTML+reactionsHTML+`<div class="ev">
+    <div class="ev-head">
+      <div class="ev-meta"><span class="ev-q">Q${round}/${maxR}</span><span class="ev-cat">${cn}</span></div>
+      <div class="ev-title">${ev.t}</div>
+    </div>
+    <div class="ev-body">
+      <div class="ev-desc">${ev.d}</div>
+      ${ev.ref?`<a class="ev-ref" href="${ev.ref}" target="_blank">📎 REAL EVENT</a>`:''}
+    </div>`;
+
+  if(!resolved){
+    const cdHTML=autoPlayStance?'':`<div class="countdown"><div class="cd-bar"><div class="cd-fill" id="cd-timer-fill" style="width:100%"></div></div><div class="cd-label" id="cd-timer-label">20s</div></div>`;
+    html+=cdHTML+`<div class="ev-choices">
+      ${ev.c.map((c,i)=>`<button class="ch" onclick="resolve(${curIdx},${i})">
+        <div class="ch-label">${c.l} <span class="ch-align a-${c.a}">${c.a==='accel'?'ACCEL':c.a==='optimist'?'BOOMER':c.a.toUpperCase()}</span></div>
+        <div class="ch-hint">${c.h}</div>
+      </button>`).join('')}
+    </div>`;
+  } else {
+    html+=`<div id="outcome-section">${window._outcomeHTML||''}</div>
+    <div class="bud-section">
+      <div class="bud-top"><span class="bud-title">ALLOCATE CAPITAL</span>
+        <span class="bud-pool-info" id="bud-pool-coins">${Array(6).fill(0).map((_,i)=>`<span class="coin${i>=curPool?' spent':''}">$</span>`).join('')}
+        <span style="margin-left:4px;color:var(--yellow)">${curPool}</span></span>
+      </div>
+      ${budR('🔬','Research','research','+Inn -Saf',curAlloc.research)}
+      ${budR('💰','Economy','economy','+GDP -Unemp',curAlloc.economy)}
+      ${budR('🏥','Services','services','+Trust +Svc',curAlloc.services)}
+      ${budR('🕊','Diplomacy','diplomacy','+Stab +Coop',curAlloc.diplomacy)}
+      <div class="countdown"><div class="cd-bar"><div class="cd-fill" id="bud-timer-fill" style="width:100%"></div></div><div class="cd-label" id="bud-timer-label">15s</div></div>
+      <div class="bud-go"><button class="btn btn-go" id="bud-ok">NEXT QUARTER ►</button></div>
+    </div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('center-inner').innerHTML=html;
+
+  if(resolved){
+    wireBudget();
+    // Reactions already set during scene building
+  }
+  // Scroll to top
+  document.getElementById('center').scrollTop=0;
+}
+
+function resolve(ei,ci){
+  stopCountdown();
+  const ev=EVENTS[ei],ch=ev.c[ci];
+  prevS={...S,_fac:{...F}};
+  Object.keys(ch.fx).forEach(k=>{S[k]=clamp(S[k]+(ch.fx[k]||0))});
+  A[ch.a]=(A[ch.a]||0)+2;
+  // Record for flashback
+  decisionHistory.push({round:round,eventTitle:ev.t,choiceLabel:ch.l,fx:ch.fx,statsSnapshot:{...S}});
+
+  const fr=factionFx(ch.a,ch.fx);
+  Object.keys(fr).forEach(k=>{F[k]=clamp(F[k]+fr[k])});
+  window._facR=fr;
+
+  // Compute per-character reaction scores from actual choice effects
+  window._charScores={};
+  Object.keys(CHAR_VALUES).forEach(id=>{window._charScores[id]=charScore(id,ch.fx)});
+  window._lastCharScores={...window._charScores};
+
+  // Screen shake
+  document.getElementById('game').classList.add('shake');
+  setTimeout(()=>document.getElementById('game').classList.remove('shake'),300);
+
+  // Flash
+  const fl=document.createElement('div');fl.className='flash';
+  const net=Object.values(ch.fx).reduce((a,b)=>a+b,0);
+  fl.style.background=net>0?'rgba(0,230,118,.2)':'rgba(255,23,68,.2)';
+  document.body.appendChild(fl);setTimeout(()=>fl.remove(),400);
+
+  const ups=[],downs=[];
+  Object.keys(ch.fx).forEach(k=>{const v=ch.fx[k];if(v>0)ups.push(`${SN[k]} +${v}`);else if(v<0)downs.push(`${SN[k]} ${v}`)});
+  const tone=net>2?'og':net<-2?'ob':'om';
+
+  const facReacts=[];
+  const cs=window._charScores||{};
+  Object.keys(fr).forEach(k=>{
+    if(Math.abs(fr[k])>3){
+      // Use character score to determine color so it matches dialogue mood
+      const charMood=cs[k]||fr[k];
+      facReacts.push({n:FN[k],v:(fr[k]>0?'+':'')+fr[k],cls:charMood>0?'fr-up':'fr-down'});
+    }
+  });
+
+  addLog(`Q${round}: ${ch.l}`,net>0?'lg':net<0?'lb':'lw');
+
+  window._outcomeHTML=`<div class="out-inline">
+    <div class="out-label">► "${ch.l}"</div>
+    <div class="out-fx">
+      ${ups.map(u=>`<span class="fx fxu">▲${u}</span>`).join('')}
+      ${downs.map(d=>`<span class="fx fxd">▼${d}</span>`).join('')}
+    </div>
+    ${facReacts.length?`<div class="out-factions">${facReacts.map(f=>`<span class="fac-react ${f.cls}">${f.n} ${f.v}</span>`).join('')}</div>`:''}
+  </div>`;
+
+  resolved=true;
+  updateAll();
+  renderCard();
+  checkBreaking();
+  checkDialogue();
+  checkStoryArc(ch);
+  // Auto-play: skip budget and auto-advance after showing result briefly
+  if(autoPlayStance){
+    autoPlayTimer=setTimeout(()=>{
+      applyBud({research:0,economy:0,services:0,diplomacy:0});
+    },4000);
+  }
+}
+
+function budR(icon,name,key,fx,count){
+  return `<div class="br" data-k="${key}" id="br-${key}"><span class="br-icon">${icon}</span>
+    <div class="br-info"><div class="br-name">${name}</div><div class="br-fx">${fx}</div></div>
+    <div class="br-ctrl"><button class="br-btn bm" data-k="${key}">-</button><span class="br-num" id="bn-${key}">${count}</span><button class="br-btn bp" data-k="${key}">+</button></div></div>`;
+}
+
+let budTimer=null,budRemaining=0;
+function wireBudget(){
+  document.querySelectorAll('.bp').forEach(b=>{b.onclick=()=>{
+    const k=b.dataset.k;if(curPool>0){curAlloc[k]++;curPool--;updateBudgetUI()}}});
+  document.querySelectorAll('.bm').forEach(b=>{b.onclick=()=>{
+    const k=b.dataset.k;if(curAlloc[k]>0){curAlloc[k]--;curPool++;updateBudgetUI()}}});
+  document.getElementById('bud-ok').onclick=()=>{stopBudTimer();applyBud(curAlloc)};
+  updateBudgetUI();
+  startBudTimer();
+}
+function startBudTimer(){
+  if(autoPlayStance)return;
+  stopBudTimer();
+  budRemaining=15;
+  updateBudTimerUI();
+  budTimer=setInterval(()=>{
+    budRemaining--;
+    updateBudTimerUI();
+    if(budRemaining<=0){
+      stopBudTimer();
+      // Auto-allocate all capital to research (first option)
+      curAlloc.research+=curPool;curPool=0;
+      updateBudgetUI();
+      addLog('TIMEOUT: Capital auto-allocated to Research.','lw');
+      applyBud(curAlloc);
+    }
+  },1000);
+}
+function stopBudTimer(){
+  if(budTimer){clearInterval(budTimer);budTimer=null}
+}
+function updateBudTimerUI(){
+  const fill=document.getElementById('bud-timer-fill');
+  const label=document.getElementById('bud-timer-label');
+  if(!fill||!label)return;
+  const pct=(budRemaining/15)*100;
+  fill.style.width=pct+'%';
+  fill.className='cd-fill'+(budRemaining<=5?' danger':budRemaining<=10?' warn':'');
+  label.textContent=budRemaining+'s';
+}
+
+function updateBudgetUI(){
+  // Update counts
+  ['research','economy','services','diplomacy'].forEach(k=>{
+    const num=document.getElementById('bn-'+k);if(num)num.textContent=curAlloc[k];
+    const row=document.getElementById('br-'+k);
+    if(row){if(curAlloc[k]>0)row.classList.add('has');else row.classList.remove('has')}
+  });
+  // Update pool coins
+  const poolEl=document.getElementById('bud-pool-coins');
+  if(poolEl)poolEl.innerHTML=Array(6).fill(0).map((_,i)=>`<span class="coin${i>=curPool?' spent':''}">$</span>`).join('')+
+    `<span style="margin-left:4px;color:var(--yellow)">${curPool}</span>`;
+}
+
+function applyBud(a){
+  stopBudTimer();
+  prevS={...S};
+  S.innovation=clamp(S.innovation+a.research*3);S.safety_incidents=clamp(S.safety_incidents-a.research*2);
+  S.gdp=clamp(S.gdp+a.economy*3);S.unemployment=clamp(S.unemployment-a.economy*2);
+  S.public_trust=clamp(S.public_trust+a.services*2);S.public_ai_services=clamp(S.public_ai_services+a.services*2);
+  S.misinformation=clamp(S.misinformation-a.services);
+  S.global_stability=clamp(S.global_stability+a.diplomacy*2);S.international_cooperation=clamp(S.international_cooperation+a.diplomacy*2);
+  S.arms_race=clamp(S.arms_race-a.diplomacy);
+  window._facR=null;
+  updateAll();
+  if(!checkGO())setTimeout(nextTurn,autoPlayStance?1000:300);
+}
+
+function updateAll(){
+  Object.keys(DEF).forEach(k=>{
+    S[k]=clamp(S[k]);
+    const b=document.getElementById('b-'+k),v=document.getElementById('v-'+k),tr=document.getElementById('t-'+k);
+    if(b)b.style.width=S[k]+'%';if(v)v.textContent=S[k];
+    if(tr){const d=S[k]-(prevS[k]??S[k]);
+      tr.textContent=d>0?'▲':d<0?'▼':'';tr.className='sr-trend '+(d>0?'up':d<0?'down':'');}
+  });
+  setTP('tp-inn',S.innovation);setTP('tp-gdp',S.gdp);setTP('tp-trust',S.public_trust);setTP('tp-stab',S.global_stability);
+  document.getElementById('round-pill').textContent=`Q${round}/${maxR}`;
+
+  const cp=document.getElementById('capital-hud');cp.innerHTML='';
+  for(let i=0;i<6;i++){const c=document.createElement('div');c.className='coin'+(i>=capital?' spent':'');c.textContent='$';cp.appendChild(c)}
+
+  const mA=Math.max(1,...Object.values(A));
+  ['doomer','accel','optimist','regulator'].forEach(k=>{
+    document.getElementById('ab-'+k).style.width=(A[k]/Math.max(mA,10)*100)+'%';
+    document.getElementById('av-'+k).textContent=A[k];
+  });
+
+  ['tech','citizens','military','green'].forEach(k=>{
+    F[k]=clamp(F[k]);
+    document.getElementById('fb-'+k).style.width=F[k]+'%';
+    const card=document.getElementById('fac-'+k);
+    const sprite=document.getElementById('fc-'+k);
+    const mood=document.getElementById('fm-'+k);
+    card.classList.remove('happy','angry');
+    sprite.innerHTML=getFactionSprite(k,3);
+    if(F[k]>=75){card.classList.add('happy');sprite.className='scene-char-sprite char-happy';
+      mood.textContent='Allied! '+factionPerk(k,true)}
+    else if(F[k]<=20){card.classList.add('angry');sprite.className='scene-char-sprite char-angry';
+      mood.textContent='Hostile! '+factionPerk(k,false)}
+    else{sprite.className='scene-char-sprite char-idle';
+      mood.textContent=F[k]>=50?'Satisfied':'Uneasy...'}
+  });
+  WorldView.update(S);
+}
+
+function factionPerk(k,h){
+  if(h)return{tech:'+2 Inn/turn',citizens:'+2 Trust/turn',military:'-1 Arms/turn',green:'-1 CO2/turn'}[k];
+  return{tech:'-2 GDP/turn',citizens:'-3 Trust/turn',military:'-2 Stab/turn',green:'+2 CO2/turn'}[k];
+}
+
+function setTP(id,v){const el=document.getElementById(id);el.textContent=v;
+  el.className='top-stat-val '+(v>=60?'good':v>=30?'warn':'bad');
+  el.parentElement.style.animation=v<=25?'pillPulse 1s steps(2) infinite':'none';
+  const bar=document.getElementById(id.replace('tp-','tpb-'));
+  if(bar)bar.style.width=v+'%'}
+
+function checkGO(){
+  const r=[];
+  if(S.public_trust<=0)r.push("TRUST COLLAPSED - Citizens revolt!");
+  if(S.global_stability<=0)r.push("STABILITY COLLAPSED - AI wars spiral!");
+  if(S.gdp<=0)r.push("ECONOMY CRASHED - Depression hits!");
+  if(S.safety_incidents>=100)r.push("SAFETY FAILURE - AI catastrophe!");
+  if(S.arms_race>=100)r.push("ARMS RACE - Autonomous weapons everywhere!");
+  if(S.misinformation>=100)r.push("TRUTH IS DEAD - Society can't function!");
+  if(S.unemployment>=90)r.push("MASS UNEMPLOYMENT - Social collapse!");
+  if(S.carbon>=100)r.push("CLIMATE DISASTER from AI!");
+  if(S.water>=100)r.push("WATER CRISIS from AI!");
+  if(F.tech<=0)r.push("BIG TECH declared war on you!");
+  if(F.citizens<=0)r.push("CITIZENS revolted!");
+  if(F.military<=0)r.push("MILITARY staged a coup!");
+  if(F.green<=0)r.push("ENVIRONMENTAL collapse!");
+  if(r.length){renderEnd(false,r);return true}
+  return false;
+}
+
+function renderEnd(win,reasons){
+  stopCountdown();
+  document.getElementById('ticker').style.display='none';
+  const title=getTitle();
+  const ci=document.getElementById('center-inner');
+  ci.innerHTML=`<div class="scene">
+    <div class="scene-bg"></div>
+    ${win?'<div class="scene-char react-happy"><span class="scene-char-sprite" style="font-size:32px">🎉</span></div>':''}
+    <div class="scene-char ${win?'react-happy':'react-angry'}"><span class="scene-char-sprite" style="font-size:32px">${win?'🏆':'💀'}</span></div>
+    ${win?'<div class="scene-char react-happy"><span class="scene-char-sprite" style="font-size:32px">🎊</span></div>':''}
+  </div>
+  <div class="end">
+    <div class="end-title ${win?'win':'lose'}">${win?'YOU SURVIVED!':'GAME OVER'}</div>
+    <div class="end-sub">${win?'All 20 quarters as':'Lasted '+round+'/'+maxR+' as'} "${title}"</div>
+    <div class="end-story">${win?getWinText():reasons.join('<br>')}${getArcNarrative()}</div>
+    <div class="end-grid">
+      <div class="end-s"><div class="end-sl">INN</div><div class="end-sv">${S.innovation}</div></div>
+      <div class="end-s"><div class="end-sl">GDP</div><div class="end-sv">${S.gdp}</div></div>
+      <div class="end-s"><div class="end-sl">TRUST</div><div class="end-sv">${S.public_trust}</div></div>
+      <div class="end-s"><div class="end-sl">STAB</div><div class="end-sv">${S.global_stability}</div></div>
+      <div class="end-s"><div class="end-sl">CO2</div><div class="end-sv">${S.carbon}</div></div>
+      <div class="end-s"><div class="end-sl">UNEMP</div><div class="end-sv">${S.unemployment}%</div></div>
+    </div>
+    <button class="btn" onclick="location.reload()">► PLAY AGAIN</button>
+  </div>`;
+}
+
+function getTitle(){
+  const s=Object.entries(A).sort((a,b)=>b[1]-a[1]);
+  if(s[0][1]===0)return"The Undecided";
+  return{doomer:"Existential Guardian",accel:"Accelerationist",optimist:"OK Boomer",regulator:"Policy Architect"}[s[0][0]];
+}
+function getWinText(){
+  const p=[];
+  if(S.innovation>=70)p.push("Innovation flourished.");
+  else if(S.innovation<=30)p.push("Innovation stagnated.");
+  if(S.public_trust>=70)p.push("Public trusts AI governance.");
+  else if(S.public_trust<=30)p.push("Trust is dangerously low.");
+  if(S.carbon>=60)p.push("Environmental cost: devastating.");
+  else if(S.carbon<=25)p.push("Environment: well managed.");
+  if(S.unemployment>=50)p.push("Unemployment crisis.");
+  if(F.tech>=70)p.push("Big Tech is your ally.");
+  if(F.citizens>=70)p.push("Citizens love you.");
+  if(F.green>=70)p.push("Greens praise you.");
+  if(!p.length)p.push("You survived. History will judge.");
+  return p.join('<br>');
+}
+
+// === STORY ARC TRACKER ===
+const ARC_STORIES={
+  faction_allied:{
+    tech:'Silicon Valley rallied behind you. Sam Altman called it "the partnership of the century." Tech lobbying now works in your favor.',
+    citizens:'The people marched — but this time in your support. Timnit Gebru praised your leadership. Public opinion is your shield now.',
+    military:'The Pentagon considers you a trusted ally. Classified briefings land on your desk. Military resources flow to your priorities.',
+    green:'Greta Thunberg called your policies "a blueprint for the future." Green subsidies are reshaping the energy grid in your favor.'},
+  faction_hostile:{
+    tech:'Sam Altman went on a media blitz denouncing your policies. Tech companies are quietly moving operations to Singapore and Dubai.',
+    citizens:'Protesters surrounded your office for three days straight. Timnit Gebru called you "a puppet of corporate interests." Trust is shattered.',
+    military:'The Pentagon stopped returning your calls. Classified AI weapons programs now operate without your oversight. You\'ve lost control.',
+    green:'Greta Thunberg named you in a viral speech. Environmental groups filed coordinated lawsuits. Your data center plans are dead.'},
+  faction_warming:{
+    tech:'Tech CEOs are starting to nod along at your press conferences. The relationship is thawing — keep it up.',
+    citizens:'Community organizers are cautiously optimistic. Town halls are getting friendlier. The public is watching closely.',
+    military:'Defense officials have started inviting you to strategy meetings. Respect is building, but it\'s fragile.',
+    green:'Environmental groups mentioned your policies favorably in a report. It\'s a small win, but the Greens are paying attention.'},
+  faction_souring:{
+    tech:'Tech lobbyists are openly criticizing you at conferences. The next board meeting could turn hostile.',
+    citizens:'Angry letters are piling up. Social media campaigns against your office are gaining traction.',
+    military:'Defense officials questioned your competence in a leaked memo. The relationship is deteriorating fast.',
+    green:'Environmentalists staged a small protest outside your office. It\'s just the beginning if you don\'t change course.'},
+  stat_crisis:{
+    innovation:'The brightest minds are leaving the country. Lab after lab goes dark. The innovation engine that powered your agenda has stalled — possibly for good.',
+    gdp:'Markets are in freefall. Pension funds wiped out overnight. Economists compare it to 2008, but worse — because this time, the machines did it.',
+    public_trust:'Nobody believes a word you say anymore. Every announcement is met with mockery or rage. Governing without trust is like building on quicksand.',
+    global_stability:'The international order is fracturing. Former allies are arming independently. One miscalculation and this becomes a shooting war.',
+    unemployment:'Breadlines form outside automation centers. A generation of workers has been discarded. The social fabric is tearing at the seams.',
+    safety_incidents:'AI systems are failing in hospitals, courtrooms, and power grids. Every day without reform is a coin flip with catastrophe.',
+    arms_race:'Autonomous drones patrol contested borders. Kill decisions happen in milliseconds. Humanity has outsourced war to algorithms.',
+    misinformation:'You can\'t tell what\'s real anymore. Elections are theater. Journalism is dead. Society is drowning in AI-generated noise.',
+    carbon:'Data centers are now the largest single source of emissions. Scientists say you\'ve crossed a point of no return.',
+    water:'Rivers near server farms have run dry. Farmers are protesting. The AI revolution is literally draining the earth.'},
+  stat_surge:{
+    innovation:'Breakthroughs are coming faster than anyone predicted. New models solve problems that seemed impossible last quarter. This is a golden age.',
+    gdp:'The AI economy is booming. New industries emerge weekly. Tax revenues are up, and for once, the growth feels broadly shared.',
+    public_trust:'Citizens genuinely believe in the system you\'ve built. Approval ratings are historic. People feel heard, represented, and protected.',
+    global_stability:'Nations are cooperating on AI governance like never before. A new era of digital diplomacy is taking shape under your leadership.',
+    unemployment:'Retraining programs are working. New AI-adjacent jobs outnumber the ones lost. Workers are cautiously hopeful for the first time in years.',
+    safety_incidents:'Your safety protocols are being adopted worldwide. Not a single major incident this quarter. The model is working.',
+    arms_race:'Historic arms agreements are holding. Military AI is being redirected toward defense and disaster response. The world exhales.',
+    misinformation:'AI-powered fact-checking has turned the tide. Trust in media is recovering. People can tell what\'s real again.',
+    carbon:'Green computing initiatives slashed emissions. Data centers run on renewables. Your environmental record is a model for the world.',
+    water:'Innovative cooling systems cut water usage dramatically. The tech sector is finally sustainable. Environmentalists are cautiously celebrating.'},
+  stat_rising_bad:{
+    unemployment:'Layoff announcements are becoming a weekly ritual. The trend lines are ominous — this could become a full-blown crisis.',
+    safety_incidents:'Near-misses are becoming more frequent. It\'s only a matter of time before something goes catastrophically wrong.',
+    arms_race:'Military budgets are climbing. AI weapons programs are expanding. The arms race is quietly accelerating.',
+    misinformation:'Deepfakes are getting better. Fact-checkers can\'t keep up. The information environment is deteriorating.',
+    carbon:'Emissions from AI compute are climbing fast. Environmental groups are sounding alarms.',
+    water:'Water consumption at server farms is spiking. Local communities are starting to notice.'},
+  stat_rising_good:{
+    innovation:'Research output is climbing steadily. Optimism is returning to the labs.',
+    gdp:'Economic indicators are trending upward. Markets are responding well to your policies.',
+    public_trust:'People are starting to come around. Trust is rebuilding, slowly but visibly.',
+    global_stability:'Diplomatic channels are opening up. International cooperation is gaining momentum.'},
+  stat_dropping_bad:{
+    innovation:'Funding is drying up. Researchers are leaving for the private sector — or other countries entirely.',
+    gdp:'Economic warning signs everywhere. Consumer confidence is sliding.',
+    public_trust:'Trust is eroding. Small scandals that once would have been forgiven now spark outrage.',
+    global_stability:'Cracks in the international coalition are widening. Allies are hedging their bets.'},
+  stat_dropping_good:{
+    unemployment:'Job recovery programs are showing results. The employment picture is slowly brightening.',
+    safety_incidents:'Safety metrics are improving. Your regulatory framework might actually be working.',
+    arms_race:'Military tensions are easing. Diplomatic efforts are paying off.',
+    misinformation:'The flood of fake content is receding. Platform reforms are having an effect.',
+    carbon:'Carbon numbers are trending down. The green computing push is gaining traction.',
+    water:'Water usage is declining at major facilities. Conservation measures are working.'}
+};
+
+// Generate a narrative sentence for a choice based on its effects
+function choiceNarrative(ch){
+  const sorted=Object.entries(ch.fx).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+  const top=sorted[0];const topK=top[0];const topV=top[1];
+  const name=SN[topK]||topK;
+  const phrases_up={innovation:'pushing innovation forward',gdp:'boosting the economy',public_trust:'winning public trust',
+    global_stability:'steadying global relations',corporate_influence:'empowering corporations',regulation_level:'tightening regulations',
+    international_cooperation:'strengthening alliances',public_ai_services:'expanding AI access'};
+  const phrases_down={innovation:'stifling innovation',gdp:'straining the economy',public_trust:'eroding public trust',
+    global_stability:'destabilizing the world order',unemployment:'creating jobs',safety_incidents:'improving safety',
+    arms_race:'easing military tensions',misinformation:'fighting disinformation',carbon:'cutting emissions',water:'conserving water',
+    corporate_influence:'reining in corporate power',regulation_level:'loosening regulations'};
+  const phrases_up_bad={unemployment:'costing jobs',safety_incidents:'risking safety',arms_race:'fueling the arms race',
+    misinformation:'spreading confusion',carbon:'increasing emissions',water:'consuming more water'};
+  const badStats=['unemployment','safety_incidents','arms_race','misinformation','carbon','water'];
+  const bad=badStats.includes(topK);
+  let verb;
+  if(topV>0)verb=bad?(phrases_up_bad[topK]||`raising ${name}`):(phrases_up[topK]||`raising ${name}`);
+  else verb=bad?(phrases_down[topK]||`lowering ${name}`):(phrases_down[topK]||`lowering ${name}`);
+  let sentence=`A bold move — ${verb}`;
+  if(sorted.length>1){
+    const s2=sorted[1];const n2=SN[s2[0]]||s2[0];
+    const bad2=badStats.includes(s2[0]);
+    const dir2=s2[1]>0?(bad2?'worsening':'improving'):(bad2?'improving':'worsening');
+    sentence+=`, while ${dir2} ${n2.toLowerCase()}`;
+  }
+  return sentence+'.';
+}
+
+function checkStoryArc(ch){
+  const FNm={tech:'Big Tech',citizens:'Citizens',military:'Military',green:'Greens'};
+  const prevFac=prevS._fac||{};
+  const beforeLen=storyArc.length;
+
+  // Faction crosses 75 (allied) or drops below 20 (hostile)
+  ['tech','citizens','military','green'].forEach(k=>{
+    if(F[k]>=75&&(prevFac[k]||50)<75)
+      storyArc.push({round,icon:'🤝',text:`${FNm[k]} Allied`,detail:ARC_STORIES.faction_allied[k],cls:'arc-good'});
+    else if(F[k]<=20&&(prevFac[k]||50)>20)
+      storyArc.push({round,icon:'💔',text:`${FNm[k]} Hostile`,detail:ARC_STORIES.faction_hostile[k],cls:'arc-bad'});
+  });
+
+  // Faction crosses 60 or drops below 35 (early warning)
+  ['tech','citizens','military','green'].forEach(k=>{
+    if(F[k]>=60&&(prevFac[k]||50)<60&&F[k]<75)
+      storyArc.push({round,icon:'📈',text:`${FNm[k]} Warming`,detail:ARC_STORIES.faction_warming[k],cls:'arc-good'});
+    else if(F[k]<=35&&(prevFac[k]||50)>35&&F[k]>20)
+      storyArc.push({round,icon:'📉',text:`${FNm[k]} Souring`,detail:ARC_STORIES.faction_souring[k],cls:'arc-bad'});
+  });
+
+  // Stat hits extreme (>80 or <15)
+  const critStats={innovation:'Innovation',gdp:'GDP',public_trust:'Trust',global_stability:'Stability',
+    unemployment:'Unemployment',safety_incidents:'Safety Risk',arms_race:'Arms Race',
+    misinformation:'Misinfo',carbon:'Carbon',water:'Water'};
+  const badStats=['unemployment','safety_incidents','arms_race','misinformation','carbon','water'];
+  Object.keys(critStats).forEach(k=>{
+    const bad=badStats.includes(k);
+    if(S[k]>80&&(prevS[k]||50)<=80)
+      storyArc.push({round,icon:bad?'🔥':'🚀',text:`${critStats[k]} ${bad?'CRISIS':'SURGE'}`,
+        detail:bad?ARC_STORIES.stat_crisis[k]:ARC_STORIES.stat_surge[k],cls:bad?'arc-bad':'arc-good'});
+    if(S[k]<15&&(prevS[k]||50)>=15)
+      storyArc.push({round,icon:bad?'✅':'⚠',text:`${critStats[k]} ${bad?'Contained':'FAILING'}`,
+        detail:bad?ARC_STORIES.stat_surge[k]:ARC_STORIES.stat_crisis[k],cls:bad?'arc-good':'arc-bad'});
+  });
+
+  // Stat crosses danger zone (>60 or <25) — early warning
+  Object.keys(critStats).forEach(k=>{
+    const bad=badStats.includes(k);
+    if(S[k]>60&&(prevS[k]||50)<=60&&S[k]<=80){
+      const story=bad?(ARC_STORIES.stat_rising_bad[k]||''):(ARC_STORIES.stat_rising_good[k]||'');
+      if(story)storyArc.push({round,icon:bad?'⚠':'📈',text:`${critStats[k]} Rising`,detail:story,cls:bad?'arc-bad':'arc-good'});
+    }
+    if(S[k]<25&&(prevS[k]||50)>=25&&S[k]>=15){
+      const story=bad?(ARC_STORIES.stat_dropping_good[k]||''):(ARC_STORIES.stat_dropping_bad[k]||'');
+      if(story)storyArc.push({round,icon:bad?'📉':'⚠',text:`${critStats[k]} Dropping`,detail:story,cls:bad?'arc-good':'arc-bad'});
+    }
+  });
+
+  // Dominant alignment changes
+  const dom=getTitle();
+  if(prevDominant&&dom!==prevDominant)
+    storyArc.push({round,icon:'🔄',text:`Shift: "${dom}"`,detail:`Your governing philosophy has visibly shifted. Pundits debate whether you\'ve evolved or lost your way. The world is recalibrating.`,cls:'arc-neutral'});
+  prevDominant=dom;
+
+  // Choices with narrative consequence
+  if(ch){
+    const mag=Object.values(ch.fx).reduce((a,v)=>a+Math.abs(v),0);
+    const net=Object.values(ch.fx).reduce((a,v)=>a+v,0);
+    if(mag>15){
+      storyArc.push({round,icon:net>=0?'⚡':'💥',text:ch.l.length>22?ch.l.slice(0,20)+'..':ch.l,
+        detail:choiceNarrative(ch),cls:net>=0?'arc-good':'arc-bad'});
+    } else if(mag>8){
+      storyArc.push({round,icon:'📋',text:ch.l.length>22?ch.l.slice(0,20)+'..':ch.l,
+        detail:choiceNarrative(ch),cls:'arc-neutral'});
+    }
+  }
+
+  renderStoryArc(storyArc.length>beforeLen);
+  if(round>=3)document.getElementById('recap-btn').style.display='inline-block';
+}
+
+function renderStoryArc(hasNew){
+  if(!storyArc.length)return;
+  const el=document.getElementById('story-arc');
+  el.classList.add('show');
+  let html='<span class="arc-label">STORY</span>';
+  storyArc.forEach((e,i)=>{
+    if(i>0)html+=`<span class="arc-connector">›</span>`;
+    const isNew=hasNew&&i>=storyArc.length-1;
+    html+=`<span class="arc-chip ${e.cls}${isNew?' arc-new':''}" data-arc-idx="${i}">
+      <span class="arc-q">Q${e.round}</span>
+      <span class="arc-main">${e.icon} ${e.text}</span>
+      ${e.detail?`<span class="arc-detail">${e.detail}</span>`:''}
+    </span>`;
+  });
+  el.innerHTML=html;
+  el.scrollLeft=el.scrollWidth;
+  el.querySelectorAll('.arc-chip[data-arc-idx]').forEach(chip=>{
+    chip.addEventListener('mouseenter',showArcTip);
+    chip.addEventListener('mouseleave',hideArcTip);
+  });
+}
+
+function buildArcTipHTML(e){
+  const dh=decisionHistory.find(d=>d.round===e.round);
+  const color=e.cls==='arc-good'?'var(--green)':e.cls==='arc-bad'?'var(--red)':'var(--yellow)';
+  let h=`<div class="att-header"><span class="att-q">Q${e.round}</span><span class="att-title" style="color:${color}">${e.icon} ${e.text}</span></div>`;
+  if(e.detail)h+=`<div class="att-story">${e.detail}</div>`;
+  if(dh){
+    h+=`<div class="att-context"><div class="att-event">📰 ${dh.eventTitle}</div><div class="att-choice">► "${dh.choiceLabel}"</div></div>`;
+  }
+  return h;
+}
+
+let _arcTipTarget=null;
+function showArcTip(ev){
+  const idx=parseInt(ev.currentTarget.dataset.arcIdx);
+  const e=storyArc[idx];if(!e)return;
+  _arcTipTarget=ev.currentTarget;
+  const tip=document.getElementById('arc-tip');
+  tip.innerHTML=buildArcTipHTML(e);
+  // Show off-screen first to measure
+  tip.style.left='-9999px';tip.style.top='-9999px';
+  tip.classList.add('show');
+  positionArcTip();
+}
+
+function positionArcTip(){
+  if(!_arcTipTarget)return;
+  const tip=document.getElementById('arc-tip');
+  const rect=_arcTipTarget.getBoundingClientRect();
+  const tipW=tip.offsetWidth;
+  const tipH=tip.offsetHeight;
+  let left=rect.left+rect.width/2-tipW/2;
+  if(left<8)left=8;
+  if(left+tipW>window.innerWidth-8)left=window.innerWidth-8-tipW;
+  // Position above the chip; if not enough room, go below
+  let top=rect.top-tipH-10;
+  if(top<8)top=rect.bottom+10;
+  tip.style.left=left+'px';
+  tip.style.top=top+'px';
+}
+
+function hideArcTip(){
+  _arcTipTarget=null;
+  document.getElementById('arc-tip').classList.remove('show');
+}
+
+// Reposition tooltip on scroll so it doesn't get cut off
+document.addEventListener('DOMContentLoaded',()=>{
+  const arc=document.getElementById('story-arc');
+  if(arc)arc.addEventListener('scroll',()=>{if(_arcTipTarget)positionArcTip()});
+});
+
+// === RECAP OVERLAY ===
+function showRecap(){
+  document.getElementById('recap-body').innerHTML=generateRecap();
+  document.getElementById('recap-overlay').style.display='flex';
+}
+function dismissRecap(){
+  document.getElementById('recap-overlay').style.display='none';
+}
+function generateRecap(){
+  const title=getTitle();
+  const FNm={tech:'Big Tech',citizens:'Citizens',military:'Military',green:'Greens'};
+  const badStats=['unemployment','safety_incidents','arms_race','misinformation','carbon','water'];
+  let html='';
+
+  // Opening
+  html+=`<div class="recap-section"><h4>The Journey</h4><p>After ${round} quarters as "${title}", `;
+  html+=autoPlayStance?`operating under an ${autoPlayStance} philosophy, `:'';
+  html+=`your tenure has shaped the AI landscape. You've made ${decisionHistory.length} decisions that rippled across factions, economies, and ecosystems.</p></div>`;
+
+  // Timeline of turning points with consequences
+  if(storyArc.length){
+    html+=`<div class="recap-section"><h4>Timeline</h4>`;
+    storyArc.forEach(e=>{
+      html+=`<div style="display:flex;gap:8px;margin-bottom:6px;padding:4px 0;border-bottom:1px solid #1a1a3a">
+        <span style="flex-shrink:0;font-size:8px;color:var(--text3)">Q${e.round}</span>
+        <span class="arc-chip ${e.cls}" style="border-right:none;padding:2px 6px;flex-shrink:0">
+          <span class="arc-main" style="font-size:8px">${e.icon} ${e.text}</span>
+        </span>
+        ${e.detail?`<span style="font-size:8px;color:var(--text2);line-height:1.8">${e.detail}</span>`:''}
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+
+  // Faction standings with relationship arcs
+  html+=`<div class="recap-section"><h4>Faction Relations</h4>`;
+  ['tech','citizens','military','green'].forEach(k=>{
+    const v=F[k];
+    const color=v>=75?'var(--green)':v<=20?'var(--red)':v>=50?'var(--text2)':'var(--orange)';
+    const status=v>=75?'ALLIED':v<=20?'HOSTILE':v>=50?'Satisfied':'Uneasy';
+    const perk=v>=75?factionPerk(k,true):v<=20?factionPerk(k,false):'';
+    html+=`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+      <span style="font-size:9px;width:70px;color:${color}">${FNm[k]}</span>
+      <div style="flex:1;height:6px;background:#111;border:1px solid #333;overflow:hidden">
+        <div style="width:${v}%;height:100%;background:${color}"></div>
+      </div>
+      <span style="font-size:8px;color:${color};min-width:28px">${v}</span>
+      <span style="font-size:7px;color:${color}">${status}</span>
+    </div>`;
+    if(perk)html+=`<div style="font-size:7px;color:${color};margin:-2px 0 4px 76px">${perk}</div>`;
+  });
+  html+=`</div>`;
+
+  // All stats overview
+  const snames={innovation:'Innovation',gdp:'GDP',public_trust:'Trust',global_stability:'Stability',
+    corporate_influence:'Corp Power',unemployment:'Unemployment',safety_incidents:'Safety Risk',
+    arms_race:'Arms Race',misinformation:'Misinfo',regulation_level:'Regulation',
+    international_cooperation:'Intl Coop',public_ai_services:'AI Services',carbon:'Carbon',water:'Water'};
+  html+=`<div class="recap-section"><h4>State of the World</h4>`;
+  Object.keys(snames).forEach(k=>{
+    const v=S[k];const bad=badStats.includes(k);
+    const isGood=bad?v<30:v>60;const isBad=bad?v>60:v<30;
+    const color=isGood?'var(--green)':isBad?'var(--red)':'var(--text3)';
+    const warn=v>=80||v<=15;
+    html+=`<div style="display:flex;align-items:center;gap:4px;margin-bottom:2px${warn?';background:rgba(255,255,255,.03)':''}">
+      <span style="font-size:7px;width:65px;color:${color}">${snames[k]}</span>
+      <div style="flex:1;height:4px;background:#111;border:1px solid #222;overflow:hidden">
+        <div style="width:${v}%;height:100%;background:${color}"></div>
+      </div>
+      <span style="font-size:7px;color:${color};min-width:18px;text-align:right">${v}</span>
+      ${warn?'<span style="font-size:7px">⚠</span>':''}
+    </div>`;
+  });
+  html+=`</div>`;
+
+  // Outlook
+  const goodCount=Object.keys(DEF).filter(k=>badStats.includes(k)?S[k]<30:S[k]>60).length;
+  const crisisCount=Object.keys(DEF).filter(k=>badStats.includes(k)?S[k]>70:S[k]<25).length;
+  const outlook=goodCount>=8?'The outlook is bright — your policies are working.':
+    goodCount>=5?'The situation is mixed — challenges remain.':
+    crisisCount>=3?'Multiple crises are spiraling. Drastic action needed.':
+    'The outlook is grim — your leadership is being questioned.';
+  html+=`<div class="recap-section"><h4>Outlook</h4><p>${outlook}</p></div>`;
+  return html;
+}
+
+// === ENHANCED END SCREEN ===
+function getArcNarrative(){
+  if(!storyArc.length)return'';
+  // Show the most impactful moments (good, bad, and neutral — up to 8)
+  const important=storyArc.filter(e=>e.cls!=='arc-neutral').concat(
+    storyArc.filter(e=>e.cls==='arc-neutral')
+  ).slice(0,8);
+  let html='<div style="margin-top:12px;padding-top:8px;border-top:2px solid #223">';
+  html+='<div style="color:var(--cyan);margin-bottom:8px;font-size:9px;letter-spacing:1px">YOUR STORY:</div>';
+  important.forEach(e=>{
+    const color=e.cls==='arc-good'?'var(--green)':e.cls==='arc-bad'?'var(--red)':'var(--yellow)';
+    html+=`<div style="display:flex;gap:6px;margin-bottom:4px;padding:3px 0">
+      <span style="font-size:7px;color:var(--text3);flex-shrink:0">Q${e.round}</span>
+      <span style="font-size:8px;color:${color};flex-shrink:0">${e.icon} ${e.text}</span>
+      ${e.detail?`<span style="font-size:7px;color:var(--text3)">${e.detail}</span>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  return html;
+}
+
+function addLog(t,c='li'){
+  const e=document.createElement('div');e.className='le '+c;e.textContent=t;
+  const l=document.getElementById('log-entries');l.insertBefore(e,l.firstChild);
+  if(l.children.length>15)l.lastChild.remove();
+}
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+// === FEATURE 1: NEWS TICKER ===
+function updateTicker(){
+  const pool=[];
+  if(S.innovation>=65)pool.push(...TICKER_HEADLINES.high_innovation);
+  if(S.innovation<=30)pool.push(...TICKER_HEADLINES.low_innovation);
+  if(S.public_trust>=65)pool.push(...TICKER_HEADLINES.high_trust);
+  if(S.public_trust<=25)pool.push(...TICKER_HEADLINES.low_trust);
+  if(S.arms_race>=60)pool.push(...TICKER_HEADLINES.high_arms_race);
+  if(S.arms_race<=15)pool.push(...TICKER_HEADLINES.low_arms_race);
+  if(S.unemployment>=55)pool.push(...TICKER_HEADLINES.high_unemployment);
+  if(S.misinformation>=60)pool.push(...TICKER_HEADLINES.high_misinfo);
+  if(S.carbon>=60)pool.push(...TICKER_HEADLINES.high_carbon);
+  if(S.corporate_influence>=65)pool.push(...TICKER_HEADLINES.high_corporate);
+  pool.push(...TICKER_HEADLINES.general);
+  // Pick 8 unique, shuffle
+  const shuffled=pool.sort(()=>Math.random()-.5).slice(0,8);
+  const items=shuffled.map(h=>`<span class="ticker-item">${h}</span>`).join('');
+  const track=document.querySelector('#ticker .ticker-track');
+  track.innerHTML=items+items; // duplicate for seamless loop
+  document.getElementById('ticker').style.display='block';
+}
+
+// === FEATURE 2: BREAKING NEWS ===
+function checkBreaking(){
+  const pending=[];
+  BREAKING_CONDITIONS.forEach(bc=>{
+    if(!breakingFired.has(bc.key)&&bc.check()){
+      breakingFired.add(bc.key);
+      pending.push(bc.msg);
+    }
+  });
+  if(pending.length){
+    breakingQueue.push(...pending);
+    if(!breakingActive)showBreaking();
+  }
+}
+
+let _breakingAutoTimer=null;
+function showBreaking(){
+  if(!breakingQueue.length){breakingActive=false;resumeCountdown();return}
+  breakingActive=true;
+  pauseCountdown();
+  const msg=breakingQueue.shift();
+  document.getElementById('brk-text').textContent=msg;
+  const el=document.getElementById('breaking');
+  el.style.display='flex';
+  addLog('BREAKING: '+msg.slice(0,40)+'...','lb');
+  if(autoPlayStance){_breakingAutoTimer=setTimeout(dismissBreaking,4000)}
+}
+function dismissBreaking(){
+  if(_breakingAutoTimer){clearTimeout(_breakingAutoTimer);_breakingAutoTimer=null}
+  document.getElementById('breaking').style.display='none';
+  if(autoPlayStance){setTimeout(()=>showBreaking(),1500)}
+  else showBreaking();
+}
+
+// === FEATURE 3: CHARACTER DIALOGUE ===
+function checkDialogue(){
+  if(breakingActive)return;
+  const cs=window._charScores||{};
+  let bestId=null,bestAbs=0;
+  Object.keys(cs).forEach(id=>{
+    const a=Math.abs(cs[id]);
+    if(a>=12&&a>bestAbs){bestAbs=a;bestId=id}
+  });
+  if(bestId)showDialogue(bestId,cs[bestId]);
+}
+
+function showDialogue(charId,score){
+  const mood=score>0?'happy':'angry';
+  const quotes=CHAR_DIALOGUES[charId]?.[mood];
+  if(!quotes||!quotes.length)return;
+  const quote=pick(quotes);
+  const bio=CHAR_BIOS[charId];
+  if(!bio)return;
+
+  // Get sprite - use faction sprite for factions, specific getters for others
+  let sprite='';
+  const spriteGetters={tech:getFactionSprite,citizens:getFactionSprite,military:getFactionSprite,green:getFactionSprite,
+    dario:getDarioSprite,elon:getElonSprite,thiel:getThielSprite,jensen:getJensenSprite,zuck:getZuckSprite,
+    asml:getAsmlSprite,tsmc:getTsmcSprite,workers:getWorkersSprite};
+  const getter=spriteGetters[charId];
+  if(getter){
+    sprite=['tech','citizens','military','green'].includes(charId)?getter(charId,6):getter(6);
+  }
+
+  document.getElementById('cd-sprite').innerHTML=sprite;
+  document.getElementById('cd-name').textContent=bio.name;
+  const moodEl=document.getElementById('cd-mood');
+  moodEl.textContent=mood==='happy'?'PLEASED':'FURIOUS';
+  moodEl.className='cd-mood '+mood;
+  document.getElementById('cd-text').textContent=quote;
+
+  const el=document.getElementById('char-dialogue');
+  el.classList.remove('mood-happy','mood-angry');
+  el.classList.add('mood-'+mood);
+  el.style.display='flex';
+  pauseCountdown();
+  dialogueTimer=setTimeout(dismissDialogue,4000);
+}
+function dismissDialogue(){
+  document.getElementById('char-dialogue').style.display='none';
+  if(dialogueTimer){clearTimeout(dialogueTimer);dialogueTimer=null}
+  resumeCountdown();
+}
+
+// === FEATURE 4: COUNTDOWN TIMER ===
+function startCountdown(){
+  if(autoPlayStance)return;
+  stopCountdown();
+  countdownRemaining=20;
+  countdownPaused=false;
+  updateCountdownUI();
+  countdownInterval=setInterval(()=>{
+    if(countdownPaused)return;
+    countdownRemaining--;
+    updateCountdownUI();
+    if(countdownRemaining<=0){
+      stopCountdown();
+      // Timeout: random choice (indecision)
+      if(!resolved&&window._currentEvent){
+        const ev=window._currentEvent;
+        const ri=Math.floor(Math.random()*ev.c.length);
+        addLog('TIMEOUT: Indecision! Random policy chosen.','lw');
+        resolve(window._currentEventIdx,ri);
+      }
+    }
+  },1000);
+}
+
+function stopCountdown(){
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null}
+}
+
+function pauseCountdown(){countdownPaused=true}
+function resumeCountdown(){countdownPaused=false}
+
+function updateCountdownUI(){
+  const fill=document.getElementById('cd-timer-fill');
+  const label=document.getElementById('cd-timer-label');
+  if(!fill||!label)return;
+  const pct=(countdownRemaining/20)*100;
+  fill.style.width=pct+'%';
+  fill.className='cd-fill'+(countdownRemaining<=5?' danger':countdownRemaining<=10?' warn':'');
+  label.textContent=countdownRemaining+'s';
+}
+
+// === FEATURE 5: CONSEQUENCES FLASHBACK ===
+function checkFlashback(callback){
+  if(!decisionHistory.length){if(callback)callback();return}
+  // Find most impactful decision
+  let best=decisionHistory[0];
+  decisionHistory.forEach(d=>{
+    const impact=Object.values(d.fx).reduce((a,b)=>a+Math.abs(b),0);
+    const bestImpact=Object.values(best.fx).reduce((a,b)=>a+Math.abs(b),0);
+    if(impact>bestImpact)best=d;
+  });
+
+  // Compare snapshot to current
+  const changes=[];
+  Object.keys(best.statsSnapshot).forEach(k=>{
+    const diff=S[k]-best.statsSnapshot[k];
+    if(Math.abs(diff)>=5){
+      changes.push({stat:SN[k]||k,diff:diff,cls:diff>0?'fxu':'fxd',arrow:diff>0?'▲':'▼'});
+    }
+  });
+
+  let html=`<div class="fb-event">"${best.eventTitle}"</div>
+    <div class="fb-choice">You chose: "${best.choiceLabel}" (Q${best.round})</div>`;
+  if(changes.length){
+    html+=`<div style="font-size:9px;color:var(--text2);margin-bottom:6px">Since then:</div>
+      <div class="fb-fx">${changes.map(c=>`<span class="fx ${c.cls}">${c.arrow}${c.stat} ${c.diff>0?'+':''}${c.diff}</span>`).join('')}</div>`;
+  } else {
+    html+=`<div style="font-size:9px;color:var(--text2)">The effects are still rippling through the system...</div>`;
+  }
+
+  document.getElementById('fb-body').innerHTML=html;
+  const el=document.getElementById('flashback');
+  el.style.display='flex';
+  pauseCountdown();
+  window._flashbackCallback=callback;
+  if(autoPlayStance){setTimeout(dismissFlashback,3000)}
+}
+function dismissFlashback(){
+  document.getElementById('flashback').style.display='none';
+  resumeCountdown();
+  if(window._flashbackCallback){const cb=window._flashbackCallback;window._flashbackCallback=null;cb()}
+}
+
+// === ESCAPE KEY TO DISMISS POPUPS ===
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('breaking').style.display==='flex')dismissBreaking();
+    else if(document.getElementById('char-dialogue').style.display==='flex')dismissDialogue();
+    else if(document.getElementById('flashback').style.display==='flex')dismissFlashback();
+  }
+});
+
+// === GLOBAL CHARACTER TOOLTIP ===
+(function(){
+  const tip=document.getElementById('char-tip');
+  document.addEventListener('mouseover',e=>{
+    const sc=e.target.closest('.scene-char[data-charid]');
+    if(!sc)return;
+    const bio=CHAR_BIOS[sc.dataset.charid];
+    if(!bio)return;
+    tip.innerHTML=`<div class="ct-name">${bio.name}</div><div class="ct-role">${bio.role}</div><div class="ct-stance">${bio.stance}</div>`;
+    const rect=sc.getBoundingClientRect();
+    tip.style.display='block';
+    const tipW=tip.offsetWidth;
+    let left=rect.left+rect.width/2-tipW/2;
+    left=Math.max(4,Math.min(window.innerWidth-tipW-4,left));
+    tip.style.left=left+'px';
+    tip.style.top=(rect.bottom+8)+'px';
+  });
+  document.addEventListener('mouseout',e=>{
+    const sc=e.target.closest('.scene-char[data-charid]');
+    if(sc)tip.style.display='none';
+  });
+})();
+
+// === WORLD VIEW SPRITES ===
+Object.assign(SPRITES,{
+  datacenter:[
+    '44444444',
+    '4FFFF4F4',
+    '4F44F4F4',
+    '4FFFF4F4',
+    '4F44F4F4',
+    '4FFFF4F4',
+    '44444444',
+    '33333333'
+  ],
+  smoke_1:[
+    '........',
+    '...44...',
+    '..4444..',
+    '.444444.',
+    '..4444..',
+    '...44...',
+    '........',
+    '........'
+  ],
+  smoke_2:[
+    '........',
+    '..44....',
+    '.4444...',
+    '444444..',
+    '.4444...',
+    '..44....',
+    '........',
+    '........'
+  ],
+  solar_panel:[
+    '11111111',
+    '1F1F1F11',
+    '11111111',
+    '1F1F1F11',
+    '11111111',
+    '...33...',
+    '...33...',
+    '..3333..'
+  ],
+  wind_turbine:[
+    '...FF...',
+    '...F4...',
+    '..FFF4..',
+    '...F4...',
+    '...33...',
+    '...33...',
+    '...33...',
+    '..3333..'
+  ],
+  tree_green:[
+    '...77...',
+    '..7777..',
+    '.777777.',
+    '77777777',
+    '.777777.',
+    '...66...',
+    '...66...',
+    '..6666..'
+  ],
+  tree_dead:[
+    '...33...',
+    '..3.33..',
+    '.3..3.3.',
+    '..3.3...',
+    '...33...',
+    '...66...',
+    '...66...',
+    '..6666..'
+  ],
+  lake_full:[
+    '........',
+    '.111111.',
+    '11111111',
+    '1111F111',
+    '11111111',
+    '1111F111',
+    '.111111.',
+    '........'
+  ],
+  lake_dry:[
+    '........',
+    '........',
+    '..6666..',
+    '.666666.',
+    '.666A66.',
+    '..6666..',
+    '........',
+    '........'
+  ],
+  // Desk (just furniture, no person)
+  desk:[
+    '33333333',
+    '33FFFF33',
+    '.33..33.',
+    '.33..33.'
+  ],
+  // Worker 1: brown hair, light skin, blue shirt
+  worker_1:[
+    '..5555..',
+    '.555555.',
+    '.5F88F5.',
+    '.588885.',
+    '..8888..',
+    '.111111.',
+    '.111111.',
+    '..1..1..'
+  ],
+  // Worker 2: black hair, dark skin, purple top
+  worker_2:[
+    '..0000..',
+    '.000000.',
+    '.0FDDF0.',
+    '.0DDDD0.',
+    '..DDDD..',
+    '.999999.',
+    '.999999.',
+    '..9..9..'
+  ],
+  // Worker 3: red hair, light skin, green shirt
+  worker_3:[
+    '..GGGG..',
+    '.GGGGGG.',
+    '.GF88FG.',
+    '.G8888G.',
+    '..8888..',
+    '.777777.',
+    '.777777.',
+    '..7..7..'
+  ],
+  // Worker 4: blonde, light skin, orange vest
+  worker_4:[
+    '..EEEE..',
+    '.EEEEEE.',
+    '.EF88FE.',
+    '.E8888E.',
+    '..8888..',
+    '.AAAAAA.',
+    '.AAAAAA.',
+    '..A..A..'
+  ],
+  // Worker 5: bald, medium skin, gray suit
+  worker_5:[
+    '........',
+    '..DDDD..',
+    '.DF88FD.',
+    '.D8888D.',
+    '..DDDD..',
+    '.444444.',
+    '.444444.',
+    '..4..4..'
+  ],
+  // Worker 6: short hair, dark skin, cyan top
+  worker_6:[
+    '..0000..',
+    '.000000.',
+    '.0FDDF0.',
+    '.0DDDD0.',
+    '..DDDD..',
+    '.IIIIII.',
+    '.IIIIII.',
+    '..I..I..'
+  ],
+  // Stressed worker overlay: red tint, hunched
+  worker_stressed:[
+    '..GGGG..',
+    '.GGGGGG.',
+    '.GF88FG.',
+    '.G8008G.',
+    '..8888..',
+    '.444444.',
+    '.4G44G4.',
+    '..4..4..'
+  ],
+  robot_worker:[
+    '..4444..',
+    '.4FFFF4.',
+    '.4F11F4.',
+    '.444444.',
+    '.3CCCC3.',
+    '.333333.',
+    '..3..3..',
+    '..3..3..'
+  ],
+  monitor_on:[
+    '33333333',
+    '31111113',
+    '31F11F13',
+    '31111113',
+    '33333333',
+    '...33...',
+    '..3333..',
+    '........'
+  ],
+  user_happy:[
+    '..8888..',
+    '.888888.',
+    '.8F88F8.',
+    '.88FF88.',
+    '..8FF8..',
+    '.444444.',
+    '.444444.',
+    '..4..4..'
+  ],
+  user_worried:[
+    '..8888..',
+    '.888888.',
+    '.8F88F8.',
+    '.888888.',
+    '..8008..',
+    '.444444.',
+    '.444444.',
+    '..4..4..'
+  ],
+  user_angry:[
+    '..8888..',
+    '.888888.',
+    '.8F00F8.',
+    '.888888.',
+    '..8008..',
+    '.GG44GG.',
+    '.444444.',
+    '..4..4..'
+  ],
+  phone:[
+    '........',
+    '........',
+    '........',
+    '....33..',
+    '....31..',
+    '....31..',
+    '....33..',
+    '........'
+  ],
+  easel:[
+    '.EEEEEE.',
+    '.E1111E.',
+    '.EEEEEE.',
+    '..3333..',
+    '.3....3.',
+    '3......3',
+    '........',
+    '........'
+  ],
+  chat_bubble:[
+    '.FFFFFF.',
+    'F111111F',
+    'F111111F',
+    '.FFFFFF.',
+    '..F.....',
+    '.F......',
+    '........',
+    '........'
+  ],
+  deepfake_tv:[
+    '33333333',
+    '3GGGGGG3',
+    '3G8G8GG3',
+    '3GGGGGG3',
+    '3GGFFGG3',
+    '33333333',
+    '...33...',
+    '..3333..'
+  ],
+  protest_sign:[
+    'GGGGGGGG',
+    'GFFFFFFG',
+    'GFGGGFFG',
+    'GGGGGGGG',
+    '...33...',
+    '...33...',
+    '...33...',
+    '...33...'
+  ],
+  companion_bot:[
+    '..1111..',
+    '.1FFFF1.',
+    '.1F11F1.',
+    '.1FFFF1.',
+    '..1111..',
+    '.11CC11.',
+    '..1111..',
+    '..1..1..'
+  ]
+});
+
+// === WORLD VIEW MODULE ===
+const WorldView=(function(){
+  let cvs,ctx,W,H,mode='all',particles=[],tick=0,stats=null,lastFrame=0;
+  const FPS=8,FRAME_MS=1000/FPS;
+  const PX=2; // pixel scale on canvas
+
+  function init(){
+    cvs=document.getElementById('wv-canvas');
+    if(!cvs)return;
+    ctx=cvs.getContext('2d');
+    ctx.imageSmoothingEnabled=false;
+    resize();
+    window.addEventListener('resize',resize);
+    // wire tabs
+    document.querySelectorAll('.wv-tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.wv-tab').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        mode=btn.dataset.wv;
+      });
+    });
+    requestAnimationFrame(loop);
+  }
+
+  function resize(){
+    const r=cvs.parentElement.getBoundingClientRect();
+    cvs.width=Math.floor(r.width/PX);
+    cvs.height=Math.floor(r.height/PX);
+    W=cvs.width;H=cvs.height;
+    ctx.imageSmoothingEnabled=false;
+  }
+
+  function update(s){stats={...s};}
+
+  function loop(ts){
+    requestAnimationFrame(loop);
+    if(ts-lastFrame<FRAME_MS)return;
+    lastFrame=ts;
+    if(!stats)return;
+    tick++;
+    ctx.clearRect(0,0,W,H);
+    if(mode==='all'||mode==='infra')drawInfra(mode==='all'?0:0,mode==='all'?H/3:H);
+    if(mode==='all'||mode==='workers')drawWorkers(mode==='all'?H/3:0,mode==='all'?H/3:H);
+    if(mode==='all'||mode==='users')drawUsers(mode==='all'?H*2/3:0,mode==='all'?H/3:H);
+    updateParticles();
+    drawParticles();
+  }
+
+  // -- Helper: draw an 8x8 sprite at (x,y) with given scale
+  function spr(name,x,y,sc){
+    const data=SPRITES[name];if(!data)return;
+    sc=sc||1;
+    for(let r=0;r<data.length;r++){
+      for(let c=0;c<data[r].length;c++){
+        const ch=data[r][c];
+        if(ch!=='.'){
+          ctx.fillStyle=PCOLORS[ch]||'#ff00ff';
+          ctx.fillRect(Math.floor(x+c*sc),Math.floor(y+r*sc),sc,sc);
+        }
+      }
+    }
+  }
+
+  // -- Helper: tinted rect
+  function rect(x,y,w,h,col){
+    ctx.fillStyle=col;
+    ctx.fillRect(Math.floor(x),Math.floor(y),Math.floor(w),Math.floor(h));
+  }
+
+  // -- Particles
+  function spawnSmoke(x,y){
+    particles.push({x,y,vx:(Math.random()-.5)*.3,vy:-Math.random()*.4-.2,life:30+Math.random()*20,
+      col:Math.random()>.5?'#555':'#444',sz:1+Math.random()});
+  }
+
+  function updateParticles(){
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];
+      p.x+=p.vx;p.y+=p.vy;p.life--;
+      if(p.life<=0)particles.splice(i,1);
+    }
+  }
+
+  function drawParticles(){
+    particles.forEach(p=>{
+      const a=Math.min(1,p.life/15);
+      ctx.globalAlpha=a;
+      ctx.fillStyle=p.col;
+      ctx.fillRect(Math.floor(p.x),Math.floor(p.y),Math.ceil(p.sz),Math.ceil(p.sz));
+    });
+    ctx.globalAlpha=1;
+  }
+
+  // ===== LAYER 1: INFRASTRUCTURE =====
+  function drawInfra(oy,h){
+    const carbon=stats.carbon||20,water=stats.water||15,inn=stats.innovation||50;
+    // Sky color based on carbon
+    let skyCol;
+    if(carbon<25)skyCol='#1a3a6e';
+    else if(carbon<50)skyCol='#2a3a4e';
+    else if(carbon<75)skyCol='#4a3a2e';
+    else skyCol='#5a1a1a';
+    rect(0,oy,W,h,skyCol);
+    // Ground
+    const groundY=oy+h-6;
+    let groundCol=carbon<25?'#1a4a1a':carbon<50?'#2a4a2a':carbon<75?'#4a3a1a':'#3a2a1a';
+    rect(0,groundY,W,6,groundCol);
+
+    const sc=Math.max(1,Math.floor(h/30));
+    // Data centers based on innovation
+    const dcCount=Math.max(1,Math.min(6,Math.floor(inn/16)));
+    const dcSpacing=Math.floor(W/(dcCount+2));
+    for(let i=0;i<dcCount;i++){
+      const dx=dcSpacing*(i+1);
+      spr('datacenter',dx,groundY-8*sc,sc);
+      // Smoke based on carbon
+      if(carbon>25&&tick%Math.max(2,8-Math.floor(carbon/15))===i%4){
+        spawnSmoke(dx+4*sc,oy+h*0.3);
+      }
+    }
+
+    // Solar panels / wind turbines when carbon < 25
+    if(carbon<25){
+      spr('solar_panel',Math.floor(W*0.1),groundY-8*sc,sc);
+      spr('wind_turbine',Math.floor(W*0.85),groundY-10*sc,sc);
+    }
+
+    // Trees
+    const treeType=carbon>60?'tree_dead':'tree_green';
+    spr(treeType,Math.floor(W*0.05),groundY-8*sc,sc);
+    if(carbon<50)spr('tree_green',Math.floor(W*0.92),groundY-8*sc,sc);
+
+    // Water features - multiple lakes/ponds based on water usage
+    const waterSpots=[0.35,0.55,0.7,0.82];
+    for(let i=0;i<waterSpots.length;i++){
+      const lakeX=Math.floor(W*waterSpots[i]);
+      if(water>70){
+        spr('lake_dry',lakeX,groundY-6*sc,sc);
+      }else if(water>50&&i>=2){
+        // Higher water usage dries out smaller ponds first
+        spr('lake_dry',lakeX,groundY-6*sc,sc);
+      }else if(water>30&&i>=3){
+        spr('lake_dry',lakeX,groundY-6*sc,sc);
+      }else{
+        spr('lake_full',lakeX,groundY-6*sc,sc);
+        // Shrink effect
+        if(water>40){
+          const cover=(water-40)/30;
+          rect(lakeX,groundY-6*sc,8*sc*cover,8*sc,groundCol);
+        }
+      }
+    }
+  }
+
+  // ===== LAYER 2: WORKERS =====
+  function drawWorkers(oy,h){
+    const unemp=stats.unemployment||15,corp=stats.corporate_influence||40;
+    // Office bg
+    rect(0,oy,W,h,'#16213e');
+    // Floor
+    const floorY=oy+h-4;
+    rect(0,floorY,W,4,'#1a1a2e');
+    // ceiling line
+    rect(0,oy,W,1,'#223');
+
+    const sc=Math.max(1,Math.floor(h/30));
+    const deskCount=6;
+    const occupiedCount=Math.max(0,Math.min(6,Math.round(6*(1-unemp/100))));
+    const robotReplace=corp>50;
+    const spacing=Math.floor(W/(deskCount+1));
+
+    const workerSprites=['worker_1','worker_2','worker_3','worker_4','worker_5','worker_6'];
+    for(let i=0;i<deskCount;i++){
+      const dx=spacing*(i+1)-4*sc;
+      // Draw desk
+      spr('desk',dx,floorY-4*sc,sc);
+      if(i<occupiedCount){
+        // Pick a varied worker based on desk index
+        const stressed=corp>60&&unemp>30;
+        const wSprite=stressed?'worker_stressed':workerSprites[i%workerSprites.length];
+        spr(wSprite,dx,floorY-12*sc,sc);
+        // Typing animation - pixel flicker on desk monitor area
+        if(tick%4<2){
+          rect(dx+3*sc,floorY-3*sc,2*sc,sc,stressed?'#ff4444':'#40c4ff');
+        }
+      }else{
+        // Empty desk, possibly with robot
+        if(robotReplace){
+          spr('robot_worker',dx,floorY-12*sc,sc);
+        }
+      }
+    }
+
+    // Monitor wall for corporate influence
+    if(corp>30){
+      const monCount=Math.min(4,Math.floor(corp/20));
+      for(let i=0;i<monCount;i++){
+        spr('monitor_on',Math.floor(W*0.02)+i*10*sc,oy+2,sc);
+      }
+    }
+  }
+
+  // ===== LAYER 3: USERS =====
+  function drawUsers(oy,h){
+    const ai=stats.public_ai_services||25,trust=stats.public_trust||50,misinfo=stats.misinformation||20;
+    // Park/city bg
+    rect(0,oy,W,h,'#1a2a1a');
+    // Ground
+    const groundY=oy+h-4;
+    rect(0,groundY,W,4,'#2a3a2a');
+
+    const sc=Math.max(1,Math.floor(h/30));
+    // People count based on AI services — more people now
+    const pplCount=Math.max(4,Math.min(14,Math.floor(ai/7)));
+    const spacing=Math.floor(W/(pplCount+1));
+
+    // Mix of sprites based on trust — vary per person
+    const userSprites=['user_happy','user_worried','user_angry'];
+    function pickUserSprite(i){
+      if(trust>60)return i%5===0?'user_worried':'user_happy';
+      if(trust>30)return i%3===0?'user_angry':i%2===0?'user_happy':'user_worried';
+      return i%4===0?'user_worried':'user_angry';
+    }
+
+    for(let i=0;i<pplCount;i++){
+      const px=spacing*(i+1)-4*sc;
+      const bob=(tick+i)%4<2?0:-1;
+      spr(pickUserSprite(i),px,groundY-8*sc+bob,sc);
+      // Phone/device for some
+      if(ai>25&&i%3!==0){
+        spr('phone',px+6*sc,groundY-5*sc+bob,sc);
+      }
+    }
+
+    // Easels / chatbots when AI > 50
+    if(ai>50){
+      spr('easel',Math.floor(W*0.15),groundY-8*sc,sc);
+      spr('chat_bubble',Math.floor(W*0.5),oy+4,sc);
+    }
+
+    // Deepfake TVs when misinfo > 40
+    if(misinfo>40){
+      const tvCount=Math.min(3,Math.floor((misinfo-40)/15)+1);
+      for(let i=0;i<tvCount;i++){
+        spr('deepfake_tv',Math.floor(W*0.75)+i*12*sc,groundY-8*sc,sc);
+        // Flicker
+        if(tick%6<2){
+          rect(Math.floor(W*0.75)+i*12*sc+sc,groundY-7*sc,6*sc,6*sc,'rgba(255,0,0,0.15)');
+        }
+      }
+    }
+
+    // Protest signs when trust < 30
+    if(trust<30){
+      spr('protest_sign',Math.floor(W*0.1),groundY-14*sc,sc);
+      spr('protest_sign',Math.floor(W*0.88),groundY-14*sc,sc);
+    }
+
+    // AI companion bots when trust > 60 and services > 50
+    if(trust>60&&ai>50){
+      spr('companion_bot',Math.floor(W*0.4),groundY-8*sc,sc);
+      if(ai>75)spr('companion_bot',Math.floor(W*0.65),groundY-8*sc,sc);
+    }
+  }
+
+  return {init,update,resize};
+})();
+
+function toggleWorldView(){
+  const game=document.getElementById('game');
+  const btn=document.getElementById('wv-toggle');
+  game.classList.toggle('wv-open');
+  const open=game.classList.contains('wv-open');
+  btn.textContent=open?'✕ CLOSE VIEW':'🌍 WORLD VIEW';
+  if(open)WorldView.resize();
+}
+
+// Initialize intro screen with pixel sprites
+(function(){
+  const is=document.getElementById('intro-sprites');
+  if(is)is.innerHTML=[
+    spriteHTML('tech_idle',3),spriteHTML('dario_idle',3),spriteHTML('elon_idle',3),
+    spriteHTML('zuck_idle',3),spriteHTML('jensen_idle',3),spriteHTML('asml_idle',3),
+    spriteHTML('tsmc_idle',3),spriteHTML('player',3),
+    spriteHTML('citizen_idle',3),spriteHTML('workers_idle',3),
+    spriteHTML('military_idle',3),spriteHTML('thiel_idle',3),spriteHTML('green_idle',3)
+  ].map((s,i)=>`<span style="animation:charBob 1s steps(2) infinite;animation-delay:${i*.08}s">${s}</span>`).join('');
+})();
+</script>
+</body>
+</html>

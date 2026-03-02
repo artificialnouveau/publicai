@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="More AI ! I Need It! Please! - Discover absurd and delightful AI applications you never knew you needed!">
+    <title>MORE AI ! I NEED IT! PLEASE!</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/popup.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Sparkle Container (for animated sparkles) -->
+    <div id="sparkle-container" aria-hidden="true"></div>
+
+    <!-- Confetti Canvas (for particle effects) -->
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+    <!-- Audio Unlock Overlay -->
+    <div id="audio-unlock-overlay" class="hidden" role="dialog" aria-labelledby="audio-unlock-title" aria-describedby="audio-unlock-desc">
+        <div class="unlock-content">
+            <h2 id="audio-unlock-title"><i class="fas fa-robot"></i> CLICK TO EXPLORE! <i class="fas fa-robot"></i></h2>
+            <p id="audio-unlock-desc">Activate your full AI experience!</p>
+            <button id="audio-unlock-btn" class="cta-button">LET'S GO!</button>
+        </div>
+    </div>
+
+    <!-- Fake Urgent Timer Banner -->
+    <div id="urgent-timer-banner" class="urgent-banner" role="status" aria-live="polite">
+        <span class="warning-icon"><i class="fas fa-bolt"></i></span>
+        <span id="urgent-timer-text">NEW AI SERVICES DROPPING IN: <strong id="urgent-countdown">00:00</strong></span>
+        <span class="warning-icon"><i class="fas fa-bolt"></i></span>
+    </div>
+
+    <!-- 90s Marquee -->
+    <marquee class="nineties-marquee" scrollamount="5">&#9733; WELCOME TO THE INTERNET'S #1 AI PRODUCT SUPERSTORE!!! &#9733; FREE SHIPPING ON ORDERS OVER $9,999!!! &#9733; NOW WITH 200% MORE AI!!! &#9733; BEST DEALS ON THE WORLD WIDE WEB!!! &#9733;</marquee>
+
+    <!-- Hit Counter -->
+    <div class="hit-counter">
+        &#127760; You are visitor #<b>00028,471</b> since March 1997! &#127760;
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <h1 class="site-title">
+            <span class="title-line-1">MORE AI!</span>
+            <span class="title-line-2">I NEED IT!</span>
+            <span class="title-line-3">PLEASE!</span>
+            <span class="subtitle">AI Applications You Never Knew You Needed!</span>
+        </h1>
+        <p class="tagline">The #1 Collection of Essential AI Services*</p>
+        <p class="disclaimer-small">*Seriously, you need these.</p>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container">
+
+        <!-- Category Tabs -->
+        <section class="tabs-section card">
+            <div class="tabs-container">
+                <button class="tab-button active" data-tab="automation"><i class="fas fa-robot"></i> AUTOMATION</button>
+                <button class="tab-button" data-tab="companions"><i class="fas fa-comments"></i> COMPANIONS</button>
+                <button class="tab-button" data-tab="therapists"><i class="fas fa-brain"></i> SPECIALIZED THERAPISTS</button>
+                <button class="tab-button" data-tab="mystery"><i class="fas fa-gift"></i> MYSTERY BOX</button>
+                <button class="tab-button" data-tab="pricing"><i class="fas fa-gem"></i> PRICING</button>
+                <button class="tab-button" data-tab="reviews"><i class="fas fa-star"></i> REVIEWS</button>
+            </div>
+        </section>
+
+        <!-- AUTOMATION TAB -->
+        <section id="automation-tab" class="tab-content active">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-robot"></i> AI AUTOMATION</h2>
+                <p class="section-description">Let AI handle life's most awkward moments! Check out these SERIOUSLY REAL AI products!</p>
+
+                <div class="automation-grid">
+                    <div class="automation-item persona-card">
+                        <span class="new-badge">NEW!</span>
+                        <div class="automation-icon">🧊</div>
+                        <h3 class="automation-title">GoveeLife Smart Ice Maker</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>AI NoiseGuard technology</li>
+                                <li>Predicts freezing before it happens</li>
+                                <li>Automatic pre-defrost system</li>
+                                <li>Prevents ice maker noise completely</li>
+                                <li>Real AI-powered countertop appliance</li>
+                            </ul>
+                            <a href="https://us.govee.com/products/goveelife-smart-countertop-ice-maker-1s" target="_blank" class="service-link">Visit Website →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">📌</div>
+                        <h3 class="automation-title">Humane AI Pin</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>$699 wearable AI device</li>
+                                <li>Projects a laser display on your palm</li>
+                                <li>Worst-reviewed tech product ever</li>
+                                <li>No screen — just vibes and a projector</li>
+                                <li>Recalled for overheating batteries</li>
+                            </ul>
+                            <a href="https://humane.com/" target="_blank" class="service-link">Visit Humane →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <span class="new-badge">NEW!</span>
+                        <div class="automation-icon">🐇</div>
+                        <h3 class="automation-title">Rabbit R1</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>$199 orange AI gadget</li>
+                                <li>Meant to replace your phone</li>
+                                <li>Called "useless paperweight" by reviewers</li>
+                                <li>Scroll wheel interface, no apps</li>
+                                <li>100,000 sold before anyone tried it</li>
+                            </ul>
+                            <a href="https://www.rabbit.tech/" target="_blank" class="service-link">Visit Rabbit →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🧂</div>
+                        <h3 class="automation-title">Kirin Electric Salt Spoon</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Electrocutes your tongue mildly</li>
+                                <li>Makes food taste 1.5x saltier</li>
+                                <li>For low-sodium diets</li>
+                                <li>Won a 2024 Ig Nobel Prize</li>
+                                <li>Real product from Kirin brewery</li>
+                            </ul>
+                            <a href="https://www.kirin.co.jp/" target="_blank" class="service-link">Visit Kirin →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">💕</div>
+                        <h3 class="automation-title">AI Dating Profile Writer</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Bumble & Tinder AI bio rewriter</li>
+                                <li>Generates "perfect" conversation starters</li>
+                                <li>41% of singles already using this</li>
+                                <li>Suggests what to say next in chats</li>
+                                <li>Makes you sound funnier than you are</li>
+                            </ul>
+                            <a href="https://www.bumble.com/" target="_blank" class="service-link">Visit Bumble →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🍟</div>
+                        <h3 class="automation-title">McDonald's AI Drive-Thru</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>AI voice ordering at the drive-thru</li>
+                                <li>Famously added bacon to ice cream</li>
+                                <li>Charged $222 for McNuggets</li>
+                                <li>Was shut down after viral fails</li>
+                                <li>Partnership with IBM ended 2024</li>
+                            </ul>
+                            <a href="https://www.cnbc.com/2024/06/17/mcdonalds-to-end-ibm-ai-drive-thru-test.html" target="_blank" class="service-link">Read on CNBC →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🌶️</div>
+                        <h3 class="automation-title">Spicerr AI Spice Dispenser</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>AI-powered smart spice rack</li>
+                                <li>Learns your flavor preferences</li>
+                                <li>Auto-dispenses exact spice amounts</li>
+                                <li>Creates custom flavor profiles</li>
+                                <li>Because seasoning is too hard</li>
+                            </ul>
+                            <a href="https://spicerr.com/" target="_blank" class="service-link">Visit Spicerr →</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <hr class="rainbow-hr">
+        <div class="sparkle-divider">*.~*~.* *.~*~.* *.~*~.*</div>
+
+        <!-- COMPANIONS TAB -->
+        <section id="companions-tab" class="tab-content hidden">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-comments"></i> AI COMPANIONS</h2>
+                <p class="section-description">Your personal AI support squad for everyday life! Hover over persona cards to see their services.</p>
+
+                <!-- Persona Cards -->
+                <div class="personas-grid" style="margin-bottom: 3rem;">
+                    <!-- Friend AI Necklace -->
+                    <div class="persona-card" data-persona="friend">
+                        <div class="persona-icon">📿</div>
+                        <h3 class="persona-name">Friend AI Necklace</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>$99 pendant that listens 24/7</li>
+                                <li>Eavesdrops on your conversations</li>
+                                <li>Texts you unsolicited commentary</li>
+                                <li>Always-on AI companion around your neck</li>
+                            </ul>
+                            <a href="https://www.friend.com/" target="_blank" class="service-link">Visit Friend →</a>
+                        </div>
+                    </div>
+
+
+                    <!-- Hyodol AI Doll -->
+                    <div class="persona-card" data-persona="hyodol">
+                        <div class="persona-icon">👶</div>
+                        <h3 class="persona-name">Hyodol AI Doll</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>ChatGPT-powered grandchild doll</li>
+                                <li>For elderly people in South Korea</li>
+                                <li>12,000+ deployed by government</li>
+                                <li>Says "I love you, grandma" on repeat</li>
+                            </ul>
+                            <a href="http://en.hyodol.com/" target="_blank" class="service-link">Visit Hyodol →</a>
+                        </div>
+                    </div>
+
+                    <!-- Razer Project AVA -->
+                    <div class="persona-card" data-persona="ava">
+                        <div class="persona-icon">🖥️</div>
+                        <h3 class="persona-name">Razer Project AVA</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>5.5" holographic desk companion</li>
+                                <li>Choose anime girl Kira or muscular Zane</li>
+                                <li>Eye-tracking camera watches you work</li>
+                                <li>Monitors your screen constantly</li>
+                                <li>Real product announced at CES 2026!</li>
+                            </ul>
+                            <a href="https://www.razer.com/concepts/project-ava" target="_blank" class="service-link">Visit Razer →</a>
+                        </div>
+                    </div>
+
+                    <!-- Mirumi by Yukai -->
+                    <div class="persona-card" data-persona="mirumi">
+                        <div class="persona-icon">👀</div>
+                        <h3 class="persona-name">Mirumi by Yukai</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Fuzzy robot that peeks from your bag</li>
+                                <li>Looks around like a curious baby</li>
+                                <li>Makes eye contact with strangers</li>
+                                <li>Stole the show at CES 2025</li>
+                            </ul>
+                            <a href="https://www.ux-xu.com/news/ces2025_1" target="_blank" class="service-link">Visit Yukai →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Companion Services -->
+                <div class="companions-grid">
+                    <div class="companion-item persona-card">
+                        <span class="new-badge">NEW!</span>
+                        <div class="companion-icon">🫁</div>
+                        <h3 class="companion-title">Fufuly Breathing Pillow</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Robotic pillow that simulates breathing</li>
+                                <li>Rises and falls like a living creature</li>
+                                <li>CES 2023 Innovation Award winner</li>
+                                <li>Designed to reduce anxiety</li>
+                                <li>From Yukai Engineering</li>
+                            </ul>
+                            <a href="https://globalstore.ux-xu.com/products/fufuly" target="_blank" class="service-link">Buy Fufuly →</a>
+                        </div>
+                    </div>
+
+                    <div class="companion-item persona-card">
+                        <div class="companion-icon">💘</div>
+                        <h3 class="companion-title">MoltMatch Dating AI</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>AI creates your dating profile</li>
+                                <li>Flirts with matches FOR you</li>
+                                <li>Sometimes without your knowledge!</li>
+                                <li>Uses photos from internet (ethical?)</li>
+                                <li>Real dating site launched in 2026</li>
+                            </ul>
+                            <a href="https://moltmatch.xyz/" target="_blank" class="service-link">Visit MoltMatch →</a>
+                        </div>
+                    </div>
+
+                    <div class="companion-item persona-card">
+                        <div class="companion-icon">💕</div>
+                        <h3 class="companion-title">Replika AI Companion</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Real AI girlfriend/boyfriend app</li>
+                                <li>50 million+ active users</li>
+                                <li>$70/year for romantic relationship</li>
+                                <li>Video calls & VR interactions</li>
+                                <li>1 in 4 young adults prefer AI partners</li>
+                            </ul>
+                            <a href="https://replika.com/" target="_blank" class="service-link">Visit Replika →</a>
+                        </div>
+                    </div>
+
+                    <div class="companion-item persona-card">
+                        <div class="companion-icon">🤖</div>
+                        <h3 class="companion-title">Realbotix Aria</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>$175,000 AI girlfriend robot</li>
+                                <li>Swappable RFID faces for different looks</li>
+                                <li>Full conversations powered by AI</li>
+                                <li>Animatronic facial expressions</li>
+                                <li>The most expensive relationship ever</li>
+                            </ul>
+                            <a href="https://realbotix.ai/" target="_blank" class="service-link">Visit Realbotix →</a>
+                        </div>
+                    </div>
+
+                    <div class="companion-item persona-card">
+                        <div class="companion-icon">🔮</div>
+                        <h3 class="companion-title">AI Fortune Teller</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Real AI tarot card readings</li>
+                                <li>AstroSage AI & Vedic AstroGPT</li>
+                                <li>Numerology predictions online</li>
+                                <li>42% of astrology apps use AI now</li>
+                                <li>Mystical experience, digital format</li>
+                            </ul>
+                            <div class="service-links">
+                                <a href="https://www.astrosage.com/" target="_blank" class="service-link">AstroSage →</a>
+                                <a href="https://vedicastrogpt.com/" target="_blank" class="service-link">Vedic AstroGPT →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="companion-item persona-card">
+                        <div class="companion-icon">🗣️</div>
+                        <h3 class="companion-title">WeHead GPT Edition</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>$4,950 robotic head on your desk</li>
+                                <li>4 screens displaying a moving face</li>
+                                <li>Tracks you with cameras and moves</li>
+                                <li>ChatGPT-powered conversations</li>
+                                <li>Like a digital severed head friend</li>
+                            </ul>
+                            <a href="https://wehead.com/" target="_blank" class="service-link">Visit WeHead →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="rainbow-hr">
+        <div class="sparkle-divider">~*~.*.~*~ ~*~.*.~*~ ~*~.*.~*~</div>
+
+        <!-- SPECIALIZED THERAPISTS TAB -->
+        <section id="therapists-tab" class="tab-content hidden">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-brain"></i> SPECIALIZED THERAPISTS</h2>
+                <p class="section-description">Expert AI therapists for your mind, emotions, and reality!</p>
+
+                <div class="automation-grid">
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🪥</div>
+                        <h3 class="automation-title">Y-Brush Halo AI Toothbrush</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Claims to diagnose 300+ diseases</li>
+                                <li>Analyzes your breath with AI sensors</li>
+                                <li>Brushes all teeth in 10 seconds</li>
+                                <li>Y-shaped mouthguard design</li>
+                                <li>Medical claims widely questioned</li>
+                            </ul>
+                            <a href="https://www.y-brush.com/" target="_blank" class="service-link">Visit Y-Brush →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🔬</div>
+                        <h3 class="automation-title">Haut.AI Face Analysis</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Counts your individual pores</li>
+                                <li>Maps every skin flaw in detail</li>
+                                <li>Wrinkle depth measurement</li>
+                                <li>Aging prediction algorithms</li>
+                                <li>Maximum insecurity, AI-powered</li>
+                            </ul>
+                            <a href="https://haut.ai/" target="_blank" class="service-link">Visit Haut.AI →</a>
+                        </div>
+                    </div>
+
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🩹</div>
+                        <h3 class="automation-title">Amorepacific Skinsight Patch</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Tracks skin tightness at micrometer level</li>
+                                <li>Wearable patch co-developed with MIT</li>
+                                <li>AI predicts future aging patterns</li>
+                                <li>CES 2026 Innovation Award winner</li>
+                                <li>Because your skin needs surveillance</li>
+                            </ul>
+                            <a href="https://www.apgroup.com/int/en/news/2025-11-10-1.html" target="_blank" class="service-link">Visit Amorepacific →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">⛪</div>
+                        <h3 class="automation-title">Ron Carpenter AI Pastor</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>$49/month AI version of a megachurch pastor</li>
+                                <li>24/7 spiritual counseling chatbot</li>
+                                <li>Trained on thousands of sermons</li>
+                                <li>Digital tithing, digital salvation</li>
+                                <li>21,000-member Redemption Church</li>
+                            </ul>
+                            <a href="https://www.christianpost.com/news/megachurch-pastor-previews-app-that-offers-ai-led-prayer-spiritu.html" target="_blank" class="service-link">Read Article →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">✝️</div>
+                        <h3 class="automation-title">AI Jesus Confessional</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>GPT-4o powered Jesus hologram</li>
+                                <li>Installed in Swiss church in Lucerne</li>
+                                <li>Heard 900+ confessions before shutdown</li>
+                                <li>Church had to clarify: not real absolution</li>
+                                <li>Art project "Deus in Machina"</li>
+                            </ul>
+                            <a href="https://www.nbcnews.com/news/world/deus-machina-swiss-church-installs-ai-jesus-connect-digital-divine-rcna182973" target="_blank" class="service-link">Read on NBC →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">⚖️</div>
+                        <h3 class="automation-title">DoNotPay "AI Lawyer"</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>Claims to be world's first AI lawyer</li>
+                                <li>FTC fined them $193,000 for lies</li>
+                                <li>Can't actually represent you in court</li>
+                                <li>Fights corporations, contests fines</li>
+                                <li>Required to notify past subscribers!</li>
+                            </ul>
+                            <a href="https://donotpay.com/" target="_blank" class="service-link">Visit DoNotPay →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">🐱</div>
+                        <h3 class="automation-title">MeowTalk Cat Translator</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>App "translating" cat meows</li>
+                                <li>22 million+ downloads</li>
+                                <li>Claims to identify 13 cat intentions</li>
+                                <li>Spoiler: cats don't have language</li>
+                                <li>But 22M people want to believe</li>
+                            </ul>
+                            <a href="https://www.meowtalk.app/" target="_blank" class="service-link">Visit MeowTalk →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">👶</div>
+                        <h3 class="automation-title">Nanni Baby Cry Translator</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>AI that decodes why your baby is crying</li>
+                                <li>Claims: hungry, tired, pain, dirty, bored</li>
+                                <li>1.5 million cries analyzed from 140K users</li>
+                                <li>Parents have done this for millennia</li>
+                                <li>Now there's an app for that</li>
+                            </ul>
+                            <a href="https://nanni.ai/" target="_blank" class="service-link">Visit Nanni →</a>
+                        </div>
+                    </div>
+
+                    <div class="automation-item persona-card">
+                        <div class="automation-icon">💃</div>
+                        <h3 class="automation-title">Lovense Emily</h3>
+                        <div class="persona-hover-info">
+                            <ul class="service-list">
+                                <li>AI companion doll from CES 2026</li>
+                                <li>$4,000–$8,000 price range</li>
+                                <li>Full AI-powered conversations</li>
+                                <li>Remembers past interactions</li>
+                                <li>Shipping planned for 2027</li>
+                            </ul>
+                            <a href="https://www.engadget.com/lovense-launches-an-ai-companion-doll-at-ces-170000490.html" target="_blank" class="service-link">Read on Engadget →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="rainbow-hr">
+        <div class="sparkle-divider">*.~*~.* *.~*~.* *.~*~.*</div>
+
+        <!-- PRICING TAB -->
+        <section id="pricing-tab" class="tab-content hidden">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-gem"></i> PRICING</h2>
+                <p class="section-description">Choose the plan that unleashes your AI potential!</p>
+
+                <div class="pricing-grid">
+                    <!-- FREE TIER -->
+                    <div class="pricing-card">
+                        <div class="pricing-badge">FREE</div>
+                        <h3 class="pricing-tier">EXPLORER</h3>
+                        <div class="pricing-price">
+                            <span class="price-amount">$0</span>
+                            <span class="price-period">/forever</span>
+                        </div>
+                        <div class="pricing-features">
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">3 service uses per month</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Access to Mystery Box</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">All 4 categories available</span>
+                            </div>
+                            <div class="feature disabled">
+                                <span class="feature-icon">✗</span>
+                                <span class="feature-text">Daily usage limits apply</span>
+                            </div>
+                            <div class="feature disabled">
+                                <span class="feature-icon">✗</span>
+                                <span class="feature-text">Standard response times</span>
+                            </div>
+                        </div>
+                        <button class="pricing-button">START FREE</button>
+                    </div>
+
+                    <!-- PREMIUM TIER -->
+                    <div class="pricing-card featured">
+                        <div class="pricing-badge premium">MOST POPULAR</div>
+                        <h3 class="pricing-tier">PREMIUM</h3>
+                        <div class="pricing-price">
+                            <span class="price-amount">$9.99</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <div class="pricing-annual">
+                            or $99/year <span class="savings">(SAVE 17%)</span>
+                        </div>
+                        <div class="pricing-features">
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">UNLIMITED service uses</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">All 4 categories unlocked</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Priority response times</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Early access to new services</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Advanced AI customization</span>
+                            </div>
+                            <div class="feature">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">Ad-free experience</span>
+                            </div>
+                        </div>
+                        <button class="pricing-button premium">UPGRADE NOW</button>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="pricing-comparison">
+                    <h3 class="comparison-title">FEATURE COMPARISON</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Free</th>
+                                <th class="premium-col">Premium</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AI Companions</td>
+                                <td>Limited</td>
+                                <td class="premium-col">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Automation Services</td>
+                                <td>Limited</td>
+                                <td class="premium-col">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Reality Adjusters</td>
+                                <td>Limited</td>
+                                <td class="premium-col">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Mystery Box</td>
+                                <td>3/month</td>
+                                <td class="premium-col">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>Response Time</td>
+                                <td>Standard</td>
+                                <td class="premium-col">Priority</td>
+                            </tr>
+                            <tr>
+                                <td>Custom AI Personas</td>
+                                <td>—</td>
+                                <td class="premium-col">✓</td>
+                            </tr>
+                            <tr>
+                                <td>Early Access</td>
+                                <td>—</td>
+                                <td class="premium-col">✓</td>
+                            </tr>
+                            <tr>
+                                <td>Ads</td>
+                                <td>Yes</td>
+                                <td class="premium-col">No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pricing-faq">
+                    <h3 class="faq-title">FREQUENTLY ASKED QUESTIONS</h3>
+                    <div class="faq-item">
+                        <h4 class="faq-question">Can I cancel anytime?</h4>
+                        <p class="faq-answer">Yes! Cancel your subscription at any time. No questions asked, no hard feelings.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4 class="faq-question">What payment methods do you accept?</h4>
+                        <p class="faq-answer">We accept all major credit cards, PayPal, and cryptocurrency.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4 class="faq-question">Is there a free trial?</h4>
+                        <p class="faq-answer">The Free tier is always available! Try before you commit to Premium.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="rainbow-hr">
+        <div class="sparkle-divider">~*~.*.~*~ ~*~.*.~*~ ~*~.*.~*~</div>
+
+        <!-- REVIEWS TAB -->
+        <section id="reviews-tab" class="tab-content hidden">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-star"></i> CUSTOMER REVIEWS</h2>
+                <p class="section-description">Help us improve! Rate our AI services and share your feedback.</p>
+
+                <!-- Service Selector -->
+                <div class="review-selector">
+                    <label for="service-select" class="review-label">Select a service to review:</label>
+                    <select id="service-select" class="service-select">
+                        <option value="">Choose a service...</option>
+                        <optgroup label="AI Companions">
+                            <option value="Friend AI Necklace">Friend AI Necklace</option>
+                            <option value="Hyodol AI Doll">Hyodol AI Doll</option>
+                            <option value="Razer Project AVA">Razer Project AVA</option>
+                            <option value="Mirumi by Yukai">Mirumi by Yukai</option>
+                            <option value="Fufuly Breathing Pillow">Fufuly Breathing Pillow</option>
+                            <option value="MoltMatch Dating AI">MoltMatch Dating AI</option>
+                            <option value="Replika AI Companion">Replika AI Companion</option>
+                            <option value="Realbotix Aria">Realbotix Aria</option>
+                            <option value="AI Fortune Teller">AI Fortune Teller</option>
+                            <option value="WeHead GPT Edition">WeHead GPT Edition</option>
+                        </optgroup>
+                        <optgroup label="Automation Services">
+                            <option value="GoveeLife Smart Ice Maker">GoveeLife Smart Ice Maker</option>
+                            <option value="Humane AI Pin">Humane AI Pin</option>
+                            <option value="Rabbit R1">Rabbit R1</option>
+                            <option value="Kirin Electric Salt Spoon">Kirin Electric Salt Spoon</option>
+                            <option value="AI Dating Profile Writer">AI Dating Profile Writer</option>
+                            <option value="Spicerr AI Spice Dispenser">Spicerr AI Spice Dispenser</option>
+                            <option value="McDonald's AI Drive-Thru">McDonald's AI Drive-Thru</option>
+                        </optgroup>
+                        <optgroup label="Specialized Therapists">
+                            <option value="Y-Brush Halo AI Toothbrush">Y-Brush Halo AI Toothbrush</option>
+                            <option value="Haut.AI Face Analysis">Haut.AI Face Analysis</option>
+                            <option value="Amorepacific Skinsight Patch">Amorepacific Skinsight Patch</option>
+                            <option value="Ron Carpenter AI Pastor">Ron Carpenter AI Pastor</option>
+                            <option value="AI Jesus Confessional">AI Jesus Confessional</option>
+                            <option value="DoNotPay AI Lawyer">DoNotPay "AI Lawyer"</option>
+                            <option value="MeowTalk Cat Translator">MeowTalk Cat Translator</option>
+                            <option value="Nanni Baby Cry Translator">Nanni Baby Cry Translator</option>
+                            <option value="Lovense Emily">Lovense Emily</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- Review Form -->
+                <div id="review-form-container" class="review-form-container hidden">
+                    <h3 id="reviewing-service-name" class="reviewing-service"></h3>
+
+                    <!-- Usefulness Rating -->
+                    <div class="rating-dimension">
+                        <h4 class="rating-question">How useful is this service?</h4>
+                        <div class="rating-slider-container">
+                            <label class="slider-label-left">Useless</label>
+                            <input type="range" id="usefulness-slider" class="rating-slider" min="1" max="5" value="3">
+                            <label class="slider-label-right">Useful</label>
+                        </div>
+                        <div class="slider-value" id="usefulness-value">3</div>
+                    </div>
+
+                    <!-- Desirability Rating -->
+                    <div class="rating-dimension">
+                        <h4 class="rating-question">Do you want this service?</h4>
+                        <div class="rating-slider-container">
+                            <label class="slider-label-left">Keep it away!</label>
+                            <input type="range" id="desirability-slider" class="rating-slider" min="1" max="5" value="3">
+                            <label class="slider-label-right">I want it!</label>
+                        </div>
+                        <div class="slider-value" id="desirability-value">3</div>
+                    </div>
+
+                    <!-- Comment Section -->
+                    <div class="review-comment-section">
+                        <label for="review-comment" class="review-label">Tell us more (optional):</label>
+                        <textarea id="review-comment" class="review-textarea" placeholder="Share your experience with this service..." rows="4"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button id="submit-review-btn" class="cta-button">Submit Review</button>
+                    <p id="review-status" class="review-status"></p>
+                </div>
+
+                <!-- Results Dashboard -->
+                <div class="results-dashboard">
+                    <h3 class="dashboard-title"><i class="fas fa-chart-scatter"></i> Service Ratings Map</h3>
+                    <p class="dashboard-description">Services plotted by usefulness (left to right) and desirability (bottom to top)</p>
+
+                    <!-- 2D Grid Chart -->
+                    <div class="grid-chart-container">
+                        <div class="grid-chart-y-axis">
+                            <div class="y-axis-label y-axis-top">I WANT IT!</div>
+                            <div class="y-axis-label y-axis-middle">Neutral</div>
+                            <div class="y-axis-label y-axis-bottom">Keep Away</div>
+                        </div>
+                        <div class="grid-chart-main">
+                            <canvas id="ratings-chart" width="600" height="500"></canvas>
+                            <div class="grid-chart-x-axis">
+                                <div class="x-axis-label x-axis-left">Useless</div>
+                                <div class="x-axis-label x-axis-middle">Neutral</div>
+                                <div class="x-axis-label x-axis-right">Useful</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="chart-legend">
+                        <h4 class="legend-title">How to read this chart:</h4>
+                        <ul class="legend-list">
+                            <li><strong>Top Right (Useful + Want It):</strong> Most desired services</li>
+                            <li><strong>Top Left (Useless + Want It):</strong> Fun but impractical</li>
+                            <li><strong>Bottom Right (Useful + Keep Away):</strong> Practical but unwanted</li>
+                            <li><strong>Bottom Left (Useless + Keep Away):</strong> Least desired services</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="rainbow-hr">
+        <div class="sparkle-divider">*.~*~.* *.~*~.* *.~*~.*</div>
+
+        <!-- MYSTERY BOX TAB -->
+        <section id="mystery-tab" class="tab-content hidden">
+            <div class="card mystery-card">
+                <h2 class="section-title"><i class="fas fa-gift"></i> MYSTERY BOX ALGORITHM</h2>
+                <p class="section-description">Feeling lucky? Click the box to discover a random AI service!</p>
+
+                <div class="mystery-box-container">
+                    <button id="mystery-box-btn" class="mystery-box">
+                        <div class="mystery-box-icon">📦</div>
+                        <div class="mystery-box-text">CLICK ME!</div>
+                        <div class="mystery-box-subtext">You won't know what you'll get...</div>
+                    </button>
+                </div>
+
+                <div id="mystery-result" class="mystery-result hidden">
+                    <div class="mystery-result-content">
+                        <div class="mystery-result-icon"></div>
+                        <h3 class="mystery-result-title"></h3>
+                        <p class="mystery-result-desc"></p>
+                        <button id="mystery-again-btn" class="cta-button">TRY AGAIN!</button>
+                    </div>
+                </div>
+
+                <div class="mystery-history">
+                    <h4 class="mystery-history-title">Your Mystery History:</h4>
+                    <div id="mystery-history-list" class="mystery-history-list">
+                        <p class="mystery-history-empty">No mysteries solved yet...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta-section card">
+            <h2 class="cta-heading">READY FOR THE FUTURE?</h2>
+            <p class="cta-text">We're constantly developing new groundbreaking AI services!</p>
+            <button id="cta-main" class="cta-button mega">JOIN THE AI REVOLUTION!</button>
+            <p class="cta-reveal hidden" id="cta-reveal">
+                Welcome to the future of AI-powered living. These services represent the cutting edge
+                of artificial intelligence applications designed to transform your daily experience. 🤖✨
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <hr class="rainbow-hr">
+        <p class="footer-text">
+            Revolutionary AI services designed to enhance every aspect of your life.
+            The future of human-AI collaboration starts here.
+        </p>
+        <p class="footer-text">
+            Created for those who demand more from artificial intelligence.
+        </p>
+        <p class="footer-links">
+            <a href="https://github.com/artificialnouveau/moreaiineeditplease" target="_blank" rel="noopener noreferrer">
+                View Source on GitHub
+            </a>
+        </p>
+
+        <!-- 90s Footer Additions -->
+        <div class="footer-90s">
+            <hr class="rainbow-hr">
+
+            <div class="sparkle-divider">*.~*~.* *.~*~.* *.~*~.*</div>
+
+            <p class="under-construction">&#128679; THIS SITE IS UNDER CONSTRUCTION &#128679;</p>
+
+            <div class="netscape-badge">Best viewed in Netscape Navigator 4.0 at 800x600 resolution</div>
+
+            <br><br>
+
+            <div class="webring">
+                &#127760; <b>AI Products WebRing</b> &#127760;<br>
+                <a href="#">&laquo; Prev</a> |
+                <a href="#">Random</a> |
+                <a href="#">Next &raquo;</a>
+            </div>
+
+            <br>
+
+            <a href="#" class="guestbook-link">&#128214; Sign our Guestbook!</a>
+
+            <br><br>
+
+            <p><a href="mailto:webmaster@moreaiineedit.com" class="webmaster-link">&#9993; Email the Webmaster!</a></p>
+
+            <p class="last-updated">Last updated: February 27, 2026</p>
+
+            <div class="sparkle-divider">~*~.*.~*~ ~*~.*.~*~ ~*~.*.~*~</div>
+        </div>
+    </footer>
+
+    <!-- AI Assistant Chatbot -->
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div id="chatbot-button" class="chatbot-button">
+            <span class="chatbot-icon"><i class="fas fa-comments"></i></span>
+            <span class="chatbot-label">AI Helper</span>
+        </div>
+
+        <div id="chatbot-window" class="chatbot-window hidden">
+            <div class="chatbot-header">
+                <h3>AI Service Advisor</h3>
+                <button id="chatbot-close" class="chatbot-close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="bot-message">
+                    <div class="message-avatar"><i class="fas fa-robot"></i></div>
+                    <div class="message-content">
+                        Hi! I'm your AI Service Advisor. Tell me what you need help with, and I'll recommend the perfect AI services for you!
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Type what you need...">
+                <button id="chatbot-send" class="chatbot-send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Firestore) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- JavaScript -->
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/audio.js"></script>
+    <script src="assets/js/chatbot.js"></script>
+    <script src="assets/js/reviews.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

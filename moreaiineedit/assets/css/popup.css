@@ -1,0 +1,323 @@
+/* ============================================
+   Will I Have A Job? - Popup Styles
+   Annoying Modal Popups with Lottery Aesthetic
+   ============================================ */
+
+/* ============================================
+   Popup Modal Overlay
+   ============================================ */
+.popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    backdrop-filter: blur(5px);
+}
+
+.popup-modal.hidden {
+    display: none;
+}
+
+/* ============================================
+   Popup Content Container
+   ============================================ */
+.popup-content {
+    position: relative;
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    border: 5px solid #FFD700;
+    border-radius: 16px;
+    padding: 3rem 2rem 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(255, 215, 0, 0.5),
+        0 0 60px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: popup-shake 0.3s ease-in-out;
+}
+
+/* ============================================
+   Popup Close Button
+   ============================================ */
+.popup-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: linear-gradient(145deg, #FF0000 0%, #CC0000 50%, #FF0000 100%);
+    border: 2px solid #FFD700;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    line-height: 1;
+    padding: 0;
+}
+
+.popup-close:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+}
+
+.popup-close:active {
+    transform: scale(0.95) rotate(90deg);
+}
+
+/* ============================================
+   Popup Title
+   ============================================ */
+.popup-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    background: linear-gradient(145deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(255, 215, 0, 0.4);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+/* ============================================
+   Popup Message
+   ============================================ */
+.popup-message {
+    color: #C0C0C0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.popup-message strong {
+    color: #FFD700;
+    font-weight: 900;
+}
+
+.popup-message em {
+    color: #FF0000;
+    font-style: normal;
+    font-weight: bold;
+}
+
+/* ============================================
+   Popup CTA Button
+   ============================================ */
+.popup-button {
+    background: linear-gradient(145deg, #FF0000 0%, #CC0000 50%, #FF0000 100%);
+    color: white;
+    border: 3px solid #FFD700;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: 1px;
+    box-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        -1px -1px 2px rgba(255, 255, 255, 0.3),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.popup-button:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(255, 215, 0, 0.5);
+}
+
+.popup-button:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   Popup Shake Animation (on appear)
+   ============================================ */
+@keyframes popup-shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* ============================================
+   Urgent Popup Variant
+   ============================================ */
+.popup-content.urgent {
+    border-color: #FF0000;
+    animation: popup-shake 0.3s ease-in-out, urgent-glow 1s ease-in-out infinite;
+}
+
+@keyframes urgent-glow {
+    0%, 100% {
+        box-shadow:
+            0 12px 24px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(255, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow:
+            0 12px 24px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(255, 0, 0, 0.8),
+            0 0 60px rgba(255, 0, 0, 0.6);
+    }
+}
+
+/* ============================================
+   Special Popup Variants
+   ============================================ */
+
+/* Warning Popup */
+.popup-content.warning {
+    border-color: #FF6600;
+}
+
+.popup-content.warning .popup-title {
+    background: linear-gradient(145deg, #FF6600 0%, #FF0000 50%, #FF6600 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Success Popup (rare, for satire reveal) */
+.popup-content.success {
+    border-color: #00FF00;
+}
+
+.popup-content.success .popup-title {
+    background: linear-gradient(145deg, #00FF00 0%, #00CC00 50%, #00FF00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.popup-content.success .popup-button {
+    background: linear-gradient(145deg, #00FF00 0%, #00CC00 50%, #00FF00 100%);
+}
+
+/* ============================================
+   Popup Icon/Emoji Display
+   ============================================ */
+.popup-icon {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 480px) {
+    .popup-content {
+        padding: 2.5rem 1.5rem 1.5rem;
+        max-width: 95%;
+    }
+
+    .popup-title {
+        font-size: 1.3rem;
+    }
+
+    .popup-message {
+        font-size: 1rem;
+    }
+
+    .popup-button {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .popup-close {
+        width: 32px;
+        height: 32px;
+        font-size: 1.3rem;
+    }
+}
+
+/* ============================================
+   Accessibility - Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .popup-content {
+        animation: simple-popup-fade 0.2s ease !important;
+    }
+
+    .popup-content.urgent {
+        animation: simple-popup-fade 0.2s ease !important;
+    }
+
+    @keyframes simple-popup-fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .popup-close:hover {
+        transform: none;
+    }
+
+    .popup-button:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   Accessibility - High Contrast
+   ============================================ */
+@media (prefers-contrast: high) {
+    .popup-modal {
+        background: rgba(0, 0, 0, 0.95);
+    }
+
+    .popup-content {
+        border-width: 4px;
+    }
+
+    .popup-title {
+        text-shadow: none;
+    }
+}
+
+/* ============================================
+   Focus Styles for Accessibility
+   ============================================ */
+.popup-close:focus,
+.popup-button:focus {
+    outline: 3px solid #FFD700;
+    outline-offset: 2px;
+}
+
+.popup-close:focus:not(:focus-visible),
+.popup-button:focus:not(:focus-visible) {
+    outline: none;
+}

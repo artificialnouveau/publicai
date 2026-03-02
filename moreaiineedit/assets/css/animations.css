@@ -1,0 +1,439 @@
+/* ============================================
+   Will I Have A Job? - Animations
+   Sparkles, Confetti, and Visual Effects
+   ============================================ */
+
+/* ============================================
+   Sparkle Container
+   ============================================ */
+#sparkle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* ============================================
+   Individual Sparkle
+   ============================================ */
+.sparkle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    animation: sparkle-float 3s ease-in-out infinite;
+}
+
+.sparkle::before,
+.sparkle::after {
+    content: '✨';
+    position: absolute;
+    font-size: 20px;
+}
+
+.sparkle::before {
+    animation: sparkle-twinkle 1.5s ease-in-out infinite;
+}
+
+.sparkle::after {
+    animation: sparkle-twinkle 1.5s ease-in-out infinite 0.75s;
+    opacity: 0.6;
+}
+
+/* ============================================
+   Sparkle Animations
+   ============================================ */
+@keyframes sparkle-float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkle-twinkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+}
+
+/* ============================================
+   Confetti Canvas
+   ============================================ */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* ============================================
+   Slot Machine Rolling Effect
+   ============================================ */
+.rolling {
+    animation: slot-roll 0.1s linear infinite;
+}
+
+@keyframes slot-roll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+.roll-complete {
+    animation: roll-stop 0.3s ease-out;
+}
+
+@keyframes roll-stop {
+    0% {
+        transform: scale(1.5);
+        color: #FFD700;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   Jackpot Flash Effect
+   ============================================ */
+.jackpot-flash {
+    animation: jackpot-pulse 0.5s ease-out 3;
+}
+
+@keyframes jackpot-pulse {
+    0%, 100% {
+        background: rgba(255, 0, 0, 0.1);
+        transform: scale(1);
+    }
+    50% {
+        background: rgba(255, 215, 0, 0.3);
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* ============================================
+   Countdown Critical State
+   ============================================ */
+.countdown-critical {
+    animation: countdown-blink 1s infinite;
+}
+
+@keyframes countdown-blink {
+    0%, 100% {
+        color: #FF0000;
+        text-shadow:
+            0 0 10px #FF0000,
+            0 0 20px #FF0000,
+            0 0 30px #FF0000;
+    }
+    50% {
+        color: #FFD700;
+        text-shadow:
+            0 0 10px #FFD700,
+            0 0 20px #FFD700,
+            0 0 30px #FFD700;
+    }
+}
+
+/* ============================================
+   Countdown Warning State
+   ============================================ */
+.countdown-warning {
+    animation: countdown-pulse 2s infinite;
+}
+
+@keyframes countdown-pulse {
+    0%, 100% {
+        color: #FF6600;
+    }
+    50% {
+        color: #FFD700;
+    }
+}
+
+/* ============================================
+   Profile Card Transition
+   ============================================ */
+.profile-transition-out {
+    animation: slide-out-left 0.3s ease-in forwards;
+}
+
+.profile-transition-in {
+    animation: slide-in-right 0.3s ease-out;
+}
+
+@keyframes slide-out-left {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
+   Popup Entry/Exit Animations
+   ============================================ */
+.popup-enter {
+    animation: popup-bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.popup-exit {
+    animation: popup-fade-out 0.3s ease-out forwards;
+}
+
+@keyframes popup-bounce-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(-50px);
+    }
+    50% {
+        transform: scale(1.05) translateY(0);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes popup-fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+/* ============================================
+   Shake Animation (for emphasis)
+   ============================================ */
+.shake {
+    animation: shake-intense 0.5s;
+}
+
+@keyframes shake-intense {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-10px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(10px);
+    }
+}
+
+/* ============================================
+   Glow Effect
+   ============================================ */
+.glow {
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow:
+            0 0 5px rgba(255, 215, 0, 0.5),
+            0 0 10px rgba(255, 215, 0, 0.5),
+            0 0 15px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow:
+            0 0 10px rgba(255, 215, 0, 0.8),
+            0 0 20px rgba(255, 215, 0, 0.8),
+            0 0 30px rgba(255, 215, 0, 0.8),
+            0 0 40px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* ============================================
+   Timer Extension Flash
+   ============================================ */
+.timer-extended-flash {
+    animation: timer-flash 1s ease-out;
+}
+
+@keyframes timer-flash {
+    0% {
+        background: rgba(255, 215, 0, 0.8);
+        transform: scale(1);
+    }
+    50% {
+        background: rgba(255, 215, 0, 0.4);
+        transform: scale(1.1);
+    }
+    100% {
+        background: linear-gradient(145deg, #FF0000 0%, #CC0000 50%, #FF0000 100%);
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   Number Count-Up Animation
+   ============================================ */
+.counting-up {
+    animation: count-glow 0.1s ease-in-out;
+}
+
+@keyframes count-glow {
+    0%, 100% {
+        text-shadow: 0 0 5px currentColor;
+    }
+    50% {
+        text-shadow: 0 0 15px currentColor;
+    }
+}
+
+/* ============================================
+   Button Press Effect
+   ============================================ */
+.button-press {
+    animation: button-press-effect 0.3s ease-out;
+}
+
+@keyframes button-press-effect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   Reveal Animation
+   ============================================ */
+.reveal {
+    animation: reveal-text 0.6s ease-out;
+}
+
+@keyframes reveal-text {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* ============================================
+   Reduced Motion Support
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable all sparkle animations */
+    .sparkle,
+    .sparkle::before,
+    .sparkle::after {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+
+    /* Disable confetti */
+    #confetti-canvas {
+        display: none !important;
+    }
+
+    /* Simplify all other animations */
+    .rolling,
+    .roll-complete,
+    .jackpot-flash,
+    .countdown-critical,
+    .countdown-warning,
+    .profile-transition-out,
+    .profile-transition-in,
+    .popup-enter,
+    .popup-exit,
+    .shake,
+    .glow,
+    .timer-extended-flash,
+    .counting-up,
+    .button-press,
+    .reveal {
+        animation: none !important;
+    }
+
+    /* Keep basic fade for accessibility */
+    .popup-enter {
+        animation: simple-fade-in 0.2s ease !important;
+    }
+
+    @keyframes simple-fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+/* ============================================
+   High Contrast Mode Support
+   ============================================ */
+@media (prefers-contrast: high) {
+    .sparkle {
+        opacity: 0 !important;
+    }
+
+    #confetti-canvas {
+        opacity: 0.5 !important;
+    }
+
+    .countdown-critical,
+    .countdown-warning {
+        animation: none !important;
+        color: #FF0000 !important;
+    }
+}
