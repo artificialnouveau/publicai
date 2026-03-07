@@ -301,7 +301,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
   display: flex; flex-direction: column; gap: 0;
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 0 0 var(--radius) var(--radius);
-  overflow: hidden;
 }
 .battle-round {
   display: grid; grid-template-columns: 1fr 100px 1fr; align-items: center;
@@ -384,10 +383,27 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .battle-verdict .close { color: var(--gold); }
 .battle-verdict .verdict-sub { font-size: 0.85rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 0.5rem; }
 
-/* === AXIS DESCRIPTIONS === */
-.round-label { position: relative; }
-.round-label .axis-hint { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.92); color: rgba(255,255,255,0.85); font-size: 0.65rem; font-weight: 400; padding: 0.35rem 0.6rem; border-radius: 4px; white-space: nowrap; pointer-events: none; z-index: 10; margin-bottom: 4px; }
-.round-label:hover .axis-hint { display: block; }
+/* === BATTLE ROUND TOOLTIPS === */
+.battle-round { position: relative; cursor: pointer; }
+.battle-round:hover { background: rgba(255,255,255,0.07) !important; }
+.round-tooltip {
+  display: none; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+  background: rgba(8,8,16,0.96); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+  padding: 1rem 1.25rem; z-index: 50; width: 420px; max-width: 90vw;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+.battle-round:hover .round-tooltip { display: block; }
+.round-tooltip .tt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.round-tooltip .tt-axis { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.6); }
+.round-tooltip .tt-what { font-size: 0.6rem; color: rgba(255,255,255,0.35); font-style: italic; }
+.round-tooltip .tt-side { margin-bottom: 0.5rem; }
+.round-tooltip .tt-side:last-child { margin-bottom: 0; }
+.round-tooltip .tt-side-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+.round-tooltip .tt-side-label.ours { color: var(--cyan); }
+.round-tooltip .tt-side-label.theirs { color: var(--red); }
+.round-tooltip .tt-fact { font-size: 0.65rem; color: rgba(255,255,255,0.7); line-height: 1.5; padding-left: 0.6rem; position: relative; }
+.round-tooltip .tt-fact::before { content: '•'; position: absolute; left: 0; color: rgba(255,255,255,0.3); }
 
 /* === STORY GUIDE === */
 .story-guide {
@@ -761,14 +777,14 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="battle-inner">
     <div class="battle-header">
       <h2>The Stress Test</h2>
-      <p>Pick a challenger. Watch the rounds play out. Then pull the levers to change the outcome.</p>
+      <p>Pick a US hyperscaler to challenge. See where the merged entity wins and loses. Then invest government resources to close the gap.</p>
     </div>
     <div class="challenger-row" id="challengerRow"></div>
     <div class="battle-scoreboard" id="battleScoreboard"></div>
-    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; based on public data, market reports &amp; expert estimates. Hover an axis for details.</div>
+    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; based on public data, market reports &amp; expert estimates. <strong style="color:rgba(255,255,255,0.55);">Hover any round</strong> to see the evidence behind each score.</div>
     <div class="battle-rounds" id="battleRounds"></div>
     <div class="scenario-levers" id="scenarioLevers">
-      <div class="scenario-levers-label">Scenario Levers &mdash; tune to change the outcome</div>
+      <div class="scenario-levers-label">Government Investment in Public AI Co. &mdash; pull levers to boost the merged entity</div>
     </div>
     <div class="battle-verdict" id="battleVerdict"></div>
   </div>
@@ -920,6 +936,102 @@ const AXIS_HINTS = {
   sovereignty: 'Data residency, government trust, regulatory alignment',
   research: 'Papers published, talent depth, open-source contributions',
   revenue: 'Annual recurring revenue, growth rate, market penetration'
+};
+
+// Detailed rationale for each hyperscaler's axis scores
+const HYPER_RATIONALE = {
+  openai: {
+    compute: { score: 95, facts: ['$500B Stargate project with SoftBank/Oracle', 'Partnership with Microsoft Azure', 'Custom GPU clusters at scale'] },
+    models: { score: 96, facts: ['GPT-4o, o1, o3 frontier models', '#1 on LMSYS Arena (2025)', 'Multimodal: text, image, voice, video'] },
+    enterprise: { score: 85, facts: ['ChatGPT Enterprise: 1M+ business users', 'API serves 92% of Fortune 500', '$200/mo Pro tier launched'] },
+    sovereignty: { score: 20, facts: ['US-only headquarters', 'Subject to CLOUD Act', 'No EU data residency option'] },
+    research: { score: 95, facts: ['500+ research staff', 'Pioneered RLHF and scaling laws', 'InstructGPT, DALL-E, Whisper'] },
+    revenue: { score: 95, facts: ['$13B ARR (Jan 2026, SaaStr)', '400M+ weekly active users', '79.8% chatbot market share (StatCounter)'] }
+  },
+  gemini: {
+    compute: { score: 99, facts: ['World\'s largest AI compute fleet', '1M+ TPU v5p pods', '7 hyperscale data centers for AI'] },
+    models: { score: 97, facts: ['Gemini 2.0 Ultra: top benchmarks', '2M token context window', 'Native multimodal (text, code, image, video)'] },
+    enterprise: { score: 90, facts: ['Google Cloud: $43B/yr revenue', 'Vertex AI platform', 'Duet AI in Workspace (3B+ users)'] },
+    sovereignty: { score: 15, facts: ['US-headquartered (Alphabet)', 'Subject to FISA & CLOUD Act', 'Limited sovereign deployment options'] },
+    research: { score: 99, facts: ['DeepMind: 2,500+ researchers', 'AlphaFold, AlphaGo, Gemma open models', '2,000+ papers/year, top venue publications'] },
+    revenue: { score: 99, facts: ['Alphabet: $350B/yr total revenue', 'Cloud AI growing 35% YoY', 'Dominant in search + ads AI stack'] }
+  },
+  anthropic: {
+    compute: { score: 80, facts: ['$8B from Amazon (AWS partnership)', 'Custom Trainium chip access via AWS', 'Smaller than OpenAI/Google infra'] },
+    models: { score: 93, facts: ['Claude 3.5/4 Opus: top safety benchmarks', '#2 on LMSYS Arena coding tasks', '200K context window, strong reasoning'] },
+    enterprise: { score: 75, facts: ['14K ARR Feb 2026 (SaaStr)', 'Amazon Bedrock integration', 'Growing enterprise API adoption'] },
+    sovereignty: { score: 25, facts: ['US-headquartered, San Francisco', 'Dependent on AWS infrastructure', 'Strong safety/alignment focus'] },
+    research: { score: 93, facts: ['Founded by ex-OpenAI researchers', 'Constitutional AI, RLHF advances', '1,500 employees, research-heavy'] },
+    revenue: { score: 88, facts: ['$14B ARR (Feb 2026)', 'Up from $1B just 14 months prior', '$380B valuation (Series G, Feb 2026)'] }
+  },
+  meta: {
+    compute: { score: 95, facts: ['350K+ H100 GPUs (largest private fleet)', '$37B+ capex planned for AI (2025)', 'Custom MTIA inference chips'] },
+    models: { score: 92, facts: ['LLaMA 3.1 405B: top open model', 'Open-source leader (10M+ downloads)', 'Multimodal: text, image, video gen'] },
+    enterprise: { score: 50, facts: ['No enterprise API product (yet)', 'AI primarily powers Meta apps', 'LLaMA used widely but not sold as service'] },
+    sovereignty: { score: 10, facts: ['US-headquartered (Meta Platforms)', 'History of EU regulatory conflicts', 'GDPR fines exceeding €1.3B'] },
+    research: { score: 92, facts: ['FAIR lab: 700+ researchers', 'LLaMA, Segment Anything, DINO', 'Major open-source AI contributor'] },
+    revenue: { score: 70, facts: ['Meta: $160B/yr total revenue', 'AI drives ads (98% of revenue)', 'No standalone AI product revenue yet'] }
+  },
+  grok: {
+    compute: { score: 90, facts: ['100K H100 "Colossus" cluster (Memphis)', 'Largest single GPU cluster in world (2024)', 'SpaceX merger adds satellite infra'] },
+    models: { score: 88, facts: ['Grok-2: competitive on benchmarks', 'Real-time X/Twitter data access', 'Image generation (Aurora)'] },
+    enterprise: { score: 40, facts: ['Limited enterprise offering', 'Primarily consumer (X Premium)', '$500M ARR est. (Sacra)'] },
+    sovereignty: { score: 15, facts: ['US-headquartered', 'Tied to X/SpaceX ecosystem', 'Subject to US jurisdiction'] },
+    research: { score: 85, facts: ['1,000 employees, rapid hiring', 'Built Colossus in 122 days', 'Focus on speed over publication'] },
+    revenue: { score: 45, facts: ['~$500M ARR (Business of Apps)', '$250B valuation (SpaceX merger)', 'Revenue mostly from X Premium subs'] }
+  }
+};
+
+// Rationale for merged entity scores per axis (based on contributing companies)
+const COMPANY_AXIS_FACTS = {
+  mistral: {
+    compute: 'Mistral: nuclear-powered compute deal, own GPU clusters',
+    models: 'Mistral: 675B MoE models, top-5 on LMSYS Arena',
+    enterprise: 'Mistral: 5K customers, growing enterprise API',
+    sovereignty: 'Mistral: French HQ, EU data residency, GDPR compliant',
+    research: 'Mistral: founded by ex-DeepMind/Meta researchers',
+    revenue: 'Mistral: $300M ARR, targeting €1B by end 2026'
+  },
+  cohere: {
+    compute: 'Cohere: relies on cloud partners (AWS, GCP, Oracle)',
+    models: 'Cohere: Command R+ for RAG, strong multilingual',
+    enterprise: 'Cohere: 17K enterprise customers, North agentic platform',
+    sovereignty: 'Cohere: Canadian HQ, multi-cloud deployment',
+    research: 'Cohere: founded by Transformer paper co-authors',
+    revenue: 'Cohere: $240M ARR, 70% gross margins'
+  },
+  multiverse: {
+    compute: 'Multiverse: quantum-classical hybrid compression',
+    models: 'Multiverse: CompactifAI compresses LLMs 95%',
+    enterprise: 'Multiverse: 100 enterprise customers',
+    sovereignty: 'Multiverse: Spanish HQ, EU-based',
+    research: 'Multiverse: 160+ patents, quantum ML pioneer',
+    revenue: 'Multiverse: $50M ARR, early stage'
+  },
+  aleph: {
+    compute: 'Aleph Alpha: sovereign on-prem compute only',
+    models: 'Aleph Alpha: PhariaAI sovereign model stack',
+    enterprise: 'Aleph Alpha: gov/defense contracts (BND, Bundeswehr)',
+    sovereignty: 'Aleph Alpha: air-gapped deployment, German gov trusted',
+    research: 'Aleph Alpha: Heidelberg-based, EU AI research hub',
+    revenue: 'Aleph Alpha: $30M ARR, pivoted to sovereign platform'
+  },
+  deepl: {
+    compute: 'DeepL: own inference infrastructure for translation',
+    models: 'DeepL: best-in-class translation, 30+ languages',
+    enterprise: 'DeepL: 500K+ customers, enterprise translation API',
+    sovereignty: 'DeepL: German HQ, EU data processing, GDPR native',
+    research: 'DeepL: advanced NMT research, proprietary architectures',
+    revenue: 'DeepL: $185M ARR, considering $5B IPO'
+  },
+  stability: {
+    compute: 'Stability: distributed compute, open-source efficiency',
+    models: 'Stability: Stable Diffusion 3, image/video/audio gen',
+    enterprise: 'Stability: 10K customers, API + on-prem licensing',
+    sovereignty: 'Stability: UK HQ, open-source = deployable anywhere',
+    research: 'Stability: open-source leader, 100K+ community contributors',
+    revenue: 'Stability: $60M ARR, restructuring for profitability'
+  }
 };
 
 const ACHIEVEMENTS = [
@@ -1529,6 +1641,19 @@ function renderChallengers() {
   row.querySelectorAll('.challenger-btn').forEach(btn => btn.addEventListener('click', () => { S.challenger=btn.dataset.id; renderChallengers(); updateBattle(true); saveToURL(); }));
 }
 
+function buildRoundTooltip(axis, hId) {
+  const sel = getSelected();
+  const hr = HYPER_RATIONALE[hId];
+  const hFacts = hr && hr[axis] ? hr[axis].facts : [];
+  // Gather facts from merged companies
+  const ourFacts = sel.map(c => COMPANY_AXIS_FACTS[c.id] ? COMPANY_AXIS_FACTS[c.id][axis] : null).filter(Boolean);
+  return `<div class="round-tooltip">
+    <div class="tt-header"><span class="tt-axis">${AXIS_LABELS[axis]}</span><span class="tt-what">${AXIS_HINTS[axis]}</span></div>
+    <div class="tt-side"><div class="tt-side-label ours">Public AI Co. — why this score</div>${ourFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
+    <div class="tt-side"><div class="tt-side-label theirs">${HYPERSCALERS.find(x=>x.id===hId).name} — why this score</div>${hFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
+  </div>`;
+}
+
 function updateBattle(animate) {
   const scoreboard = document.getElementById('battleScoreboard');
   const roundsEl = document.getElementById('battleRounds');
@@ -1579,14 +1704,15 @@ function updateBattle(animate) {
   roundsEl.innerHTML = rounds.map((r, i) => `
     <div class="battle-round won-${r.winner} ${animate ? 'round-hidden' : 'round-reveal'}" data-idx="${i}">
       <div class="round-left">
-        <span class="round-val">${r.mScore}<span style="opacity:0.4;font-size:0.7em">/99</span>${r.boosted ? ' \u2191' : ''}</span>
+        <span class="round-val">${r.mScore}<span style="opacity:0.4;font-size:0.7em">/99</span>${r.boosted ? ' ↑' : ''}</span>
         <div class="round-bar" style="width:${animate ? 0 : r.mPct}%; height:8px; min-width:4px;"></div>
       </div>
-      <div class="round-label">${AXIS_LABELS[r.axis]}<span class="axis-hint">${AXIS_HINTS[r.axis]}</span></div>
+      <div class="round-label">${AXIS_LABELS[r.axis]}</div>
       <div class="round-right">
         <div class="round-bar" style="width:${animate ? 0 : r.hPct}%; height:8px; min-width:4px;"></div>
         <span class="round-val">${r.hScore}<span style="opacity:0.4;font-size:0.7em">/99</span></span>
       </div>
+      ${buildRoundTooltip(r.axis, S.challenger)}
     </div>
   `).join('');
 
