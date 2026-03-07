@@ -274,69 +274,131 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .merge-context strong { color: var(--text); }
 .merge-context.hidden { opacity: 0; max-height: 0; padding: 0 1.5rem; margin: 0 auto; }
 
-/* === BATTLE === */
-.battle-section { padding: 5rem 2rem; background: var(--navy); color: white; }
-.battle-inner { max-width: 1100px; margin: 0 auto; }
-.battle-header { text-align: center; margin-bottom: 3rem; }
+/* === THE STRESS TEST === */
+.battle-section { padding: 5rem 2rem; background: linear-gradient(180deg, var(--navy-dark) 0%, var(--navy) 100%); color: white; }
+.battle-inner { max-width: 900px; margin: 0 auto; }
+.battle-header { text-align: center; margin-bottom: 2rem; }
 .battle-header h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 0.5rem; }
-.battle-header p { color: rgba(255,255,255,0.6); }
+.battle-header p { color: rgba(255,255,255,0.5); font-size: 0.95rem; }
 
-/* === INLINE SCENARIO BUTTONS IN BATTLE === */
-.scenario-levers {
-  display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
-  margin: 2rem 0 1rem; padding: 1.5rem; border-radius: var(--radius);
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-}
-.scenario-levers-label {
-  width: 100%; text-align: center; font-size: 0.7rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35);
-  margin-bottom: 0.5rem;
-}
-.lever-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-  padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 600;
-  transition: all 0.2s; min-width: 90px; position: relative;
-}
-.lever-btn:hover { background: rgba(255,255,255,0.1); color: white; }
-.lever-btn.active { background: rgba(0,119,200,0.25); border-color: var(--sky); color: white; }
-.lever-btn .lever-icon { font-size: 1.3rem; }
-.lever-btn .lever-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.lever-btn .lever-val { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--cyan); }
-.lever-btn input[type="range"] {
-  width: 70px; height: 4px; -webkit-appearance: none; appearance: none;
-  background: rgba(255,255,255,0.15); border-radius: 2px; outline: none; margin-top: 0.3rem;
-}
-.lever-btn input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--cyan); cursor: pointer;
-}
-.challenger-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+/* Challenger select */
+.challenger-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
 .challenger-btn {
-  padding: 0.6rem 1.5rem; border-radius: 100px;
-  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
-  color: white; font-family: var(--font); font-size: 0.85rem; font-weight: 600;
+  padding: 0.5rem 1.25rem; border-radius: 100px;
+  background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7); font-family: var(--font); font-size: 0.8rem; font-weight: 600;
   cursor: pointer; transition: all 0.25s;
 }
-.challenger-btn:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); }
-.challenger-btn.active { border-color: var(--cyan); background: rgba(0,180,216,0.15); color: var(--cyan); }
-.battle-arena { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: start; }
-.fighter-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 2rem; text-align: center; }
-.fighter-card.megazord { border-color: var(--cyan); background: rgba(0,180,216,0.05); }
-.fighter-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.25rem; }
-.fighter-sub { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
-.bar-battle { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
-.bar-fight { display: flex; flex-direction: column; gap: 0.3rem; }
-.bar-fight-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); }
-.bar-fight-track { display: flex; height: 28px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.05); }
-.bar-fight-left { background: linear-gradient(90deg, var(--cyan), var(--sky)); height: 100%; transition: width 1s cubic-bezier(0.16,1,0.3,1); display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-family: var(--mono); font-size: 0.7rem; font-weight: 700; min-width: 36px; }
-.bar-fight-right { background: linear-gradient(90deg, var(--red), #ff6b6b); height: 100%; transition: width 1s cubic-bezier(0.16,1,0.3,1); display: flex; align-items: center; padding-left: 8px; font-family: var(--mono); font-size: 0.7rem; font-weight: 700; min-width: 36px; }
-.vs-badge { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); font-weight: 900; font-size: 1.1rem; color: var(--gold); align-self: center; }
-.battle-verdict { text-align: center; margin-top: 2rem; padding: 1.5rem; border-radius: var(--radius); background: rgba(255,255,255,0.05); font-size: 1rem; font-weight: 600; }
+.challenger-btn:hover { border-color: rgba(255,255,255,0.3); color: white; }
+.challenger-btn.active { border-color: var(--cyan); background: rgba(0,180,216,0.12); color: var(--cyan); }
+
+/* Scoreboard header */
+.battle-scoreboard {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 2rem; margin-bottom: 0.5rem;
+  background: rgba(255,255,255,0.03); border-radius: var(--radius) var(--radius) 0 0;
+  border: 1px solid rgba(255,255,255,0.06); border-bottom: none;
+}
+.battle-team { text-align: center; flex: 1; }
+.battle-team-name { font-size: 1rem; font-weight: 800; }
+.battle-team-sub { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 0.15rem; }
+.battle-team.ours .battle-team-name { color: var(--cyan); }
+.battle-team.theirs .battle-team-name { color: var(--red); }
+.battle-score-center {
+  font-family: var(--mono); font-size: 2.4rem; font-weight: 900;
+  min-width: 120px; text-align: center; letter-spacing: 0.05em;
+}
+.battle-score-center .s-ours { color: var(--cyan); }
+.battle-score-center .s-theirs { color: var(--red); }
+.battle-score-center .s-dash { color: rgba(255,255,255,0.2); margin: 0 0.15em; }
+
+/* Rounds */
+.battle-rounds {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+}
+.battle-round {
+  display: grid; grid-template-columns: 1fr 100px 1fr; align-items: center;
+  padding: 1rem 1.5rem; background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.3s, opacity 0.5s, transform 0.5s;
+}
+.battle-round:last-child { border-bottom: none; }
+.battle-round:nth-child(even) { background: rgba(255,255,255,0.04); }
+.battle-round.round-hidden { opacity: 0; transform: translateY(10px); }
+.battle-round.round-reveal { opacity: 1; transform: translateY(0); }
+.battle-round .round-bar {
+  height: 8px; border-radius: 4px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.battle-round .round-left {
+  display: flex; align-items: center; gap: 0.75rem; justify-content: flex-end;
+}
+.battle-round .round-right {
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.battle-round .round-left .round-bar { background: var(--cyan); margin-left: auto; }
+.battle-round .round-right .round-bar { background: var(--red); }
+.battle-round .round-val {
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700; min-width: 28px;
+}
+.battle-round .round-left .round-val { text-align: right; color: var(--cyan); }
+.battle-round .round-right .round-val { text-align: left; color: var(--red); }
+.battle-round .round-label {
+  text-align: center; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4);
+}
+.battle-round .round-winner-dot {
+  width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+}
+.battle-round.won-ours .round-label { color: var(--cyan); }
+.battle-round.won-theirs .round-label { color: var(--red); }
+.battle-round.won-ours { background: rgba(0,180,216,0.06); }
+.battle-round.won-theirs { background: rgba(230,57,70,0.06); }
+
+/* Levers row */
+.scenario-levers {
+  display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
+  margin: 2rem 0 1.5rem; padding: 1.25rem; border-radius: var(--radius);
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+}
+.scenario-levers-label {
+  width: 100%; text-align: center; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3);
+  margin-bottom: 0.4rem;
+}
+.lever-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  padding: 0.5rem 0.9rem; border-radius: 8px; cursor: pointer;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5); font-size: 0.7rem; font-weight: 600;
+  transition: all 0.2s; min-width: 85px;
+}
+.lever-btn:hover { background: rgba(255,255,255,0.08); color: white; }
+.lever-btn.active { background: rgba(0,119,200,0.2); border-color: var(--sky); color: white; }
+.lever-btn .lever-icon { font-size: 1.1rem; }
+.lever-btn .lever-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.lever-btn .lever-val { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; color: var(--cyan); }
+.lever-btn input[type="range"] {
+  width: 65px; height: 3px; -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.12); border-radius: 2px; outline: none; margin-top: 0.2rem;
+}
+.lever-btn input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--cyan); cursor: pointer;
+}
+
+/* Verdict */
+.battle-verdict {
+  text-align: center; margin-top: 1.5rem; padding: 1.5rem 2rem; border-radius: var(--radius);
+  background: rgba(255,255,255,0.04); font-size: 1.1rem; font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.06);
+}
 .battle-verdict .win { color: var(--cyan); }
 .battle-verdict .lose { color: var(--red); }
 .battle-verdict .close { color: var(--gold); }
+.battle-verdict .verdict-sub { font-size: 0.85rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 0.5rem; }
 
 /* === SCENARIO === */
 .scenario-section { padding: 5rem 2rem; background: var(--off-white); }
@@ -360,24 +422,58 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 .scenario-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
 .scenario-verdict { margin-top: 1.5rem; padding: 1rem; background: var(--off-white); border-radius: var(--radius); text-align: center; font-weight: 600; font-size: 0.9rem; }
 
-/* === TIMELINE === */
-.timeline-section { padding: 5rem 2rem; }
-.timeline-inner { max-width: 900px; margin: 0 auto; }
-.timeline-track { display: flex; gap: 0; margin-top: 2rem; position: relative; }
-.timeline-track::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 3px; background: var(--light-gray); z-index: 0; }
-.timeline-node { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; cursor: pointer; }
-.timeline-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--white); border: 3px solid var(--light-gray); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.7rem; font-weight: 700; transition: all 0.3s; color: var(--text-muted); }
-.timeline-node.active .timeline-dot { border-color: var(--sky); background: var(--sky); color: white; box-shadow: 0 0 20px rgba(0,119,200,0.3); }
-.timeline-node.past .timeline-dot { border-color: var(--sky); background: var(--sky); color: white; }
-.timeline-year { font-size: 0.75rem; font-weight: 700; margin-top: 0.5rem; color: var(--text-muted); }
-.timeline-node.active .timeline-year { color: var(--navy); }
-.timeline-detail { margin-top: 2rem; background: var(--off-white); border-radius: var(--radius-lg); padding: 2rem; min-height: 180px; transition: all 0.3s; }
-.timeline-detail h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--navy); }
-.timeline-detail p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
-.timeline-metrics { display: flex; gap: 2rem; margin-top: 1rem; flex-wrap: wrap; }
-.tl-metric { text-align: center; }
+/* === ROADMAP === */
+.timeline-section { padding: 5rem 2rem; background: var(--off-white); }
+.timeline-inner { max-width: 800px; margin: 0 auto; }
+.timeline-vertical {
+  position: relative; padding-left: 60px; margin-top: 2rem;
+}
+.timeline-vertical::before {
+  content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
+  width: 3px; background: linear-gradient(180deg, var(--sky), var(--cyan), var(--green));
+  border-radius: 2px;
+}
+.tl-card {
+  position: relative; margin-bottom: 2.5rem; padding: 2rem;
+  background: white; border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md); border: 1px solid var(--light-gray);
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.tl-card.visible { opacity: 1; transform: translateY(0); }
+.tl-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.tl-card.visible:hover { transform: translateY(-2px); }
+.tl-card::before {
+  content: ''; position: absolute; left: -48px; top: 2rem;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: white; border: 3px solid var(--sky);
+  z-index: 1;
+}
+.tl-card.milestone::before { background: var(--sky); box-shadow: 0 0 12px rgba(0,119,200,0.4); }
+.tl-card-year {
+  font-family: var(--mono); font-size: 0.75rem; font-weight: 700;
+  color: var(--sky); text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.tl-card-title { font-size: 1.2rem; font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; }
+.tl-card-body { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.25rem; }
+.tl-card-metrics {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  padding-top: 1rem; border-top: 1px solid var(--light-gray);
+}
+.tl-metric { text-align: center; flex: 1; min-width: 80px; }
 .tl-metric-val { font-family: var(--mono); font-weight: 800; font-size: 1.3rem; color: var(--sky); }
-.tl-metric-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.tl-metric-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.15rem; }
+.tl-growth-bar {
+  height: 6px; background: var(--light-gray); border-radius: 3px;
+  margin-top: 1rem; overflow: hidden;
+}
+.tl-growth-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--sky), var(--cyan));
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+}
 
 /* === NARRATIVE MODE OVERLAY === */
 .narrative-overlay {
@@ -483,16 +579,16 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .reactor-ring { width: 280px; height: 280px; }
   .reactor-power-num { font-size: 2.5rem; }
   .live-panel { position: static; }
-  .battle-arena { grid-template-columns: 1fr; }
-  .vs-badge { margin: 0 auto; }
-  .scenario-grid { grid-template-columns: 1fr; }
+  .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; }
+  .scenario-levers { gap: 0.5rem; }
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
 }
 @media (max-width: 600px) {
   .hero-stats-row { flex-direction: column; gap: 1rem; }
   .topnav-links { display: none; }
   .topnav-power { display: none; }
-  .timeline-track { flex-wrap: wrap; }
+  .timeline-vertical { padding-left: 40px; }
+  .tl-card::before { left: -28px; }
 }
 
 /* === PRINT / EXPORT === */
@@ -503,8 +599,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .battle-section { background: #f0f0f0; color: black; }
   .battle-verdict .win, .battle-verdict .close { color: #006600; }
   .battle-verdict .lose { color: #cc0000; }
-  .fighter-card { background: #f5f5f5; border-color: #ccc; }
-  .bar-fight-label { color: #666; }
+  .tl-card { box-shadow: none; border: 1px solid #ccc; opacity: 1; transform: none; }
 }
 </style>
 </head>
@@ -519,7 +614,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="topnav-links">
     <a href="#story">The Precedent</a>
     <a href="#assembly">Assemble</a>
-    <a href="#battle">Battle</a>
+    <a href="#battle">Stress Test</a>
     <a href="#timeline">Roadmap</a>
     <a href="#" id="narrativeLink" style="color:var(--sky);">Guided Tour</a>
   </div>
@@ -644,7 +739,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- NARRATIVE: THE CONFRONTATION -->
 <div class="narrative-block wide fade-up" style="background: var(--navy-dark); color: white; max-width: 100%; padding: 5rem 2rem;">
   <div style="max-width: 720px; margin: 0 auto;">
-    <div class="narrative-kicker" style="color: var(--cyan);">The Confrontation</div>
+    <div class="narrative-kicker" style="color: var(--cyan);">The Stress Test</div>
     <h2 class="narrative-heading">Now test it against the incumbents.</h2>
     <div class="narrative-body" style="color: rgba(255,255,255,0.75);">
       <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI has $12B in annual recurring revenue. Google DeepMind sits atop the world's largest compute infrastructure. Anthropic is growing faster than any enterprise software company in history.</p>
@@ -653,15 +748,16 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </div>
 
-<!-- BATTLE + INTEGRATED SCENARIOS -->
+<!-- THE STRESS TEST -->
 <section class="battle-section" id="battle">
   <div class="battle-inner">
     <div class="battle-header">
-      <h2>The Battle</h2>
-      <p>How does your merged entity stack up? Pick a challenger, then tune the scenario levers.</p>
+      <h2>The Stress Test</h2>
+      <p>Pick a challenger. Watch the rounds play out. Then pull the levers to change the outcome.</p>
     </div>
     <div class="challenger-row" id="challengerRow"></div>
-    <div class="battle-arena" id="battleArena"></div>
+    <div class="battle-scoreboard" id="battleScoreboard"></div>
+    <div class="battle-rounds" id="battleRounds"></div>
     <div class="scenario-levers" id="scenarioLevers">
       <div class="scenario-levers-label">Scenario Levers &mdash; tune to change the outcome</div>
     </div>
@@ -679,15 +775,14 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </div>
 
-<!-- TIMELINE -->
+<!-- ROADMAP -->
 <section class="timeline-section" id="timeline">
   <div class="timeline-inner">
     <div class="section-header center fade-up">
       <h2>The 10-Year Roadmap</h2>
-      <p>How the merged entity could grow from announcement to global AI superpower.</p>
+      <p>From first handshake to competitive parity. Each milestone builds on the last.</p>
     </div>
-    <div class="timeline-track" id="timelineTrack"></div>
-    <div class="timeline-detail" id="timelineDetail"></div>
+    <div class="timeline-vertical" id="timelineVertical"></div>
   </div>
 </section>
 
@@ -1406,33 +1501,96 @@ function updateNavPower() {
 function renderChallengers() {
   const row = document.getElementById('challengerRow');
   row.innerHTML = HYPERSCALERS.map(h => `<button class="challenger-btn ${S.challenger===h.id?'active':''}" data-id="${h.id}">${h.name}</button>`).join('');
-  row.querySelectorAll('.challenger-btn').forEach(btn => btn.addEventListener('click', () => { S.challenger=btn.dataset.id; renderChallengers(); updateBattle(); saveToURL(); }));
+  row.querySelectorAll('.challenger-btn').forEach(btn => btn.addEventListener('click', () => { S.challenger=btn.dataset.id; renderChallengers(); updateBattle(true); saveToURL(); }));
 }
 
-function updateBattle() {
-  const arena=document.getElementById('battleArena'), verdict=document.getElementById('battleVerdict');
-  const c=getCombined(), h=HYPERSCALERS.find(x=>x.id===S.challenger);
-  if (!c) { arena.innerHTML='<div style="color:rgba(255,255,255,0.5);text-align:center;grid-column:1/-1;">Merge companies first to see the battle</div>'; verdict.innerHTML=''; return; }
+function updateBattle(animate) {
+  const scoreboard = document.getElementById('battleScoreboard');
+  const roundsEl = document.getElementById('battleRounds');
+  const verdict = document.getElementById('battleVerdict');
+  const c = getCombined(), h = HYPERSCALERS.find(x => x.id === S.challenger);
+
+  if (!c) {
+    scoreboard.innerHTML = '';
+    roundsEl.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center;padding:3rem;">Merge companies above to begin the stress test.</div>';
+    verdict.innerHTML = '';
+    return;
+  }
+
   const boost = getScenarioBoost();
   const hasBoost = Object.values(S.sliders).some(v => v > 0);
-  const battles = AXES.map(axis => {
+  const rounds = AXES.map(axis => {
     const baseScore = c.scores[axis];
     const mScore = Math.min(99, baseScore + (boost[axis] || 0));
     const hScore = h[axis];
-    const total = mScore + hScore;
-    return {axis, mScore, baseScore, hScore, mPct:(mScore/total)*100, hPct:(hScore/total)*100, boosted: mScore > baseScore};
+    const maxScore = Math.max(mScore, hScore);
+    return {
+      axis, mScore, hScore, boosted: mScore > baseScore,
+      mPct: (mScore / maxScore) * 100,
+      hPct: (hScore / maxScore) * 100,
+      winner: mScore > hScore ? 'ours' : mScore < hScore ? 'theirs' : 'draw'
+    };
   });
-  const wins=battles.filter(b=>b.mScore>b.hScore).length, losses=battles.filter(b=>b.mScore<b.hScore).length;
-  arena.innerHTML = `
-    <div class="fighter-card megazord"><div class="fighter-name">Public AI Company</div><div class="fighter-sub">${S.merged.size} companies / ${c.countries} nations${hasBoost?' + gov investment':''}</div></div>
-    <div class="vs-badge">VS</div>
-    <div class="fighter-card"><div class="fighter-name">${h.name}</div><div class="fighter-sub">${h.sub}</div></div>
-    <div class="bar-battle" style="grid-column:1/-1;margin-top:1rem;">
-      ${battles.map(b=>`<div class="bar-fight"><div class="bar-fight-label">${AXIS_LABELS[b.axis]}</div><div class="bar-fight-track"><div class="bar-fight-left" style="width:${b.mPct}%">${b.mScore}${b.boosted?' \u2191':''}</div><div class="bar-fight-right" style="width:${b.hPct}%">${b.hScore}</div></div></div>`).join('')}
-    </div>`;
-  if (wins>losses) verdict.innerHTML=`<span class="win">The merged entity wins ${wins}&ndash;${losses}.</span> ${hasBoost?'Government investment closes the remaining gaps.':'Sovereignty and combined enterprise strength overcome raw compute.'}`;
-  else if (wins<losses) verdict.innerHTML=`<span class="lose">${h.name} leads ${losses}&ndash;${wins}.</span> ${losses-wins<=2?'The gap is narrow. Pull the scenario levers above to close it.':'Significant gap. Use the scenario levers to model how government investment changes the picture.'}`;
-  else verdict.innerHTML=`<span class="close">Dead heat ${wins}&ndash;${losses}.</span> ${hasBoost?'Investment is working. Push further.':'Already competitive. Pull the scenario levers to tip the scale.'}`;
+
+  const wins = rounds.filter(r => r.winner === 'ours').length;
+  const losses = rounds.filter(r => r.winner === 'theirs').length;
+
+  // Scoreboard
+  scoreboard.innerHTML = `
+    <div class="battle-team ours">
+      <div class="battle-team-name">Public AI Company</div>
+      <div class="battle-team-sub">${S.merged.size} companies${hasBoost ? ' + investment' : ''}</div>
+    </div>
+    <div class="battle-score-center">
+      <span class="s-ours">${wins}</span><span class="s-dash">&ndash;</span><span class="s-theirs">${losses}</span>
+    </div>
+    <div class="battle-team theirs">
+      <div class="battle-team-name">${h.name}</div>
+      <div class="battle-team-sub">${h.sub}</div>
+    </div>
+  `;
+
+  // Rounds
+  roundsEl.innerHTML = rounds.map((r, i) => `
+    <div class="battle-round won-${r.winner} ${animate ? 'round-hidden' : 'round-reveal'}" data-idx="${i}">
+      <div class="round-left">
+        <span class="round-val">${r.mScore}${r.boosted ? ' \u2191' : ''}</span>
+        <div class="round-bar" style="width:${animate ? 0 : r.mPct}%; height:8px; min-width:4px;"></div>
+      </div>
+      <div class="round-label">${AXIS_LABELS[r.axis]}</div>
+      <div class="round-right">
+        <div class="round-bar" style="width:${animate ? 0 : r.hPct}%; height:8px; min-width:4px;"></div>
+        <span class="round-val">${r.hScore}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Animate rounds sequentially
+  if (animate) {
+    rounds.forEach((r, i) => {
+      setTimeout(() => {
+        const row = roundsEl.querySelector(`[data-idx="${i}"]`);
+        if (!row) return;
+        row.classList.remove('round-hidden');
+        row.classList.add('round-reveal');
+        const bars = row.querySelectorAll('.round-bar');
+        if (bars[0]) bars[0].style.width = r.mPct + '%';
+        if (bars[1]) bars[1].style.width = r.hPct + '%';
+      }, 200 + i * 300);
+    });
+  }
+
+  // Verdict
+  const verdictDelay = animate ? 200 + rounds.length * 300 + 200 : 0;
+  setTimeout(() => {
+    if (wins > losses) {
+      verdict.innerHTML = `<span class="win">The merged entity takes it, ${wins}&ndash;${losses}.</span><div class="verdict-sub">${hasBoost ? 'Government investment is decisive. The gap closes.' : 'Combined sovereignty and enterprise breadth overcome raw scale.'}</div>`;
+    } else if (wins < losses) {
+      verdict.innerHTML = `<span class="lose">${h.name} leads ${losses}&ndash;${wins}.</span><div class="verdict-sub">${losses - wins <= 2 ? 'Close. Pull the levers above &mdash; a few policy decisions change this outcome.' : 'The scale gap is real. But the levers above model what coordinated investment does.'}</div>`;
+    } else {
+      verdict.innerHTML = `<span class="close">Dead heat, ${wins}&ndash;${losses}.</span><div class="verdict-sub">${hasBoost ? 'Investment is working. One more push tips the balance.' : 'Already competitive at baseline. The levers show what breaks the tie.'}</div>`;
+    }
+  }, verdictDelay);
 }
 
 // ============================================================
@@ -1505,22 +1663,39 @@ function updateMergeContext() {
 }
 
 // ============================================================
-// TIMELINE
+// ROADMAP
 // ============================================================
 function renderTimeline() {
-  const track = document.getElementById('timelineTrack');
-  track.innerHTML = TIMELINE_DATA.map((t,i) => `<div class="timeline-node ${i===0?'active':''} ${i<S.timelineIdx?'past':''}" data-idx="${i}"><div class="timeline-dot">${i+1}</div><div class="timeline-year">${t.year}</div></div>`).join('');
-  track.querySelectorAll('.timeline-node').forEach(node => node.addEventListener('click', () => { S.timelineIdx=parseInt(node.dataset.idx); updateTimeline(); saveToURL(); }));
-  updateTimeline();
+  const container = document.getElementById('timelineVertical');
+  const lastIdx = TIMELINE_DATA.length - 1;
+  container.innerHTML = TIMELINE_DATA.map((t, i) => `
+    <div class="tl-card ${i === lastIdx ? 'milestone' : ''}" data-idx="${i}">
+      <div class="tl-card-year">${t.year}</div>
+      <div class="tl-card-title">${t.title}</div>
+      <div class="tl-card-body">${t.desc}</div>
+      <div class="tl-growth-bar"><div class="tl-growth-bar-fill" data-width="${t.competitive}"></div></div>
+      <div class="tl-card-metrics">
+        <div class="tl-metric"><div class="tl-metric-val">$${t.valuation}B</div><div class="tl-metric-label">Valuation</div></div>
+        <div class="tl-metric"><div class="tl-metric-val">${t.competitive}%</div><div class="tl-metric-label">Competitive Index</div></div>
+        <div class="tl-metric"><div class="tl-metric-val">${Math.round(t.valuation / 300 * 100)}%</div><div class="tl-metric-label">vs OpenAI</div></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Scroll-triggered reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        const bar = e.target.querySelector('.tl-growth-bar-fill');
+        if (bar) setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
+      }
+    });
+  }, { threshold: 0.2 });
+  container.querySelectorAll('.tl-card').forEach(card => observer.observe(card));
 }
 
-function updateTimeline() {
-  const track=document.getElementById('timelineTrack');
-  track.querySelectorAll('.timeline-node').forEach((node,i) => { node.classList.toggle('active',i===S.timelineIdx); node.classList.toggle('past',i<S.timelineIdx); });
-  const t=TIMELINE_DATA[S.timelineIdx], detail=document.getElementById('timelineDetail');
-  detail.innerHTML = `<h4>${t.year} &mdash; ${t.title}</h4><p>${t.desc}</p>
-    <div class="timeline-metrics"><div class="tl-metric"><div class="tl-metric-val">$${t.valuation}B</div><div class="tl-metric-label">Valuation</div></div><div class="tl-metric"><div class="tl-metric-val">${t.competitive}%</div><div class="tl-metric-label">Competitive Index</div></div><div class="tl-metric"><div class="tl-metric-val">${Math.round(t.valuation/300*100)}%</div><div class="tl-metric-label">vs OpenAI</div></div></div>`;
-}
+function updateTimeline() { /* now handled by scroll observer */ }
 
 // ============================================================
 // CONFETTI
