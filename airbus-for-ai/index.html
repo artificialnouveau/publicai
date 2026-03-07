@@ -230,12 +230,88 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 }
 .data-source a { color: var(--sky); cursor: pointer; text-decoration: underline; }
 
+/* === NARRATIVE PROSE === */
+.narrative-block {
+  max-width: 720px; margin: 0 auto; padding: 5rem 2rem;
+}
+.narrative-block.wide { max-width: 900px; }
+.narrative-block.on-dark { color: white; }
+.narrative-block.on-dark .narrative-kicker { color: var(--cyan); }
+.narrative-block.on-dark .narrative-body { color: rgba(255,255,255,0.75); }
+.narrative-kicker {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--sky); margin-bottom: 0.75rem;
+}
+.narrative-heading {
+  font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; line-height: 1.2;
+  margin-bottom: 1.25rem; letter-spacing: -0.02em;
+}
+.narrative-body {
+  font-size: 1.1rem; line-height: 1.85; color: var(--text-secondary);
+}
+.narrative-body p { margin-bottom: 1.25rem; }
+.narrative-body strong { color: var(--text); font-weight: 600; }
+.narrative-block.on-dark .narrative-body strong { color: white; }
+.narrative-stats-row {
+  display: flex; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;
+}
+.narrative-stat-item {
+  flex: 1; min-width: 120px; text-align: center; padding: 1.25rem;
+  background: rgba(0,119,200,0.06); border-radius: var(--radius);
+}
+.narrative-block.on-dark .narrative-stat-item { background: rgba(255,255,255,0.06); }
+.narrative-stat-item .val { font-family: var(--mono); font-size: 1.6rem; font-weight: 800; color: var(--sky); }
+.narrative-stat-item .label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.narrative-block.on-dark .narrative-stat-item .label { color: rgba(255,255,255,0.4); }
+
+.merge-context {
+  max-width: 720px; margin: 1.5rem auto 0; padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(0,119,200,0.06), rgba(0,180,216,0.06));
+  border-left: 3px solid var(--sky); border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary);
+  transition: opacity 0.5s, max-height 0.5s; overflow: hidden;
+}
+.merge-context strong { color: var(--text); }
+.merge-context.hidden { opacity: 0; max-height: 0; padding: 0 1.5rem; margin: 0 auto; }
+
 /* === BATTLE === */
 .battle-section { padding: 5rem 2rem; background: var(--navy); color: white; }
 .battle-inner { max-width: 1100px; margin: 0 auto; }
 .battle-header { text-align: center; margin-bottom: 3rem; }
 .battle-header h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 0.5rem; }
 .battle-header p { color: rgba(255,255,255,0.6); }
+
+/* === INLINE SCENARIO BUTTONS IN BATTLE === */
+.scenario-levers {
+  display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
+  margin: 2rem 0 1rem; padding: 1.5rem; border-radius: var(--radius);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+}
+.scenario-levers-label {
+  width: 100%; text-align: center; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35);
+  margin-bottom: 0.5rem;
+}
+.lever-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 600;
+  transition: all 0.2s; min-width: 90px; position: relative;
+}
+.lever-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+.lever-btn.active { background: rgba(0,119,200,0.25); border-color: var(--sky); color: white; }
+.lever-btn .lever-icon { font-size: 1.3rem; }
+.lever-btn .lever-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.lever-btn .lever-val { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--cyan); }
+.lever-btn input[type="range"] {
+  width: 70px; height: 4px; -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.15); border-radius: 2px; outline: none; margin-top: 0.3rem;
+}
+.lever-btn input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--cyan); cursor: pointer;
+}
 .challenger-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
 .challenger-btn {
   padding: 0.6rem 1.5rem; border-radius: 100px;
@@ -444,8 +520,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <a href="#story">The Precedent</a>
     <a href="#assembly">Assemble</a>
     <a href="#battle">Battle</a>
-    <a href="#scenarios">Scenarios</a>
-    <a href="#timeline">Timeline</a>
+    <a href="#timeline">Roadmap</a>
     <a href="#" id="narrativeLink" style="color:var(--sky);">Guided Tour</a>
   </div>
   <div class="topnav-power">
@@ -502,16 +577,32 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <h3>Four problems, one solution</h3>
       <p>Middle powers face four interlocking failures: <strong>scale</strong> (no single nation can match US compute), <strong>limited domestic markets</strong> (too small to sustain a frontier lab), <strong>foreign capture</strong> (ChatGPT holds 79.8% of consumer chatbots globally; Mistral's Le Chat has &lt;4% even in France), and <strong>fragmented sovereignty</strong> (dozens of national AI strategies pulling in different directions).</p>
       <p>But across Canada, France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK are <strong>extraordinary AI companies</strong> &mdash; private champions like Mistral and Cohere, public labs like BSC and RIKEN, and coalitions like New Nordics AI. Each world-class in a specific domain.</p>
-      <p><strong>What if they formed a Public AI Company?</strong> Not a loose consortium, but a real entity &mdash; with shared compute, shared R&D, and a market strategy. Assemble the Megazord below and find out.</p>
+      <p><strong>What if they formed a Public AI Company?</strong> Not a loose consortium, but a real entity &mdash; with shared compute, shared R&D, and a market strategy. Assemble the entity below and find out.</p>
     </div>
   </div>
 </section>
+
+<!-- NARRATIVE: THE PIECES -->
+<div class="narrative-block wide fade-up">
+  <div class="narrative-kicker">The Components</div>
+  <h2 class="narrative-heading">The pieces already exist. Nobody has put them together.</h2>
+  <div class="narrative-body">
+    <p>Across ten candidate nations &mdash; Canada, France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK &mdash; are <strong>extraordinary AI companies</strong>. Private champions with frontier models. Public labs with sovereign compute. Startups with compression breakthroughs that let frontier models run on a phone.</p>
+    <p>Each is world-class in a specific domain. None can challenge ChatGPT alone. But together, they cover the full stack: <strong>models, compute, enterprise distribution, multilingual capability, sovereignty, and open-source community</strong>. The question is whether they stay fragments &mdash; or become something greater.</p>
+  </div>
+  <div class="narrative-stats-row">
+    <div class="narrative-stat-item"><div class="val">10</div><div class="label">Candidate Nations</div></div>
+    <div class="narrative-stat-item"><div class="val">6</div><div class="label">Core Companies</div></div>
+    <div class="narrative-stat-item"><div class="val">$26B+</div><div class="label">Combined Value</div></div>
+    <div class="narrative-stat-item"><div class="val">215K+</div><div class="label">Combined Customers</div></div>
+  </div>
+</div>
 
 <!-- ASSEMBLY -->
 <section class="assembly-zone" id="assembly">
   <div class="assembly-inner">
     <div class="section-header center">
-      <h2>Assemble the Megazord</h2>
+      <h2>Assemble the Entity</h2>
       <p>Click companies to merge them into the reactor. Watch the power grow.</p>
     </div>
     <div class="assembly-layout">
@@ -547,32 +638,46 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </section>
 
-<!-- BATTLE -->
+<!-- MERGE CONTEXT (appears when companies are added) -->
+<div class="merge-context hidden" id="mergeContext"></div>
+
+<!-- NARRATIVE: THE CONFRONTATION -->
+<div class="narrative-block wide fade-up" style="background: var(--navy-dark); color: white; max-width: 100%; padding: 5rem 2rem;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <div class="narrative-kicker" style="color: var(--cyan);">The Confrontation</div>
+    <h2 class="narrative-heading">Now test it against the incumbents.</h2>
+    <div class="narrative-body" style="color: rgba(255,255,255,0.75);">
+      <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI has $12B in annual recurring revenue. Google DeepMind sits atop the world's largest compute infrastructure. Anthropic is growing faster than any enterprise software company in history.</p>
+      <p>The gap is real. But it's not permanent. Use the <strong style="color:white;">scenario levers</strong> below to model what happens when governments invest: compute buildouts, procurement contracts, capital injections, talent programs. <strong style="color:white;">Every lever you pull changes the outcome.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- BATTLE + INTEGRATED SCENARIOS -->
 <section class="battle-section" id="battle">
   <div class="battle-inner">
     <div class="battle-header">
-      <h2>Battle Mode</h2>
-      <p>How does your Megazord stack up against the hyperscalers? Pick a challenger.</p>
+      <h2>The Battle</h2>
+      <p>How does your merged entity stack up? Pick a challenger, then tune the scenario levers.</p>
     </div>
     <div class="challenger-row" id="challengerRow"></div>
     <div class="battle-arena" id="battleArena"></div>
+    <div class="scenario-levers" id="scenarioLevers">
+      <div class="scenario-levers-label">Scenario Levers &mdash; tune to change the outcome</div>
+    </div>
     <div class="battle-verdict" id="battleVerdict"></div>
   </div>
 </section>
 
-<!-- SCENARIOS -->
-<section class="scenario-section" id="scenarios">
-  <div class="scenario-inner">
-    <div class="section-header center">
-      <h2>What-If Simulator</h2>
-      <p>Model additional government support and investment. See how the gap closes.</p>
-    </div>
-    <div class="scenario-grid">
-      <div class="scenario-controls" id="scenarioControls"></div>
-      <div class="scenario-output" id="scenarioOutput"></div>
-    </div>
+<!-- NARRATIVE: THE FUTURE -->
+<div class="narrative-block wide fade-up">
+  <div class="narrative-kicker">The Roadmap</div>
+  <h2 class="narrative-heading">From announcement to parity in ten years.</h2>
+  <div class="narrative-body">
+    <p>Airbus took three decades to reach parity with Boeing. AI moves faster. With coordinated investment, a merged Public AI Company could reach <strong>competitive parity with leading US labs within a decade</strong>. The roadmap below traces that trajectory &mdash; from the first letters of intent to a 50,000-person, $350B entity serving 30+ allied nations.</p>
+    <p>This isn't speculation. It's the Airbus playbook, applied to the fastest-moving industry in history.</p>
   </div>
-</section>
+</div>
 
 <!-- TIMELINE -->
 <section class="timeline-section" id="timeline">
@@ -591,7 +696,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <h2>The question isn't whether.<br>It's when.</h2>
   <p>Every month of fragmentation widens the gap. Airbus proved sovereign consolidation works. The playbook exists. The companies exist. The political will is forming across 10 nations. As Sam Altman himself said: he sometimes wishes this was happening in the public sector.</p>
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-    <a href="#assembly" class="btn btn-primary">Rebuild the Megazord</a>
+    <a href="#assembly" class="btn btn-primary">Rebuild the Entity</a>
     <button class="btn btn-outline" id="ctaExportBtn">Export Deck</button>
   </div>
 </section>
@@ -754,7 +859,7 @@ const NARRATIVE_CHAPTERS = [
   },
   {
     chapter: 'Chapter 6 of 7',
-    title: 'The Full Megazord',
+    title: 'The Full Stack',
     body: 'Add Stability AI for open-source multimodal generation and you have the complete entity: frontier models, enterprise platform, quantum compression, sovereign deployment, multilingual AI, and open-source community.',
     stats: null,
     action: ['stability']
@@ -898,9 +1003,9 @@ function exportDeck() {
   const battles = c ? AXES.map(axis => {
     const mScore = c.scores[axis];
     const hScore = h[axis];
-    return { axis: AXIS_LABELS[axis], mScore, hScore, winner: mScore > hScore ? 'Megazord' : h.name };
+    return { axis: AXIS_LABELS[axis], mScore, hScore, winner: mScore > hScore ? 'Public AI Co.' : h.name };
   }) : [];
-  const wins = battles.filter(b => b.winner === 'Megazord').length;
+  const wins = battles.filter(b => b.winner === 'Public AI Co.').length;
 
   const win = window.open('', '_blank');
   win.document.write(`<!DOCTYPE html><html><head><title>Airbus for AI — Merger Deck</title>
@@ -959,9 +1064,9 @@ p { font-size: 16px; color: #4a5568; line-height: 1.7; margin-bottom: 12px; }
 <div class="page">
   <div class="eyebrow">Competitive Analysis</div>
   <h2>vs. ${h.name}</h2>
-  <p>Head-to-head comparison across 6 key dimensions. Megazord ${wins > 3 ? 'wins' : wins === 3 ? 'ties' : 'trails'} ${wins}-${6-wins}.</p>
+  <p>Head-to-head comparison across 6 key dimensions. Public AI Co. ${wins > 3 ? 'wins' : wins === 3 ? 'ties' : 'trails'} ${wins}-${6-wins}.</p>
   <div style="margin: 24px 0;">
-    ${battles.map(b => `<div class="battle-row"><span>${b.axis}</span><span>Megazord: <strong>${b.mScore}</strong></span><span>${h.name}: <strong>${b.hScore}</strong></span><span class="${b.winner === 'Megazord' ? 'win' : 'lose'}">${b.winner}</span></div>`).join('')}
+    ${battles.map(b => `<div class="battle-row"><span>${b.axis}</span><span>Public AI Co.: <strong>${b.mScore}</strong></span><span>${h.name}: <strong>${b.hScore}</strong></span><span class="${b.winner === 'Public AI Co.' ? 'win' : 'lose'}">${b.winner}</span></div>`).join('')}
   </div>
 </div>
 
@@ -1230,6 +1335,7 @@ function renderDock() {
 function toggleCompany(id) {
   if (S.merged.has(id)) S.merged.delete(id); else { S.merged.add(id); pulseReactor(); }
   updateEverything();
+  updateMergeContext();
 }
 
 function pulseReactor() {
@@ -1308,62 +1414,96 @@ function renderChallengers() {
 function updateBattle() {
   const arena=document.getElementById('battleArena'), verdict=document.getElementById('battleVerdict');
   const c=getCombined(), h=HYPERSCALERS.find(x=>x.id===S.challenger);
-  if (!c) { arena.innerHTML='<div style="color:rgba(255,255,255,0.5);text-align:center;grid-column:1/-1;">Merge companies first to enter battle mode</div>'; verdict.innerHTML=''; return; }
-  const battles = AXES.map(axis => { const mScore=c.scores[axis],hScore=h[axis],total=mScore+hScore; return {axis,mScore,hScore,mPct:(mScore/total)*100,hPct:(hScore/total)*100}; });
+  if (!c) { arena.innerHTML='<div style="color:rgba(255,255,255,0.5);text-align:center;grid-column:1/-1;">Merge companies first to see the battle</div>'; verdict.innerHTML=''; return; }
+  const boost = getScenarioBoost();
+  const hasBoost = Object.values(S.sliders).some(v => v > 0);
+  const battles = AXES.map(axis => {
+    const baseScore = c.scores[axis];
+    const mScore = Math.min(99, baseScore + (boost[axis] || 0));
+    const hScore = h[axis];
+    const total = mScore + hScore;
+    return {axis, mScore, baseScore, hScore, mPct:(mScore/total)*100, hPct:(hScore/total)*100, boosted: mScore > baseScore};
+  });
   const wins=battles.filter(b=>b.mScore>b.hScore).length, losses=battles.filter(b=>b.mScore<b.hScore).length;
   arena.innerHTML = `
-    <div class="fighter-card megazord"><div class="fighter-name">Sovereign Megazord</div><div class="fighter-sub">${S.merged.size} companies / ${c.countries} nations</div></div>
+    <div class="fighter-card megazord"><div class="fighter-name">Public AI Company</div><div class="fighter-sub">${S.merged.size} companies / ${c.countries} nations${hasBoost?' + gov investment':''}</div></div>
     <div class="vs-badge">VS</div>
     <div class="fighter-card"><div class="fighter-name">${h.name}</div><div class="fighter-sub">${h.sub}</div></div>
     <div class="bar-battle" style="grid-column:1/-1;margin-top:1rem;">
-      ${battles.map(b=>`<div class="bar-fight"><div class="bar-fight-label">${AXIS_LABELS[b.axis]}</div><div class="bar-fight-track"><div class="bar-fight-left" style="width:${b.mPct}%">${b.mScore}</div><div class="bar-fight-right" style="width:${b.hPct}%">${b.hScore}</div></div></div>`).join('')}
+      ${battles.map(b=>`<div class="bar-fight"><div class="bar-fight-label">${AXIS_LABELS[b.axis]}</div><div class="bar-fight-track"><div class="bar-fight-left" style="width:${b.mPct}%">${b.mScore}${b.boosted?' \u2191':''}</div><div class="bar-fight-right" style="width:${b.hPct}%">${b.hScore}</div></div></div>`).join('')}
     </div>`;
-  if (wins>losses) verdict.innerHTML=`<span class="win">Megazord wins ${wins}&ndash;${losses}!</span> Sovereignty and combined enterprise strength overcome raw compute.`;
-  else if (wins<losses) verdict.innerHTML=`<span class="lose">${h.name} leads ${losses}&ndash;${wins}.</span> The gap is ${losses-wins===1?'narrow':'significant'} — use the scenario simulator to close it.`;
-  else verdict.innerHTML=`<span class="close">Dead heat ${wins}&ndash;${losses}!</span> Already competitive. Additional investment tips the scale.`;
+  if (wins>losses) verdict.innerHTML=`<span class="win">The merged entity wins ${wins}&ndash;${losses}.</span> ${hasBoost?'Government investment closes the remaining gaps.':'Sovereignty and combined enterprise strength overcome raw compute.'}`;
+  else if (wins<losses) verdict.innerHTML=`<span class="lose">${h.name} leads ${losses}&ndash;${wins}.</span> ${losses-wins<=2?'The gap is narrow. Pull the scenario levers above to close it.':'Significant gap. Use the scenario levers to model how government investment changes the picture.'}`;
+  else verdict.innerHTML=`<span class="close">Dead heat ${wins}&ndash;${losses}.</span> ${hasBoost?'Investment is working. Push further.':'Already competitive. Pull the scenario levers to tip the scale.'}`;
 }
 
 // ============================================================
-// SCENARIO
+// SCENARIO (integrated into Battle as lever buttons)
 // ============================================================
-function renderScenario() {
-  const controls = document.getElementById('scenarioControls');
-  const sliders = [
-    { key:'compute', label:'Government Compute (EFLOPS)', min:0, max:100, step:5, fmt:v=>`${v} EFLOPS` },
-    { key:'contracts', label:'Government Contracts / yr', min:0, max:50, step:1, fmt:v=>`$${v}B` },
-    { key:'capital', label:'Capital Injection', min:0, max:100, step:5, fmt:v=>`$${v}B` },
-    { key:'talent', label:'Talent Acquisition', min:0, max:2000, step:50, fmt:v=>v.toLocaleString()+' researchers' }
-  ];
-  controls.innerHTML = sliders.map(s => `
-    <div class="slider-card"><div class="slider-top"><span class="slider-name">${s.label}</span><span class="slider-val" id="sv-${s.key}">${s.fmt(S.sliders[s.key])}</span></div>
-    <input type="range" id="sl-${s.key}" min="${s.min}" max="${s.max}" step="${s.step}" value="${S.sliders[s.key]}"></div>
-  `).join('');
-  sliders.forEach(s => {
-    const el=document.getElementById(`sl-${s.key}`);
-    el.addEventListener('input', () => { S.sliders[s.key]=parseInt(el.value); document.getElementById(`sv-${s.key}`).textContent=s.fmt(S.sliders[s.key]); updateScenario(); saveToURL(); });
+const LEVERS = [
+  { key:'compute', icon:'\u{1F5A5}', label:'Compute', min:0, max:100, step:25, fmt:v=>`${v} EFLOPS` },
+  { key:'contracts', icon:'\u{1F4DC}', label:'Contracts', min:0, max:50, step:10, fmt:v=>`$${v}B/yr` },
+  { key:'capital', icon:'\u{1F4B0}', label:'Capital', min:0, max:100, step:25, fmt:v=>`$${v}B` },
+  { key:'talent', icon:'\u{1F9D1}\u{200D}\u{1F4BB}', label:'Talent', min:0, max:2000, step:500, fmt:v=>v>=1000?`${(v/1000).toFixed(1)}K`:`${v}` }
+];
+
+function renderScenarioLevers() {
+  const container = document.getElementById('scenarioLevers');
+  container.innerHTML = `<div class="scenario-levers-label">Scenario Levers &mdash; tune to change the outcome</div>` +
+    LEVERS.map(l => `
+      <div class="lever-btn ${S.sliders[l.key]>0?'active':''}" data-key="${l.key}">
+        <span class="lever-icon">${l.icon}</span>
+        <span class="lever-label">${l.label}</span>
+        <span class="lever-val" id="lv-${l.key}">${l.fmt(S.sliders[l.key])}</span>
+        <input type="range" min="${l.min}" max="${l.max}" step="${l.step}" value="${S.sliders[l.key]}" id="lr-${l.key}">
+      </div>
+    `).join('');
+  LEVERS.forEach(l => {
+    const el = document.getElementById(`lr-${l.key}`);
+    el.addEventListener('input', () => {
+      S.sliders[l.key] = parseInt(el.value);
+      document.getElementById(`lv-${l.key}`).textContent = l.fmt(S.sliders[l.key]);
+      el.closest('.lever-btn').classList.toggle('active', S.sliders[l.key] > 0);
+      updateBattle();
+      saveToURL();
+    });
   });
-  updateScenario();
 }
 
-function updateScenario() {
-  const out=document.getElementById('scenarioOutput'), c=getCombined();
-  if (!c) { out.innerHTML='<h3>Projected 3-Year Impact</h3><p style="color:var(--text-muted);">Merge companies first.</p>'; return; }
-  const {compute,contracts,capital,talent}=S.sliders;
-  const projVal=c.valuation+capital*2+contracts*10+compute*0.5;
-  const projArr=c.arr+contracts*1000+capital*30+compute*5;
-  const projEmp=c.employees+talent+Math.round(capital*50);
-  const baseIdx=Object.values(c.scores).reduce((a,b)=>a+b,0)/AXES.length;
-  const projIdx=Math.min(99,baseIdx+compute*0.15+capital*0.08+talent*0.005+contracts*0.3);
-  const vsOpenAI=Math.min(100,(projVal/300)*100);
-  const rows = [
-    { label:'Projected Valuation', val:`$${projVal.toFixed(1)}B`, bar:projVal/300, color:'#0077c8' },
-    { label:'Projected ARR', val:`$${(projArr/1000).toFixed(1)}B`, bar:projArr/12000, color:'#2ec4b6' },
-    { label:'Projected Workforce', val:projEmp.toLocaleString(), bar:projEmp/10000, color:'#7c3aed' },
-    { label:'Competitive Index', val:`${projIdx.toFixed(0)} / 100`, bar:projIdx/100, color:'#f0a500' },
-    { label:'vs. OpenAI (Valuation)', val:`${vsOpenAI.toFixed(0)}%`, bar:vsOpenAI/100, color:vsOpenAI>75?'#2ec4b6':vsOpenAI>40?'#f0a500':'#e63946' }
-  ];
-  out.innerHTML = `<h3>Projected 3-Year Impact</h3><div class="scenario-results">${rows.map(r=>`<div><div class="scenario-row"><span class="scenario-row-label">${r.label}</span><span class="scenario-row-val" style="color:${r.color};">${r.val}</span></div><div class="scenario-bar"><div class="scenario-bar-fill" style="width:${Math.min(100,r.bar*100)}%;background:${r.color};"></div></div></div>`).join('')}</div>
-  <div class="scenario-verdict">${vsOpenAI>=80?'With this support, the Megazord reaches near-parity with leading US labs.':vsOpenAI>=50?'Significant progress. The gap narrows to a competitive range.':'Every bit helps, but more investment is needed to close the gap.'}</div>`;
+function getScenarioBoost() {
+  const {compute, contracts, capital, talent} = S.sliders;
+  return {
+    compute: Math.round(compute * 0.15),
+    models: Math.round(compute * 0.08 + talent * 0.005),
+    enterprise: Math.round(contracts * 0.3 + capital * 0.05),
+    sovereignty: Math.round(contracts * 0.2 + compute * 0.1),
+    research: Math.round(talent * 0.008 + capital * 0.04),
+    revenue: Math.round(contracts * 0.5 + capital * 0.08)
+  };
+}
+
+// ============================================================
+// MERGE CONTEXT SNIPPETS
+// ============================================================
+const MERGE_SNIPPETS = {
+  mistral: '<strong>Mistral AI joins.</strong> 675B parameter frontier models and 18K NVIDIA Blackwell GPUs. The entity now has its own compute and its own models &mdash; the two things every sovereign AI strategy needs first.',
+  cohere: '<strong>Cohere joins.</strong> 100,000+ enterprise customers and the North agentic platform. The entity now has distribution &mdash; the hardest thing to build from scratch.',
+  multiverse: '<strong>Multiverse Computing joins.</strong> Their CompactifAI technology compresses frontier models by 95%. Suddenly the entity\'s models run on phones, drones, edge devices. No cloud dependency required.',
+  aleph: '<strong>Aleph Alpha joins.</strong> Air-gapped sovereign deployment for governments and defense. The entity can now serve the most security-sensitive customers in the world.',
+  deepl: '<strong>DeepL joins.</strong> Best-in-class multilingual AI across 30+ languages. The entity doesn\'t just serve Europe &mdash; it speaks Europe.',
+  stability: '<strong>Stability AI joins.</strong> Open-source multimodal generation &mdash; images, video, audio. The entity now has a community of millions of developers building on its stack.'
+};
+
+function updateMergeContext() {
+  const el = document.getElementById('mergeContext');
+  const sel = getSelected();
+  if (sel.length === 0) { el.classList.add('hidden'); return; }
+  const latest = sel[sel.length - 1];
+  const snippet = MERGE_SNIPPETS[latest.id];
+  if (snippet) {
+    el.innerHTML = snippet;
+    el.classList.remove('hidden');
+  }
 }
 
 // ============================================================
@@ -1441,7 +1581,6 @@ function updateEverything() {
   updateLivePanel();
   updateNavPower();
   updateBattle();
-  updateScenario();
   saveToURL();
   const btn = document.getElementById('mergeAllBtn');
   btn.textContent = S.merged.size === COMPANIES.length ? 'Reset All' : 'Merge All Companies';
@@ -1461,7 +1600,7 @@ function init() {
   updateNavPower();
   renderChallengers();
   updateBattle();
-  renderScenario();
+  renderScenarioLevers();
   renderTimeline();
   setupMergeAll();
   setupScroll();
