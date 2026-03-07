@@ -61,24 +61,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .power-bar-mini { width: 120px; height: 8px; background: var(--light-gray); border-radius: 4px; overflow: hidden; }
 .power-bar-mini-fill { height: 100%; background: linear-gradient(90deg, var(--sky), var(--cyan)); border-radius: 4px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); width: 0%; }
 
-/* === COST OF INACTION TICKER === */
-.inaction-ticker {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
-  background: var(--navy-dark); color: white;
-  padding: 0.6rem 2rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem;
-  font-size: 0.8rem; font-weight: 500;
-  transition: transform 0.4s;
-}
-.inaction-ticker.hidden { transform: translateY(100%); }
-.ticker-label { color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; font-weight: 700; }
-.ticker-val { font-family: var(--mono); font-weight: 700; color: var(--red); font-size: 1rem; }
-.ticker-sub { color: rgba(255,255,255,0.5); font-size: 0.75rem; }
-.ticker-close {
-  position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-  background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer;
-  font-size: 1.1rem; padding: 0.3rem;
-}
-.ticker-close:hover { color: white; }
 
 /* === HERO === */
 .hero {
@@ -197,7 +179,9 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .reactor-center { text-align: center; z-index: 3; }
 .reactor-power-num { font-size: 3.5rem; font-weight: 900; font-family: var(--mono); color: var(--navy); line-height: 1; transition: all 0.3s; }
 .reactor-power-num.boosted { color: var(--sky); }
-.reactor-power-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; margin-top: 0.25rem; }
+.reactor-power-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; margin-top: 0.25rem; cursor: help; }
+.reactor-power-tooltip { font-size: 0.65rem; color: var(--text-muted); max-width: 180px; margin: 0.4rem auto 0; line-height: 1.4; opacity: 0; transition: opacity 0.3s; }
+.reactor-center:hover .reactor-power-tooltip { opacity: 1; }
 .reactor-empty-msg { color: var(--text-muted); font-size: 0.9rem; text-align: center; max-width: 200px; }
 .merge-btn-wrap { margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
 
@@ -400,6 +384,29 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .battle-verdict .close { color: var(--gold); }
 .battle-verdict .verdict-sub { font-size: 0.85rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 0.5rem; }
 
+/* === AXIS DESCRIPTIONS === */
+.round-label { position: relative; }
+.round-label .axis-hint { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.92); color: rgba(255,255,255,0.85); font-size: 0.65rem; font-weight: 400; padding: 0.35rem 0.6rem; border-radius: 4px; white-space: nowrap; pointer-events: none; z-index: 10; margin-bottom: 4px; }
+.round-label:hover .axis-hint { display: block; }
+
+/* === STORY GUIDE === */
+.story-guide {
+  position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%); z-index: 90;
+  display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-end;
+}
+.guide-step {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px; font-size: 0.65rem; font-weight: 600; color: rgba(255,255,255,0.35);
+  cursor: pointer; transition: all 0.3s; backdrop-filter: blur(8px); text-decoration: none;
+  white-space: nowrap;
+}
+.guide-step:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+.guide-step.active { background: rgba(0,119,200,0.2); border-color: var(--sky); color: var(--sky); }
+.guide-step .guide-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.guide-step .guide-num { font-family: var(--mono); font-size: 0.6rem; opacity: 0.6; }
+@media (max-width: 900px) { .story-guide { display: none; } }
+
 /* === SCENARIO === */
 .scenario-section { padding: 5rem 2rem; background: var(--off-white); }
 .scenario-inner { max-width: 1100px; margin: 0 auto; }
@@ -593,7 +600,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
 /* === PRINT / EXPORT === */
 @media print {
-  .topnav, .inaction-ticker, .confetti-overlay, .narrative-overlay, .modal-overlay, .toast { display: none !important; }
+  .topnav, .confetti-overlay, .narrative-overlay, .modal-overlay, .toast, .story-guide { display: none !important; }
   .hero { min-height: auto; padding: 2rem; }
   body { color: black; background: white; }
   .battle-section { background: #f0f0f0; color: black; }
@@ -624,13 +631,14 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </nav>
 
-<!-- COST OF INACTION TICKER -->
-<div class="inaction-ticker" id="inactionTicker">
-  <span class="ticker-label">Cost of Fragmentation</span>
-  <span class="ticker-val" id="tickerValue">$0</span>
-  <span class="ticker-sub">estimated value lost since you opened this page</span>
-  <button class="ticker-close" id="tickerClose">&times;</button>
+<!-- STORY GUIDE (right-side sticky nav) -->
+<div class="story-guide" id="storyGuide">
+  <a href="#story" class="guide-step" data-section="story"><span class="guide-num">01</span> The Precedent <span class="guide-dot"></span></a>
+  <a href="#assembly" class="guide-step" data-section="assembly"><span class="guide-num">02</span> Assemble <span class="guide-dot"></span></a>
+  <a href="#battle" class="guide-step" data-section="battle"><span class="guide-num">03</span> Stress Test <span class="guide-dot"></span></a>
+  <a href="#timeline" class="guide-step" data-section="timeline"><span class="guide-num">04</span> Roadmap <span class="guide-dot"></span></a>
 </div>
+
 
 <!-- HERO -->
 <section class="hero">
@@ -757,6 +765,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
     <div class="challenger-row" id="challengerRow"></div>
     <div class="battle-scoreboard" id="battleScoreboard"></div>
+    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; based on public data, market reports &amp; expert estimates. Hover an axis for details.</div>
     <div class="battle-rounds" id="battleRounds"></div>
     <div class="scenario-levers" id="scenarioLevers">
       <div class="scenario-levers-label">Scenario Levers &mdash; tune to change the outcome</div>
@@ -904,6 +913,14 @@ const HYPERSCALERS = [
 
 const AXES = ['compute', 'models', 'enterprise', 'sovereignty', 'research', 'revenue'];
 const AXIS_LABELS = { compute: 'Compute', models: 'Models', enterprise: 'Enterprise', sovereignty: 'Sovereignty', research: 'Research', revenue: 'Revenue' };
+const AXIS_HINTS = {
+  compute: 'GPU/TPU capacity, data center scale, FLOPS available',
+  models: 'Frontier model capability, benchmark scores, architecture',
+  enterprise: 'Business customers, platform maturity, SLA readiness',
+  sovereignty: 'Data residency, government trust, regulatory alignment',
+  research: 'Papers published, talent depth, open-source contributions',
+  revenue: 'Annual recurring revenue, growth rate, market penetration'
+};
 
 const ACHIEVEMENTS = [
   { id: 'first', label: 'First Merger', check: s => s.size >= 1 },
@@ -1010,7 +1027,6 @@ const S = {
   timelineIdx: 0,
   narrativeIdx: 0,
   narrativeOpen: false,
-  tickerStart: Date.now(),
   customData: false,
   _confettiFired: false
 };
@@ -1028,8 +1044,8 @@ function getCombined() {
     const vals = sel.map(c => c.scores[a]);
     const max = Math.max(...vals);
     const avg = vals.reduce((s,v) => s+v, 0) / vals.length;
-    const synergy = Math.min(sel.length * 4, 20);
-    scores[a] = Math.min(99, Math.round(max * 0.65 + avg * 0.35 + synergy));
+    const synergy = Math.min(sel.length * 5, 30);
+    scores[a] = Math.min(99, Math.round(max * 0.7 + avg * 0.3 + synergy));
   });
   return {
     valuation: sel.reduce((s,c) => s + c.valuation, 0),
@@ -1336,29 +1352,6 @@ function renderNarrativeChapter() {
   if (skip) skip.addEventListener('click', closeNarrative);
 }
 
-// ============================================================
-// 6. COST OF INACTION TICKER
-// ============================================================
-// Premise: fragmentation costs ~$10B/year in lost competitive positioning (Tan et al.)
-// That's ~$27.4M/day, ~$1.14M/hour, ~$19K/minute, ~$317/second
-const INACTION_PER_SECOND = 317;
-
-function startInactionTicker() {
-  const el = document.getElementById('tickerValue');
-  function tick() {
-    const elapsed = (Date.now() - S.tickerStart) / 1000;
-    const cost = elapsed * INACTION_PER_SECOND;
-    if (cost < 1000) el.textContent = '$' + Math.round(cost).toLocaleString();
-    else if (cost < 1000000) el.textContent = '$' + (cost / 1000).toFixed(1) + 'K';
-    else el.textContent = '$' + (cost / 1000000).toFixed(2) + 'M';
-    requestAnimationFrame(tick);
-  }
-  tick();
-
-  document.getElementById('tickerClose').addEventListener('click', () => {
-    document.getElementById('inactionTicker').classList.add('hidden');
-  });
-}
 
 // ============================================================
 // PARTICLES
@@ -1490,7 +1483,8 @@ function updateReactor() {
     ring.appendChild(orb);
   });
   const pct = powerPercent();
-  center.innerHTML = `<div class="reactor-power-num ${pct > 60 ? 'boosted' : ''}">${pct}%</div><div class="reactor-power-label">Combined Power</div>`;
+  const tipText = pct >= 95 ? 'No single entity controls 100% of any technology stack — real-world overlap, competing standards, and diminishing returns create a natural ceiling.' : '';
+  center.innerHTML = `<div class="reactor-power-num ${pct > 60 ? 'boosted' : ''}">${pct}%</div><div class="reactor-power-label">Combined Power</div>${tipText ? `<div class="reactor-power-tooltip">${tipText}</div>` : ''}`;
 }
 
 function updateLivePanel() {
@@ -1585,13 +1579,13 @@ function updateBattle(animate) {
   roundsEl.innerHTML = rounds.map((r, i) => `
     <div class="battle-round won-${r.winner} ${animate ? 'round-hidden' : 'round-reveal'}" data-idx="${i}">
       <div class="round-left">
-        <span class="round-val">${r.mScore}${r.boosted ? ' \u2191' : ''}</span>
+        <span class="round-val">${r.mScore}<span style="opacity:0.4;font-size:0.7em">/99</span>${r.boosted ? ' \u2191' : ''}</span>
         <div class="round-bar" style="width:${animate ? 0 : r.mPct}%; height:8px; min-width:4px;"></div>
       </div>
-      <div class="round-label">${AXIS_LABELS[r.axis]}</div>
+      <div class="round-label">${AXIS_LABELS[r.axis]}<span class="axis-hint">${AXIS_HINTS[r.axis]}</span></div>
       <div class="round-right">
         <div class="round-bar" style="width:${animate ? 0 : r.hPct}%; height:8px; min-width:4px;"></div>
-        <span class="round-val">${r.hScore}</span>
+        <span class="round-val">${r.hScore}<span style="opacity:0.4;font-size:0.7em">/99</span></span>
       </div>
     </div>
   `).join('');
@@ -1778,7 +1772,24 @@ function setupScroll() {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+    updateStoryGuide();
+  });
+}
+
+function updateStoryGuide() {
+  const sections = ['story', 'assembly', 'battle', 'timeline'];
+  const guide = document.getElementById('storyGuide');
+  if (!guide) return;
+  let active = null;
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < window.innerHeight * 0.5) active = id;
+  }
+  guide.querySelectorAll('.guide-step').forEach(s => {
+    s.classList.toggle('active', s.dataset.section === active);
+  });
 }
 
 // ============================================================
@@ -1813,7 +1824,6 @@ function init() {
   renderTimeline();
   setupMergeAll();
   setupScroll();
-  startInactionTicker();
 
   // Wire up buttons
   document.getElementById('shareBtn').addEventListener('click', copyShareLink);
