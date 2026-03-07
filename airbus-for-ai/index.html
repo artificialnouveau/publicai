@@ -646,7 +646,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
     <div class="hero-stats-row">
       <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Companies</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">10</div><div class="hero-stat-label">Candidate Nations</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">11</div><div class="hero-stat-label">Candidate Nations</div></div>
       <div class="hero-stat"><div class="hero-stat-val">$27B+</div><div class="hero-stat-label">Combined Value</div></div>
       <div class="hero-stat"><div class="hero-stat-val">79.8%</div><div class="hero-stat-label">ChatGPT Market Share</div></div>
     </div>
@@ -671,7 +671,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <div class="story-tag">2026 &mdash; The Middle Powers' Dilemma</div>
       <h3>Four problems, one solution</h3>
       <p>Middle powers face four interlocking failures: <strong>scale</strong> (no single nation can match US compute), <strong>limited domestic markets</strong> (too small to sustain a frontier lab), <strong>foreign capture</strong> (ChatGPT holds 79.8% of consumer chatbots globally; Mistral's Le Chat has &lt;4% even in France), and <strong>fragmented sovereignty</strong> (dozens of national AI strategies pulling in different directions).</p>
-      <p>But across Canada, France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK are <strong>extraordinary AI companies</strong> &mdash; private champions like Mistral and Cohere, public labs like BSC and RIKEN, and coalitions like New Nordics AI. Each world-class in a specific domain.</p>
+      <p>But across Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK are <strong>extraordinary AI companies</strong> &mdash; private champions like Mistral and Cohere, infrastructure monopolies like ASML, public labs like BSC and RIKEN, and coalitions like New Nordics AI. Each world-class in a specific domain.</p>
       <p><strong>What if they formed a Public AI Company?</strong> Not a loose consortium, but a real entity &mdash; with shared compute, shared R&D, and a market strategy. Assemble the entity below and find out.</p>
     </div>
   </div>
@@ -682,14 +682,14 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="narrative-kicker">The Components</div>
   <h2 class="narrative-heading">The pieces already exist. Nobody has put them together.</h2>
   <div class="narrative-body">
-    <p>Across ten candidate nations &mdash; Canada, France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK &mdash; are <strong>extraordinary AI companies</strong>. Private champions with frontier models. Public labs with sovereign compute. Startups with compression breakthroughs that let frontier models run on a phone.</p>
-    <p>Each is world-class in a specific domain. None can challenge ChatGPT alone. But together, they cover the full stack: <strong>models, compute, enterprise distribution, multilingual capability, sovereignty, and open-source community</strong>. The question is whether they stay fragments &mdash; or become something greater.</p>
+    <p>Across eleven candidate nations &mdash; Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK &mdash; are <strong>extraordinary AI companies</strong>. Private champions with frontier models. Public labs with sovereign compute. Startups with compression breakthroughs that let frontier models run on a phone. And in the Netherlands, <a href="https://www.cnbc.com/2026/01/29/-ai-boom-nvidia-asml-dutch-chip-equipment-maker-lithography-.html" style="color:var(--sky);">ASML</a> &mdash; the only company on Earth that makes the EUV lithography machines required to manufacture every advanced AI chip.</p>
+    <p>Each is world-class in a specific domain. None can challenge <a href="https://gs.statcounter.com/ai-chatbot-market-share" style="color:var(--sky);">ChatGPT&rsquo;s 79.8% market share</a> alone. But together, they cover the full stack: <strong>models, compute, enterprise distribution, multilingual capability, sovereignty, and open-source community</strong>. The question is whether they stay fragments &mdash; or become something greater.</p>
   </div>
   <div class="narrative-stats-row">
-    <div class="narrative-stat-item"><div class="val">10</div><div class="label">Candidate Nations</div></div>
+    <div class="narrative-stat-item"><div class="val">11</div><div class="label">Candidate Nations</div></div>
     <div class="narrative-stat-item"><div class="val">6</div><div class="label">Core Companies</div></div>
-    <div class="narrative-stat-item"><div class="val">$27B+</div><div class="label">Combined Value</div></div>
-    <div class="narrative-stat-item"><div class="val">532K+</div><div class="label">Combined Customers</div></div>
+    <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);">$27B+</a></div><div class="label">Combined Value</div></div>
+    <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);">532K+</a></div><div class="label">Combined Customers</div></div>
   </div>
 </div>
 
@@ -789,7 +789,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- CTA -->
 <section class="cta-section">
   <h2>The question isn't whether.<br>It's when.</h2>
-  <p>Every month of fragmentation widens the gap. Airbus proved sovereign consolidation works. The playbook exists. The companies exist. The political will is forming across 10 nations. As Sam Altman himself said: he sometimes wishes this was happening in the public sector.</p>
+  <p>Every month of fragmentation widens the gap. Airbus proved sovereign consolidation works. The playbook exists. The companies exist. The political will is forming across 11 nations. As Sam Altman himself said: he sometimes wishes this was happening in the public sector.</p>
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
     <a href="#assembly" class="btn btn-primary">Rebuild the Entity</a>
     <button class="btn btn-outline" id="ctaExportBtn">Export Deck</button>
@@ -911,7 +911,7 @@ const ACHIEVEMENTS = [
   { id: 'triple', label: 'Triple Threat', check: s => s.size >= 3 },
   { id: 'eu', label: 'EU United', check: s => ['mistral','aleph','deepl','multiverse'].every(c => s.has(c)) },
   { id: 'fiveeyes', label: 'Five Nations', check: s => { const countries = new Set(COMPANIES.filter(c => s.has(c.id)).map(c => c.country)); return countries.size >= 4; } },
-  { id: 'full', label: 'FULL MEGAZORD', check: s => s.size === COMPANIES.length, gold: true }
+  { id: 'full', label: 'Full Merger', check: s => s.size === COMPANIES.length, gold: true }
 ];
 
 const TIMELINE_DATA = [
@@ -953,9 +953,9 @@ const NARRATIVE_CHAPTERS = [
   {
     chapter: 'Chapter 3 of 7',
     title: 'The Pieces Exist',
-    body: 'Across 10 candidate nations \u2014 Canada, France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK \u2014 are extraordinary AI companies: private champions, public labs, and national coalitions. Each world-class in a specific domain.',
+    body: 'Across 11 candidate nations \u2014 Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK \u2014 are extraordinary AI companies: private champions, public labs, and national coalitions. Each world-class in a specific domain. And in the Netherlands, ASML \u2014 the only company that makes the EUV lithography machines every advanced AI chip requires.',
     stats: [
-      { val: '10', label: 'Candidate Nations' },
+      { val: '11', label: 'Candidate Nations' },
       { val: '6', label: 'Core Companies' },
       { val: '$27B+', label: 'Combined Value' }
     ],
@@ -1211,7 +1211,7 @@ p { font-size: 16px; color: #4a5568; line-height: 1.7; margin-bottom: 12px; }
   <div class="eyebrow">The Precedent</div>
   <h2>Airbus proved it works.</h2>
   <p>In 1970, four nations merged their aerospace companies into Airbus. It went from 0% to 50% global market share, now employing 130,000 people with revenue exceeding Boeing's.</p>
-  <p>The same playbook can work for AI. As Tan, Jackson, Berjon & Coyle argue in their Bennett School analysis: collective action, public goods, sovereignty, and scale without monopoly make the case for a Public AI Company across 10 middle-power nations.</p>
+  <p>The same playbook can work for AI. As Tan, Jackson, Berjon & Coyle argue in their Bennett School analysis: collective action, public goods, sovereignty, and scale without monopoly make the case for a Public AI Company across 11 middle-power nations.</p>
   <h3 style="margin-top: 32px;">The question isn't whether. It's when.</h3>
   <div class="footer-note">Based on "Airbus for AI" (Bennett School of Public Policy, Sept 2025). Generated from airbusforai.org. ${new Date().toLocaleDateString()}</div>
 </div>
