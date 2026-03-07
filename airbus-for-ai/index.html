@@ -1392,8 +1392,6 @@ function updateAchievements() {
     const unlocked = a.check(S.merged);
     return `<div class="badge ${unlocked?'unlocked':''} ${unlocked&&a.gold?'gold':''}">${unlocked?'\u2713 ':''}${a.label}</div>`;
   }).join('');
-  if (S.merged.size === COMPANIES.length && !S._confettiFired) { S._confettiFired = true; fireConfetti(); }
-  if (S.merged.size < COMPANIES.length) { S._confettiFired = false; }
 }
 
 function updateNavPower() {
