@@ -1659,13 +1659,18 @@ function renderScenarioLevers() {
 
 function getScenarioBoost() {
   const {compute, contracts, capital, talent} = S.sliders;
+  // Normalize each lever to 0-1 range, then apply meaningful boost (up to ~25 pts each)
+  const cNorm = compute / 100;       // 0-1
+  const kNorm = contracts / 50;      // 0-1
+  const capNorm = capital / 100;     // 0-1
+  const tNorm = talent / 2000;       // 0-1
   return {
-    compute: Math.round(compute * 0.15),
-    models: Math.round(compute * 0.08 + talent * 0.005),
-    enterprise: Math.round(contracts * 0.3 + capital * 0.05),
-    sovereignty: Math.round(contracts * 0.2 + compute * 0.1),
-    research: Math.round(talent * 0.008 + capital * 0.04),
-    revenue: Math.round(contracts * 0.5 + capital * 0.08)
+    compute:     Math.round(cNorm * 25 + capNorm * 8),
+    models:      Math.round(cNorm * 15 + tNorm * 18 + capNorm * 5),
+    enterprise:  Math.round(kNorm * 22 + capNorm * 12 + tNorm * 5),
+    sovereignty: Math.round(kNorm * 15 + cNorm * 18 + capNorm * 5),
+    research:    Math.round(tNorm * 25 + capNorm * 10 + cNorm * 8),
+    revenue:     Math.round(kNorm * 25 + capNorm * 15 + tNorm * 5)
   };
 }
 
@@ -1674,7 +1679,7 @@ function getScenarioBoost() {
 // ============================================================
 const MERGE_SNIPPETS = {
   mistral: '<strong>Mistral AI joins.</strong> 675B parameter frontier models and 18K NVIDIA Blackwell GPUs. The entity now has its own compute and its own models &mdash; the two things every sovereign AI strategy needs first.',
-  cohere: '<strong>Cohere joins.</strong> 100,000+ enterprise customers and the North agentic platform. The entity now has distribution &mdash; the hardest thing to build from scratch.',
+  cohere: '<strong>Cohere joins.</strong> 17,000+ enterprise customers and the North agentic platform. The entity now has distribution &mdash; the hardest thing to build from scratch.',
   multiverse: '<strong>Multiverse Computing joins.</strong> Their CompactifAI technology compresses frontier models by 95%. Suddenly the entity\'s models run on phones, drones, edge devices. No cloud dependency required.',
   aleph: '<strong>Aleph Alpha joins.</strong> Air-gapped sovereign deployment for governments and defense. The entity can now serve the most security-sensitive customers in the world.',
   deepl: '<strong>DeepL joins.</strong> Best-in-class multilingual AI across 30+ languages. The entity doesn\'t just serve Europe &mdash; it speaks Europe.',
