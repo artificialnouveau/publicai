@@ -391,8 +391,8 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 
 /* === STORY GUIDE === */
 .story-guide {
-  position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%); z-index: 90;
-  display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-end;
+  position: fixed; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 90;
+  display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-start;
 }
 .guide-step {
   display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem;
@@ -405,7 +405,7 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .guide-step.active { background: rgba(0,119,200,0.2); border-color: var(--sky); color: var(--sky); }
 .guide-step .guide-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .guide-step .guide-num { font-family: var(--mono); font-size: 0.6rem; opacity: 0.6; }
-@media (max-width: 900px) { .story-guide { display: none; } }
+@media (max-width: 1200px) { .story-guide { display: none; } }
 
 /* === SCENARIO === */
 .scenario-section { padding: 5rem 2rem; background: var(--off-white); }
