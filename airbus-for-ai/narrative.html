@@ -267,28 +267,30 @@ body {
 /* === DOCUMENT INSET === */
 .doc-inset {
   max-width: 600px; margin: 2rem auto; padding: 2.5rem 2rem;
-  background: #f5f0e0; color: #1a1a1a;
+  background: #f5f0e0; color: #1a1a1a !important;
   font-family: Georgia, 'Times New Roman', serif; font-size: 0.9rem; line-height: 1.7;
   border: 1px solid #d4c8a8; box-shadow: 3px 6px 16px rgba(0,0,0,0.3);
   position: relative;
 }
+.doc-inset * { color: #1a1a1a; }
 .doc-inset h4 {
   font-size: 1.1rem; text-align: center; margin-bottom: 0.3rem;
   font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  color: #1a1a1a;
 }
 .doc-inset .doc-subtitle {
   text-align: center; font-style: italic; margin-bottom: 1.5rem;
-  color: #555; font-size: 0.85rem;
+  color: #555 !important; font-size: 0.85rem;
 }
-.doc-inset p { margin-bottom: 0.8rem; text-indent: 1.5rem; }
+.doc-inset p { margin-bottom: 0.8rem; text-indent: 1.5rem; color: #2a2a2a !important; }
 .doc-inset .doc-section {
   font-weight: 700; margin-top: 1.2rem; margin-bottom: 0.4rem;
-  text-indent: 0; font-size: 0.95rem;
+  text-indent: 0; font-size: 0.95rem; color: #1a1a1a !important;
 }
 .doc-inset .doc-stamp {
   position: absolute; top: 20px; right: 20px;
-  font-family: var(--mono); font-size: 0.7rem; color: var(--red);
-  border: 2px solid var(--red); padding: 4px 8px; transform: rotate(12deg);
+  font-family: var(--mono); font-size: 0.7rem; color: #c42020 !important;
+  border: 2px solid #c42020; padding: 4px 8px; transform: rotate(12deg);
   font-weight: 700; letter-spacing: 0.1em; opacity: 0.6;
 }
 
