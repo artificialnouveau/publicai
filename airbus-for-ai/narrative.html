@@ -582,6 +582,16 @@ body {
   margin-bottom: 0.4rem;
 }
 
+/* === SOURCE LINKS === */
+.source-link {
+  font-size: 0.65rem; font-family: var(--mono); font-weight: 600;
+  color: rgba(255,255,255,0.25); text-decoration: none;
+  border-bottom: 1px dotted rgba(255,255,255,0.15);
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.source-link:hover { color: var(--cyan); border-bottom-color: var(--cyan); }
+
 /* === SCROLL ANIMATION === */
 .reveal {
   opacity: 0; transform: translateY(20px);
@@ -650,6 +660,17 @@ body {
   <div class="hero-content">
     <h1>The Slow Boil</h1>
     <p class="hero-sub">When Internet Control Means Sovereignty</p>
+    <p style="font-size:0.95rem;color:rgba(255,255,255,0.35);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;">A speculative narrative about Europe's AI sovereignty crisis — told through the eyes of the people who would have to build the coalition. Grounded in real data, real companies, real dependencies.</p>
+    <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;">
+      <div style="flex:1;text-align:center;padding:1rem;border:1px solid rgba(255,255,255,0.06);border-radius:8px;background:rgba(255,255,255,0.02);">
+        <div style="font-size:0.7rem;font-family:var(--mono);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Left side</div>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">The story — fictional chapters through character perspectives in Dublin, Brussels, Berlin, and beyond</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:1rem;border:1px solid rgba(255,255,255,0.06);border-radius:8px;background:rgba(255,255,255,0.02);">
+        <div style="font-size:0.7rem;font-family:var(--mono);color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Right side</div>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">The data — real market share, compute costs, talent flows, and interactive simulations with sourced references</div>
+      </div>
+    </div>
     <div class="scroll-indicator" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
       Begin reading
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
@@ -818,17 +839,17 @@ body {
         <div class="stat-card">
           <div class="stat-val">70%</div>
           <div class="stat-label">EU cloud market controlled by AWS, Azure, Google Cloud</div>
-          <div class="stat-cite">Source: Synergy Research Group</div>
+          <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank">Synergy Research Group, 2024</a>
         </div>
         <div class="stat-card">
           <div class="stat-val">2%</div>
           <div class="stat-label">EU share of global AI compute by 2027</div>
-          <div class="stat-cite">Source: European Commission</div>
+          <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank">European Commission, AI Gigafactories Initiative</a>
         </div>
         <div class="stat-card">
           <div class="stat-val">2%</div>
           <div class="stat-label">Mistral's share of global LLM market</div>
-          <div class="stat-cite">Source: Market analysis estimates</div>
+          <a class="source-link" href="https://www.statista.com/statistics/1482817/market-share-of-ai-chatbots/" target="_blank">Statista / Statcounter, 2025</a>
         </div>
       </div>
     </div>
@@ -838,11 +859,17 @@ body {
       <div class="chart-container reveal">
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
         <canvas id="marketCapChart" height="320"></canvas>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+          <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/openai-closes-40-billion-funding-round-2025-03-31/" target="_blank">OpenAI valuation: Reuters, Mar 2025</a>
+          <a class="source-link" href="https://www.cnbc.com/2025/01/09/anthropic-is-in-talks-to-raise-2-billion-at-60-billion-valuation.html" target="_blank">Anthropic: CNBC, Jan 2025</a>
+          <a class="source-link" href="https://www.ft.com/content/mistral-ai-valuation" target="_blank">Mistral: Financial Times, 2025</a>
+        </div>
       </div>
 
       <div class="chart-container reveal">
         <h3>Global Cloud Infrastructure Market Share</h3>
         <canvas id="cloudShareChart" height="320"></canvas>
+        <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank" style="margin-top:8px;display:inline-block;">Source: Synergy Research Group Q4 2024</a>
       </div>
 
       <!-- Coordination Cost Calculator -->
@@ -1025,6 +1052,11 @@ body {
           <div class="val" id="exodusTotal">$0B</div>
           <div class="label">Total value exported to US</div>
         </div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+          <a class="source-link" href="https://www.ft.com/content/europe-scale-up-problem" target="_blank">Financial Times: Europe's scale-up problem</a>
+          <a class="source-link" href="https://www.crunchbase.com/" target="_blank">Crunchbase funding data</a>
+          <a class="source-link" href="https://www.nytimes.com/2024/11/06/technology/11x-ai-startup-london-san-francisco.html" target="_blank">NYT: 11x relocation</a>
+        </div>
       </div>
     </div>
 
@@ -1093,9 +1125,16 @@ body {
       </div>
 
       <p style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;">
-        Green = strong position &nbsp;|&nbsp; Yellow = moderate &nbsp;|&nbsp; Red = weak &nbsp;|&nbsp; Gray = absent<br>
-        Sources: Synergy Research, Crunchbase, OECD AI Policy Observatory, Stanford HAI Index 2024
+        Green = strong position &nbsp;|&nbsp; Yellow = moderate &nbsp;|&nbsp; Red = weak &nbsp;|&nbsp; Gray = absent
       </p>
+      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank">Synergy Research Group</a>
+        <a class="source-link" href="https://www.crunchbase.com/hub/artificial-intelligence-startups" target="_blank">Crunchbase AI Startups</a>
+        <a class="source-link" href="https://oecd.ai/en/data" target="_blank">OECD AI Policy Observatory</a>
+        <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2024</a>
+        <a class="source-link" href="https://www.eca.europa.eu/en/publications/SR-2024-10" target="_blank">EU Court of Auditors: Chips Act</a>
+        <a class="source-link" href="https://ecfr.eu/publication/the-eurostack/" target="_blank">ECFR: The EuroStack</a>
+      </div>
     </div>
 
   </div>
@@ -1288,6 +1327,11 @@ body {
       </div>
 
       <div id="talentMapGroups" class="reveal"></div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI: AI talent flows</a>
+        <a class="source-link" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo: Global AI Talent Tracker</a>
+        <a class="source-link" href="https://www.nber.org/papers/w31873" target="_blank">NBER: AI researcher migration</a>
+      </div>
     </div>
 
   </div>
@@ -1389,6 +1433,11 @@ body {
             <div class="tl-event"><div class="tl-year">2033</div><div class="tl-text">Competitive in key verticals: health AI, industrial AI, multilingual NLP</div></div>
             <div class="tl-event"><div class="tl-year">2035</div><div class="tl-text">Parity in enterprise AI. Not the biggest, but sovereign and viable</div></div>
           </div>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+          <a class="source-link" href="https://www.airbus.com/en/who-we-are/our-history" target="_blank">Airbus: Corporate history</a>
+          <a class="source-link" href="https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds316_e.htm" target="_blank">WTO: DS316 Boeing-Airbus dispute</a>
+          <a class="source-link" href="https://ecfr.eu/publication/the-eurostack/" target="_blank">ECFR: The EuroStack</a>
         </div>
       </div>
     </div>
