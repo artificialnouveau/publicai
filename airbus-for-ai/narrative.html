@@ -162,14 +162,15 @@ body {
 
 .data-panel {
   padding: 2rem 0;
-  opacity: 0.3;
-  transition: opacity 0.5s;
+  display: none;
 }
 .data-panel.active {
-  opacity: 1;
+  display: block;
+  animation: panelFadeIn 0.5s ease;
 }
-.data-panel + .data-panel {
-  border-top: 1px solid rgba(255,255,255,0.04);
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Narrative section markers (for intersection observer) */
@@ -272,7 +273,10 @@ body {
   border: 1px solid #d4c8a8; box-shadow: 3px 6px 16px rgba(0,0,0,0.3);
   position: relative;
 }
-.doc-inset * { color: #1a1a1a; }
+.doc-inset, .doc-inset * { color: #1a1a1a !important; }
+.doc-inset strong { color: #0a0a0a !important; font-weight: 800; }
+.doc-inset .doc-subtitle { color: #555 !important; }
+.doc-inset .doc-section { color: #1a1a1a !important; }
 .doc-inset h4 {
   font-size: 1.1rem; text-align: center; margin-bottom: 0.3rem;
   font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
@@ -617,7 +621,7 @@ body {
     border-top: 1px solid rgba(255,255,255,0.04);
   }
   .data-panel {
-    opacity: 1;
+    display: block !important;
   }
   .timeline-dual { grid-template-columns: 1fr; }
   .timeline-dual::before { display: none; }
@@ -1625,8 +1629,12 @@ window.addEventListener('scroll', ()=>{
         const targetPanel = dataCol.querySelector('#' + targetPanelId);
         if(targetPanel){
           targetPanel.classList.add('active');
-          // Scroll the data column to show the active panel
-          targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Scroll data column to top
+          dataCol.scrollTop = 0;
+          // Redraw any canvases that were hidden
+          setTimeout(() => {
+            if(targetPanelId === 'panel-charts') { drawMarketCapChart(); drawCloudShareChart(); }
+          }, 100);
         }
       }
     });
