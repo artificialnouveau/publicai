@@ -101,7 +101,83 @@ body {
   50% { transform: translateY(8px); }
 }
 
-/* === CHAPTER STYLES === */
+/* === SPLIT LAYOUT === */
+.split-section {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+.split-narrative {
+  padding: 6rem 3rem 6rem 4rem;
+}
+.split-narrative p {
+  font-size: 1.1rem; line-height: 1.85;
+  color: rgba(255,255,255,0.65); margin-bottom: 1.25rem;
+  max-width: none;
+}
+.split-narrative p:last-child { margin-bottom: 0; }
+.split-narrative strong { color: rgba(255,255,255,0.9); }
+.split-narrative em { color: rgba(255,255,255,0.75); font-style: italic; }
+.split-narrative h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.02em;
+  color: white;
+}
+.split-narrative h3 {
+  font-size: 1.4rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
+  color: rgba(255,255,255,0.9);
+}
+.split-narrative .dateline {
+  font-family: var(--mono); font-size: 0.8rem; color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;
+  display: block;
+}
+.split-narrative .chapter-divider {
+  width: 40px; height: 2px; background: var(--cyan); margin: 3rem 0;
+  opacity: 0.3;
+}
+.split-narrative blockquote {
+  border-left: 3px solid var(--cyan); padding-left: 1.5rem;
+  margin: 2rem 0; font-style: italic;
+  color: rgba(255,255,255,0.55);
+}
+.split-narrative blockquote cite {
+  display: block; margin-top: 0.5rem; font-size: 0.85rem;
+  font-style: normal; color: rgba(255,255,255,0.35);
+}
+.split-data {
+  padding: 6rem 4rem 6rem 3rem;
+  border-left: 1px solid rgba(255,255,255,0.04);
+  background: rgba(0,0,0,0.15);
+  position: sticky;
+  top: 50px;
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+}
+.split-data::-webkit-scrollbar { width: 4px; }
+.split-data::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+.split-data::-webkit-scrollbar-track { background: transparent; }
+
+.data-panel {
+  padding: 2rem 0;
+  opacity: 0.3;
+  transition: opacity 0.5s;
+}
+.data-panel.active {
+  opacity: 1;
+}
+.data-panel + .data-panel {
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Narrative section markers (for intersection observer) */
+.narrative-section {
+  /* just a marker class; no layout change */
+}
+
+/* === CHAPTER STYLES (still used inside split-narrative) === */
 .chapter {
   max-width: 680px; margin: 0 auto; padding: 6rem 2rem;
   position: relative; z-index: 1;
@@ -141,49 +217,49 @@ body {
   font-style: normal; color: rgba(255,255,255,0.35);
 }
 
-/* === DATA BREAK === */
+/* === DATA BREAK (used inside data panels) === */
 .data-break {
   padding: 5rem 2rem;
   background: linear-gradient(180deg, #0a1628, #0f1d35, #0a1628);
   position: relative; z-index: 1;
 }
 .data-break-inner { max-width: 1100px; margin: 0 auto; }
-.data-break h2 {
-  font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800;
-  text-align: center; margin-bottom: 0.5rem; letter-spacing: -0.02em;
+.data-break h2, .data-panel h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800;
+  margin-bottom: 0.5rem; letter-spacing: -0.02em;
 }
-.data-break .section-sub {
-  text-align: center; color: rgba(255,255,255,0.35); font-size: 0.95rem;
-  margin-bottom: 3rem; max-width: 550px; margin-left: auto; margin-right: auto;
+.data-break .section-sub, .data-panel .section-sub {
+  color: rgba(255,255,255,0.35); font-size: 0.9rem;
+  margin-bottom: 2rem;
 }
 .stat-row {
-  display: flex; gap: 1.5rem; justify-content: center;
-  flex-wrap: wrap; margin-bottom: 3rem;
+  display: flex; gap: 1rem; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 2rem;
 }
 .stat-card {
-  text-align: center; padding: 2rem 1.5rem; flex: 1; min-width: 200px; max-width: 300px;
+  text-align: center; padding: 1.5rem 1rem; flex: 1; min-width: 140px; max-width: 300px;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
 }
 .stat-val {
-  font-family: var(--mono); font-size: 3rem; font-weight: 900;
+  font-family: var(--mono); font-size: 2.5rem; font-weight: 900;
   color: var(--red); line-height: 1;
 }
 .stat-label {
-  font-size: 0.9rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;
+  font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;
   line-height: 1.4;
 }
 .stat-cite {
-  font-size: 0.7rem; color: rgba(255,255,255,0.2); margin-top: 0.3rem;
+  font-size: 0.65rem; color: rgba(255,255,255,0.2); margin-top: 0.3rem;
   font-family: var(--mono);
 }
 .chart-container {
-  margin: 3rem auto; max-width: 900px;
+  margin: 2rem 0; max-width: none;
   background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px; padding: 2rem;
+  border-radius: 12px; padding: 1.5rem;
 }
 .chart-container h3 {
-  font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem;
+  font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem;
   color: rgba(255,255,255,0.6);
 }
 .chart-container canvas { width: 100%; display: block; }
@@ -218,14 +294,14 @@ body {
 
 /* === INTERACTIVE WIDGETS === */
 .widget {
-  max-width: 680px; margin: 3rem auto; padding: 2rem;
+  max-width: none; margin: 2rem 0; padding: 1.5rem;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px;
 }
 .widget h3 {
-  font-size: 1rem; font-weight: 700; margin-bottom: 1rem;
+  font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
   color: var(--cyan); font-family: var(--mono);
-  letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.8rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
 }
 .widget label {
   display: block; font-size: 0.85rem; color: rgba(255,255,255,0.5);
@@ -263,56 +339,57 @@ body {
 /* === EXODUS TRACKER === */
 .exodus-list { list-style: none; }
 .exodus-item {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
   opacity: 0; transform: translateX(-30px);
   transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+  font-size: 0.85rem;
 }
 .exodus-item.visible { opacity: 1; transform: translateX(0); }
 .exodus-origin {
-  font-size: 0.75rem; color: rgba(255,255,255,0.3); min-width: 80px;
+  font-size: 0.7rem; color: rgba(255,255,255,0.3); min-width: 60px;
   font-family: var(--mono);
 }
 .exodus-name {
-  font-weight: 700; font-size: 0.9rem; color: rgba(255,255,255,0.8);
+  font-weight: 700; font-size: 0.85rem; color: rgba(255,255,255,0.8);
   flex: 1;
 }
 .exodus-funding {
-  font-size: 0.75rem; color: var(--gold); font-family: var(--mono);
+  font-size: 0.7rem; color: var(--gold); font-family: var(--mono);
 }
 .exodus-arrow {
-  color: var(--red); font-size: 1.2rem; margin: 0 0.5rem;
+  color: var(--red); font-size: 1rem; margin: 0 0.3rem;
 }
 .exodus-dest {
-  font-size: 0.75rem; color: rgba(255,255,255,0.3); min-width: 60px;
+  font-size: 0.7rem; color: rgba(255,255,255,0.3); min-width: 50px;
   font-family: var(--mono); text-align: right;
 }
 .exodus-counter {
-  text-align: center; margin-top: 2rem; padding: 1.5rem;
+  text-align: center; margin-top: 1.5rem; padding: 1rem;
   background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.15);
   border-radius: 8px;
 }
 .exodus-counter .val {
-  font-family: var(--mono); font-size: 2rem; font-weight: 900; color: var(--red);
+  font-family: var(--mono); font-size: 1.8rem; font-weight: 900; color: var(--red);
 }
 .exodus-counter .label {
-  font-size: 0.8rem; color: rgba(255,255,255,0.3); margin-top: 0.25rem;
+  font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 0.25rem;
 }
 
 /* === HEATMAP TABLE === */
-.heatmap-wrap { overflow-x: auto; margin: 2rem 0; }
+.heatmap-wrap { overflow-x: auto; margin: 1.5rem 0; }
 .heatmap {
-  width: 100%; border-collapse: collapse; font-size: 0.82rem;
-  min-width: 600px;
+  width: 100%; border-collapse: collapse; font-size: 0.75rem;
+  min-width: 400px;
 }
 .heatmap th {
-  padding: 0.75rem 1rem; font-weight: 700; text-align: left;
+  padding: 0.6rem 0.75rem; font-weight: 700; text-align: left;
   border-bottom: 2px solid rgba(255,255,255,0.1);
   color: rgba(255,255,255,0.6); font-family: var(--mono);
-  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
 }
 .heatmap td {
-  padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04);
   color: rgba(255,255,255,0.7);
 }
 .heatmap td.strong { background: rgba(46,196,182,0.12); color: var(--green); font-weight: 600; }
@@ -321,34 +398,33 @@ body {
 .heatmap td.absent { background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.15); font-style: italic; }
 .heatmap td.layer { font-weight: 700; color: rgba(255,255,255,0.5); }
 
-/* === SIMULATION SECTION === */
+/* === SIMULATION SECTION (compact for data column) === */
 .sim-section {
-  padding: 5rem 2rem;
-  background: linear-gradient(180deg, #070b14, #0f1d35, #070b14);
+  padding: 2rem 0;
 }
-.sim-inner { max-width: 680px; margin: 0 auto; }
+.sim-inner { max-width: none; margin: 0 auto; }
 .sim-decision {
-  margin-bottom: 4rem; padding: 2rem;
+  margin-bottom: 2rem; padding: 1.5rem;
   background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
 }
 .sim-decision .sim-month {
-  font-family: var(--mono); font-size: 0.75rem; color: var(--cyan);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  font-family: var(--mono); font-size: 0.7rem; color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
 }
 .sim-decision h3 {
-  font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;
+  font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;
   color: rgba(255,255,255,0.9);
 }
 .sim-decision .sim-situation {
-  font-size: 0.95rem; color: rgba(255,255,255,0.5); line-height: 1.7;
-  margin-bottom: 1.5rem;
+  font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6;
+  margin-bottom: 1rem;
 }
-.sim-options { display: flex; flex-direction: column; gap: 0.75rem; }
+.sim-options { display: flex; flex-direction: column; gap: 0.5rem; }
 .sim-opt {
-  padding: 1rem 1.25rem; border-radius: 8px; cursor: pointer;
+  padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-  font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.5;
+  font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.5;
   transition: all 0.25s; text-align: left;
 }
 .sim-opt:hover {
@@ -358,27 +434,27 @@ body {
 .sim-opt.selected { border-color: var(--cyan); background: rgba(0,180,216,0.1); color: white; pointer-events: none; }
 .sim-opt.not-selected { opacity: 0.3; pointer-events: none; }
 .sim-result {
-  margin-top: 1rem; padding: 1rem; border-radius: 8px;
-  background: rgba(0,0,0,0.3); font-size: 0.9rem;
-  color: rgba(255,255,255,0.6); line-height: 1.6;
+  margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+  background: rgba(0,0,0,0.3); font-size: 0.82rem;
+  color: rgba(255,255,255,0.6); line-height: 1.5;
   display: none;
 }
 .sim-result.show { display: block; }
 .sim-metrics {
-  display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
+  display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap;
 }
 .sim-metric {
-  padding: 0.5rem 1rem; border-radius: 6px;
+  padding: 0.4rem 0.75rem; border-radius: 6px;
   background: rgba(255,255,255,0.03); font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
 }
 .sim-metric .m-label { color: rgba(255,255,255,0.3); }
 .sim-metric .m-val { font-weight: 700; margin-left: 0.3rem; }
 .sim-skip {
-  text-align: center; margin: 2rem 0;
+  text-align: center; margin: 1.5rem 0;
 }
 .sim-skip a {
-  font-family: var(--mono); font-size: 0.8rem; color: rgba(255,255,255,0.25);
+  font-family: var(--mono); font-size: 0.75rem; color: rgba(255,255,255,0.25);
   text-decoration: none; letter-spacing: 0.05em;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   transition: all 0.2s;
@@ -387,73 +463,73 @@ body {
 
 /* === TALENT MAP === */
 .talent-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 0.75rem; margin: 2rem 0;
+  display: grid; grid-template-columns: 1fr;
+  gap: 0.5rem; margin: 1rem 0;
 }
 .talent-card {
-  padding: 0.75rem 1rem; border-radius: 8px;
+  padding: 0.6rem 0.75rem; border-radius: 8px;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
 }
 .talent-name {
-  font-weight: 700; font-size: 0.85rem; color: rgba(255,255,255,0.8);
+  font-weight: 700; font-size: 0.8rem; color: rgba(255,255,255,0.8);
 }
 .talent-spec {
-  font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 0.15rem;
+  font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-top: 0.1rem;
 }
 .talent-from {
-  font-size: 0.7rem; color: var(--cyan); font-family: var(--mono);
-  margin-top: 0.25rem;
+  font-size: 0.65rem; color: var(--cyan); font-family: var(--mono);
+  margin-top: 0.2rem;
 }
 .talent-group-label {
-  font-family: var(--mono); font-size: 0.75rem; font-weight: 700;
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
   color: rgba(255,255,255,0.25); text-transform: uppercase;
-  letter-spacing: 0.1em; margin-top: 2rem; margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+  letter-spacing: 0.1em; margin-top: 1.5rem; margin-bottom: 0.5rem;
+  padding-bottom: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .talent-counters {
-  display: flex; gap: 2rem; justify-content: center; margin: 2rem 0;
+  display: flex; gap: 1.5rem; justify-content: center; margin: 1.5rem 0;
   flex-wrap: wrap;
 }
 .talent-counter {
-  text-align: center; padding: 1rem 1.5rem;
+  text-align: center; padding: 0.75rem 1rem;
   background: rgba(255,255,255,0.03); border-radius: 8px;
 }
 .talent-counter .tc-val {
-  font-family: var(--mono); font-size: 1.8rem; font-weight: 900;
+  font-family: var(--mono); font-size: 1.5rem; font-weight: 900;
 }
 .talent-counter .tc-label {
-  font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 0.2rem;
+  font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.2rem;
 }
 
 /* === TIMELINE PARALLEL === */
 .timeline-dual {
   display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-  margin: 3rem 0; position: relative;
+  margin: 2rem 0; position: relative;
 }
 .timeline-dual::before {
   content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
   width: 2px; background: rgba(255,255,255,0.06);
   transform: translateX(-50%);
 }
-.timeline-col { padding: 1rem; }
+.timeline-col { padding: 0.75rem; }
 .timeline-col h3 {
-  font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem;
+  font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem;
   font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em;
 }
 .timeline-col:first-child h3 { color: var(--gold); }
 .timeline-col:last-child h3 { color: var(--cyan); }
 .tl-event {
-  padding: 0.75rem 0; position: relative;
-  padding-left: 1rem; border-left: 2px solid rgba(255,255,255,0.06);
-  margin-bottom: 1rem;
+  padding: 0.6rem 0; position: relative;
+  padding-left: 0.75rem; border-left: 2px solid rgba(255,255,255,0.06);
+  margin-bottom: 0.75rem;
 }
 .tl-event .tl-year {
-  font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
   color: rgba(255,255,255,0.3);
 }
 .tl-event .tl-text {
-  font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-top: 0.2rem;
-  line-height: 1.5;
+  font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.15rem;
+  line-height: 1.4;
 }
 
 /* === CONCLUSION === */
@@ -512,18 +588,36 @@ body {
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .split-section {
+    grid-template-columns: 1fr;
+  }
+  .split-narrative {
+    padding: 4rem 1.25rem;
+  }
+  .split-data {
+    position: relative;
+    top: 0;
+    height: auto;
+    overflow-y: visible;
+    padding: 3rem 1.25rem;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .data-panel {
+    opacity: 1;
+  }
+  .timeline-dual { grid-template-columns: 1fr; }
+  .timeline-dual::before { display: none; }
+  .talent-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) {
   .topnav-chapters { display: none; }
   .stat-row { flex-direction: column; align-items: center; }
   .stat-card { min-width: 100%; }
-  .timeline-dual { grid-template-columns: 1fr; }
-  .timeline-dual::before { display: none; }
-  .heatmap { font-size: 0.72rem; }
-  .heatmap th, .heatmap td { padding: 0.5rem; }
-  .chapter { padding: 4rem 1.25rem; }
-  .data-break { padding: 3rem 1.25rem; }
   .hero h1 { font-size: 2.5rem; }
-  .talent-grid { grid-template-columns: 1fr; }
+  .heatmap { font-size: 0.68rem; }
+  .heatmap th, .heatmap td { padding: 0.4rem; }
 }
 </style>
 </head>
@@ -563,673 +657,744 @@ body {
   </div>
 </section>
 
-<!-- ==================== CHAPTER 1: DUBLIN ==================== -->
-<section class="chapter" id="ch-dublin">
-  <div class="reveal">
-    <span class="dateline">4.23.2026 &mdash; Dublin, Ireland &mdash; OpenAI Offices</span>
-    <h2>Chapter I: Dublin</h2>
-  </div>
+<!-- ==================== SECTION 1: Dublin + Economics + Dependency Data ==================== -->
+<div class="split-section">
 
-  <div class="reveal">
-    <p>Aaron noticed the calendar invite at 8:47 AM. It was from someone in HR he had never met, titled simply <strong>"Sync."</strong> No agenda. No context. Fifteen minutes, blocked at 11:00.</p>
-  </div>
+  <!-- LEFT: Narrative -->
+  <div class="split-narrative">
 
-  <div class="reveal">
-    <p>He knew what it was. Everyone in the Dublin office knew. The rumors had been circulating for weeks, accelerating in the last forty-eight hours as Slack channels went quiet one by one, replaced by DMs that stopped mid-sentence. The phrase <em>"rebalancing toward core research hubs"</em> had appeared in an all-hands slide the previous Friday. Nobody in Dublin was a core research hub.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Aaron spent the next two hours doing what anyone does when they know. He didn't work. He didn't panic. He sat at his desk in the open-plan fourth floor of the Barrow Street office, looking out at the Grand Canal Dock, and he thought about the three years he had spent building something that was about to be taken away from him by someone he had never spoken to.</p>
-  </div>
-
-  <div class="reveal">
-    <p>He was a senior infrastructure engineer. His team — <strong>seven people, five nationalities, all European residents</strong> — had built the model evaluation pipeline that OpenAI used to benchmark every major release since GPT-4.5. They had done this from Dublin because Dublin was supposed to be the European hub. That was the pitch when he was recruited from Intercom in 2023: <em>"We're building real engineering capacity in Europe, not just a sales office."</em></p>
-  </div>
-
-  <div class="reveal">
-    <p>The meeting lasted eleven minutes. The HR person was in San Francisco, appearing on his screen at 7 PM her time. She was kind, in the way that people are kind when they have been trained to be kind in these situations. There was a package. There was a timeline. There were resources for "transition support." <strong>Aaron's badge would be deactivated at 5 PM Dublin time.</strong></p>
-  </div>
-
-  <div class="reveal">
-    <p>"Can I ask something?" Aaron said. "The evaluation pipeline. Who's taking it over?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>A pause. "That's being handled by the SF team going forward."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"They don't know how it works. We wrote all the tooling for the EU compliance layer. The GDPR integration, the data residency checks — that's all custom. It's not documented."</p>
-  </div>
-
-  <div class="reveal">
-    <p>Another pause. "I understand. We'll make sure there's a knowledge transfer process."</p>
-  </div>
-
-  <div class="reveal">
-    <p>There was no knowledge transfer process. Aaron knew this because he had seen three other teams shut down the same way in the past eighteen months. The Zurich safety team. The London policy team. The Berlin partnerships team. Each time, the official line was consolidation. Each time, the institutional knowledge — the <em>European</em> institutional knowledge, the understanding of how things actually work across twenty-seven regulatory jurisdictions — simply evaporated.</p>
-  </div>
-
-  <div class="reveal">
-    <p>At 4:30 PM, Aaron was in the parking garage with Katya, his team lead, who had received the same calendar invite at the same time. She was loading a box into her car. They stood there, in the concrete quiet, and she handed him a hard drive.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"What's this?" he asked.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"Everything we built. The evaluation framework, the compliance tools, the multilingual benchmarks. <strong>All of it.</strong>"</p>
-  </div>
-
-  <div class="reveal">
-    <p>"Katya, that's — we can't just—"</p>
-  </div>
-
-  <div class="reveal">
-    <p>"It's our work. We wrote it. And nobody in San Francisco is going to maintain the EU compliance layer. In six months, they'll rebuild it badly, or they'll just stop doing compliance testing in European languages. You know that."</p>
-  </div>
-
-  <div class="reveal">
-    <p>He did know that. He took the drive.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Across the city, forty-three other people were having variations of the same day. <strong>OpenAI's Dublin office was not closing — it was being "restructured into a commercial hub."</strong> The engineering teams were gone. The research capacity was gone. What remained was sales, partnerships, and government relations. A storefront, not a factory.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Aaron drove home along the M50 and thought about what Katya had said in the parking garage, the last thing before she got in her car:</p>
-  </div>
-
-  <div class="reveal">
-    <p><strong>"We're not losing jobs, Aaron. We're losing capability. And nobody's counting."</strong></p>
-  </div>
-</section>
-
-<!-- ==================== DATA BREAK: THE DEPENDENCY ==================== -->
-<section class="data-break" id="data-dependency">
-  <div class="data-break-inner">
-    <div class="reveal">
-      <h2>The Dependency</h2>
-      <p class="section-sub">Europe's position in the global AI stack, by the numbers.</p>
-    </div>
-
-    <div class="stat-row reveal">
-      <div class="stat-card">
-        <div class="stat-val">70%</div>
-        <div class="stat-label">EU cloud market controlled by AWS, Azure, Google Cloud</div>
-        <div class="stat-cite">Source: Synergy Research Group</div>
+    <!-- Chapter 1: Dublin -->
+    <div class="narrative-section" id="ch-dublin" data-panel="panel-dependency">
+      <div class="reveal">
+        <span class="dateline">4.23.2026 &mdash; Dublin, Ireland &mdash; OpenAI Offices</span>
+        <h2>Chapter I: Dublin</h2>
       </div>
-      <div class="stat-card">
-        <div class="stat-val">2%</div>
-        <div class="stat-label">EU share of global AI compute by 2027</div>
-        <div class="stat-cite">Source: European Commission</div>
+
+      <div class="reveal">
+        <p>Aaron noticed the calendar invite at 8:47 AM. It was from someone in HR he had never met, titled simply <strong>"Sync."</strong> No agenda. No context. Fifteen minutes, blocked at 11:00.</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-val">2%</div>
-        <div class="stat-label">Mistral's share of global LLM market</div>
-        <div class="stat-cite">Source: Market analysis estimates</div>
+
+      <div class="reveal">
+        <p>He knew what it was. Everyone in the Dublin office knew. The rumors had been circulating for weeks, accelerating in the last forty-eight hours as Slack channels went quiet one by one, replaced by DMs that stopped mid-sentence. The phrase <em>"rebalancing toward core research hubs"</em> had appeared in an all-hands slide the previous Friday. Nobody in Dublin was a core research hub.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Aaron spent the next two hours doing what anyone does when they know. He didn't work. He didn't panic. He sat at his desk in the open-plan fourth floor of the Barrow Street office, looking out at the Grand Canal Dock, and he thought about the three years he had spent building something that was about to be taken away from him by someone he had never spoken to.</p>
+      </div>
+
+      <div class="reveal">
+        <p>He was a senior infrastructure engineer. His team — <strong>seven people, five nationalities, all European residents</strong> — had built the model evaluation pipeline that OpenAI used to benchmark every major release since GPT-4.5. They had done this from Dublin because Dublin was supposed to be the European hub. That was the pitch when he was recruited from Intercom in 2023: <em>"We're building real engineering capacity in Europe, not just a sales office."</em></p>
+      </div>
+
+      <div class="reveal">
+        <p>The meeting lasted eleven minutes. The HR person was in San Francisco, appearing on his screen at 7 PM her time. She was kind, in the way that people are kind when they have been trained to be kind in these situations. There was a package. There was a timeline. There were resources for "transition support." <strong>Aaron's badge would be deactivated at 5 PM Dublin time.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>"Can I ask something?" Aaron said. "The evaluation pipeline. Who's taking it over?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>A pause. "That's being handled by the SF team going forward."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"They don't know how it works. We wrote all the tooling for the EU compliance layer. The GDPR integration, the data residency checks — that's all custom. It's not documented."</p>
+      </div>
+
+      <div class="reveal">
+        <p>Another pause. "I understand. We'll make sure there's a knowledge transfer process."</p>
+      </div>
+
+      <div class="reveal">
+        <p>There was no knowledge transfer process. Aaron knew this because he had seen three other teams shut down the same way in the past eighteen months. The Zurich safety team. The London policy team. The Berlin partnerships team. Each time, the official line was consolidation. Each time, the institutional knowledge — the <em>European</em> institutional knowledge, the understanding of how things actually work across twenty-seven regulatory jurisdictions — simply evaporated.</p>
+      </div>
+
+      <div class="reveal">
+        <p>At 4:30 PM, Aaron was in the parking garage with Katya, his team lead, who had received the same calendar invite at the same time. She was loading a box into her car. They stood there, in the concrete quiet, and she handed him a hard drive.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"What's this?" he asked.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"Everything we built. The evaluation framework, the compliance tools, the multilingual benchmarks. <strong>All of it.</strong>"</p>
+      </div>
+
+      <div class="reveal">
+        <p>"Katya, that's — we can't just—"</p>
+      </div>
+
+      <div class="reveal">
+        <p>"It's our work. We wrote it. And nobody in San Francisco is going to maintain the EU compliance layer. In six months, they'll rebuild it badly, or they'll just stop doing compliance testing in European languages. You know that."</p>
+      </div>
+
+      <div class="reveal">
+        <p>He did know that. He took the drive.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Across the city, forty-three other people were having variations of the same day. <strong>OpenAI's Dublin office was not closing — it was being "restructured into a commercial hub."</strong> The engineering teams were gone. The research capacity was gone. What remained was sales, partnerships, and government relations. A storefront, not a factory.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Aaron drove home along the M50 and thought about what Katya had said in the parking garage, the last thing before she got in her car:</p>
+      </div>
+
+      <div class="reveal">
+        <p><strong>"We're not losing jobs, Aaron. We're losing capability. And nobody's counting."</strong></p>
       </div>
     </div>
 
-    <div class="chart-container reveal">
-      <h3>AI Company Market Capitalization / Valuation ($B)</h3>
-      <canvas id="marketCapChart" height="320"></canvas>
+    <div class="chapter-divider"></div>
+
+    <!-- Chapter 2: Economics 101 -->
+    <div class="narrative-section" id="ch-economics" data-panel="panel-charts">
+      <div class="reveal">
+        <span class="dateline">The Argument</span>
+        <h2>Chapter II: Economics 101</h2>
+      </div>
+
+      <div class="reveal">
+        <p>Go back to the source. <strong>Ronald Coase</strong>: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
+      </div>
+
+      <div class="reveal">
+        <p>This is the most important sentence in the entire debate about European AI sovereignty. Not the technical arguments about model architectures. Not the geopolitical arguments about strategic autonomy. The <em>economics</em>.</p>
+      </div>
+
+      <div class="reveal">
+        <p><strong>This is the central sin of the middle powers.</strong> AI requires an unusually high degree of coordination amongst tightly complementary pieces: compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense deployment.</p>
+      </div>
+
+      <div class="reveal">
+        <p>These pieces don't just benefit from being coordinated — they are <em>useless</em> without each other. A compute cluster without models is an expensive heater. A model without compute is a research paper. A research paper without deployment infrastructure is a citation. None of these things, alone, is sovereignty.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The US solves this with gigantic capital pools and huge firms running at massive losses. OpenAI burns billions per year. Google's AI division has a functionally unlimited budget drawn from search advertising. Meta builds AI infrastructure subsidized by social media profits. <strong>The cost of coordination inside these firms is close to zero because there is one decision-maker.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>China solves it differently: giant firms with coordinated state control, massive technical talent pools educated in the same system, and a government that treats AI as industrial policy rather than market outcome.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Europe has neither. The EU has 27 member states, each with its own industrial policy, its own procurement rules, its own political incentives. It has lots of regulators, lots of diluted capital, lots of languages, lots of industrial players but no true giant, and <strong>zero sense of centralized execution.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>This is not a technology problem. It is a Coase problem. The <em>transaction costs</em> of coordinating AI development across 27 sovereign nations, each with veto power over procurement, each with domestic champions to protect, each with elections to win — those transaction costs are so high that the rational outcome is to do nothing. And doing nothing means dependency.</p>
+      </div>
+
+      <div class="reveal">
+        <blockquote>
+          "We are graduating all the engineers. We are starting all the companies, but then we're exporting talent to the US. We're exporting companies very cheaply."
+          <cite>— Victor Englesson, EQT</cite>
+        </blockquote>
+      </div>
+
+      <div class="reveal">
+        <p>The EU may be the place to start a company, but it has none of the resources to scale it. And in AI, if you can't scale, you don't exist.</p>
+      </div>
     </div>
 
-    <div class="chart-container reveal">
-      <h3>Global Cloud Infrastructure Market Share</h3>
-      <canvas id="cloudShareChart" height="320"></canvas>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== CHAPTER 2: ECONOMICS 101 ==================== -->
-<section class="chapter" id="ch-economics">
-  <div class="reveal">
-    <span class="dateline">The Argument</span>
-    <h2>Chapter II: Economics 101</h2>
   </div>
 
-  <div class="reveal">
-    <p>Go back to the source. <strong>Ronald Coase</strong>: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
-  </div>
+  <!-- RIGHT: Data -->
+  <div class="split-data">
 
-  <div class="reveal">
-    <p>This is the most important sentence in the entire debate about European AI sovereignty. Not the technical arguments about model architectures. Not the geopolitical arguments about strategic autonomy. The <em>economics</em>.</p>
-  </div>
+    <!-- Data Panel: The Dependency stats -->
+    <div class="data-panel active" id="panel-dependency" data-panel-id="panel-dependency">
+      <div class="reveal">
+        <h2 id="data-dependency">The Dependency</h2>
+        <p class="section-sub">Europe's position in the global AI stack, by the numbers.</p>
+      </div>
 
-  <div class="reveal">
-    <p><strong>This is the central sin of the middle powers.</strong> AI requires an unusually high degree of coordination amongst tightly complementary pieces: compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense deployment.</p>
-  </div>
-
-  <div class="reveal">
-    <p>These pieces don't just benefit from being coordinated — they are <em>useless</em> without each other. A compute cluster without models is an expensive heater. A model without compute is a research paper. A research paper without deployment infrastructure is a citation. None of these things, alone, is sovereignty.</p>
-  </div>
-
-  <div class="reveal">
-    <p>The US solves this with gigantic capital pools and huge firms running at massive losses. OpenAI burns billions per year. Google's AI division has a functionally unlimited budget drawn from search advertising. Meta builds AI infrastructure subsidized by social media profits. <strong>The cost of coordination inside these firms is close to zero because there is one decision-maker.</strong></p>
-  </div>
-
-  <div class="reveal">
-    <p>China solves it differently: giant firms with coordinated state control, massive technical talent pools educated in the same system, and a government that treats AI as industrial policy rather than market outcome.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Europe has neither. The EU has 27 member states, each with its own industrial policy, its own procurement rules, its own political incentives. It has lots of regulators, lots of diluted capital, lots of languages, lots of industrial players but no true giant, and <strong>zero sense of centralized execution.</strong></p>
-  </div>
-
-  <div class="reveal">
-    <p>This is not a technology problem. It is a Coase problem. The <em>transaction costs</em> of coordinating AI development across 27 sovereign nations, each with veto power over procurement, each with domestic champions to protect, each with elections to win — those transaction costs are so high that the rational outcome is to do nothing. And doing nothing means dependency.</p>
-  </div>
-
-  <!-- INTERACTIVE: Coordination Cost Calculator -->
-  <div class="widget reveal" id="coordCalc">
-    <h3>Interactive: Coordination Cost Calculator</h3>
-    <label>Number of independent players: <span id="playerCount">5</span></label>
-    <input type="range" id="playerSlider" min="1" max="27" value="5" oninput="updateCoordCost()">
-    <label>Interdependency level:</label>
-    <select id="interdepSelect" onchange="updateCoordCost()">
-      <option value="1">Low (simple trade agreements)</option>
-      <option value="3">Medium (shared standards)</option>
-      <option value="8" selected>High (integrated supply chains)</option>
-      <option value="25">AI-level (tight complementarities)</option>
-    </select>
-    <div class="cost-display">
-      <div class="cost-val" id="coordCostVal">$42B</div>
-      <div class="cost-label">Annual coordination overhead</div>
-    </div>
-    <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);margin-top:1rem;text-align:center;">
-      At 27 countries + AI-level interdependency, coordination costs become catastrophic.
-      A single integrated firm pays near-zero.
-    </p>
-  </div>
-
-  <div class="reveal">
-    <blockquote>
-      "We are graduating all the engineers. We are starting all the companies, but then we're exporting talent to the US. We're exporting companies very cheaply."
-      <cite>— Victor Englesson, EQT</cite>
-    </blockquote>
-  </div>
-
-  <div class="reveal">
-    <p>The EU may be the place to start a company, but it has none of the resources to scale it. And in AI, if you can't scale, you don't exist.</p>
-  </div>
-</section>
-
-<!-- ==================== CHAPTER 3: THE SWEDISH QUESTION ==================== -->
-<section class="chapter" id="ch-swedish">
-  <div class="reveal">
-    <span class="dateline">Stockholm &mdash; The Nordic Ecosystem</span>
-    <h2>Chapter III: The Swedish Question</h2>
-  </div>
-
-  <div class="reveal">
-    <p>To understand what Europe is losing, look at Stockholm. Not Berlin, not Paris — <strong>Stockholm</strong>. Per capita, it produces more billion-dollar tech companies than anywhere outside Silicon Valley. Spotify. Klarna. King. Mojang. iZettle. And now, a generation of AI companies that are doing something remarkable: they're building world-class products and then leaving.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Take <strong>11x</strong>. Founded in London by Hasan Sukkar, an AI company building autonomous digital workers. By early 2025, 11x had raised over $50 million, was growing at triple-digit rates, and had built a product that Fortune 500 companies were adopting. It was, by every measure, exactly the kind of company Europe says it wants.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Then it moved its headquarters to San Francisco.</p>
-  </div>
-
-  <div class="reveal">
-    <p>The reasons were not mysterious. <strong>Keith Fearon</strong>, 11x's VP of Growth, was direct about it: "The talent density in SF for AI is unmatched. Our customers are there. Our investors want us there. The regulatory clarity is better. At some point, you have to ask: what is Europe offering that's worth staying for?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>The answer, increasingly, is <em>nothing</em>. Not nothing in absolute terms — Europe offers quality of life, good healthcare, excellent education, reasonable cost of living. But for a company that needs to raise $200 million, recruit from the global top 0.1% of ML talent, and sell to enterprise customers who expect a US headquarters, those lifestyle advantages don't clear the bar.</p>
-  </div>
-
-  <div class="reveal">
-    <p><strong>Victor Englesson</strong> at EQT, one of Europe's largest tech investors, has watched this pattern repeat dozens of times. "The pipeline is extraordinary," he says. "We have the engineers, the researchers, the founders. What we don't have is the infrastructure to keep them. No sovereign compute at scale. No anchor customers who will bet on a European provider. No capital markets that value staying. So they leave."</p>
-  </div>
-
-  <div class="reveal">
-    <p>The Stockholm ecosystem — the one that produced Spotify and Skype and MySQL — is now an export machine. It creates value and ships it to California. The founders get rich. The investors get returns. Europe gets a press release and a shrinking tax base.</p>
-  </div>
-
-  <div class="reveal">
-    <p>This is not brain drain in the traditional sense. The engineers often stay in Europe physically. The corporate headquarters moves. The IP moves. The equity value moves. <strong>The capability stays, but the control leaves.</strong></p>
-  </div>
-
-  <!-- STARTUP EXODUS TRACKER -->
-  <div class="widget reveal" id="exodusTracker">
-    <h3>Startup Exodus Tracker</h3>
-    <ul class="exodus-list" id="exodusList"></ul>
-    <div class="exodus-counter">
-      <div class="val" id="exodusTotal">$0B</div>
-      <div class="label">Total value exported to US</div>
-    </div>
-  </div>
-
-  <div class="reveal">
-    <p>Each of these departures is individually rational. Collectively, they represent the slow dismantling of European AI capacity. Not through malice. Through gravity.</p>
-  </div>
-</section>
-
-<!-- ==================== CHAPTER 4: BRUSSELS ==================== -->
-<section class="chapter" id="ch-brussels">
-  <div class="reveal">
-    <span class="dateline">6.03.2026 &mdash; Brussels, Belgium &mdash; European Commission</span>
-    <h2>Chapter IV: Brussels</h2>
-  </div>
-
-  <div class="reveal">
-    <p>Henna Virkkunen stepped to the podium at 10:15 AM. The Berlaymont auditorium was perhaps two-thirds full — respectable for a Tuesday policy address, though the empty seats in the back rows told their own story. Three camera crews. A handful of print journalists. The usual Brussels crowd: policy advisors, lobbyists, a few MEPs who had wandered over from committee meetings.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Virkkunen was the European Commission's Executive Vice-President for Tech Sovereignty, Security and Democracy. She had held the role since the previous autumn and had spent most of that time doing what Brussels does best: convening working groups, commissioning studies, drafting frameworks. Today was supposed to be different. Today, she had been told, was the speech that would "reset the narrative."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"Distinguished colleagues," she began. "The numbers are not encouraging. European share of global AI compute stands at approximately two percent. Our largest AI company, Mistral, holds approximately two percent of the global large language model market. Seventy percent of our cloud infrastructure is operated by three American companies. These are not projections. These are facts."</p>
-  </div>
-
-  <div class="reveal">
-    <p>She paused. The room was attentive but not urgent. These numbers had been cited before, in various configurations, by various commissioners. The word <em>sovereignty</em> had appeared in over 340 official EU documents in the past three years. The word had done no work.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"I am announcing today the European AI Infrastructure Initiative," Virkkunen continued. "A coordinated investment framework to develop sovereign compute capacity, support European foundation model development, and create procurement pathways for European AI solutions."</p>
-  </div>
-
-  <div class="reveal">
-    <p>She outlined the pillars. Five billion euros over five years. A network of "AI Excellence Centers" in twelve member states. Procurement preference guidelines for European providers. A talent retention fund. A compute sovereignty roadmap.</p>
-  </div>
-
-  <div class="reveal">
-    <p>The applause was polite. A few nodded. The journalists typed. The MEPs checked their phones.</p>
-  </div>
-
-  <div class="reveal">
-    <p>After the speech, in the corridor outside, Virkkunen walked with her chief of staff, Marek. They had thirty minutes before the next meeting.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"How was it?" she asked.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Marek was honest. "The speech was good. The problem is the math."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"What do you mean?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>"Five billion over five years is one billion per year. OpenAI alone will spend twelve billion this year on compute. Google will spend more than that. We are announcing, with great ceremony, an investment that is roughly eight percent of what a single American company spends annually."</p>
-  </div>
-
-  <div class="reveal">
-    <p>Virkkunen stopped walking. "I know the math, Marek."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"I know you know. But does the room know? Did anyone in there react to the number like it was a problem? They applauded. They think five billion is a lot of money."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"It <em>is</em> a lot of money."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"It is a lot of money for a highway. It is not a lot of money for an AI sovereignty strategy. And calling it 'sovereign' doesn't make it sovereign. Where does the compute run? On what chips? Designed by whom? Manufactured where? We're going to build 'sovereign' AI infrastructure on NVIDIA GPUs, running on equipment from ASML that we can't even export freely, hosted in data centers operated by American cloud providers who will offer to 'partner' on the excellence centers because it's cheaper than building our own."</p>
-  </div>
-
-  <div class="reveal">
-    <p>They walked in silence for a moment.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"So what do we do?" Virkkunen asked. Not rhetorically. She was asking.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Marek looked at her. "Something that can't be divided by twenty-seven."</p>
-  </div>
-</section>
-
-<!-- ==================== DATA BREAK: THE FULL STACK GAP ==================== -->
-<section class="data-break" id="data-stack">
-  <div class="data-break-inner">
-    <div class="reveal">
-      <h2>The Full Stack Gap</h2>
-      <p class="section-sub">Who controls each layer of the AI value chain?</p>
+      <div class="stat-row reveal">
+        <div class="stat-card">
+          <div class="stat-val">70%</div>
+          <div class="stat-label">EU cloud market controlled by AWS, Azure, Google Cloud</div>
+          <div class="stat-cite">Source: Synergy Research Group</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">2%</div>
+          <div class="stat-label">EU share of global AI compute by 2027</div>
+          <div class="stat-cite">Source: European Commission</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">2%</div>
+          <div class="stat-label">Mistral's share of global LLM market</div>
+          <div class="stat-cite">Source: Market analysis estimates</div>
+        </div>
+      </div>
     </div>
 
-    <div class="heatmap-wrap reveal">
-      <table class="heatmap">
-        <thead>
-          <tr>
-            <th>Layer</th>
-            <th>US</th>
-            <th>China</th>
-            <th>EU</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="layer">Chips (design)</td>
-            <td class="strong">NVIDIA, AMD, Qualcomm</td>
-            <td class="moderate">Huawei HiSilicon</td>
-            <td class="absent">&mdash;</td>
-          </tr>
-          <tr>
-            <td class="layer">Chips (manufacturing)</td>
-            <td class="moderate">Intel</td>
-            <td class="weak">SMIC</td>
-            <td class="moderate">ASML (equipment only)</td>
-          </tr>
-          <tr>
-            <td class="layer">Cloud / Compute</td>
-            <td class="strong">AWS, Azure, GCP</td>
-            <td class="strong">Alibaba, Tencent</td>
-            <td class="weak">OVHcloud (tiny)</td>
-          </tr>
-          <tr>
-            <td class="layer">Foundation Models</td>
-            <td class="strong">OpenAI, Google, Anthropic, Meta</td>
-            <td class="strong">ByteDance, Baidu, Alibaba</td>
-            <td class="weak">Mistral (2%)</td>
-          </tr>
-          <tr>
-            <td class="layer">Enterprise AI</td>
-            <td class="strong">Microsoft, Salesforce, Palantir</td>
-            <td class="moderate">ByteDance, SenseTime</td>
-            <td class="moderate">SAP (legacy), Aleph Alpha</td>
-          </tr>
-          <tr>
-            <td class="layer">Talent (top researchers)</td>
-            <td class="strong">~60%</td>
-            <td class="moderate">~25%</td>
-            <td class="weak">~10%</td>
-          </tr>
-          <tr>
-            <td class="layer">Capital ($B invested, 2024)</td>
-            <td class="strong">~$100B</td>
-            <td class="moderate">~$30B</td>
-            <td class="weak">~$8B</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Data Panel: Charts + Calculator -->
+    <div class="data-panel" id="panel-charts" data-panel-id="panel-charts">
+      <div class="chart-container reveal">
+        <h3>AI Company Market Capitalization / Valuation ($B)</h3>
+        <canvas id="marketCapChart" height="320"></canvas>
+      </div>
+
+      <div class="chart-container reveal">
+        <h3>Global Cloud Infrastructure Market Share</h3>
+        <canvas id="cloudShareChart" height="320"></canvas>
+      </div>
+
+      <!-- Coordination Cost Calculator -->
+      <div class="widget reveal" id="coordCalc">
+        <h3>Interactive: Coordination Cost Calculator</h3>
+        <label>Number of independent players: <span id="playerCount">5</span></label>
+        <input type="range" id="playerSlider" min="1" max="27" value="5" oninput="updateCoordCost()">
+        <label>Interdependency level:</label>
+        <select id="interdepSelect" onchange="updateCoordCost()">
+          <option value="1">Low (simple trade agreements)</option>
+          <option value="3">Medium (shared standards)</option>
+          <option value="8" selected>High (integrated supply chains)</option>
+          <option value="25">AI-level (tight complementarities)</option>
+        </select>
+        <div class="cost-display">
+          <div class="cost-val" id="coordCostVal">$42B</div>
+          <div class="cost-label">Annual coordination overhead</div>
+        </div>
+        <p style="font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;text-align:center;">
+          At 27 countries + AI-level interdependency, coordination costs become catastrophic.
+          A single integrated firm pays near-zero.
+        </p>
+      </div>
     </div>
 
-    <p style="text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.2);margin-top:1rem;">
-      Green = strong position &nbsp;|&nbsp; Yellow = moderate &nbsp;|&nbsp; Red = weak &nbsp;|&nbsp; Gray = absent<br>
-      Sources: Synergy Research, Crunchbase, OECD AI Policy Observatory, Stanford HAI Index 2024
-    </p>
   </div>
-</section>
+</div>
 
-<!-- ==================== CHAPTER 5: BERLIN ==================== -->
-<section class="chapter" id="ch-berlin">
-  <div class="reveal">
-    <span class="dateline">4.16.2027 &mdash; Berlin, Germany &mdash; Federal Chancellery</span>
-    <h2>Chapter V: Berlin</h2>
+<!-- ==================== SECTION 2: Swedish Question + Brussels + Stack Gap ==================== -->
+<div class="split-section">
+
+  <!-- LEFT: Narrative -->
+  <div class="split-narrative">
+
+    <!-- Chapter 3: The Swedish Question -->
+    <div class="narrative-section" id="ch-swedish" data-panel="panel-exodus">
+      <div class="reveal">
+        <span class="dateline">Stockholm &mdash; The Nordic Ecosystem</span>
+        <h2>Chapter III: The Swedish Question</h2>
+      </div>
+
+      <div class="reveal">
+        <p>To understand what Europe is losing, look at Stockholm. Not Berlin, not Paris — <strong>Stockholm</strong>. Per capita, it produces more billion-dollar tech companies than anywhere outside Silicon Valley. Spotify. Klarna. King. Mojang. iZettle. And now, a generation of AI companies that are doing something remarkable: they're building world-class products and then leaving.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Take <strong>11x</strong>. Founded in London by Hasan Sukkar, an AI company building autonomous digital workers. By early 2025, 11x had raised over $50 million, was growing at triple-digit rates, and had built a product that Fortune 500 companies were adopting. It was, by every measure, exactly the kind of company Europe says it wants.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Then it moved its headquarters to San Francisco.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The reasons were not mysterious. <strong>Keith Fearon</strong>, 11x's VP of Growth, was direct about it: "The talent density in SF for AI is unmatched. Our customers are there. Our investors want us there. The regulatory clarity is better. At some point, you have to ask: what is Europe offering that's worth staying for?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>The answer, increasingly, is <em>nothing</em>. Not nothing in absolute terms — Europe offers quality of life, good healthcare, excellent education, reasonable cost of living. But for a company that needs to raise $200 million, recruit from the global top 0.1% of ML talent, and sell to enterprise customers who expect a US headquarters, those lifestyle advantages don't clear the bar.</p>
+      </div>
+
+      <div class="reveal">
+        <p><strong>Victor Englesson</strong> at EQT, one of Europe's largest tech investors, has watched this pattern repeat dozens of times. "The pipeline is extraordinary," he says. "We have the engineers, the researchers, the founders. What we don't have is the infrastructure to keep them. No sovereign compute at scale. No anchor customers who will bet on a European provider. No capital markets that value staying. So they leave."</p>
+      </div>
+
+      <div class="reveal">
+        <p>The Stockholm ecosystem — the one that produced Spotify and Skype and MySQL — is now an export machine. It creates value and ships it to California. The founders get rich. The investors get returns. Europe gets a press release and a shrinking tax base.</p>
+      </div>
+
+      <div class="reveal">
+        <p>This is not brain drain in the traditional sense. The engineers often stay in Europe physically. The corporate headquarters moves. The IP moves. The equity value moves. <strong>The capability stays, but the control leaves.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>Each of these departures is individually rational. Collectively, they represent the slow dismantling of European AI capacity. Not through malice. Through gravity.</p>
+      </div>
+    </div>
+
+    <div class="chapter-divider"></div>
+
+    <!-- Chapter 4: Brussels -->
+    <div class="narrative-section" id="ch-brussels" data-panel="panel-stack">
+      <div class="reveal">
+        <span class="dateline">6.03.2026 &mdash; Brussels, Belgium &mdash; European Commission</span>
+        <h2>Chapter IV: Brussels</h2>
+      </div>
+
+      <div class="reveal">
+        <p>Henna Virkkunen stepped to the podium at 10:15 AM. The Berlaymont auditorium was perhaps two-thirds full — respectable for a Tuesday policy address, though the empty seats in the back rows told their own story. Three camera crews. A handful of print journalists. The usual Brussels crowd: policy advisors, lobbyists, a few MEPs who had wandered over from committee meetings.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Virkkunen was the European Commission's Executive Vice-President for Tech Sovereignty, Security and Democracy. She had held the role since the previous autumn and had spent most of that time doing what Brussels does best: convening working groups, commissioning studies, drafting frameworks. Today was supposed to be different. Today, she had been told, was the speech that would "reset the narrative."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"Distinguished colleagues," she began. "The numbers are not encouraging. European share of global AI compute stands at approximately two percent. Our largest AI company, Mistral, holds approximately two percent of the global large language model market. Seventy percent of our cloud infrastructure is operated by three American companies. These are not projections. These are facts."</p>
+      </div>
+
+      <div class="reveal">
+        <p>She paused. The room was attentive but not urgent. These numbers had been cited before, in various configurations, by various commissioners. The word <em>sovereignty</em> had appeared in over 340 official EU documents in the past three years. The word had done no work.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"I am announcing today the European AI Infrastructure Initiative," Virkkunen continued. "A coordinated investment framework to develop sovereign compute capacity, support European foundation model development, and create procurement pathways for European AI solutions."</p>
+      </div>
+
+      <div class="reveal">
+        <p>She outlined the pillars. Five billion euros over five years. A network of "AI Excellence Centers" in twelve member states. Procurement preference guidelines for European providers. A talent retention fund. A compute sovereignty roadmap.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The applause was polite. A few nodded. The journalists typed. The MEPs checked their phones.</p>
+      </div>
+
+      <div class="reveal">
+        <p>After the speech, in the corridor outside, Virkkunen walked with her chief of staff, Marek. They had thirty minutes before the next meeting.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"How was it?" she asked.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Marek was honest. "The speech was good. The problem is the math."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"What do you mean?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>"Five billion over five years is one billion per year. OpenAI alone will spend twelve billion this year on compute. Google will spend more than that. We are announcing, with great ceremony, an investment that is roughly eight percent of what a single American company spends annually."</p>
+      </div>
+
+      <div class="reveal">
+        <p>Virkkunen stopped walking. "I know the math, Marek."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"I know you know. But does the room know? Did anyone in there react to the number like it was a problem? They applauded. They think five billion is a lot of money."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"It <em>is</em> a lot of money."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"It is a lot of money for a highway. It is not a lot of money for an AI sovereignty strategy. And calling it 'sovereign' doesn't make it sovereign. Where does the compute run? On what chips? Designed by whom? Manufactured where? We're going to build 'sovereign' AI infrastructure on NVIDIA GPUs, running on equipment from ASML that we can't even export freely, hosted in data centers operated by American cloud providers who will offer to 'partner' on the excellence centers because it's cheaper than building our own."</p>
+      </div>
+
+      <div class="reveal">
+        <p>They walked in silence for a moment.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"So what do we do?" Virkkunen asked. Not rhetorically. She was asking.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Marek looked at her. "Something that can't be divided by twenty-seven."</p>
+      </div>
+    </div>
+
   </div>
 
-  <div class="reveal">
-    <p>Friedrich Merz was reading at 5 AM. This was not unusual — he had been a morning reader his entire career, a habit from his days as a corporate lawyer when the only quiet hours were the ones before the office woke up. What was unusual was what he was reading.</p>
-  </div>
+  <!-- RIGHT: Data -->
+  <div class="split-data">
 
-  <div class="reveal">
-    <p>The document was titled <strong>"Digital Liberty Act: Framework for Trusted AI Access Partnerships."</strong> It had arrived through diplomatic channels the previous evening, flagged by the BND with a single-line assessment: <em>"This changes everything."</em></p>
-  </div>
+    <!-- Data Panel: Startup Exodus -->
+    <div class="data-panel active" id="panel-exodus" data-panel-id="panel-exodus">
+      <div class="reveal">
+        <h2>Startup Exodus</h2>
+        <p class="section-sub">European AI companies that moved to the US.</p>
+      </div>
+      <div class="widget reveal" id="exodusTracker">
+        <h3>Startup Exodus Tracker</h3>
+        <ul class="exodus-list" id="exodusList"></ul>
+        <div class="exodus-counter">
+          <div class="val" id="exodusTotal">$0B</div>
+          <div class="label">Total value exported to US</div>
+        </div>
+      </div>
+    </div>
 
-  <div class="reveal">
-    <p>Merz read it twice. The first time quickly, scanning for structure. The second time slowly, with a pencil, marking passages. The document was written in the particular style of American legislative drafting — precise in its vagueness, creating categories that appeared neutral but were designed to sort the world into those who comply and those who don't.</p>
-  </div>
+    <!-- Data Panel: The Full Stack Gap -->
+    <div class="data-panel" id="panel-stack" data-panel-id="panel-stack">
+      <div class="reveal">
+        <h2 id="data-stack">The Full Stack Gap</h2>
+        <p class="section-sub">Who controls each layer of the AI value chain?</p>
+      </div>
 
-  <div class="reveal">
-    <p>The core mechanism was simple: access to American frontier AI systems — the models, the APIs, the cloud infrastructure, the enterprise tools built on top of them — would now be conditional. Not on payment. On alignment. Countries would be sorted into three tiers: <strong>Full Access, Managed Access, and Restricted.</strong> The criteria for placement included trade relationships, data governance alignment, technology transfer policies, and — the part Merz underlined three times — <em>"demonstrated commitment to shared values in AI governance."</em></p>
-  </div>
+      <div class="heatmap-wrap reveal">
+        <table class="heatmap">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>US</th>
+              <th>China</th>
+              <th>EU</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="layer">Chips (design)</td>
+              <td class="strong">NVIDIA, AMD, Qualcomm</td>
+              <td class="moderate">Huawei HiSilicon</td>
+              <td class="absent">&mdash;</td>
+            </tr>
+            <tr>
+              <td class="layer">Chips (manufacturing)</td>
+              <td class="moderate">Intel</td>
+              <td class="weak">SMIC</td>
+              <td class="moderate">ASML (equipment only)</td>
+            </tr>
+            <tr>
+              <td class="layer">Cloud / Compute</td>
+              <td class="strong">AWS, Azure, GCP</td>
+              <td class="strong">Alibaba, Tencent</td>
+              <td class="weak">OVHcloud (tiny)</td>
+            </tr>
+            <tr>
+              <td class="layer">Foundation Models</td>
+              <td class="strong">OpenAI, Google, Anthropic, Meta</td>
+              <td class="strong">ByteDance, Baidu, Alibaba</td>
+              <td class="weak">Mistral (2%)</td>
+            </tr>
+            <tr>
+              <td class="layer">Enterprise AI</td>
+              <td class="strong">Microsoft, Salesforce, Palantir</td>
+              <td class="moderate">ByteDance, SenseTime</td>
+              <td class="moderate">SAP (legacy), Aleph Alpha</td>
+            </tr>
+            <tr>
+              <td class="layer">Talent (top researchers)</td>
+              <td class="strong">~60%</td>
+              <td class="moderate">~25%</td>
+              <td class="weak">~10%</td>
+            </tr>
+            <tr>
+              <td class="layer">Capital ($B invested, 2024)</td>
+              <td class="strong">~$100B</td>
+              <td class="moderate">~$30B</td>
+              <td class="weak">~$8B</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <div class="reveal">
-    <p>Germany, with its deep trade relationships with China, its complicated position on data sovereignty, and its recent pushback on US cloud procurement, was projected to fall into <strong>Managed Access</strong>. This was not a ban. It was something worse: a leash. Managed Access meant delayed model releases, restricted API capabilities, mandatory data sharing agreements, and procurement conditions that would make German companies second-class customers of the AI infrastructure they depended on.</p>
-  </div>
-
-  <div class="reveal">
-    <p>At 6:30 AM, Pieter arrived. Pieter was Merz's foreign policy advisor, a quiet Dutchman who had spent fifteen years at the European Council before joining the Chancellery. He found Merz at his desk with the document spread across the table, annotated in red.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"You've read it," Pieter said. Not a question.</p>
-  </div>
-
-  <div class="reveal">
-    <p>"Twice."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"And?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>Merz leaned back. "It's elegant. I'll give them that. They've found a way to weaponize dependency without firing a shot. Every German hospital running American diagnostic AI, every factory using American predictive maintenance, every bank using American fraud detection — all of it now has a political price attached."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"We could comply," Pieter said carefully. "Restructure the China trade relationships. Signal alignment. Get back to Full Access."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"At what cost? Our China trade is worth 250 billion euros annually. We're going to restructure that because an American technology company wants us to?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>"It's not the company. It's the government."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"It's both. That's the point. The government writes the tiers. The companies enforce them. And if we comply, what happens next time? They change the criteria. They always change the criteria."</p>
-  </div>
-
-  <div class="reveal">
-    <p>Pieter sat down. "So what's the alternative?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>Merz was quiet for a long moment. Then: "Call Macron."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"It's 6:45 in the morning."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"He'll be awake. He reads the intelligence briefs at six. He'll have seen this."</p>
-  </div>
-
-  <div class="reveal">
-    <p>Pieter made the call. Macron had indeed seen it. The conversation lasted forty minutes. It was, by all later accounts, the first time the two leaders had spoken about AI as something other than an industrial policy footnote. <strong>They disagreed on almost everything — who should lead, how to structure it, what to build first.</strong> But they agreed on one thing: the era of assuming American AI infrastructure would remain apolitical was over.</p>
-  </div>
-
-  <div class="reveal">
-    <p>When Pieter hung up, Merz asked: "What did he say about the Nordics?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>"He wants to call Ek."</p>
-  </div>
-
-  <div class="reveal">
-    <p>"Daniel Ek? The Spotify man?"</p>
-  </div>
-
-  <div class="reveal">
-    <p>"He's become the de facto voice of Nordic tech sovereignty. He has the capital, the credibility, and apparently he's been privately funding a European compute initiative for the past year."</p>
-  </div>
-
-  <div class="reveal">
-    <p>Merz looked at the document on his desk. "I've spent my entire career believing the transatlantic relationship was the foundation of European security. And it is. But this—" he tapped the Digital Liberty Act, "—this is not a partnership. This is a terms-of-service agreement. And we didn't negotiate the terms."</p>
-  </div>
-
-  <!-- DOCUMENT INSET: Digital Liberty Act -->
-  <div class="doc-inset reveal">
-    <div class="doc-stamp">CLASSIFIED</div>
-    <h4>Digital Liberty Act</h4>
-    <p class="doc-subtitle">Framework for Trusted AI Access Partnerships</p>
-
-    <p class="doc-section">Section 1. Purpose</p>
-    <p>To establish a tiered framework for international access to United States artificial intelligence systems, infrastructure, and services, ensuring that such access aligns with the national security interests and values of the United States.</p>
-
-    <p class="doc-section">Section 2. Access Tiers</p>
-    <p>(a) <strong>Full Access.</strong> Nations demonstrating comprehensive alignment with US AI governance principles, including data sharing agreements, technology transfer transparency, and trade relationship compatibility, shall receive unrestricted access to frontier AI systems.</p>
-    <p>(b) <strong>Managed Access.</strong> Nations maintaining significant trade or technology relationships with designated strategic competitors shall receive access subject to delayed model releases (90-180 days), restricted API capabilities, mandatory telemetry sharing, and enhanced procurement review.</p>
-    <p>(c) <strong>Restricted Access.</strong> Nations failing to meet minimum alignment criteria shall be subject to comprehensive access limitations as determined by the Secretary of Commerce in consultation with the National Security Advisor.</p>
-
-    <p class="doc-section">Section 3. Compliance Assessment Criteria</p>
-    <p>The Secretary of Commerce shall evaluate partner nations annually based on: (i) bilateral trade composition with strategic competitors; (ii) data governance framework compatibility; (iii) technology transfer and export control alignment; (iv) demonstrated commitment to shared values in AI governance; (v) defense and intelligence cooperation metrics.</p>
-
-    <p class="doc-section">Section 4. Enforcement</p>
-    <p>United States AI service providers operating internationally shall implement access tier restrictions within 180 days of tier designation. Failure to comply shall result in penalties as prescribed under existing technology export frameworks.</p>
-  </div>
-</section>
-
-<!-- ==================== SIMULATION BREAK ==================== -->
-<section class="sim-section" id="sim-decisions">
-  <div class="sim-inner">
-    <div class="reveal">
-      <span class="dateline">Interactive</span>
-      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;margin-bottom:0.5rem;">Key Decisions</h2>
-      <p style="color:rgba(255,255,255,0.4);margin-bottom:1rem;font-size:0.95rem;">
-        Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;">
+        Green = strong position &nbsp;|&nbsp; Yellow = moderate &nbsp;|&nbsp; Red = weak &nbsp;|&nbsp; Gray = absent<br>
+        Sources: Synergy Research, Crunchbase, OECD AI Policy Observatory, Stanford HAI Index 2024
       </p>
-      <div class="sim-skip">
-        <a href="#data-talent">Skip to Talent Map &darr;</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: Berlin + Simulation ==================== -->
+<div class="split-section">
+
+  <!-- LEFT: Narrative -->
+  <div class="split-narrative">
+
+    <!-- Chapter 5: Berlin -->
+    <div class="narrative-section" id="ch-berlin" data-panel="panel-simulation">
+      <div class="reveal">
+        <span class="dateline">4.16.2027 &mdash; Berlin, Germany &mdash; Federal Chancellery</span>
+        <h2>Chapter V: Berlin</h2>
+      </div>
+
+      <div class="reveal">
+        <p>Friedrich Merz was reading at 5 AM. This was not unusual — he had been a morning reader his entire career, a habit from his days as a corporate lawyer when the only quiet hours were the ones before the office woke up. What was unusual was what he was reading.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The document was titled <strong>"Digital Liberty Act: Framework for Trusted AI Access Partnerships."</strong> It had arrived through diplomatic channels the previous evening, flagged by the BND with a single-line assessment: <em>"This changes everything."</em></p>
+      </div>
+
+      <div class="reveal">
+        <p>Merz read it twice. The first time quickly, scanning for structure. The second time slowly, with a pencil, marking passages. The document was written in the particular style of American legislative drafting — precise in its vagueness, creating categories that appeared neutral but were designed to sort the world into those who comply and those who don't.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The core mechanism was simple: access to American frontier AI systems — the models, the APIs, the cloud infrastructure, the enterprise tools built on top of them — would now be conditional. Not on payment. On alignment. Countries would be sorted into three tiers: <strong>Full Access, Managed Access, and Restricted.</strong> The criteria for placement included trade relationships, data governance alignment, technology transfer policies, and — the part Merz underlined three times — <em>"demonstrated commitment to shared values in AI governance."</em></p>
+      </div>
+
+      <div class="reveal">
+        <p>Germany, with its deep trade relationships with China, its complicated position on data sovereignty, and its recent pushback on US cloud procurement, was projected to fall into <strong>Managed Access</strong>. This was not a ban. It was something worse: a leash. Managed Access meant delayed model releases, restricted API capabilities, mandatory data sharing agreements, and procurement conditions that would make German companies second-class customers of the AI infrastructure they depended on.</p>
+      </div>
+
+      <div class="reveal">
+        <p>At 6:30 AM, Pieter arrived. Pieter was Merz's foreign policy advisor, a quiet Dutchman who had spent fifteen years at the European Council before joining the Chancellery. He found Merz at his desk with the document spread across the table, annotated in red.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"You've read it," Pieter said. Not a question.</p>
+      </div>
+
+      <div class="reveal">
+        <p>"Twice."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"And?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>Merz leaned back. "It's elegant. I'll give them that. They've found a way to weaponize dependency without firing a shot. Every German hospital running American diagnostic AI, every factory using American predictive maintenance, every bank using American fraud detection — all of it now has a political price attached."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"We could comply," Pieter said carefully. "Restructure the China trade relationships. Signal alignment. Get back to Full Access."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"At what cost? Our China trade is worth 250 billion euros annually. We're going to restructure that because an American technology company wants us to?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>"It's not the company. It's the government."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"It's both. That's the point. The government writes the tiers. The companies enforce them. And if we comply, what happens next time? They change the criteria. They always change the criteria."</p>
+      </div>
+
+      <div class="reveal">
+        <p>Pieter sat down. "So what's the alternative?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>Merz was quiet for a long moment. Then: "Call Macron."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"It's 6:45 in the morning."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"He'll be awake. He reads the intelligence briefs at six. He'll have seen this."</p>
+      </div>
+
+      <div class="reveal">
+        <p>Pieter made the call. Macron had indeed seen it. The conversation lasted forty minutes. It was, by all later accounts, the first time the two leaders had spoken about AI as something other than an industrial policy footnote. <strong>They disagreed on almost everything — who should lead, how to structure it, what to build first.</strong> But they agreed on one thing: the era of assuming American AI infrastructure would remain apolitical was over.</p>
+      </div>
+
+      <div class="reveal">
+        <p>When Pieter hung up, Merz asked: "What did he say about the Nordics?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>"He wants to call Ek."</p>
+      </div>
+
+      <div class="reveal">
+        <p>"Daniel Ek? The Spotify man?"</p>
+      </div>
+
+      <div class="reveal">
+        <p>"He's become the de facto voice of Nordic tech sovereignty. He has the capital, the credibility, and apparently he's been privately funding a European compute initiative for the past year."</p>
+      </div>
+
+      <div class="reveal">
+        <p>Merz looked at the document on his desk. "I've spent my entire career believing the transatlantic relationship was the foundation of European security. And it is. But this—" he tapped the Digital Liberty Act, "—this is not a partnership. This is a terms-of-service agreement. And we didn't negotiate the terms."</p>
+      </div>
+
+      <!-- DOCUMENT INSET: Digital Liberty Act -->
+      <div class="doc-inset reveal">
+        <div class="doc-stamp">CLASSIFIED</div>
+        <h4>Digital Liberty Act</h4>
+        <p class="doc-subtitle">Framework for Trusted AI Access Partnerships</p>
+
+        <p class="doc-section">Section 1. Purpose</p>
+        <p>To establish a tiered framework for international access to United States artificial intelligence systems, infrastructure, and services, ensuring that such access aligns with the national security interests and values of the United States.</p>
+
+        <p class="doc-section">Section 2. Access Tiers</p>
+        <p>(a) <strong>Full Access.</strong> Nations demonstrating comprehensive alignment with US AI governance principles, including data sharing agreements, technology transfer transparency, and trade relationship compatibility, shall receive unrestricted access to frontier AI systems.</p>
+        <p>(b) <strong>Managed Access.</strong> Nations maintaining significant trade or technology relationships with designated strategic competitors shall receive access subject to delayed model releases (90-180 days), restricted API capabilities, mandatory telemetry sharing, and enhanced procurement review.</p>
+        <p>(c) <strong>Restricted Access.</strong> Nations failing to meet minimum alignment criteria shall be subject to comprehensive access limitations as determined by the Secretary of Commerce in consultation with the National Security Advisor.</p>
+
+        <p class="doc-section">Section 3. Compliance Assessment Criteria</p>
+        <p>The Secretary of Commerce shall evaluate partner nations annually based on: (i) bilateral trade composition with strategic competitors; (ii) data governance framework compatibility; (iii) technology transfer and export control alignment; (iv) demonstrated commitment to shared values in AI governance; (v) defense and intelligence cooperation metrics.</p>
+
+        <p class="doc-section">Section 4. Enforcement</p>
+        <p>United States AI service providers operating internationally shall implement access tier restrictions within 180 days of tier designation. Failure to comply shall result in penalties as prescribed under existing technology export frameworks.</p>
       </div>
     </div>
 
-    <!-- Running metrics bar -->
-    <div class="reveal" style="display:flex;gap:1rem;flex-wrap:wrap;margin:2rem 0;justify-content:center;" id="simRunningMetrics">
-      <div class="sim-metric"><span class="m-label">Market Share:</span><span class="m-val" id="simShare" style="color:var(--cyan)">2%</span></div>
-      <div class="sim-metric"><span class="m-label">Market Cap:</span><span class="m-val" id="simCap" style="color:var(--green)">$8B</span></div>
-      <div class="sim-metric"><span class="m-label">Talent:</span><span class="m-val" id="simTalent" style="color:var(--gold)">15</span></div>
-      <div class="sim-metric"><span class="m-label">Coalition:</span><span class="m-val" id="simCoalition" style="color:var(--cyan)">0</span></div>
-    </div>
-
-    <div id="simDecisions"></div>
   </div>
-</section>
 
-<!-- ==================== DATA BREAK: TALENT MAP ==================== -->
-<section class="data-break" id="data-talent">
-  <div class="data-break-inner">
-    <div class="reveal">
-      <h2>The Talent Map</h2>
-      <p class="section-sub">Where are the world's top AI researchers?</p>
-    </div>
+  <!-- RIGHT: Data -->
+  <div class="split-data">
 
-    <div class="talent-counters reveal" id="talentCounters">
-      <div class="talent-counter">
-        <div class="tc-val" style="color:var(--cyan);" id="tcCoalition">4</div>
-        <div class="tc-label">Coalition</div>
-      </div>
-      <div class="talent-counter">
-        <div class="tc-val" style="color:var(--red);" id="tcRivals">8</div>
-        <div class="tc-label">Rivals (US/China)</div>
-      </div>
-      <div class="talent-counter">
-        <div class="tc-val" style="color:var(--gold);" id="tcAcademia">8</div>
-        <div class="tc-label">Academia</div>
+    <!-- Data Panel: Simulation -->
+    <div class="data-panel active" id="panel-simulation" data-panel-id="panel-simulation">
+      <div class="sim-section" id="sim-decisions">
+        <div class="sim-inner">
+          <div class="reveal">
+            <span class="dateline">Interactive</span>
+            <h2 style="font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:0.5rem;">Key Decisions</h2>
+            <p style="color:rgba(255,255,255,0.4);margin-bottom:0.75rem;font-size:0.85rem;">
+              Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
+            </p>
+            <div class="sim-skip">
+              <a href="#data-talent">Skip to Talent Map &darr;</a>
+            </div>
+          </div>
+
+          <!-- Running metrics bar -->
+          <div class="reveal" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin:1.5rem 0;justify-content:center;" id="simRunningMetrics">
+            <div class="sim-metric"><span class="m-label">Share:</span><span class="m-val" id="simShare" style="color:var(--cyan)">2%</span></div>
+            <div class="sim-metric"><span class="m-label">Cap:</span><span class="m-val" id="simCap" style="color:var(--green)">$8B</span></div>
+            <div class="sim-metric"><span class="m-label">Talent:</span><span class="m-val" id="simTalent" style="color:var(--gold)">15</span></div>
+            <div class="sim-metric"><span class="m-label">Coalition:</span><span class="m-val" id="simCoalition" style="color:var(--cyan)">0</span></div>
+          </div>
+
+          <div id="simDecisions"></div>
+        </div>
       </div>
     </div>
 
-    <div id="talentMapGroups" class="reveal"></div>
-  </div>
-</section>
-
-<!-- ==================== CHAPTER 6: THE COALITION ==================== -->
-<section class="chapter" id="ch-coalition">
-  <div class="reveal">
-    <span class="dateline">What Gets Built</span>
-    <h2>Chapter VI: The Coalition</h2>
-  </div>
-
-  <div class="reveal">
-    <p>There is a version of this story where nothing happens. Where the Digital Liberty Act is absorbed, like every other external shock, into the vast sponge of European process. Where twenty-seven countries each write their own response. Where the coordination costs, as always, exceed the cost of inaction. Where Europe remains a consumer of AI rather than a producer of it.</p>
-  </div>
-
-  <div class="reveal">
-    <p>That version is the most likely one. It is also the most dangerous.</p>
-  </div>
-
-  <div class="reveal">
-    <p>The alternative requires something Europe has done exactly once before in technology: <strong>build an Airbus.</strong></p>
-  </div>
-
-  <div class="reveal">
-    <p>The Airbus parallel is overused but under-examined. People cite it as proof that European industrial collaboration works. They forget how ugly it was. The first decade was a disaster of competing national interests, workshare politics, duplicated engineering, and political interference in technical decisions. France wanted final assembly in Toulouse. Germany wanted the fuselages built in Hamburg. The UK wanted the wings. Spain wanted the tail. Every country wanted the jobs. Nobody wanted to concede control.</p>
-  </div>
-
-  <div class="reveal">
-    <p><strong>It worked anyway.</strong> Not because the collaboration was smooth, but because the alternative — letting Boeing own 100% of commercial aviation — was worse than the friction. The coalition was born from synchronized desperation, not synchronized ambition.</p>
-  </div>
-
-  <div class="reveal">
-    <h3>The AI Version</h3>
-    <p>An AI coalition would not look exactly like Airbus. The technology is different. The timescales are shorter. The capital requirements are higher relative to revenue. But the structural logic is identical: <strong>merge the pieces that are too expensive to duplicate, keep the pieces that benefit from competition.</strong></p>
-  </div>
-
-  <div class="reveal">
-    <p>The merged core: compute infrastructure, frontier model training, chip procurement, security certification. These are the capital-intensive, scale-dependent, winner-take-all layers. No individual European country can afford them alone. Together, they might.</p>
-  </div>
-
-  <div class="reveal">
-    <p>The competitive layer: enterprise applications, vertical solutions, research programs, talent development. These benefit from diversity, from multiple approaches, from the kind of messy experimentation that markets do better than committees.</p>
-  </div>
-
-  <div class="reveal">
-    <p>Think of it like the Wi-Fi Alliance. Nobody "owns" Wi-Fi. But the standard exists because companies agreed to share the infrastructure layer so they could compete on the application layer. The router is shared. The apps are competitive.</p>
-  </div>
-
-  <div class="reveal">
-    <h3>Forks in the Road</h3>
-    <p>This coalition will face the same governance fights that Airbus faced. Who leads? Where is the headquarters? Whose procurement rules apply? How are costs shared? How is IP owned?</p>
-  </div>
-
-  <div class="reveal">
-    <p>These questions do not have clean answers. They have negotiated answers. And negotiated answers are slow, ugly, and suboptimal. But a suboptimal coalition that exists beats an optimal strategy that doesn't.</p>
-  </div>
-
-  <div class="reveal">
-    <p>The question is not whether Europe <em>can</em> build this. It has the talent, the capital (if aggregated), and the market size. The question is whether it <em>will</em> — whether the political cost of coordination is lower than the strategic cost of dependency. Whether, when the next crisis comes — and it will — there is a structure to respond within, or just twenty-seven countries each writing their own communique.</p>
-  </div>
-
-  <!-- AIRBUS TIMELINE PARALLEL -->
-  <div class="widget reveal">
-    <h3>Timeline: The Airbus Parallel</h3>
-    <div class="timeline-dual">
-      <div class="timeline-col">
-        <h3>Airbus (Aviation)</h3>
-        <div class="tl-event"><div class="tl-year">1967</div><div class="tl-text">France, Germany, UK begin talks on joint wide-body aircraft</div></div>
-        <div class="tl-event"><div class="tl-year">1970</div><div class="tl-text">Airbus Industrie incorporated as a GIE (economic interest grouping)</div></div>
-        <div class="tl-event"><div class="tl-year">1974</div><div class="tl-text">A300 enters service. First sales are slow. Critics call it a "white elephant"</div></div>
-        <div class="tl-event"><div class="tl-year">1985</div><div class="tl-text">A320 family breaks through. First fly-by-wire airliner. Orders surge</div></div>
-        <div class="tl-event"><div class="tl-year">2000</div><div class="tl-text">EADS formed. Full corporate merger of consortium members</div></div>
-        <div class="tl-event"><div class="tl-year">2019</div><div class="tl-text">Airbus overtakes Boeing in deliveries. 50%+ market share</div></div>
+    <!-- Data Panel: Talent Map -->
+    <div class="data-panel" id="panel-talent" data-panel-id="panel-talent">
+      <div class="reveal">
+        <h2 id="data-talent">The Talent Map</h2>
+        <p class="section-sub">Where are the world's top AI researchers?</p>
       </div>
-      <div class="timeline-col">
-        <h3>AI Coalition (Projected)</h3>
-        <div class="tl-event"><div class="tl-year">2026</div><div class="tl-text">Digital Liberty Act triggers crisis. Dependency becomes undeniable</div></div>
-        <div class="tl-event"><div class="tl-year">2027</div><div class="tl-text">Coalition formed. Merged core: compute, frontier models. Open alliance layer for applications</div></div>
-        <div class="tl-event"><div class="tl-year">2028</div><div class="tl-text">First sovereign foundation model. Less capable than US leaders, but European-controlled</div></div>
-        <div class="tl-event"><div class="tl-year">2030</div><div class="tl-text">Enterprise breakout. Government procurement shifts to coalition stack</div></div>
-        <div class="tl-event"><div class="tl-year">2033</div><div class="tl-text">Competitive in key verticals: health AI, industrial AI, multilingual NLP</div></div>
-        <div class="tl-event"><div class="tl-year">2035</div><div class="tl-text">Parity in enterprise AI. Not the biggest, but sovereign and viable</div></div>
+
+      <div class="talent-counters reveal" id="talentCounters">
+        <div class="talent-counter">
+          <div class="tc-val" style="color:var(--cyan);" id="tcCoalition">4</div>
+          <div class="tc-label">Coalition</div>
+        </div>
+        <div class="talent-counter">
+          <div class="tc-val" style="color:var(--red);" id="tcRivals">8</div>
+          <div class="tc-label">Rivals (US/China)</div>
+        </div>
+        <div class="talent-counter">
+          <div class="tc-val" style="color:var(--gold);" id="tcAcademia">8</div>
+          <div class="tc-label">Academia</div>
+        </div>
+      </div>
+
+      <div id="talentMapGroups" class="reveal"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: Coalition + Timeline ==================== -->
+<div class="split-section">
+
+  <!-- LEFT: Narrative -->
+  <div class="split-narrative">
+
+    <!-- Chapter 6: The Coalition -->
+    <div class="narrative-section" id="ch-coalition" data-panel="panel-timeline">
+      <div class="reveal">
+        <span class="dateline">What Gets Built</span>
+        <h2>Chapter VI: The Coalition</h2>
+      </div>
+
+      <div class="reveal">
+        <p>There is a version of this story where nothing happens. Where the Digital Liberty Act is absorbed, like every other external shock, into the vast sponge of European process. Where twenty-seven countries each write their own response. Where the coordination costs, as always, exceed the cost of inaction. Where Europe remains a consumer of AI rather than a producer of it.</p>
+      </div>
+
+      <div class="reveal">
+        <p>That version is the most likely one. It is also the most dangerous.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The alternative requires something Europe has done exactly once before in technology: <strong>build an Airbus.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>The Airbus parallel is overused but under-examined. People cite it as proof that European industrial collaboration works. They forget how ugly it was. The first decade was a disaster of competing national interests, workshare politics, duplicated engineering, and political interference in technical decisions. France wanted final assembly in Toulouse. Germany wanted the fuselages built in Hamburg. The UK wanted the wings. Spain wanted the tail. Every country wanted the jobs. Nobody wanted to concede control.</p>
+      </div>
+
+      <div class="reveal">
+        <p><strong>It worked anyway.</strong> Not because the collaboration was smooth, but because the alternative — letting Boeing own 100% of commercial aviation — was worse than the friction. The coalition was born from synchronized desperation, not synchronized ambition.</p>
+      </div>
+
+      <div class="reveal">
+        <h3>The AI Version</h3>
+        <p>An AI coalition would not look exactly like Airbus. The technology is different. The timescales are shorter. The capital requirements are higher relative to revenue. But the structural logic is identical: <strong>merge the pieces that are too expensive to duplicate, keep the pieces that benefit from competition.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>The merged core: compute infrastructure, frontier model training, chip procurement, security certification. These are the capital-intensive, scale-dependent, winner-take-all layers. No individual European country can afford them alone. Together, they might.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The competitive layer: enterprise applications, vertical solutions, research programs, talent development. These benefit from diversity, from multiple approaches, from the kind of messy experimentation that markets do better than committees.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Think of it like the Wi-Fi Alliance. Nobody "owns" Wi-Fi. But the standard exists because companies agreed to share the infrastructure layer so they could compete on the application layer. The router is shared. The apps are competitive.</p>
+      </div>
+
+      <div class="reveal">
+        <h3>Forks in the Road</h3>
+        <p>This coalition will face the same governance fights that Airbus faced. Who leads? Where is the headquarters? Whose procurement rules apply? How are costs shared? How is IP owned?</p>
+      </div>
+
+      <div class="reveal">
+        <p>These questions do not have clean answers. They have negotiated answers. And negotiated answers are slow, ugly, and suboptimal. But a suboptimal coalition that exists beats an optimal strategy that doesn't.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The question is not whether Europe <em>can</em> build this. It has the talent, the capital (if aggregated), and the market size. The question is whether it <em>will</em> — whether the political cost of coordination is lower than the strategic cost of dependency. Whether, when the next crisis comes — and it will — there is a structure to respond within, or just twenty-seven countries each writing their own communique.</p>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ==================== CONCLUSION ==================== -->
+  </div>
+
+  <!-- RIGHT: Data -->
+  <div class="split-data">
+
+    <!-- Data Panel: Timeline -->
+    <div class="data-panel active" id="panel-timeline" data-panel-id="panel-timeline">
+      <div class="reveal">
+        <h2>The Airbus Parallel</h2>
+        <p class="section-sub">A timeline comparison: aviation then, AI now.</p>
+      </div>
+      <div class="widget reveal">
+        <h3>Timeline: The Airbus Parallel</h3>
+        <div class="timeline-dual">
+          <div class="timeline-col">
+            <h3>Airbus (Aviation)</h3>
+            <div class="tl-event"><div class="tl-year">1967</div><div class="tl-text">France, Germany, UK begin talks on joint wide-body aircraft</div></div>
+            <div class="tl-event"><div class="tl-year">1970</div><div class="tl-text">Airbus Industrie incorporated as a GIE (economic interest grouping)</div></div>
+            <div class="tl-event"><div class="tl-year">1974</div><div class="tl-text">A300 enters service. First sales are slow. Critics call it a "white elephant"</div></div>
+            <div class="tl-event"><div class="tl-year">1985</div><div class="tl-text">A320 family breaks through. First fly-by-wire airliner. Orders surge</div></div>
+            <div class="tl-event"><div class="tl-year">2000</div><div class="tl-text">EADS formed. Full corporate merger of consortium members</div></div>
+            <div class="tl-event"><div class="tl-year">2019</div><div class="tl-text">Airbus overtakes Boeing in deliveries. 50%+ market share</div></div>
+          </div>
+          <div class="timeline-col">
+            <h3>AI Coalition (Projected)</h3>
+            <div class="tl-event"><div class="tl-year">2026</div><div class="tl-text">Digital Liberty Act triggers crisis. Dependency becomes undeniable</div></div>
+            <div class="tl-event"><div class="tl-year">2027</div><div class="tl-text">Coalition formed. Merged core: compute, frontier models. Open alliance layer for applications</div></div>
+            <div class="tl-event"><div class="tl-year">2028</div><div class="tl-text">First sovereign foundation model. Less capable than US leaders, but European-controlled</div></div>
+            <div class="tl-event"><div class="tl-year">2030</div><div class="tl-text">Enterprise breakout. Government procurement shifts to coalition stack</div></div>
+            <div class="tl-event"><div class="tl-year">2033</div><div class="tl-text">Competitive in key verticals: health AI, industrial AI, multilingual NLP</div></div>
+            <div class="tl-event"><div class="tl-year">2035</div><div class="tl-text">Parity in enterprise AI. Not the biggest, but sovereign and viable</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== CONCLUSION (full-width) ==================== -->
 <section class="conclusion" id="conclusion">
   <div class="conclusion-inner">
     <div class="reveal">
@@ -1254,7 +1419,7 @@ body {
   </div>
 </section>
 
-<!-- ==================== REFERENCES ==================== -->
+<!-- ==================== REFERENCES (full-width) ==================== -->
 <section class="references" id="references">
   <div class="reveal">
     <h3>References &amp; Sources</h3>
@@ -1383,6 +1548,43 @@ window.addEventListener('scroll', ()=>{
 });
 
 // ============================================================
+// DATA PANEL SWITCHING (IntersectionObserver)
+// ============================================================
+(function(){
+  const narrativeSections = document.querySelectorAll('.narrative-section');
+  if(!narrativeSections.length) return;
+
+  const panelObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const targetPanelId = e.target.getAttribute('data-panel');
+        if(!targetPanelId) return;
+
+        // Find the split-data column that is a sibling of this narrative's split-narrative parent
+        const splitSection = e.target.closest('.split-section');
+        if(!splitSection) return;
+
+        const dataCol = splitSection.querySelector('.split-data');
+        if(!dataCol) return;
+
+        // Deactivate all panels in this data column
+        dataCol.querySelectorAll('.data-panel').forEach(p => p.classList.remove('active'));
+
+        // Activate the target panel
+        const targetPanel = dataCol.querySelector('#' + targetPanelId);
+        if(targetPanel){
+          targetPanel.classList.add('active');
+          // Scroll the data column to show the active panel
+          targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-50px 0px -30% 0px' });
+
+  narrativeSections.forEach(s => panelObs.observe(s));
+})();
+
+// ============================================================
 // MARKET CAP BAR CHART
 // ============================================================
 function drawMarketCapChart(){
@@ -1390,7 +1592,7 @@ function drawMarketCapChart(){
   if(!canvas) return;
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
-  const cw = rect.width - 64; // account for padding
+  const cw = rect.width - 48; // account for padding
   canvas.width = cw * dpr;
   canvas.height = 320 * dpr;
   canvas.style.width = cw + 'px';
@@ -1412,14 +1614,14 @@ function drawMarketCapChart(){
   const maxVal = 220;
   const barH = 28;
   const gap = 10;
-  const labelW = 130;
-  const chartW = cw - labelW - 60;
+  const labelW = 120;
+  const chartW = cw - labelW - 50;
 
   data.forEach((d, i) => {
     const y = i * (barH + gap) + 20;
     // label
     ctx.fillStyle = d.eu ? 'rgba(230,57,70,0.8)' : 'rgba(255,255,255,0.5)';
-    ctx.font = '12px Inter, sans-serif';
+    ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.fillText(d.name, labelW - 10, y + barH/2);
@@ -1433,9 +1635,9 @@ function drawMarketCapChart(){
     ctx.globalAlpha = 1;
     // value
     ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.font = '600 11px JetBrains Mono, monospace';
+    ctx.font = '600 10px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
-    ctx.fillText('$' + d.val + 'B', labelW + barW + 8, y + barH/2);
+    ctx.fillText('$' + d.val + 'B', labelW + barW + 6, y + barH/2);
   });
 
   // EU label
@@ -1454,7 +1656,7 @@ function drawCloudChart(){
   if(!canvas) return;
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
-  const cw = rect.width - 64;
+  const cw = rect.width - 48;
   canvas.width = cw * dpr;
   canvas.height = 320 * dpr;
   canvas.style.width = cw + 'px';
@@ -1474,8 +1676,8 @@ function drawCloudChart(){
 
   const cx = cw * 0.35;
   const cy = 160;
-  const outerR = 120;
-  const innerR = 70;
+  const outerR = Math.min(110, cw * 0.22);
+  const innerR = outerR * 0.58;
   let startAngle = -Math.PI/2;
 
   data.forEach(d => {
@@ -1493,32 +1695,32 @@ function drawCloudChart(){
 
   // center text
   ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.font = '700 14px Inter, sans-serif';
+  ctx.font = '700 13px Inter, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('Cloud', cx, cy - 8);
   ctx.fillText('Market', cx, cy + 10);
 
   // legend
-  const lx = cw * 0.65;
+  const lx = cw * 0.62;
   let ly = 40;
   data.forEach(d => {
     ctx.fillStyle = d.color;
     ctx.globalAlpha = d.name === 'European providers' ? 1 : 0.7;
-    ctx.fillRect(lx, ly, 14, 14);
+    ctx.fillRect(lx, ly, 12, 12);
     ctx.globalAlpha = 1;
     ctx.fillStyle = d.name === 'European providers' ? 'rgba(230,57,70,0.9)' : 'rgba(255,255,255,0.5)';
-    ctx.font = '12px Inter, sans-serif';
+    ctx.font = '11px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(d.name + ' (' + d.val + '%)', lx + 22, ly + 7);
-    ly += 32;
+    ctx.fillText(d.name + ' (' + d.val + '%)', lx + 18, ly + 6);
+    ly += 30;
   });
 
   // US total annotation
   ctx.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx.font = '600 11px JetBrains Mono, monospace';
-  ctx.fillText('US total: 75%', lx, ly + 16);
+  ctx.font = '600 10px JetBrains Mono, monospace';
+  ctx.fillText('US total: 75%', lx, ly + 12);
 }
 
 // ============================================================
