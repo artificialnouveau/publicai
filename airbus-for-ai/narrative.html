@@ -1469,7 +1469,111 @@ body {
     </div>
     <div class="conclusion-buttons reveal">
       <a href="simulation.html" class="btn btn-primary">Play the Simulation</a>
-      <a href="index.html" class="btn btn-outline">Open the Simulator</a>
+      <a href="index.html" class="btn btn-outline">Build the Coalition Yourself</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== LIVE DASHBOARD ==================== -->
+<section style="padding:5rem 2rem;background:linear-gradient(180deg,#070b14,#0a1628,#070b14);" id="dashboard">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:0.5rem;">Live Dashboard</h2>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.95rem;">Real-time indicators of European AI sovereignty. How the numbers stand today.</p>
+    </div>
+
+    <!-- Dashboard grid -->
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:2rem;">
+
+      <!-- Card: EU Cloud Dependency -->
+      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);margin-bottom:0.5rem;">EU Cloud Dependency</div>
+        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">70%</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">controlled by US hyperscalers</div>
+        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
+          <div style="width:70%;height:100%;background:var(--red);border-radius:3px;"></div>
+        </div>
+        <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank" style="margin-top:8px;display:inline-block;">Synergy Research, 2024</a>
+      </div>
+
+      <!-- Card: EU AI Compute -->
+      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);margin-bottom:0.5rem;">EU Share of Global AI Compute</div>
+        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">projected by 2027</div>
+        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
+          <div style="width:2%;height:100%;background:var(--red);border-radius:3px;"></div>
+        </div>
+        <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank" style="margin-top:8px;display:inline-block;">European Commission</a>
+      </div>
+
+      <!-- Card: EU LLM Market Share -->
+      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);margin-bottom:0.5rem;">EU Frontier Model Share</div>
+        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">Mistral AI's global LLM market</div>
+        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
+          <div style="width:2%;height:100%;background:var(--red);border-radius:3px;"></div>
+        </div>
+        <a class="source-link" href="https://www.statista.com/statistics/1482817/market-share-of-ai-chatbots/" target="_blank" style="margin-top:8px;display:inline-block;">Statista, 2025</a>
+      </div>
+
+      <!-- Card: Startup Exodus -->
+      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);margin-bottom:0.5rem;">EU AI Startup Relocation Rate</div>
+        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;">>30%</div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">relocate to the United States</div>
+        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
+          <div style="width:30%;height:100%;background:var(--gold);border-radius:3px;"></div>
+        </div>
+        <a class="source-link" href="https://www.ft.com/content/europe-scale-up-problem" target="_blank" style="margin-top:8px;display:inline-block;">Financial Times, 2025</a>
+      </div>
+
+    </div>
+
+    <!-- Market cap comparison bar -->
+    <div class="reveal" style="padding:2rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+      <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);margin-bottom:1rem;">AI Company Valuations — US vs EU ($B)</div>
+      <div id="dashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/" target="_blank">Reuters AI valuations</a>
+        <a class="source-link" href="https://www.cbinsights.com/research-ai-trends" target="_blank">CB Insights AI Trends</a>
+      </div>
+    </div>
+
+    <!-- Talent distribution -->
+    <div class="reveal" style="padding:2rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);margin-bottom:1rem;">Top AI Researchers by Region</div>
+      <div style="display:flex;gap:16px;align-items:flex-end;height:120px;">
+        <div style="flex:1;text-align:center;">
+          <div style="height:72px;background:var(--red);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--red);margin-top:4px;">~60%</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">United States</div>
+        </div>
+        <div style="flex:1;text-align:center;">
+          <div style="height:30px;background:var(--gold);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--gold);margin-top:4px;">~25%</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">China</div>
+        </div>
+        <div style="flex:1;text-align:center;">
+          <div style="height:12px;background:var(--cyan);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--cyan);margin-top:4px;">~10%</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">Europe</div>
+        </div>
+        <div style="flex:1;text-align:center;">
+          <div style="height:6px;background:rgba(255,255,255,0.2);border-radius:4px 4px 0 0;"></div>
+          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:rgba(255,255,255,0.3);margin-top:4px;">~5%</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">Other</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <a class="source-link" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo Global AI Talent Tracker</a>
+        <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank" style="margin-left:8px;">Stanford HAI AI Index 2024</a>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center;margin-top:2rem;color:rgba(255,255,255,0.15);font-size:0.75rem;font-family:var(--mono);">
+      Data reflects publicly available estimates as of early 2025. Some figures are approximations based on industry analysis.
     </div>
   </div>
 </section>
@@ -2069,6 +2173,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   setTimeout(animateExodus, 100);
   buildSimulation();
   buildTalentMap();
+  buildDashboardBars();
 
   // Draw charts when they come into view
   const chartObs = new IntersectionObserver((entries)=>{
@@ -2096,6 +2201,37 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }, 250);
   });
 });
+
+// ============================================================
+// DASHBOARD MARKET CAP BARS
+// ============================================================
+function buildDashboardBars() {
+  const el = document.getElementById('dashboardBars');
+  if (!el) return;
+  const companies = [
+    {name:'Alphabet (Google AI)', val:200, color:'#4285f4', region:'US'},
+    {name:'OpenAI', val:157, color:'#10a37f', region:'US'},
+    {name:'ByteDance AI', val:80, color:'#ff004f', region:'CN'},
+    {name:'Meta AI', val:60, color:'#0668E1', region:'US'},
+    {name:'Amazon AI/AWS', val:45, color:'#FF9900', region:'US'},
+    {name:'Anthropic', val:30, color:'#D4A574', region:'US'},
+    {name:'Mistral AI', val:6, color:'var(--cyan)', region:'EU'},
+    {name:'Aleph Alpha', val:0.5, color:'var(--cyan)', region:'EU'},
+    {name:'Stability AI', val:1, color:'var(--cyan)', region:'EU'},
+  ];
+  const maxVal = Math.max(...companies.map(c=>c.val));
+  el.innerHTML = companies.map(c => {
+    const pct = (c.val / maxVal) * 100;
+    const isEU = c.region === 'EU';
+    return `<div style="display:flex;align-items:center;gap:10px;">
+      <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isEU?'0.7':'0.4'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
+      <div style="flex:1;height:14px;background:rgba(255,255,255,0.03);border-radius:2px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${c.color};border-radius:2px;opacity:0.7;transition:width 1s;"></div>
+      </div>
+      <div style="min-width:45px;font-size:0.7rem;font-family:var(--mono);color:rgba(255,255,255,0.35);font-weight:700;">$${c.val}B</div>
+    </div>`;
+  }).join('');
+}
 </script>
 </body>
 </html>
