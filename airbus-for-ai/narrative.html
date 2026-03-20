@@ -42,7 +42,57 @@ body {
   font-family: 'JetBrains Mono', monospace; color: var(--text-primary); line-height: 1.7; overflow-x: hidden;
   background: var(--bg);
   font-size: 14px;
+  /* CRT scanline overlay */
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
 }
+/* CRT vignette — darkened edges */
+body::after {
+  content:''; position:fixed; top:0; left:0; right:0; bottom:0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.3) 100%);
+  pointer-events:none; z-index:9999;
+}
+/* Amber glow on key text */
+.glow { text-shadow: 0 0 8px rgba(255,176,0,0.3), 0 0 20px rgba(255,176,0,0.1); }
+/* Blinking cursor */
+@keyframes blink-cursor { 0%,100%{opacity:1;} 50%{opacity:0;} }
+.cursor::after {
+  content:'_'; color:var(--amber); animation: blink-cursor 1s step-end infinite;
+  font-weight:400;
+}
+/* Typed underline for headers */
+.typed-underline {
+  border-bottom: 2px solid var(--amber);
+  padding-bottom: 4px;
+  display: inline;
+}
+/* Noise/grain texture overlay */
+.grain {
+  position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9998;
+  opacity:0.02;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px 200px;
+}
+/* Status ticker bar at bottom */
+.ticker-bar {
+  position:fixed;bottom:0;left:0;right:0;height:24px;z-index:200;
+  background:var(--bg-raised);border-top:1px solid var(--border);
+  display:flex;align-items:center;overflow:hidden;
+  font-size:10px;color:var(--text-dim);letter-spacing:0.05em;
+}
+.ticker-bar .ticker-content {
+  white-space:nowrap;animation:ticker-scroll 60s linear infinite;
+  display:flex;gap:3rem;
+}
+@keyframes ticker-scroll {
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
+.ticker-bar .ticker-item { display:flex;align-items:center;gap:6px; }
+.ticker-bar .ticker-dot { width:4px;height:4px;border-radius:50%; }
+.ticker-bar .ticker-dot.green { background:var(--green); }
+.ticker-bar .ticker-dot.red { background:var(--red); }
+.ticker-bar .ticker-dot.amber { background:var(--amber); }
 
 /* === PROGRESS BAR === */
 .progress-bar {
@@ -96,8 +146,10 @@ body {
 .hero-content { position: relative; z-index: 2; max-width: 800px; }
 .hero h1 {
   font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700;
-  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem;
+  line-height: 1.1; letter-spacing: 0.08em; margin-bottom: 1rem;
   color: var(--amber); font-family: var(--mono);
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255,176,0,0.4), 0 0 40px rgba(255,176,0,0.15), 0 0 80px rgba(255,176,0,0.05);
 }
 .hero-sub {
   font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--green);
@@ -143,17 +195,26 @@ body {
 .split-narrative em { color: var(--text-secondary); font-style: italic; }
 .split-narrative h2 {
   font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
-  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: 0;
+  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: 0.04em;
   color: var(--amber); font-family: var(--mono); text-transform: uppercase;
+  text-shadow: 0 0 6px rgba(255,176,0,0.2);
 }
 .split-narrative h3 {
   font-size: 1.1rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
   color: var(--text-primary); font-family: var(--mono);
 }
+/* ASCII art decoration before blockquotes */
+.split-narrative blockquote::before {
+  content: '// '; color: var(--text-dim);
+}
 .split-narrative .dateline {
-  font-family: var(--mono); font-size: 0.8rem; color: var(--amber);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;
-  display: block;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--green);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;
+  display: block; padding: 6px 10px;
+  background: rgba(0,255,136,0.03); border-left: 2px solid var(--green);
+}
+.split-narrative .dateline::before {
+  content: '> '; color: var(--amber);
 }
 .split-narrative .dateline::before { content: '> '; color: var(--text-dim); }
 .split-narrative .chapter-divider {
@@ -284,14 +345,20 @@ body {
   flex-wrap: wrap; margin-bottom: 2rem;
 }
 .stat-card {
-  text-align: center; padding: 1.25rem 1rem; flex: 1; min-width: 140px; max-width: 300px;
+  text-align: left; padding: 1.25rem 1rem; flex: 1; min-width: 140px; max-width: 300px;
   background: var(--bg-raised); border: 1px solid var(--border);
-  border-radius: 0;
+  border-radius: 0; position:relative;
+  border-top: 2px solid var(--red);
+}
+.stat-card::before {
+  content: 'ALERT'; position:absolute; top:6px; right:8px;
+  font-size:8px; letter-spacing:0.15em; color:var(--red); opacity:0.4;
 }
 .stat-card:hover { border-color: var(--amber); }
 .stat-val {
   font-family: var(--mono); font-size: 2rem; font-weight: 700;
-  color: var(--amber); line-height: 1;
+  color: var(--red); line-height: 1;
+  text-shadow: 0 0 10px rgba(255,51,51,0.2);
 }
 .stat-label {
   font-size: 11px; color: var(--text-dim); margin-top: 0.5rem;
@@ -633,7 +700,7 @@ body {
 
 /* === REFERENCES === */
 .references {
-  max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem;
+  max-width: 680px; margin: 0 auto; padding: 3rem 2rem 8rem; /* extra padding for ticker bar */
   border-top: 1px solid var(--border);
 }
 .references h3 {
@@ -806,6 +873,40 @@ body {
 </head>
 <body>
 
+<!-- CRT grain overlay -->
+<div class="grain"></div>
+
+<!-- Bottom ticker bar -->
+<div class="ticker-bar">
+  <div class="ticker-content">
+    <span class="ticker-item"><span class="ticker-dot red"></span>AWS EU PRICING +15% YoY</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>MISTRAL MARKET SHARE: 2.1%</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>HUGGINGFACE MODELS: 1.2M+</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>EU STARTUP RELOCATIONS: 34% TO US</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>OPENAI VALUATION: $157B</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>EU CLOUD DEPENDENCY: 70% US-OWNED</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>ASML MARKET CAP: EUR 280B</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>GLOBAL AI INVESTMENT: $180B (2024)</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>EU AI COMPUTE: ~2% OF GLOBAL</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>ANTHROPIC VALUATION: $30B</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>CHIPS ACT: MAINSTREAM CHIPS OVERLOOKED</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>WIFI ALLIANCE MODEL: 6 FOUNDERS</span>
+    <!-- Duplicate for seamless scroll -->
+    <span class="ticker-item"><span class="ticker-dot red"></span>AWS EU PRICING +15% YoY</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>MISTRAL MARKET SHARE: 2.1%</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>HUGGINGFACE MODELS: 1.2M+</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>EU STARTUP RELOCATIONS: 34% TO US</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>OPENAI VALUATION: $157B</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>EU CLOUD DEPENDENCY: 70% US-OWNED</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>ASML MARKET CAP: EUR 280B</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>GLOBAL AI INVESTMENT: $180B (2024)</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>EU AI COMPUTE: ~2% OF GLOBAL</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>ANTHROPIC VALUATION: $30B</span>
+    <span class="ticker-item"><span class="ticker-dot red"></span>CHIPS ACT: MAINSTREAM CHIPS OVERLOOKED</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>WIFI ALLIANCE MODEL: 6 FOUNDERS</span>
+  </div>
+</div>
+
 <!-- Global tooltip for interactive visualizations -->
 <div class="viz-tooltip" id="vizTooltip">
   <div class="tt-title" id="ttTitle"></div>
@@ -818,7 +919,7 @@ body {
 
 <!-- TOP NAV -->
 <nav class="topnav">
-  <a href="index.html" class="topnav-brand">AIRBUS_FOR_AI &gt;</a>
+  <a href="index.html" class="topnav-brand glow">AIRBUS_FOR_AI &gt;</a>
   <div class="topnav-chapters">
     <a href="#ch-dublin">DUBLIN</a>
     <a href="#data-dependency">DEPENDENCY</a>
@@ -836,9 +937,10 @@ body {
 <section class="hero" id="hero">
   <div class="hero-particles"><canvas id="heroCanvas"></canvas></div>
   <div class="hero-content">
-    <h1>The Slow Boil</h1>
+    <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1.5rem;">SYS.INTELLIGENCE.BRIEFING // REF: EU-AI-SOV-2027 // CLEARANCE: OPEN</div>
+    <h1 class="glow">The Slow Boil</h1>
     <p class="hero-sub">CLASSIFIED BRIEFING // EUROPEAN DIGITAL SOVEREIGNTY</p>
-    <p style="font-size:0.85rem;color:var(--text-dim);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">A speculative narrative about Europe's AI sovereignty crisis — told through the eyes of the people who would have to build the coalition. Grounded in real data, real companies, real dependencies.</p>
+    <p style="font-size:0.85rem;color:var(--text-secondary);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">A speculative narrative about Europe's AI sovereignty crisis — told through the eyes of the people who would have to build the coalition. Grounded in real data, real companies, real dependencies.</p>
     <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;">
       <div style="flex:1;text-align:center;padding:1rem;border:1px solid var(--border);border-radius:0;background:var(--bg-raised);">
         <div style="font-size:11px;font-family:var(--mono);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Left side</div>
