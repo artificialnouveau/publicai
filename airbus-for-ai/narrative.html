@@ -9,29 +9,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --white: #ffffff;
-  --off-white: #f7f8fa;
-  --light-gray: #eef0f4;
-  --mid-gray: #c8cdd6;
-  --dark-gray: #6b7280;
-  --navy: #00205b;
-  --navy-light: #1a3a7a;
-  --navy-dark: #001540;
-  --sky: #0077c8;
-  --sky-light: #4da6e8;
-  --cyan: #00b4d8;
-  --gold: #f0a500;
-  --red: #e63946;
-  --green: #2ec4b6;
-  --purple: #7c3aed;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg: #0a0a0a;
+  --bg-raised: #111111;
+  --bg-panel: #0d0d0d;
+  --border: #1a1a1a;
+  --border-bright: #2a2a2a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #888888;
+  --text-dim: #555555;
+  --amber: #ffb000;
+  --green: #00ff88;
+  --red: #ff3333;
+  --cyan: #00ccff;
+  --blue: #4488ff;
+  --white: #e0e0e0;
+  --off-white: #cccccc;
+  --light-gray: #333333;
+  --mid-gray: #555555;
+  --dark-gray: #888888;
+  --navy: #0a0a0a;
+  --navy-light: #111111;
+  --navy-dark: #0a0a0a;
+  --sky: #00ccff;
+  --sky-light: #44ddff;
+  --gold: #ffb000;
+  --font: 'JetBrains Mono', monospace;
   --mono: 'JetBrains Mono', monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: var(--font); color: white; line-height: 1.6; overflow-x: hidden;
-  background: #070b14;
+  font-family: 'JetBrains Mono', monospace; color: var(--text-primary); line-height: 1.7; overflow-x: hidden;
+  background: var(--bg);
+  font-size: 14px;
 }
 
 /* === PROGRESS BAR === */
@@ -41,61 +51,72 @@ body {
 }
 .progress-fill {
   height: 100%; width: 0%;
-  background: linear-gradient(90deg, var(--cyan), var(--sky));
+  background: var(--amber);
   transition: width 0.1s linear;
 }
 
 /* === TOP NAV === */
 .topnav {
   position: fixed; top: 2px; left: 0; right: 0; z-index: 100;
-  background: rgba(7,11,20,0.92); backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(10,10,10,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
   padding: 0 2rem; height: 48px;
   display: flex; align-items: center; justify-content: space-between;
 }
 .topnav-brand {
-  font-weight: 800; font-size: 0.85rem; color: var(--cyan);
+  font-weight: 800; font-size: 0.85rem; color: var(--amber);
   text-decoration: none; letter-spacing: 0.05em; font-family: var(--mono);
   white-space: nowrap;
 }
-.topnav-brand:hover { color: white; }
+.topnav-brand:hover { color: #ffc844; }
 .topnav-chapters {
-  display: flex; gap: 1.5rem; overflow-x: auto;
+  display: flex; gap: 0; overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 .topnav-chapters a {
-  font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.3);
+  font-size: 0.72rem; font-weight: 600; color: var(--text-dim);
   text-decoration: none; white-space: nowrap; transition: color 0.2s;
   font-family: var(--mono); letter-spacing: 0.03em; text-transform: uppercase;
+  padding: 0 0.75rem;
+  border-right: 1px solid var(--border);
 }
-.topnav-chapters a:hover, .topnav-chapters a.active { color: rgba(255,255,255,0.8); }
+.topnav-chapters a:last-child { border-right: none; }
+.topnav-chapters a:hover { color: var(--amber); }
+.topnav-chapters a.active { color: var(--amber); }
 
 /* === HERO === */
 .hero {
   min-height: 100vh; display: flex; flex-direction: column;
   justify-content: center; align-items: center; text-align: center;
   padding: 6rem 2rem 4rem; position: relative; overflow: hidden;
-  background: linear-gradient(170deg, var(--navy-dark) 0%, var(--navy) 40%, #0a1a3a 100%);
+  background: var(--bg);
 }
-.hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+.hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.3; }
 .hero-particles canvas { width: 100%; height: 100%; }
 .hero-content { position: relative; z-index: 2; max-width: 800px; }
 .hero h1 {
-  font-size: clamp(3rem, 7vw, 6rem); font-weight: 900;
-  line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1rem;
+  font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700;
+  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem;
+  color: var(--amber); font-family: var(--mono);
 }
 .hero-sub {
-  font-size: clamp(1rem, 2vw, 1.3rem); color: rgba(255,255,255,0.55);
-  max-width: 550px; margin: 0 auto 3rem; line-height: 1.7;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--green);
+  max-width: 600px; margin: 0 auto 3rem; line-height: 1.7;
+  font-family: var(--mono);
 }
+.hero-sub::before { content: '> '; color: var(--text-dim); }
 .scroll-indicator {
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  color: rgba(255,255,255,0.3); font-size: 0.8rem; font-family: var(--mono);
+  color: var(--text-dim); font-size: 0.8rem; font-family: var(--mono);
   letter-spacing: 0.1em; cursor: pointer; transition: color 0.3s;
-  animation: float 3s ease-in-out infinite;
+  animation: blink-cursor 1.2s step-end infinite;
 }
-.scroll-indicator:hover { color: var(--cyan); }
-.scroll-indicator svg { width: 20px; height: 20px; }
+.scroll-indicator:hover { color: var(--amber); }
+.scroll-indicator svg { width: 20px; height: 20px; display: none; }
+@keyframes blink-cursor {
+  0%, 100% { border-right: 2px solid var(--amber); }
+  50% { border-right: 2px solid transparent; }
+}
 @keyframes float {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(8px); }
@@ -113,51 +134,56 @@ body {
   padding: 6rem 3rem 6rem 4rem;
 }
 .split-narrative p {
-  font-size: 1.1rem; line-height: 1.85;
-  color: rgba(255,255,255,0.65); margin-bottom: 1.25rem;
+  font-size: 15px; line-height: 1.8;
+  color: var(--text-secondary); margin-bottom: 1.25rem;
   max-width: none;
 }
 .split-narrative p:last-child { margin-bottom: 0; }
-.split-narrative strong { color: rgba(255,255,255,0.9); }
-.split-narrative em { color: rgba(255,255,255,0.75); font-style: italic; }
+.split-narrative strong { color: var(--text-primary); }
+.split-narrative em { color: var(--text-secondary); font-style: italic; }
 .split-narrative h2 {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
-  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.02em;
-  color: white;
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
+  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: 0;
+  color: var(--amber); font-family: var(--mono); text-transform: uppercase;
 }
 .split-narrative h3 {
-  font-size: 1.4rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
-  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
+  color: var(--text-primary); font-family: var(--mono);
 }
 .split-narrative .dateline {
-  font-family: var(--mono); font-size: 0.8rem; color: var(--cyan);
+  font-family: var(--mono); font-size: 0.8rem; color: var(--amber);
   text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;
   display: block;
 }
+.split-narrative .dateline::before { content: '> '; color: var(--text-dim); }
 .split-narrative .chapter-divider {
-  width: 40px; height: 2px; background: var(--cyan); margin: 3rem 0;
-  opacity: 0.3;
+  width: 100%; height: 1px; background: var(--border); margin: 3rem 0;
+  opacity: 1;
+}
+.split-narrative .chapter-divider::after {
+  content: ''; display: block;
 }
 .split-narrative blockquote {
-  border-left: 3px solid var(--cyan); padding-left: 1.5rem;
-  margin: 2rem 0; font-style: italic;
-  color: rgba(255,255,255,0.55);
+  border-left: 2px solid var(--amber); padding-left: 1.5rem;
+  margin: 2rem 0; font-style: normal;
+  color: var(--text-secondary);
 }
+.split-narrative blockquote::before { content: ''; }
 .split-narrative blockquote cite {
   display: block; margin-top: 0.5rem; font-size: 0.85rem;
-  font-style: normal; color: rgba(255,255,255,0.35);
+  font-style: normal; color: var(--text-dim);
 }
 .split-data {
   padding: 6rem 4rem 6rem 3rem;
-  border-left: 1px solid rgba(255,255,255,0.04);
-  background: rgba(0,0,0,0.15);
+  border-left: 1px solid var(--border);
+  background: var(--bg-panel);
   position: sticky;
   top: 50px;
   height: calc(100vh - 50px);
   overflow-y: auto;
 }
 .split-data::-webkit-scrollbar { width: 4px; }
-.split-data::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+.split-data::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 0; }
 .split-data::-webkit-scrollbar-track { background: transparent; }
 
 .data-panel {
@@ -168,6 +194,12 @@ body {
   display: block;
   animation: panelFadeIn 0.5s ease;
 }
+.data-panel h2 {
+  color: var(--amber) !important;
+  font-family: var(--mono);
+}
+.data-panel h2::before { content: '\250C\2500 '; color: var(--text-dim); font-weight: 400; }
+.data-panel h2::after { content: ' \2500\2510'; color: var(--text-dim); font-weight: 400; }
 @keyframes panelFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -178,231 +210,253 @@ body {
   /* just a marker class; no layout change */
 }
 
+/* Classification marker */
+.narrative-section::before {
+  content: 'UNCLASSIFIED // FOR OFFICIAL USE ONLY';
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #333;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
 /* === CHAPTER STYLES (still used inside split-narrative) === */
 .chapter {
   max-width: 680px; margin: 0 auto; padding: 6rem 2rem;
   position: relative; z-index: 1;
 }
 .chapter p {
-  font-size: 1.15rem; line-height: 1.85;
-  color: rgba(255,255,255,0.65); margin-bottom: 1.25rem;
+  font-size: 15px; line-height: 1.8;
+  color: var(--text-secondary); margin-bottom: 1.25rem;
 }
 .chapter p:last-child { margin-bottom: 0; }
-.chapter strong { color: rgba(255,255,255,0.9); }
-.chapter em { color: rgba(255,255,255,0.75); font-style: italic; }
+.chapter strong { color: var(--text-primary); }
+.chapter em { color: var(--text-secondary); font-style: italic; }
 .chapter h2 {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
-  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.02em;
-  color: white;
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
+  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: 0;
+  color: var(--amber); font-family: var(--mono); text-transform: uppercase;
 }
 .chapter h3 {
-  font-size: 1.4rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
-  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
+  color: var(--text-primary); font-family: var(--mono);
 }
 .dateline {
-  font-family: var(--mono); font-size: 0.8rem; color: var(--cyan);
+  font-family: var(--mono); font-size: 0.8rem; color: var(--amber);
   text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;
   display: block;
 }
+.dateline::before { content: '> '; color: var(--text-dim); }
 .chapter-divider {
-  width: 40px; height: 2px; background: var(--cyan); margin: 3rem 0;
-  opacity: 0.3;
+  width: 100%; height: 1px; background: var(--border); margin: 3rem 0;
+  opacity: 1;
 }
 .chapter blockquote {
-  border-left: 3px solid var(--cyan); padding-left: 1.5rem;
-  margin: 2rem 0; font-style: italic;
-  color: rgba(255,255,255,0.55);
+  border-left: 2px solid var(--amber); padding-left: 1.5rem;
+  margin: 2rem 0; font-style: normal;
+  color: var(--text-secondary);
 }
 .chapter blockquote cite {
   display: block; margin-top: 0.5rem; font-size: 0.85rem;
-  font-style: normal; color: rgba(255,255,255,0.35);
+  font-style: normal; color: var(--text-dim);
 }
 
 /* === DATA BREAK (used inside data panels) === */
 .data-break {
   padding: 5rem 2rem;
-  background: linear-gradient(180deg, #0a1628, #0f1d35, #0a1628);
+  background: var(--bg);
   position: relative; z-index: 1;
 }
 .data-break-inner { max-width: 1100px; margin: 0 auto; }
 .data-break h2, .data-panel h2 {
-  font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800;
-  margin-bottom: 0.5rem; letter-spacing: -0.02em;
+  font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 700;
+  margin-bottom: 0.5rem; letter-spacing: 0;
+  font-family: var(--mono);
 }
 .data-break .section-sub, .data-panel .section-sub {
-  color: rgba(255,255,255,0.35); font-size: 0.9rem;
-  margin-bottom: 2rem;
+  color: var(--text-dim); font-size: 0.85rem;
+  margin-bottom: 2rem; font-family: var(--mono);
 }
 .stat-row {
   display: flex; gap: 1rem; justify-content: center;
   flex-wrap: wrap; margin-bottom: 2rem;
 }
 .stat-card {
-  text-align: center; padding: 1.5rem 1rem; flex: 1; min-width: 140px; max-width: 300px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
+  text-align: center; padding: 1.25rem 1rem; flex: 1; min-width: 140px; max-width: 300px;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 0;
 }
+.stat-card:hover { border-color: var(--amber); }
 .stat-val {
-  font-family: var(--mono); font-size: 2.5rem; font-weight: 900;
-  color: var(--red); line-height: 1;
+  font-family: var(--mono); font-size: 2rem; font-weight: 700;
+  color: var(--amber); line-height: 1;
 }
 .stat-label {
-  font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;
-  line-height: 1.4;
+  font-size: 11px; color: var(--text-dim); margin-top: 0.5rem;
+  line-height: 1.4; text-transform: uppercase; letter-spacing: 0.1em;
 }
 .stat-cite {
-  font-size: 0.65rem; color: rgba(255,255,255,0.2); margin-top: 0.3rem;
+  font-size: 0.65rem; color: var(--text-dim); margin-top: 0.3rem;
   font-family: var(--mono);
 }
 .chart-container {
   margin: 2rem 0; max-width: none;
-  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px; padding: 1.5rem;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 0; padding: 1.5rem;
 }
+.chart-container:hover { border-color: var(--border-bright); }
 .chart-container h3 {
-  font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem;
-  color: rgba(255,255,255,0.6);
+  font-size: 11px; font-weight: 700; margin-bottom: 1rem;
+  color: var(--text-secondary); font-family: var(--mono);
+  text-transform: uppercase; letter-spacing: 0.1em;
 }
 .chart-container canvas { width: 100%; display: block; }
 
 /* === DOCUMENT INSET === */
 .doc-inset {
   max-width: 600px; margin: 2rem auto; padding: 2.5rem 2rem;
-  background: #f5f0e0; color: #1a1a1a !important;
-  font-family: Georgia, 'Times New Roman', serif; font-size: 0.9rem; line-height: 1.7;
-  border: 1px solid #d4c8a8; box-shadow: 3px 6px 16px rgba(0,0,0,0.3);
-  position: relative;
+  background: var(--bg-raised); color: var(--text-primary) !important;
+  font-family: var(--mono); font-size: 0.85rem; line-height: 1.7;
+  border: 1px solid var(--border); box-shadow: none;
+  position: relative; border-radius: 0;
 }
-.doc-inset, .doc-inset * { color: #1a1a1a !important; }
-.doc-inset strong { color: #0a0a0a !important; font-weight: 800; }
-.doc-inset .doc-subtitle { color: #555 !important; }
-.doc-inset .doc-section { color: #1a1a1a !important; }
+.doc-inset, .doc-inset * { color: var(--text-secondary) !important; }
+.doc-inset strong { color: var(--text-primary) !important; font-weight: 700; }
+.doc-inset .doc-subtitle { color: var(--text-dim) !important; }
+.doc-inset .doc-section { color: var(--amber) !important; }
 .doc-inset h4 {
-  font-size: 1.1rem; text-align: center; margin-bottom: 0.3rem;
-  font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-  color: #1a1a1a;
+  font-size: 1rem; text-align: center; margin-bottom: 0.3rem;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-primary) !important; font-family: var(--mono);
 }
 .doc-inset .doc-subtitle {
-  text-align: center; font-style: italic; margin-bottom: 1.5rem;
-  color: #555 !important; font-size: 0.85rem;
+  text-align: center; font-style: normal; margin-bottom: 1.5rem;
+  color: var(--text-dim) !important; font-size: 0.8rem;
 }
-.doc-inset p { margin-bottom: 0.8rem; text-indent: 1.5rem; color: #2a2a2a !important; }
+.doc-inset p { margin-bottom: 0.8rem; text-indent: 1.5rem; color: var(--text-secondary) !important; }
 .doc-inset .doc-section {
   font-weight: 700; margin-top: 1.2rem; margin-bottom: 0.4rem;
-  text-indent: 0; font-size: 0.95rem; color: #1a1a1a !important;
+  text-indent: 0; font-size: 0.9rem; color: var(--amber) !important;
 }
 .doc-inset .doc-stamp {
   position: absolute; top: 20px; right: 20px;
-  font-family: var(--mono); font-size: 0.7rem; color: #c42020 !important;
-  border: 2px solid #c42020; padding: 4px 8px; transform: rotate(12deg);
-  font-weight: 700; letter-spacing: 0.1em; opacity: 0.6;
+  font-family: var(--mono); font-size: 0.7rem; color: var(--red) !important;
+  border: 2px solid var(--red); padding: 4px 8px; transform: rotate(12deg);
+  font-weight: 700; letter-spacing: 0.1em; opacity: 0.8;
 }
 
 /* === INTERACTIVE WIDGETS === */
 .widget {
   max-width: none; margin: 2rem 0; padding: 1.5rem;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 0;
 }
+.widget:hover { border-color: var(--border-bright); }
 .widget h3 {
-  font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
-  color: var(--cyan); font-family: var(--mono);
-  letter-spacing: 0.05em; text-transform: uppercase;
+  font-size: 11px; font-weight: 700; margin-bottom: 1rem;
+  color: var(--amber); font-family: var(--mono);
+  letter-spacing: 0.1em; text-transform: uppercase;
 }
 .widget label {
-  display: block; font-size: 0.85rem; color: rgba(255,255,255,0.5);
+  display: block; font-size: 0.85rem; color: var(--text-secondary);
   margin-bottom: 0.5rem; font-weight: 600;
 }
 .widget input[type="range"] {
-  width: 100%; margin-bottom: 1rem; accent-color: var(--cyan);
-  -webkit-appearance: none; height: 6px; border-radius: 3px;
-  background: rgba(255,255,255,0.1); outline: none;
+  width: 100%; margin-bottom: 1rem; accent-color: var(--amber);
+  -webkit-appearance: none; height: 4px; border-radius: 0;
+  background: var(--border); outline: none;
 }
 .widget input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 18px; height: 18px;
-  border-radius: 50%; background: var(--cyan); cursor: pointer;
-  border: 2px solid white;
+  -webkit-appearance: none; width: 14px; height: 14px;
+  border-radius: 0; background: var(--amber); cursor: pointer;
+  border: 1px solid var(--bg);
 }
 .widget .cost-display {
   text-align: center; padding: 1.5rem; margin-top: 1rem;
-  background: rgba(0,0,0,0.3); border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 0;
 }
 .widget .cost-val {
-  font-family: var(--mono); font-size: 2.5rem; font-weight: 900;
+  font-family: var(--mono); font-size: 2rem; font-weight: 700;
   color: var(--red); transition: all 0.3s;
 }
 .widget .cost-label {
-  font-size: 0.8rem; color: rgba(255,255,255,0.3); margin-top: 0.3rem;
+  font-size: 11px; color: var(--text-dim); margin-top: 0.3rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
 }
 .widget select {
-  width: 100%; padding: 0.6rem 1rem; border-radius: 6px;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  color: white; font-family: var(--font); font-size: 0.9rem;
+  width: 100%; padding: 0.6rem 1rem; border-radius: 0;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text-primary); font-family: var(--mono); font-size: 0.85rem;
   margin-bottom: 1rem; cursor: pointer;
 }
-.widget select option { background: #1a2340; }
+.widget select option { background: var(--bg-raised); }
 
 /* === EXODUS TRACKER === */
 .exodus-list { list-style: none; }
 .exodus-item {
   display: flex; align-items: center; gap: 0.75rem;
-  padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 0.6rem 0; border-bottom: 1px solid var(--border);
   opacity: 0; transform: translateX(-30px);
   transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
   font-size: 0.85rem;
 }
 .exodus-item.visible { opacity: 1; transform: translateX(0); }
+.exodus-item:hover { border-bottom-color: var(--amber); }
 .exodus-origin {
-  font-size: 0.7rem; color: rgba(255,255,255,0.3); min-width: 60px;
+  font-size: 0.7rem; color: var(--text-dim); min-width: 60px;
   font-family: var(--mono);
 }
 .exodus-name {
-  font-weight: 700; font-size: 0.85rem; color: rgba(255,255,255,0.8);
+  font-weight: 700; font-size: 0.85rem; color: var(--text-primary);
   flex: 1;
 }
 .exodus-funding {
-  font-size: 0.7rem; color: var(--gold); font-family: var(--mono);
+  font-size: 0.7rem; color: var(--amber); font-family: var(--mono);
 }
 .exodus-arrow {
   color: var(--red); font-size: 1rem; margin: 0 0.3rem;
 }
 .exodus-dest {
-  font-size: 0.7rem; color: rgba(255,255,255,0.3); min-width: 50px;
+  font-size: 0.7rem; color: var(--text-dim); min-width: 50px;
   font-family: var(--mono); text-align: right;
 }
 .exodus-counter {
   text-align: center; margin-top: 1.5rem; padding: 1rem;
-  background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.15);
-  border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--red);
+  border-radius: 0;
 }
 .exodus-counter .val {
-  font-family: var(--mono); font-size: 1.8rem; font-weight: 900; color: var(--red);
+  font-family: var(--mono); font-size: 1.8rem; font-weight: 700; color: var(--red);
 }
 .exodus-counter .label {
-  font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 0.25rem;
+  font-size: 11px; color: var(--text-dim); margin-top: 0.25rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
 }
 
 /* === HEATMAP TABLE === */
 .heatmap-wrap { overflow-x: auto; margin: 1.5rem 0; }
 .heatmap {
   width: 100%; border-collapse: collapse; font-size: 0.75rem;
-  min-width: 400px;
+  min-width: 400px; font-family: var(--mono);
 }
 .heatmap th {
   padding: 0.6rem 0.75rem; font-weight: 700; text-align: left;
-  border-bottom: 2px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6); font-family: var(--mono);
-  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
+  border-bottom: 2px solid var(--border-bright);
+  color: var(--amber); font-family: var(--mono);
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+  background: var(--bg-raised);
 }
 .heatmap td {
-  padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.7);
+  padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
 }
-.heatmap td.strong { background: rgba(46,196,182,0.12); color: var(--green); font-weight: 600; }
-.heatmap td.moderate { background: rgba(240,165,0,0.08); color: var(--gold); }
-.heatmap td.weak { background: rgba(230,57,70,0.08); color: var(--red); }
-.heatmap td.absent { background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.15); font-style: italic; }
-.heatmap td.layer { font-weight: 700; color: rgba(255,255,255,0.5); }
+.heatmap td.strong { background: rgba(0,255,136,0.05); color: var(--green); font-weight: 600; }
+.heatmap td.moderate { background: rgba(255,176,0,0.05); color: var(--amber); }
+.heatmap td.weak { background: rgba(255,51,51,0.05); color: var(--red); }
+.heatmap td.absent { background: rgba(255,255,255,0.01); color: var(--text-dim); font-style: normal; }
+.heatmap td.layer { font-weight: 700; color: var(--text-secondary); }
 
 /* === SIMULATION SECTION (compact for data column) === */
 .sim-section {
@@ -411,38 +465,40 @@ body {
 .sim-inner { max-width: none; margin: 0 auto; }
 .sim-decision {
   margin-bottom: 2rem; padding: 1.5rem;
-  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 0;
 }
+.sim-decision:hover { border-color: var(--border-bright); }
 .sim-decision .sim-month {
-  font-family: var(--mono); font-size: 0.7rem; color: var(--cyan);
+  font-family: var(--mono); font-size: 11px; color: var(--amber);
   text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
 }
 .sim-decision h3 {
   font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;
-  color: rgba(255,255,255,0.9);
+  color: var(--text-primary); font-family: var(--mono);
 }
 .sim-decision .sim-situation {
-  font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6;
+  font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;
   margin-bottom: 1rem;
 }
 .sim-options { display: flex; flex-direction: column; gap: 0.5rem; }
 .sim-opt {
-  padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-  font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.5;
+  padding: 0.75rem 1rem; border-radius: 0; cursor: pointer;
+  background: var(--bg); border: 1px solid var(--border);
+  font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;
   transition: all 0.25s; text-align: left;
 }
 .sim-opt:hover {
-  border-color: var(--cyan); background: rgba(0,180,216,0.05);
-  color: rgba(255,255,255,0.8);
+  border-color: var(--amber); background: rgba(255,176,0,0.03);
+  color: var(--text-primary);
 }
-.sim-opt.selected { border-color: var(--cyan); background: rgba(0,180,216,0.1); color: white; pointer-events: none; }
+.sim-opt.selected { border-color: var(--amber); background: rgba(255,176,0,0.08); color: var(--text-primary); pointer-events: none; }
 .sim-opt.not-selected { opacity: 0.3; pointer-events: none; }
 .sim-result {
-  margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
-  background: rgba(0,0,0,0.3); font-size: 0.82rem;
-  color: rgba(255,255,255,0.6); line-height: 1.5;
+  margin-top: 0.75rem; padding: 0.75rem; border-radius: 0;
+  background: var(--bg); border: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--text-secondary); line-height: 1.5;
   display: none;
 }
 .sim-result.show { display: block; }
@@ -450,22 +506,22 @@ body {
   display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap;
 }
 .sim-metric {
-  padding: 0.4rem 0.75rem; border-radius: 6px;
-  background: rgba(255,255,255,0.03); font-family: var(--mono);
-  font-size: 0.7rem;
+  padding: 0.4rem 0.75rem; border-radius: 0;
+  background: var(--bg-raised); border: 1px solid var(--border);
+  font-family: var(--mono); font-size: 0.7rem;
 }
-.sim-metric .m-label { color: rgba(255,255,255,0.3); }
+.sim-metric .m-label { color: var(--text-dim); }
 .sim-metric .m-val { font-weight: 700; margin-left: 0.3rem; }
 .sim-skip {
   text-align: center; margin: 1.5rem 0;
 }
 .sim-skip a {
-  font-family: var(--mono); font-size: 0.75rem; color: rgba(255,255,255,0.25);
+  font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim);
   text-decoration: none; letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--border);
   transition: all 0.2s;
 }
-.sim-skip a:hover { color: var(--cyan); border-color: var(--cyan); }
+.sim-skip a:hover { color: var(--amber); border-color: var(--amber); }
 
 /* === TALENT MAP === */
 .talent-grid {
@@ -473,24 +529,25 @@ body {
   gap: 0.5rem; margin: 1rem 0;
 }
 .talent-card {
-  padding: 0.6rem 0.75rem; border-radius: 8px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  padding: 0.6rem 0.75rem; border-radius: 0;
+  background: var(--bg-raised); border: 1px solid var(--border);
 }
+.talent-card:hover { border-color: var(--amber); }
 .talent-name {
-  font-weight: 700; font-size: 0.8rem; color: rgba(255,255,255,0.8);
+  font-weight: 700; font-size: 0.8rem; color: var(--text-primary);
 }
 .talent-spec {
-  font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-top: 0.1rem;
+  font-size: 0.7rem; color: var(--text-dim); margin-top: 0.1rem;
 }
 .talent-from {
   font-size: 0.65rem; color: var(--cyan); font-family: var(--mono);
   margin-top: 0.2rem;
 }
 .talent-group-label {
-  font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
-  color: rgba(255,255,255,0.25); text-transform: uppercase;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  color: var(--text-dim); text-transform: uppercase;
   letter-spacing: 0.1em; margin-top: 1.5rem; margin-bottom: 0.5rem;
-  padding-bottom: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);
 }
 .talent-counters {
   display: flex; gap: 1.5rem; justify-content: center; margin: 1.5rem 0;
@@ -498,13 +555,14 @@ body {
 }
 .talent-counter {
   text-align: center; padding: 0.75rem 1rem;
-  background: rgba(255,255,255,0.03); border-radius: 8px;
+  background: var(--bg-raised); border: 1px solid var(--border); border-radius: 0;
 }
 .talent-counter .tc-val {
-  font-family: var(--mono); font-size: 1.5rem; font-weight: 900;
+  font-family: var(--mono); font-size: 1.5rem; font-weight: 700;
 }
 .talent-counter .tc-label {
-  font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 0.2rem;
+  font-size: 11px; color: var(--text-dim); margin-top: 0.2rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
 }
 
 /* === TIMELINE PARALLEL === */
@@ -514,42 +572,45 @@ body {
 }
 .timeline-dual::before {
   content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
-  width: 2px; background: rgba(255,255,255,0.06);
+  width: 1px; background: var(--border);
   transform: translateX(-50%);
 }
 .timeline-col { padding: 0.75rem; }
 .timeline-col h3 {
-  font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem;
+  font-size: 11px; font-weight: 700; margin-bottom: 1rem;
   font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em;
 }
-.timeline-col:first-child h3 { color: var(--gold); }
+.timeline-col:first-child h3 { color: var(--amber); }
 .timeline-col:last-child h3 { color: var(--cyan); }
 .tl-event {
   padding: 0.6rem 0; position: relative;
-  padding-left: 0.75rem; border-left: 2px solid rgba(255,255,255,0.06);
+  padding-left: 0.75rem; border-left: 1px solid var(--border);
   margin-bottom: 0.75rem;
 }
+.tl-event:hover { border-left-color: var(--amber); }
 .tl-event .tl-year {
   font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
-  color: rgba(255,255,255,0.3);
+  color: var(--amber);
 }
 .tl-event .tl-text {
-  font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 0.15rem;
+  font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;
   line-height: 1.4;
 }
 
 /* === CONCLUSION === */
 .conclusion {
   padding: 6rem 2rem; text-align: center;
-  background: linear-gradient(180deg, #070b14, var(--navy-dark));
+  background: var(--bg);
+  border-top: 1px solid var(--border);
 }
 .conclusion-inner { max-width: 680px; margin: 0 auto; }
 .conclusion h2 {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
-  margin-bottom: 1.5rem; letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
+  margin-bottom: 1.5rem; letter-spacing: 0;
+  color: var(--amber); font-family: var(--mono); text-transform: uppercase;
 }
 .conclusion p {
-  font-size: 1.05rem; color: rgba(255,255,255,0.5); line-height: 1.8;
+  font-size: 15px; color: var(--text-secondary); line-height: 1.8;
   margin-bottom: 1.25rem;
 }
 .conclusion-buttons {
@@ -558,23 +619,25 @@ body {
 }
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.85rem 2rem; border-radius: 8px;
-  font-family: var(--font); font-size: 0.95rem; font-weight: 600;
+  padding: 0.85rem 2rem; border-radius: 0;
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 600;
   cursor: pointer; border: none; text-decoration: none; transition: all 0.25s;
+  letter-spacing: 0.05em;
 }
-.btn-primary { background: var(--white); color: var(--navy); }
-.btn-primary:hover { background: var(--off-white); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
-.btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.2); }
-.btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
-.btn-cyan { background: var(--cyan); color: var(--navy-dark); }
-.btn-cyan:hover { background: var(--sky-light); transform: translateY(-2px); }
+.btn-primary { background: var(--amber); color: var(--bg); }
+.btn-primary:hover { background: #ffc844; }
+.btn-outline { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--amber); color: var(--amber); }
+.btn-cyan { background: var(--cyan); color: var(--bg); }
+.btn-cyan:hover { background: var(--sky-light); }
 
 /* === REFERENCES === */
 .references {
   max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem;
+  border-top: 1px solid var(--border);
 }
 .references h3 {
-  font-size: 0.85rem; font-weight: 700; color: rgba(255,255,255,0.3);
+  font-size: 11px; font-weight: 700; color: var(--text-dim);
   font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em;
   margin-bottom: 1rem;
 }
@@ -582,15 +645,15 @@ body {
   list-style: decimal; padding-left: 1.5rem;
 }
 .references li {
-  font-size: 0.8rem; color: rgba(255,255,255,0.3); line-height: 1.6;
+  font-size: 0.8rem; color: var(--text-dim); line-height: 1.6;
   margin-bottom: 0.4rem;
 }
 
 /* === SOURCE LINKS === */
 .source-link {
   font-size: 0.65rem; font-family: var(--mono); font-weight: 600;
-  color: rgba(255,255,255,0.25); text-decoration: none;
-  border-bottom: 1px dotted rgba(255,255,255,0.15);
+  color: var(--text-dim); text-decoration: none;
+  border-bottom: 1px dotted var(--border);
   transition: color 0.2s;
   cursor: pointer;
 }
@@ -598,8 +661,8 @@ body {
 
 /* === SCROLL ANIMATION === */
 .reveal {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -618,7 +681,7 @@ body {
     overflow-y: visible;
     padding: 3rem 1.25rem;
     border-left: none;
-    border-top: 1px solid rgba(255,255,255,0.04);
+    border-top: 1px solid var(--border);
   }
   .data-panel {
     display: block !important;
@@ -631,7 +694,7 @@ body {
   .topnav-chapters { display: none; }
   .stat-row { flex-direction: column; align-items: center; }
   .stat-card { min-width: 100%; }
-  .hero h1 { font-size: 2.5rem; }
+  .hero h1 { font-size: 2rem; }
   .heatmap { font-size: 0.68rem; }
   .heatmap th, .heatmap td { padding: 0.4rem; }
 }
@@ -643,99 +706,99 @@ body {
   position: fixed;
   z-index: 500;
   padding: 10px 14px;
-  background: rgba(7,11,20,0.95);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--amber);
+  border-radius: 0;
   backdrop-filter: blur(12px);
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.8);
+  color: var(--text-primary);
   font-family: var(--mono);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
   max-width: 280px;
   line-height: 1.5;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 }
 .viz-tooltip.visible { opacity: 1; }
-.viz-tooltip .tt-title { font-weight: 700; color: white; margin-bottom: 4px; }
+.viz-tooltip .tt-title { font-weight: 700; color: var(--amber); margin-bottom: 4px; }
 .viz-tooltip .tt-val { color: var(--cyan); font-weight: 700; }
-.viz-tooltip .tt-desc { color: rgba(255,255,255,0.4); font-size: 0.72rem; }
+.viz-tooltip .tt-desc { color: var(--text-dim); font-size: 0.72rem; }
 
 /* Filter buttons */
 .filter-row {
   display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
 }
 .filter-btn {
-  padding: 5px 12px; border-radius: 100px; font-size: 0.7rem;
+  padding: 5px 12px; border-radius: 0; font-size: 0.7rem;
   font-family: var(--mono); font-weight: 600; cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.4);
+  border: 1px solid var(--border);
+  background: var(--bg); color: var(--text-dim);
   transition: all 0.2s;
 }
-.filter-btn:hover { border-color: rgba(255,255,255,0.2); color: white; }
-.filter-btn.active { border-color: var(--cyan); background: rgba(0,180,216,0.1); color: var(--cyan); }
+.filter-btn:hover { border-color: var(--amber); color: var(--text-primary); }
+.filter-btn.active { border-color: var(--amber); background: rgba(255,176,0,0.08); color: var(--amber); }
 
 /* Expandable table rows */
 .heatmap tr { cursor: pointer; transition: background 0.2s; }
-.heatmap tr:hover { background: rgba(255,255,255,0.03); }
+.heatmap tr:hover { background: rgba(255,176,0,0.03); }
 .heatmap .expand-row { display: none; }
 .heatmap .expand-row.visible { display: table-row; }
 .heatmap .expand-row td {
-  padding: 12px 16px; font-size: 0.8rem; color: rgba(255,255,255,0.4);
-  line-height: 1.6; border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 12px 16px; font-size: 0.8rem; color: var(--text-dim);
+  line-height: 1.6; border-bottom: 1px solid var(--border);
 }
 
 /* Talent filter */
 .talent-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
 
 /* Dashboard card hover expand */
-.dashboard-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-.dashboard-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.dashboard-card { transition: border-color 0.2s; cursor: pointer; }
+.dashboard-card:hover { border-color: var(--amber) !important; }
 
 /* Exodus hover card */
 .exodus-item { position: relative; cursor: pointer; }
 .exodus-detail-card {
   position: absolute; left: 0; right: 0; top: 100%;
   z-index: 50; padding: 10px 14px; margin-top: 4px;
-  background: rgba(7,11,20,0.95); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px; backdrop-filter: blur(12px);
-  font-size: 0.75rem; color: rgba(255,255,255,0.6); line-height: 1.5;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  background: var(--bg); border: 1px solid var(--amber);
+  border-radius: 0; backdrop-filter: blur(12px);
+  font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
   display: none;
 }
 .exodus-item:hover .exodus-detail-card { display: block; }
 
 /* Heatmap color legend interactive */
-.heatmap-legend-item { cursor: pointer; transition: opacity 0.2s; display: inline-block; padding: 2px 6px; border-radius: 4px; }
-.heatmap-legend-item:hover { opacity: 1 !important; background: rgba(255,255,255,0.05); }
+.heatmap-legend-item { cursor: pointer; transition: opacity 0.2s; display: inline-block; padding: 2px 6px; border-radius: 0; }
+.heatmap-legend-item:hover { opacity: 1 !important; background: rgba(255,255,255,0.03); }
 
 /* Talent card expanded */
 .talent-card { cursor: pointer; transition: all 0.2s; }
-.talent-card:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+.talent-card:hover { border-color: var(--amber); background: rgba(255,176,0,0.03); }
 .talent-bio {
   display: none; margin-top: 6px; padding-top: 6px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.7rem; color: rgba(255,255,255,0.35); line-height: 1.5;
+  border-top: 1px solid var(--border);
+  font-size: 0.7rem; color: var(--text-dim); line-height: 1.5;
 }
 .talent-card.expanded .talent-bio { display: block; }
 
 /* Coord cost preset buttons */
 .preset-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
 .preset-btn {
-  padding: 5px 10px; border-radius: 100px; font-size: 0.65rem;
+  padding: 5px 10px; border-radius: 0; font-size: 0.65rem;
   font-family: var(--mono); font-weight: 600; cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.4);
+  border: 1px solid var(--border);
+  background: var(--bg); color: var(--text-dim);
   transition: all 0.2s;
 }
-.preset-btn:hover { border-color: rgba(255,255,255,0.2); color: white; }
+.preset-btn:hover { border-color: var(--amber); color: var(--amber); }
 
 /* Market cap highlight info */
 .market-cap-info {
   margin-top: 10px; padding: 10px 14px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 8px; font-size: 0.8rem; color: rgba(255,255,255,0.5);
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 0; font-size: 0.8rem; color: var(--text-secondary);
   line-height: 1.5; display: none;
 }
 .market-cap-info.visible { display: block; }
@@ -755,17 +818,17 @@ body {
 
 <!-- TOP NAV -->
 <nav class="topnav">
-  <a href="index.html" class="topnav-brand">AIRBUS FOR AI</a>
+  <a href="index.html" class="topnav-brand">AIRBUS_FOR_AI &gt;</a>
   <div class="topnav-chapters">
-    <a href="#ch-dublin">I. Dublin</a>
-    <a href="#data-dependency">The Dependency</a>
-    <a href="#ch-economics">II. Economics</a>
-    <a href="#ch-swedish">III. Swedish Question</a>
-    <a href="#ch-brussels">IV. Brussels</a>
-    <a href="#data-stack">The Stack Gap</a>
-    <a href="#ch-berlin">V. Berlin</a>
-    <a href="#sim-decisions">Decisions</a>
-    <a href="#ch-coalition">VI. Coalition</a>
+    <a href="#ch-dublin">DUBLIN</a>
+    <a href="#data-dependency">DEPENDENCY</a>
+    <a href="#ch-economics">ECONOMICS</a>
+    <a href="#ch-swedish">SWEDEN</a>
+    <a href="#ch-brussels">BRUSSELS</a>
+    <a href="#data-stack">STACK</a>
+    <a href="#ch-berlin">BERLIN</a>
+    <a href="#sim-decisions">DECISIONS</a>
+    <a href="#ch-coalition">COALITION</a>
   </div>
 </nav>
 
@@ -774,20 +837,20 @@ body {
   <div class="hero-particles"><canvas id="heroCanvas"></canvas></div>
   <div class="hero-content">
     <h1>The Slow Boil</h1>
-    <p class="hero-sub">When Internet Control Means Sovereignty</p>
-    <p style="font-size:0.95rem;color:rgba(255,255,255,0.35);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;">A speculative narrative about Europe's AI sovereignty crisis — told through the eyes of the people who would have to build the coalition. Grounded in real data, real companies, real dependencies.</p>
+    <p class="hero-sub">CLASSIFIED BRIEFING // EUROPEAN DIGITAL SOVEREIGNTY</p>
+    <p style="font-size:0.85rem;color:var(--text-dim);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">A speculative narrative about Europe's AI sovereignty crisis — told through the eyes of the people who would have to build the coalition. Grounded in real data, real companies, real dependencies.</p>
     <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;">
-      <div style="flex:1;text-align:center;padding:1rem;border:1px solid rgba(255,255,255,0.06);border-radius:8px;background:rgba(255,255,255,0.02);">
-        <div style="font-size:0.7rem;font-family:var(--mono);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Left side</div>
-        <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">The story — fictional chapters through character perspectives in Dublin, Brussels, Berlin, and beyond</div>
+      <div style="flex:1;text-align:center;padding:1rem;border:1px solid var(--border);border-radius:0;background:var(--bg-raised);">
+        <div style="font-size:11px;font-family:var(--mono);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Left side</div>
+        <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--mono);">The story — fictional chapters through character perspectives in Dublin, Brussels, Berlin, and beyond</div>
       </div>
-      <div style="flex:1;text-align:center;padding:1rem;border:1px solid rgba(255,255,255,0.06);border-radius:8px;background:rgba(255,255,255,0.02);">
-        <div style="font-size:0.7rem;font-family:var(--mono);color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Right side</div>
-        <div style="font-size:0.85rem;color:rgba(255,255,255,0.5);">The data — real market share, compute costs, talent flows, and interactive simulations with sourced references</div>
+      <div style="flex:1;text-align:center;padding:1rem;border:1px solid var(--border);border-radius:0;background:var(--bg-raised);">
+        <div style="font-size:11px;font-family:var(--mono);color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Right side</div>
+        <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--mono);">The data — real market share, compute costs, talent flows, and interactive simulations with sourced references</div>
       </div>
     </div>
     <div class="scroll-indicator" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
-      Begin reading
+      &gt; PROCEED TO BRIEFING_
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M10 4 L10 16 M5 11 L10 16 L15 11"/>
       </svg>
@@ -1015,7 +1078,7 @@ body {
           <div class="cost-val" id="coordCostVal">$42B</div>
           <div class="cost-label">Annual coordination overhead</div>
         </div>
-        <p style="font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;text-align:center;">
+        <p style="font-size:0.7rem;color:var(--text-dim);margin-top:0.75rem;text-align:center;">
           At 27 countries + AI-level interdependency, coordination costs become catastrophic.
           A single integrated firm pays near-zero.
         </p>
@@ -1258,11 +1321,11 @@ body {
         </table>
       </div>
 
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;" id="heatmapLegend">
+      <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.75rem;" id="heatmapLegend">
         <span class="heatmap-legend-item" data-hm-class="strong" onmouseenter="highlightHeatmapCells('strong')" onmouseleave="clearHeatmapHighlight()" style="color:var(--green);">Green = strong</span> &nbsp;|&nbsp;
         <span class="heatmap-legend-item" data-hm-class="moderate" onmouseenter="highlightHeatmapCells('moderate')" onmouseleave="clearHeatmapHighlight()" style="color:var(--gold);">Yellow = moderate</span> &nbsp;|&nbsp;
         <span class="heatmap-legend-item" data-hm-class="weak" onmouseenter="highlightHeatmapCells('weak')" onmouseleave="clearHeatmapHighlight()" style="color:var(--red);">Red = weak</span> &nbsp;|&nbsp;
-        <span class="heatmap-legend-item" data-hm-class="absent" onmouseenter="highlightHeatmapCells('absent')" onmouseleave="clearHeatmapHighlight()" style="color:rgba(255,255,255,0.35);">Gray = absent</span>
+        <span class="heatmap-legend-item" data-hm-class="absent" onmouseenter="highlightHeatmapCells('absent')" onmouseleave="clearHeatmapHighlight()" style="color:var(--text-dim);">Gray = absent</span>
       </p>
       <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
         <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank">Synergy Research Group</a>
@@ -1420,7 +1483,7 @@ body {
           <div class="reveal">
             <span class="dateline">Interactive</span>
             <h2 style="font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:0.5rem;">Key Decisions</h2>
-            <p style="color:rgba(255,255,255,0.4);margin-bottom:0.75rem;font-size:0.85rem;">
+            <p style="color:var(--text-dim);margin-bottom:0.75rem;font-size:0.85rem;">
               Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
             </p>
             <div class="sim-skip">
@@ -1615,68 +1678,68 @@ body {
 </section>
 
 <!-- ==================== LIVE DASHBOARD ==================== -->
-<section style="padding:5rem 2rem;background:linear-gradient(180deg,#070b14,#0a1628,#070b14);" id="dashboard">
+<section style="padding:5rem 2rem;background:var(--bg);border-top:1px solid var(--border);" id="dashboard">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:3rem;">
-      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:0.5rem;">Live Dashboard</h2>
-      <p style="color:rgba(255,255,255,0.35);font-size:0.95rem;">Real-time indicators of European AI sovereignty. How the numbers stand today.</p>
+      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;margin-bottom:0.5rem;color:var(--amber);font-family:var(--mono);text-transform:uppercase;">Live Dashboard</h2>
+      <p style="color:var(--text-dim);font-size:0.85rem;font-family:var(--mono);">Real-time indicators of European AI sovereignty. How the numbers stand today.</p>
     </div>
 
     <!-- Static report cards -->
     <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:2rem;">
 
       <!-- Card: EU Cloud Dependency (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU Cloud Dependency</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
+          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Cloud Dependency</div>
+          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">70%</div>
-        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">controlled by US hyperscalers</div>
-        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
-          <div style="width:70%;height:100%;background:var(--red);border-radius:3px;"></div>
+        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">controlled by US hyperscalers</div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
+          <div style="width:70%;height:100%;background:var(--red);border-radius:0;"></div>
         </div>
         <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank" style="margin-top:8px;display:inline-block;">Synergy Research, 2024</a>
       </div>
 
       <!-- Card: EU AI Compute (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU Share of Global AI Compute</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
+          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Share of Global AI Compute</div>
+          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
-        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">projected by 2027</div>
-        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
-          <div style="width:2%;height:100%;background:var(--red);border-radius:3px;"></div>
+        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">projected by 2027</div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
+          <div style="width:2%;height:100%;background:var(--red);border-radius:0;"></div>
         </div>
         <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank" style="margin-top:8px;display:inline-block;">European Commission</a>
       </div>
 
       <!-- Card: EU Frontier Model Share (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU Frontier Model Share</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
+          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Frontier Model Share</div>
+          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
-        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">Mistral AI's global LLM market</div>
-        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
-          <div style="width:2%;height:100%;background:var(--red);border-radius:3px;"></div>
+        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">Mistral AI's global LLM market</div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
+          <div style="width:2%;height:100%;background:var(--red);border-radius:0;"></div>
         </div>
         <a class="source-link" href="https://www.statista.com/statistics/1482817/market-share-of-ai-chatbots/" target="_blank" style="margin-top:8px;display:inline-block;">Statista, 2025</a>
       </div>
 
       <!-- Card: Startup Exodus (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU AI Startup Relocation Rate</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
+          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU AI Startup Relocation Rate</div>
+          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;">>30%</div>
-        <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:0.3rem;">relocate to the United States</div>
-        <div style="margin-top:0.75rem;height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;">
-          <div style="width:30%;height:100%;background:var(--gold);border-radius:3px;"></div>
+        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">relocate to the United States</div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
+          <div style="width:30%;height:100%;background:var(--gold);border-radius:0;"></div>
         </div>
         <a class="source-link" href="https://www.ft.com/content/europe-scale-up-problem" target="_blank" style="margin-top:8px;display:inline-block;">Financial Times, 2025</a>
       </div>
@@ -1684,14 +1747,14 @@ body {
     </div>
 
     <!-- LIVE: Top AI Models from HuggingFace -->
-    <div class="reveal" style="padding:2rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">Top AI Models — Who Dominates the Ecosystem</div>
-        <span id="hfLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> LOADING</span>
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Top AI Models — Who Dominates the Ecosystem</div>
+        <span id="hfLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> LOADING</span>
       </div>
       <div id="hfModelSummary" style="display:flex;gap:16px;margin-bottom:1rem;flex-wrap:wrap;"></div>
-      <div id="hfModelTable" style="font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,0.4);">
-        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.2);"><svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite;"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="28" stroke-dashoffset="8"/></svg> Loading live data from HuggingFace...</div>
+      <div id="hfModelTable" style="font-size:0.75rem;font-family:var(--mono);color:var(--text-dim);">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-dim);"><svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite;"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="28" stroke-dashoffset="8"/></svg> Loading live data from HuggingFace...</div>
         <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
       </div>
       <div style="margin-top:12px;">
@@ -1700,14 +1763,14 @@ body {
     </div>
 
     <!-- LIVE: Open Source AI Activity from GitHub -->
-    <div class="reveal" style="padding:2rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">Open Source AI Activity — Top Repositories</div>
-        <span id="ghLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> LOADING</span>
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Open Source AI Activity — Top Repositories</div>
+        <span id="ghLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> LOADING</span>
       </div>
       <div id="ghRepoSummary" style="display:flex;gap:16px;margin-bottom:1rem;flex-wrap:wrap;"></div>
-      <div id="ghRepoTable" style="font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,0.4);">
-        <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.2);"><svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite;"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="28" stroke-dashoffset="8"/></svg> Loading live data from GitHub...</div>
+      <div id="ghRepoTable" style="font-size:0.75rem;font-family:var(--mono);color:var(--text-dim);">
+        <div style="display:flex;align-items:center;gap:8px;color:var(--text-dim);"><svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite;"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="28" stroke-dashoffset="8"/></svg> Loading live data from GitHub...</div>
       </div>
       <div style="margin-top:12px;">
         <a class="source-link" href="https://github.com/topics/artificial-intelligence" target="_blank">GitHub AI Topics (live)</a>
@@ -1715,13 +1778,13 @@ body {
     </div>
 
     <!-- Market cap comparison bar (semi-live) -->
-    <div class="reveal" style="padding:2rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">AI Company Valuations — US vs EU ($B)</div>
-        <span id="mktCapBadge" style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">AI Company Valuations — US vs EU ($B)</div>
+        <span id="mktCapBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
       </div>
       <div id="dashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
-      <div id="mktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:rgba(255,255,255,0.15);"></div>
+      <div id="mktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);"></div>
       <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
         <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/" target="_blank">Reuters AI valuations</a>
         <a class="source-link" href="https://www.cbinsights.com/research-ai-trends" target="_blank">CB Insights AI Trends</a>
@@ -1729,31 +1792,31 @@ body {
     </div>
 
     <!-- Talent distribution -->
-    <div class="reveal" style="padding:2rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">Top AI Researchers by Region</div>
-        <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
+        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Top AI Researchers by Region</div>
+        <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
       </div>
       <div style="display:flex;gap:16px;align-items:flex-end;height:120px;">
         <div style="flex:1;text-align:center;">
-          <div style="height:72px;background:var(--red);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+          <div style="height:72px;background:var(--red);border-radius:0;opacity:0.7;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--red);margin-top:4px;">~60%</div>
-          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">United States</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);">United States</div>
         </div>
         <div style="flex:1;text-align:center;">
-          <div style="height:30px;background:var(--gold);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+          <div style="height:30px;background:var(--gold);border-radius:0;opacity:0.7;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--gold);margin-top:4px;">~25%</div>
-          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">China</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);">China</div>
         </div>
         <div style="flex:1;text-align:center;">
-          <div style="height:12px;background:var(--cyan);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+          <div style="height:12px;background:var(--cyan);border-radius:0;opacity:0.7;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--cyan);margin-top:4px;">~10%</div>
-          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">Europe</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);">Europe</div>
         </div>
         <div style="flex:1;text-align:center;">
-          <div style="height:6px;background:rgba(255,255,255,0.2);border-radius:4px 4px 0 0;"></div>
-          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:rgba(255,255,255,0.3);margin-top:4px;">~5%</div>
-          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);">Other</div>
+          <div style="height:6px;background:var(--text-dim);border-radius:0;"></div>
+          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--text-dim);margin-top:4px;">~5%</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);">Other</div>
         </div>
       </div>
       <div style="margin-top:12px;">
@@ -1762,7 +1825,7 @@ body {
       </div>
     </div>
 
-    <div class="reveal" style="text-align:center;margin-top:2rem;color:rgba(255,255,255,0.15);font-size:0.75rem;font-family:var(--mono);">
+    <div class="reveal" style="text-align:center;margin-top:2rem;color:var(--text-dim);font-size:0.75rem;font-family:var(--mono);">
       Cards marked LIVE pull real-time data from public APIs (HuggingFace, GitHub). Cards marked REPORT DATA use published industry estimates.
     </div>
   </div>
@@ -1838,7 +1901,7 @@ window.addEventListener('scroll', () => {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = 'rgba(0,180,216,'+(1-dist/150)*0.15+')';
+          ctx.strokeStyle = 'rgba(255,176,0,'+(1-dist/150)*0.15+')';
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -1848,7 +1911,7 @@ window.addEventListener('scroll', () => {
     for(const p of particles){
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(0,180,216,0.4)';
+      ctx.fillStyle = 'rgba(255,176,0,0.4)';
       ctx.fill();
       p.x += p.vx; p.y += p.vy;
       if(p.x < 0 || p.x > w) p.vx *= -1;
@@ -1978,8 +2041,8 @@ const MC_ALL_DATA = [
   { name: 'Meta AI', val: 60, color: '#0668E1', eu: false, region: 'US', desc: 'Meta\'s AI division. Open-sourced LLaMA. Subsidized by social media revenue.' },
   { name: 'Amazon AI/AWS', val: 45, color: '#FF9900', eu: false, region: 'US', desc: 'AWS Bedrock, Titan models. World\'s largest cloud provider with AI integration.' },
   { name: 'Anthropic', val: 30, color: '#D4A574', eu: false, region: 'US', desc: 'Safety-focused AI lab. Claude models. $60B valuation target. Backed by Amazon/Google.' },
-  { name: 'All other EU AI', val: 15, color: '#e63946', eu: true, region: 'EU', desc: 'Combined value of all other European AI companies. Fragmented across 27 nations.' },
-  { name: 'Mistral AI', val: 6, color: '#e63946', eu: true, region: 'EU', desc: 'France\'s leading AI lab. ~2% global LLM market share. Europe\'s best hope.' },
+  { name: 'All other EU AI', val: 15, color: '#ff3333', eu: true, region: 'EU', desc: 'Combined value of all other European AI companies. Fragmented across 27 nations.' },
+  { name: 'Mistral AI', val: 6, color: '#ff3333', eu: true, region: 'EU', desc: 'France\'s leading AI lab. ~2% global LLM market share. Europe\'s best hope.' },
 ];
 
 function filterMarketCap(region, btn){
@@ -2024,8 +2087,8 @@ function drawMarketCapChart(){
     mcBarPositions.push({ x: labelW, y: y, w: barW, h: barH, idx: i, data: d });
 
     // label
-    ctx.fillStyle = d.eu ? 'rgba(230,57,70,0.8)' : 'rgba(255,255,255,0.5)';
-    ctx.font = (isHighlighted ? 'bold ' : '') + '11px Inter, sans-serif';
+    ctx.fillStyle = d.eu ? '#ff3333' : '#888888';
+    ctx.font = (isHighlighted ? 'bold ' : '') + '11px JetBrains Mono, monospace';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.fillText(d.name, labelW - 10, y + barH/2);
@@ -2053,7 +2116,7 @@ function drawMarketCapChart(){
 
   // EU label when showing all
   if(mcFilter === 'all'){
-    ctx.fillStyle = 'rgba(230,57,70,0.5)';
+    ctx.fillStyle = '#ff3333';
     ctx.font = '600 10px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
     const euY = 6 * (barH + gap) + 12;
@@ -2109,7 +2172,7 @@ function drawMarketCapChart(){
       const info = document.getElementById('mcInfo');
       if(mcHighlighted >= 0){
         const d = mcBarPositions[mcHighlighted].data;
-        info.innerHTML = '<strong style="color:white;">' + d.name + '</strong> &mdash; $' + d.val + 'B<br><span style="color:rgba(255,255,255,0.4);">' + d.desc + '</span>';
+        info.innerHTML = '<strong style="color:white;">' + d.name + '</strong> &mdash; $' + d.val + 'B<br><span style="color:var(--text-dim);">' + d.desc + '</span>';
         info.classList.add('visible');
       } else {
         info.classList.remove('visible');
@@ -2140,7 +2203,7 @@ const CLOUD_DATA = [
   { name: 'Google Cloud', val: 15, color: '#4285f4', desc: 'Google Cloud Platform. Strong in AI/ML workloads. 15% share.' },
   { name: 'Other US', val: 5, color: '#6b7280', desc: 'Oracle Cloud, IBM Cloud, and smaller US providers.' },
   { name: 'Chinese providers', val: 8, color: '#ff004f', desc: 'Alibaba Cloud, Tencent Cloud, Huawei Cloud. Dominant in Asia.' },
-  { name: 'European providers', val: 12, color: '#e63946', desc: 'OVHcloud, Deutsche Telekom, SAP. Fragmented. No single EU hyperscaler.' },
+  { name: 'European providers', val: 12, color: '#ff3333', desc: 'OVHcloud, Deutsche Telekom, SAP. Fragmented. No single EU hyperscaler.' },
   { name: 'Other', val: 5, color: '#3a3f4a', desc: 'Remaining global providers.' },
 ];
 
@@ -2197,7 +2260,7 @@ function drawCloudChart(){
 
   // center text
   ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.font = '700 13px Inter, sans-serif';
+  ctx.font = '700 13px JetBrains Mono, monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('Cloud', cx, cy - 8);
@@ -2214,7 +2277,7 @@ function drawCloudChart(){
     ctx.fillRect(lx, ly, 12, 12);
     ctx.globalAlpha = 1;
     ctx.fillStyle = (d.name === 'European providers' || isHovered || isSelected) ? 'white' : 'rgba(255,255,255,0.5)';
-    ctx.font = ((isHovered || isSelected) ? 'bold ' : '') + '11px Inter, sans-serif';
+    ctx.font = ((isHovered || isSelected) ? 'bold ' : '') + '11px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText(d.name + ' (' + d.val + '%)', lx + 18, ly + 6);
@@ -2230,7 +2293,7 @@ function drawCloudChart(){
   if(cloudSelectedIdx >= 0){
     const sd = CLOUD_DATA[cloudSelectedIdx];
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.font = '11px Inter, sans-serif';
+    ctx.font = '11px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
     // Wrap text simply
     const lines = sd.desc.match(/.{1,50}(\s|$)/g) || [sd.desc];
@@ -2361,9 +2424,9 @@ function updateCoordCost(){
   coordCostAnimFrame = requestAnimationFrame(animate);
 
   // Color based on severity
-  if(cost > 500) el.style.color = '#e63946';
-  else if(cost > 100) el.style.color = '#f0a500';
-  else el.style.color = '#2ec4b6';
+  if(cost > 500) el.style.color = '#ff3333';
+  else if(cost > 100) el.style.color = '#ffb000';
+  else el.style.color = '#00ff88';
 }
 
 // ============================================================
@@ -2815,7 +2878,7 @@ function setupDashboardCards(){
     if(sourceLink){
       // Add visual affordance
       const affordance = document.createElement('div');
-      affordance.style.cssText = 'font-size:0.6rem;font-family:var(--mono);color:rgba(255,255,255,0.15);margin-top:4px;transition:color 0.2s;';
+      affordance.style.cssText = 'font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);margin-top:4px;transition:color 0.2s;';
       affordance.textContent = 'Click source link for data >';
       sourceLink.parentNode.insertBefore(affordance, sourceLink.nextSibling);
 
@@ -2894,10 +2957,10 @@ function buildDashboardBars(companiesOverride) {
     const isEU = c.region === 'EU';
     return `<div style="display:flex;align-items:center;gap:10px;">
       <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isEU?'0.7':'0.4'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
-      <div style="flex:1;height:14px;background:rgba(255,255,255,0.03);border-radius:2px;overflow:hidden;">
+      <div style="flex:1;height:14px;background:var(--border);border-radius:2px;overflow:hidden;">
         <div style="width:${pct}%;height:100%;background:${c.color};border-radius:2px;opacity:0.7;transition:width 1s;"></div>
       </div>
-      <div style="min-width:45px;font-size:0.7rem;font-family:var(--mono);color:rgba(255,255,255,0.35);font-weight:700;">$${c.val}B</div>
+      <div style="min-width:45px;font-size:0.7rem;font-family:var(--mono);color:var(--text-dim);font-weight:700;">$${c.val}B</div>
     </div>`;
   }).join('');
 }
@@ -2954,7 +3017,7 @@ function setBadge(id, type) {
     badge.innerHTML = '<span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> LIVE';
     badge.style.color = 'var(--green)';
   } else if (type === 'error') {
-    badge.innerHTML = '<span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA';
+    badge.innerHTML = '<span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA';
     badge.style.color = 'rgba(255,255,255,0.25)';
   }
 }
@@ -3013,10 +3076,10 @@ async function fetchHuggingFaceData() {
         .sort((a,b) => b[1] - a[1])
         .map(([region, count]) => {
           const pct = Math.round((count / total) * 100);
-          return `<div style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+          return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
             <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${regionColors[region]};line-height:1;">${pct}%</div>
-            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:2px;">${regionLabels[region]}</div>
-            <div style="font-size:0.55rem;color:rgba(255,255,255,0.2);font-family:var(--mono);">${count} of top ${total}</div>
+            <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${regionLabels[region]}</div>
+            <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">${count} of top ${total}</div>
           </div>`;
         }).join('');
     }
@@ -3026,16 +3089,16 @@ async function fetchHuggingFaceData() {
     if (tableEl) {
       tableEl.innerHTML = `
         <div style="display:grid;grid-template-columns:24px 1fr 80px 50px;gap:4px 12px;align-items:center;">
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">#</div>
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">MODEL</div>
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">DOWNLOADS</div>
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">REGION</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">#</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">MODEL</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">DOWNLOADS</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">REGION</div>
           ${tableRows.map(r => {
             const regionColors = { US: 'var(--red)', EU: 'var(--cyan)', CN: 'var(--gold)', Other: 'rgba(255,255,255,0.3)' };
             return `
-              <div style="color:rgba(255,255,255,0.2);">${r.rank}</div>
+              <div style="color:var(--text-dim);">${r.rank}</div>
               <div style="color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.name}">${r.name}</div>
-              <div style="color:rgba(255,255,255,0.35);">${formatDownloads(r.downloads)}</div>
+              <div style="color:var(--text-dim);">${formatDownloads(r.downloads)}</div>
               <div style="color:${regionColors[r.region]};font-weight:600;">${r.region}</div>`;
           }).join('')}
         </div>`;
@@ -3046,16 +3109,16 @@ async function fetchHuggingFaceData() {
     // Fallback: show static data silently
     const tableEl = document.getElementById('hfModelTable');
     if (tableEl) {
-      tableEl.innerHTML = `<div style="color:rgba(255,255,255,0.3);font-size:0.75rem;">Top models by downloads: meta-llama/Llama, google/gemma, mistralai/Mistral, Qwen/Qwen, stabilityai/stable-diffusion. US orgs dominate with ~60% of top models.</div>`;
+      tableEl.innerHTML = `<div style="color:var(--text-dim);font-size:0.75rem;">Top models by downloads: meta-llama/Llama, google/gemma, mistralai/Mistral, Qwen/Qwen, stabilityai/stable-diffusion. US orgs dominate with ~60% of top models.</div>`;
     }
     const summaryEl = document.getElementById('hfModelSummary');
     if (summaryEl) {
       summaryEl.innerHTML = ['60% US','10% EU','20% CN','10% Other'].map((t,i) => {
         const colors = ['var(--red)','var(--cyan)','var(--gold)','rgba(255,255,255,0.3)'];
-        return `<div style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
           <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${colors[i]};line-height:1;">${t.split(' ')[0]}</div>
-          <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:2px;">${t.split(' ')[1]}</div>
-          <div style="font-size:0.55rem;color:rgba(255,255,255,0.2);font-family:var(--mono);">estimated</div>
+          <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${t.split(' ')[1]}</div>
+          <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">estimated</div>
         </div>`;
       }).join('');
     }
@@ -3107,10 +3170,10 @@ async function fetchGitHubData() {
         .sort((a,b) => b[1] - a[1])
         .map(([region, count]) => {
           const pct = Math.round((count / total) * 100);
-          return `<div style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+          return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
             <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${regionColors[region]};line-height:1;">${pct}%</div>
-            <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:2px;">${regionLabels[region]}</div>
-            <div style="font-size:0.55rem;color:rgba(255,255,255,0.2);font-family:var(--mono);">${count} of top ${total}</div>
+            <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${regionLabels[region]}</div>
+            <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">${count} of top ${total}</div>
           </div>`;
         }).join('');
     }
@@ -3120,16 +3183,16 @@ async function fetchGitHubData() {
     if (tableEl) {
       tableEl.innerHTML = `
         <div style="display:grid;grid-template-columns:24px 1fr 70px 50px;gap:4px 12px;align-items:center;">
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">#</div>
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">REPOSITORY</div>
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">STARS</div>
-          <div style="font-size:0.6rem;color:rgba(255,255,255,0.15);font-weight:700;">REGION</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">#</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">REPOSITORY</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">STARS</div>
+          <div style="font-size:0.6rem;color:var(--text-dim);font-weight:700;">REGION</div>
           ${tableRows.map(r => {
             const regionColors = { US: 'var(--red)', EU: 'var(--cyan)', CN: 'var(--gold)', Other: 'rgba(255,255,255,0.3)' };
             return `
-              <div style="color:rgba(255,255,255,0.2);">${r.rank}</div>
+              <div style="color:var(--text-dim);">${r.rank}</div>
               <div style="color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.description}">${r.name}</div>
-              <div style="color:rgba(255,255,255,0.35);">${formatStars(r.stars)}</div>
+              <div style="color:var(--text-dim);">${formatStars(r.stars)}</div>
               <div style="color:${regionColors[r.region]};font-weight:600;">${r.region}</div>`;
           }).join('')}
         </div>`;
@@ -3140,16 +3203,16 @@ async function fetchGitHubData() {
     // Fallback static data
     const tableEl = document.getElementById('ghRepoTable');
     if (tableEl) {
-      tableEl.innerHTML = `<div style="color:rgba(255,255,255,0.3);font-size:0.75rem;">Top AI repos: tensorflow/tensorflow, pytorch/pytorch, huggingface/transformers, langchain-ai/langchain. US-based organizations dominate open source AI.</div>`;
+      tableEl.innerHTML = `<div style="color:var(--text-dim);font-size:0.75rem;">Top AI repos: tensorflow/tensorflow, pytorch/pytorch, huggingface/transformers, langchain-ai/langchain. US-based organizations dominate open source AI.</div>`;
     }
     const summaryEl = document.getElementById('ghRepoSummary');
     if (summaryEl) {
       summaryEl.innerHTML = ['70% US','5% EU','15% CN','10% Other'].map((t,i) => {
         const colors = ['var(--red)','var(--cyan)','var(--gold)','rgba(255,255,255,0.3)'];
-        return `<div style="padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
           <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${colors[i]};line-height:1;">${t.split(' ')[0]}</div>
-          <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:2px;">${t.split(' ')[1]}</div>
-          <div style="font-size:0.55rem;color:rgba(255,255,255,0.2);font-family:var(--mono);">estimated</div>
+          <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${t.split(' ')[1]}</div>
+          <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">estimated</div>
         </div>`;
       }).join('');
     }
