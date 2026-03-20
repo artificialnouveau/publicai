@@ -635,9 +635,120 @@ body {
   .heatmap { font-size: 0.68rem; }
   .heatmap th, .heatmap td { padding: 0.4rem; }
 }
+
+/* === INTERACTIVE VIZ ENHANCEMENTS === */
+
+/* Tooltip */
+.viz-tooltip {
+  position: fixed;
+  z-index: 500;
+  padding: 10px 14px;
+  background: rgba(7,11,20,0.95);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+  font-family: var(--mono);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  max-width: 280px;
+  line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.viz-tooltip.visible { opacity: 1; }
+.viz-tooltip .tt-title { font-weight: 700; color: white; margin-bottom: 4px; }
+.viz-tooltip .tt-val { color: var(--cyan); font-weight: 700; }
+.viz-tooltip .tt-desc { color: rgba(255,255,255,0.4); font-size: 0.72rem; }
+
+/* Filter buttons */
+.filter-row {
+  display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 5px 12px; border-radius: 100px; font-size: 0.7rem;
+  font-family: var(--mono); font-weight: 600; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.4);
+  transition: all 0.2s;
+}
+.filter-btn:hover { border-color: rgba(255,255,255,0.2); color: white; }
+.filter-btn.active { border-color: var(--cyan); background: rgba(0,180,216,0.1); color: var(--cyan); }
+
+/* Expandable table rows */
+.heatmap tr { cursor: pointer; transition: background 0.2s; }
+.heatmap tr:hover { background: rgba(255,255,255,0.03); }
+.heatmap .expand-row { display: none; }
+.heatmap .expand-row.visible { display: table-row; }
+.heatmap .expand-row td {
+  padding: 12px 16px; font-size: 0.8rem; color: rgba(255,255,255,0.4);
+  line-height: 1.6; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Talent filter */
+.talent-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+
+/* Dashboard card hover expand */
+.dashboard-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+.dashboard-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+
+/* Exodus hover card */
+.exodus-item { position: relative; cursor: pointer; }
+.exodus-detail-card {
+  position: absolute; left: 0; right: 0; top: 100%;
+  z-index: 50; padding: 10px 14px; margin-top: 4px;
+  background: rgba(7,11,20,0.95); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; backdrop-filter: blur(12px);
+  font-size: 0.75rem; color: rgba(255,255,255,0.6); line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  display: none;
+}
+.exodus-item:hover .exodus-detail-card { display: block; }
+
+/* Heatmap color legend interactive */
+.heatmap-legend-item { cursor: pointer; transition: opacity 0.2s; display: inline-block; padding: 2px 6px; border-radius: 4px; }
+.heatmap-legend-item:hover { opacity: 1 !important; background: rgba(255,255,255,0.05); }
+
+/* Talent card expanded */
+.talent-card { cursor: pointer; transition: all 0.2s; }
+.talent-card:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+.talent-bio {
+  display: none; margin-top: 6px; padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.7rem; color: rgba(255,255,255,0.35); line-height: 1.5;
+}
+.talent-card.expanded .talent-bio { display: block; }
+
+/* Coord cost preset buttons */
+.preset-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.preset-btn {
+  padding: 5px 10px; border-radius: 100px; font-size: 0.65rem;
+  font-family: var(--mono); font-weight: 600; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.4);
+  transition: all 0.2s;
+}
+.preset-btn:hover { border-color: rgba(255,255,255,0.2); color: white; }
+
+/* Market cap highlight info */
+.market-cap-info {
+  margin-top: 10px; padding: 10px 14px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; font-size: 0.8rem; color: rgba(255,255,255,0.5);
+  line-height: 1.5; display: none;
+}
+.market-cap-info.visible { display: block; }
 </style>
 </head>
 <body>
+
+<!-- Global tooltip for interactive visualizations -->
+<div class="viz-tooltip" id="vizTooltip">
+  <div class="tt-title" id="ttTitle"></div>
+  <div class="tt-val" id="ttVal"></div>
+  <div class="tt-desc" id="ttDesc"></div>
+</div>
 
 <!-- PROGRESS BAR -->
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -862,7 +973,14 @@ body {
     <div class="data-panel" id="panel-charts" data-panel-id="panel-charts">
       <div class="chart-container reveal">
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
+        <div class="filter-row" id="mcFilterRow">
+          <button class="filter-btn active" data-filter="all" onclick="filterMarketCap('all',this)">All</button>
+          <button class="filter-btn" data-filter="US" onclick="filterMarketCap('US',this)">US</button>
+          <button class="filter-btn" data-filter="EU" onclick="filterMarketCap('EU',this)">EU</button>
+          <button class="filter-btn" data-filter="CN" onclick="filterMarketCap('CN',this)">China</button>
+        </div>
         <canvas id="marketCapChart" height="320"></canvas>
+        <div class="market-cap-info" id="mcInfo"></div>
         <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
           <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/openai-closes-40-billion-funding-round-2025-03-31/" target="_blank">OpenAI valuation: Reuters, Mar 2025</a>
           <a class="source-link" href="https://www.cnbc.com/2025/01/09/anthropic-is-in-talks-to-raise-2-billion-at-60-billion-valuation.html" target="_blank">Anthropic: CNBC, Jan 2025</a>
@@ -879,6 +997,11 @@ body {
       <!-- Coordination Cost Calculator -->
       <div class="widget reveal" id="coordCalc">
         <h3>Interactive: Coordination Cost Calculator</h3>
+        <div class="preset-row">
+          <button class="preset-btn" onclick="setCoordPreset(27,25)">EU Today (27, AI-level)</button>
+          <button class="preset-btn" onclick="setCoordPreset(4,8)">Airbus Model (4, High)</button>
+          <button class="preset-btn" onclick="setCoordPreset(1,1)">US Model (1 firm, Low)</button>
+        </div>
         <label>Number of independent players: <span id="playerCount">5</span></label>
         <input type="range" id="playerSlider" min="1" max="27" value="5" oninput="updateCoordCost()">
         <label>Interdependency level:</label>
@@ -1051,6 +1174,13 @@ body {
       </div>
       <div class="widget reveal" id="exodusTracker">
         <h3>Startup Exodus Tracker</h3>
+        <div class="filter-row" id="exodusFilterRow">
+          <button class="filter-btn active" onclick="filterExodus('all',this)">All</button>
+          <button class="filter-btn" onclick="filterExodus('UK',this)">UK</button>
+          <button class="filter-btn" onclick="filterExodus('France',this)">France</button>
+          <button class="filter-btn" onclick="filterExodus('Germany',this)">Germany</button>
+          <button class="filter-btn" onclick="filterExodus('Nordic',this)">Nordic</button>
+        </div>
         <ul class="exodus-list" id="exodusList"></ul>
         <div class="exodus-counter">
           <div class="val" id="exodusTotal">$0B</div>
@@ -1128,8 +1258,11 @@ body {
         </table>
       </div>
 
-      <p style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;">
-        Green = strong position &nbsp;|&nbsp; Yellow = moderate &nbsp;|&nbsp; Red = weak &nbsp;|&nbsp; Gray = absent
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;" id="heatmapLegend">
+        <span class="heatmap-legend-item" data-hm-class="strong" onmouseenter="highlightHeatmapCells('strong')" onmouseleave="clearHeatmapHighlight()" style="color:var(--green);">Green = strong</span> &nbsp;|&nbsp;
+        <span class="heatmap-legend-item" data-hm-class="moderate" onmouseenter="highlightHeatmapCells('moderate')" onmouseleave="clearHeatmapHighlight()" style="color:var(--gold);">Yellow = moderate</span> &nbsp;|&nbsp;
+        <span class="heatmap-legend-item" data-hm-class="weak" onmouseenter="highlightHeatmapCells('weak')" onmouseleave="clearHeatmapHighlight()" style="color:var(--red);">Red = weak</span> &nbsp;|&nbsp;
+        <span class="heatmap-legend-item" data-hm-class="absent" onmouseenter="highlightHeatmapCells('absent')" onmouseleave="clearHeatmapHighlight()" style="color:rgba(255,255,255,0.35);">Gray = absent</span>
       </p>
       <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
         <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank">Synergy Research Group</a>
@@ -1330,6 +1463,13 @@ body {
         </div>
       </div>
 
+      <div class="filter-row talent-filter" id="talentFilterRow">
+        <button class="filter-btn active" onclick="filterTalent('all',this)">All</button>
+        <button class="filter-btn" onclick="filterTalent('coalition',this)">Coalition</button>
+        <button class="filter-btn" onclick="filterTalent('us-rivals',this)">US Rivals</button>
+        <button class="filter-btn" onclick="filterTalent('china',this)">China</button>
+        <button class="filter-btn" onclick="filterTalent('academia',this)">Academia</button>
+      </div>
       <div id="talentMapGroups" class="reveal"></div>
       <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
         <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI: AI talent flows</a>
@@ -1486,7 +1626,7 @@ body {
     <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:2rem;">
 
       <!-- Card: EU Cloud Dependency (static) -->
-      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU Cloud Dependency</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
@@ -1500,7 +1640,7 @@ body {
       </div>
 
       <!-- Card: EU AI Compute (static) -->
-      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU Share of Global AI Compute</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
@@ -1514,7 +1654,7 @@ body {
       </div>
 
       <!-- Card: EU Frontier Model Share (static) -->
-      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU Frontier Model Share</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
@@ -1528,7 +1668,7 @@ body {
       </div>
 
       <!-- Card: Startup Exodus (static) -->
-      <div style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25);">EU AI Startup Relocation Rate</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);"></span> REPORT DATA</span>
@@ -1798,31 +1938,75 @@ window.addEventListener('scroll', ()=>{
 })();
 
 // ============================================================
-// MARKET CAP BAR CHART
+// TOOLTIP HELPERS
 // ============================================================
+const vizTooltip = {el:null, title:null, val:null, desc:null};
+function initTooltip(){
+  vizTooltip.el = document.getElementById('vizTooltip');
+  vizTooltip.title = document.getElementById('ttTitle');
+  vizTooltip.val = document.getElementById('ttVal');
+  vizTooltip.desc = document.getElementById('ttDesc');
+}
+function showTooltip(x, y, title, val, desc){
+  if(!vizTooltip.el) initTooltip();
+  vizTooltip.title.textContent = title || '';
+  vizTooltip.val.textContent = val || '';
+  vizTooltip.desc.textContent = desc || '';
+  vizTooltip.el.style.left = (x + 14) + 'px';
+  vizTooltip.el.style.top = (y - 10) + 'px';
+  // Keep tooltip on screen
+  const r = vizTooltip.el.getBoundingClientRect();
+  if(r.right > window.innerWidth - 10) vizTooltip.el.style.left = (x - r.width - 10) + 'px';
+  if(r.bottom > window.innerHeight - 10) vizTooltip.el.style.top = (y - r.height - 10) + 'px';
+  vizTooltip.el.classList.add('visible');
+}
+function hideTooltip(){
+  if(!vizTooltip.el) initTooltip();
+  vizTooltip.el.classList.remove('visible');
+}
+
+// ============================================================
+// MARKET CAP BAR CHART (interactive)
+// ============================================================
+let mcBarPositions = [];
+let mcHighlighted = -1;
+let mcFilter = 'all';
+const MC_ALL_DATA = [
+  { name: 'Google DeepMind', val: 200, color: '#4285f4', eu: false, region: 'US', desc: 'Alphabet\'s AI division. Merged Google Brain + DeepMind. Dominates research output.' },
+  { name: 'OpenAI', val: 157, color: '#10a37f', eu: false, region: 'US', desc: 'Creator of GPT series. $157B valuation as of Mar 2025. Largest AI startup ever.' },
+  { name: 'ByteDance AI', val: 80, color: '#ff004f', eu: false, region: 'CN', desc: 'TikTok parent. Major AI research lab. Competing in foundation models with Doubao.' },
+  { name: 'Meta AI', val: 60, color: '#0668E1', eu: false, region: 'US', desc: 'Meta\'s AI division. Open-sourced LLaMA. Subsidized by social media revenue.' },
+  { name: 'Amazon AI/AWS', val: 45, color: '#FF9900', eu: false, region: 'US', desc: 'AWS Bedrock, Titan models. World\'s largest cloud provider with AI integration.' },
+  { name: 'Anthropic', val: 30, color: '#D4A574', eu: false, region: 'US', desc: 'Safety-focused AI lab. Claude models. $60B valuation target. Backed by Amazon/Google.' },
+  { name: 'All other EU AI', val: 15, color: '#e63946', eu: true, region: 'EU', desc: 'Combined value of all other European AI companies. Fragmented across 27 nations.' },
+  { name: 'Mistral AI', val: 6, color: '#e63946', eu: true, region: 'EU', desc: 'France\'s leading AI lab. ~2% global LLM market share. Europe\'s best hope.' },
+];
+
+function filterMarketCap(region, btn){
+  mcFilter = region;
+  mcHighlighted = -1;
+  document.querySelectorAll('#mcFilterRow .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('mcInfo').classList.remove('visible');
+  drawMarketCapChart();
+}
+
 function drawMarketCapChart(){
   const canvas = document.getElementById('marketCapChart');
   if(!canvas) return;
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
-  const cw = rect.width - 48; // account for padding
+  const cw = rect.width - 48;
+
+  const data = mcFilter === 'all' ? MC_ALL_DATA : MC_ALL_DATA.filter(d => d.region === mcFilter);
+  const canvasH = Math.max(200, data.length * 38 + 40);
+
   canvas.width = cw * dpr;
-  canvas.height = 320 * dpr;
+  canvas.height = canvasH * dpr;
   canvas.style.width = cw + 'px';
-  canvas.style.height = '320px';
+  canvas.style.height = canvasH + 'px';
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-
-  const data = [
-    { name: 'Google DeepMind', val: 200, color: '#4285f4', eu: false },
-    { name: 'OpenAI', val: 157, color: '#10a37f', eu: false },
-    { name: 'ByteDance AI', val: 80, color: '#ff004f', eu: false },
-    { name: 'Meta AI', val: 60, color: '#0668E1', eu: false },
-    { name: 'Amazon AI/AWS', val: 45, color: '#FF9900', eu: false },
-    { name: 'Anthropic', val: 30, color: '#D4A574', eu: false },
-    { name: 'All other EU AI', val: 15, color: '#e63946', eu: true },
-    { name: 'Mistral AI', val: 6, color: '#e63946', eu: true },
-  ];
 
   const maxVal = 220;
   const barH = 28;
@@ -1830,21 +2014,35 @@ function drawMarketCapChart(){
   const labelW = 120;
   const chartW = cw - labelW - 50;
 
+  mcBarPositions = [];
+
   data.forEach((d, i) => {
     const y = i * (barH + gap) + 20;
+    const barW = (d.val / maxVal) * chartW;
+    const isHighlighted = mcHighlighted === i;
+
+    mcBarPositions.push({ x: labelW, y: y, w: barW, h: barH, idx: i, data: d });
+
     // label
     ctx.fillStyle = d.eu ? 'rgba(230,57,70,0.8)' : 'rgba(255,255,255,0.5)';
-    ctx.font = '11px Inter, sans-serif';
+    ctx.font = (isHighlighted ? 'bold ' : '') + '11px Inter, sans-serif';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.fillText(d.name, labelW - 10, y + barH/2);
     // bar
-    const barW = (d.val / maxVal) * chartW;
     ctx.fillStyle = d.color;
-    ctx.globalAlpha = d.eu ? 1 : 0.7;
+    ctx.globalAlpha = isHighlighted ? 1 : (d.eu ? 1 : 0.7);
     ctx.beginPath();
     ctx.roundRect(labelW, y, barW, barH, 4);
     ctx.fill();
+    // highlight border
+    if(isHighlighted){
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(labelW, y, barW, barH, 4);
+      ctx.stroke();
+    }
     ctx.globalAlpha = 1;
     // value
     ctx.fillStyle = 'rgba(255,255,255,0.6)';
@@ -1853,17 +2051,99 @@ function drawMarketCapChart(){
     ctx.fillText('$' + d.val + 'B', labelW + barW + 6, y + barH/2);
   });
 
-  // EU label
-  ctx.fillStyle = 'rgba(230,57,70,0.5)';
-  ctx.font = '600 10px JetBrains Mono, monospace';
-  ctx.textAlign = 'left';
-  const euY = 6 * (barH + gap) + 12;
-  ctx.fillText('EU', labelW - 24, euY + barH + 6);
+  // EU label when showing all
+  if(mcFilter === 'all'){
+    ctx.fillStyle = 'rgba(230,57,70,0.5)';
+    ctx.font = '600 10px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    const euY = 6 * (barH + gap) + 12;
+    ctx.fillText('EU', labelW - 24, euY + barH + 6);
+  }
 }
 
+// Market cap canvas interactivity
+(function(){
+  let mcCanvasReady = false;
+  function setupMcCanvas(){
+    const canvas = document.getElementById('marketCapChart');
+    if(!canvas || mcCanvasReady) return;
+    mcCanvasReady = true;
+
+    canvas.addEventListener('mousemove', function(e){
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      let hit = -1;
+      for(let i=0; i<mcBarPositions.length; i++){
+        const b = mcBarPositions[i];
+        if(mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h){
+          hit = i; break;
+        }
+      }
+      if(hit >= 0){
+        canvas.style.cursor = 'pointer';
+        const d = mcBarPositions[hit].data;
+        showTooltip(e.clientX, e.clientY, d.name, '$' + d.val + 'B valuation', d.desc);
+      } else {
+        canvas.style.cursor = 'default';
+        hideTooltip();
+      }
+    });
+
+    canvas.addEventListener('mouseleave', hideTooltip);
+
+    canvas.addEventListener('click', function(e){
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      let hit = -1;
+      for(let i=0; i<mcBarPositions.length; i++){
+        const b = mcBarPositions[i];
+        if(mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h){
+          hit = i; break;
+        }
+      }
+      mcHighlighted = (mcHighlighted === hit) ? -1 : hit;
+      drawMarketCapChart();
+
+      const info = document.getElementById('mcInfo');
+      if(mcHighlighted >= 0){
+        const d = mcBarPositions[mcHighlighted].data;
+        info.innerHTML = '<strong style="color:white;">' + d.name + '</strong> &mdash; $' + d.val + 'B<br><span style="color:rgba(255,255,255,0.4);">' + d.desc + '</span>';
+        info.classList.add('visible');
+      } else {
+        info.classList.remove('visible');
+      }
+    });
+  }
+
+  // Try setup on load, and also on any chart draw
+  const origDraw = window.drawMarketCapChart;
+  const patchedDraw = function(){
+    origDraw ? origDraw() : null;
+    setupMcCanvas();
+  };
+  // We'll call setupMcCanvas from DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', ()=> setTimeout(setupMcCanvas, 200));
+})();
+
 // ============================================================
-// CLOUD SHARE DONUT CHART
+// CLOUD SHARE DONUT CHART (interactive)
 // ============================================================
+let cloudSegments = [];
+let cloudHoveredIdx = -1;
+let cloudSelectedIdx = -1;
+
+const CLOUD_DATA = [
+  { name: 'AWS', val: 32, color: '#FF9900', desc: 'Amazon Web Services. Largest cloud provider globally. 32% market share.' },
+  { name: 'Azure', val: 23, color: '#0078d4', desc: 'Microsoft Azure. Growing rapidly via OpenAI partnership. 23% share.' },
+  { name: 'Google Cloud', val: 15, color: '#4285f4', desc: 'Google Cloud Platform. Strong in AI/ML workloads. 15% share.' },
+  { name: 'Other US', val: 5, color: '#6b7280', desc: 'Oracle Cloud, IBM Cloud, and smaller US providers.' },
+  { name: 'Chinese providers', val: 8, color: '#ff004f', desc: 'Alibaba Cloud, Tencent Cloud, Huawei Cloud. Dominant in Asia.' },
+  { name: 'European providers', val: 12, color: '#e63946', desc: 'OVHcloud, Deutsche Telekom, SAP. Fragmented. No single EU hyperscaler.' },
+  { name: 'Other', val: 5, color: '#3a3f4a', desc: 'Remaining global providers.' },
+];
+
 function drawCloudChart(){
   const canvas = document.getElementById('cloudShareChart');
   if(!canvas) return;
@@ -1877,31 +2157,40 @@ function drawCloudChart(){
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
 
-  const data = [
-    { name: 'AWS', val: 32, color: '#FF9900' },
-    { name: 'Azure', val: 23, color: '#0078d4' },
-    { name: 'Google Cloud', val: 15, color: '#4285f4' },
-    { name: 'Other US', val: 5, color: '#6b7280' },
-    { name: 'Chinese providers', val: 8, color: '#ff004f' },
-    { name: 'European providers', val: 12, color: '#e63946' },
-    { name: 'Other', val: 5, color: '#3a3f4a' },
-  ];
-
   const cx = cw * 0.35;
   const cy = 160;
   const outerR = Math.min(110, cw * 0.22);
   const innerR = outerR * 0.58;
   let startAngle = -Math.PI/2;
 
-  data.forEach(d => {
+  cloudSegments = [];
+
+  CLOUD_DATA.forEach((d, i) => {
     const sliceAngle = (d.val / 100) * Math.PI * 2;
+    const isHovered = cloudHoveredIdx === i;
+    const isSelected = cloudSelectedIdx === i;
+    const expand = isHovered ? 5 : 0;
+    const pullOut = isSelected ? 12 : 0;
+
+    // Pull-out offset for selected segment
+    const midAngle = startAngle + sliceAngle / 2;
+    const offX = pullOut * Math.cos(midAngle);
+    const offY = pullOut * Math.sin(midAngle);
+
+    cloudSegments.push({ startAngle, endAngle: startAngle + sliceAngle, data: d, idx: i });
+
     ctx.beginPath();
-    ctx.arc(cx, cy, outerR, startAngle, startAngle + sliceAngle);
-    ctx.arc(cx, cy, innerR, startAngle + sliceAngle, startAngle, true);
+    ctx.arc(cx + offX, cy + offY, outerR + expand, startAngle, startAngle + sliceAngle);
+    ctx.arc(cx + offX, cy + offY, innerR, startAngle + sliceAngle, startAngle, true);
     ctx.closePath();
     ctx.fillStyle = d.color;
-    ctx.globalAlpha = d.name === 'European providers' ? 1 : 0.7;
+    ctx.globalAlpha = (d.name === 'European providers' || isHovered || isSelected) ? 1 : 0.7;
     ctx.fill();
+    if(isHovered || isSelected){
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
     ctx.globalAlpha = 1;
     startAngle += sliceAngle;
   });
@@ -1917,13 +2206,15 @@ function drawCloudChart(){
   // legend
   const lx = cw * 0.62;
   let ly = 40;
-  data.forEach(d => {
+  CLOUD_DATA.forEach((d, i) => {
+    const isHovered = cloudHoveredIdx === i;
+    const isSelected = cloudSelectedIdx === i;
     ctx.fillStyle = d.color;
-    ctx.globalAlpha = d.name === 'European providers' ? 1 : 0.7;
+    ctx.globalAlpha = (d.name === 'European providers' || isHovered || isSelected) ? 1 : 0.7;
     ctx.fillRect(lx, ly, 12, 12);
     ctx.globalAlpha = 1;
-    ctx.fillStyle = d.name === 'European providers' ? 'rgba(230,57,70,0.9)' : 'rgba(255,255,255,0.5)';
-    ctx.font = '11px Inter, sans-serif';
+    ctx.fillStyle = (d.name === 'European providers' || isHovered || isSelected) ? 'white' : 'rgba(255,255,255,0.5)';
+    ctx.font = ((isHovered || isSelected) ? 'bold ' : '') + '11px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText(d.name + ' (' + d.val + '%)', lx + 18, ly + 6);
@@ -1934,25 +2225,140 @@ function drawCloudChart(){
   ctx.fillStyle = 'rgba(255,255,255,0.2)';
   ctx.font = '600 10px JetBrains Mono, monospace';
   ctx.fillText('US total: 75%', lx, ly + 12);
+
+  // Selected detail below
+  if(cloudSelectedIdx >= 0){
+    const sd = CLOUD_DATA[cloudSelectedIdx];
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '11px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    // Wrap text simply
+    const lines = sd.desc.match(/.{1,50}(\s|$)/g) || [sd.desc];
+    lines.forEach((line, li) => {
+      ctx.fillText(line.trim(), lx, ly + 30 + li * 16);
+    });
+  }
 }
 
+// Cloud chart interactivity
+(function(){
+  let ccReady = false;
+  function setupCloudCanvas(){
+    const canvas = document.getElementById('cloudShareChart');
+    if(!canvas || ccReady) return;
+    ccReady = true;
+
+    function getSegmentAtPoint(mx, my){
+      const rect = canvas.getBoundingClientRect();
+      const cw = rect.width;
+      const cx = cw * 0.35;
+      const cy = 160;
+      const outerR = Math.min(110, cw * 0.22);
+      const innerR = outerR * 0.58;
+
+      const dx = mx - cx, dy = my - cy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < innerR || dist > outerR + 10) return -1;
+
+      let angle = Math.atan2(dy, dx);
+      if(angle < -Math.PI/2) angle += Math.PI*2;
+
+      for(let i=0; i<cloudSegments.length; i++){
+        let start = cloudSegments[i].startAngle;
+        let end = cloudSegments[i].endAngle;
+        // Normalize
+        if(angle >= start && angle <= end) return i;
+      }
+      return -1;
+    }
+
+    canvas.addEventListener('mousemove', function(e){
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const idx = getSegmentAtPoint(mx, my);
+
+      if(idx !== cloudHoveredIdx){
+        cloudHoveredIdx = idx;
+        drawCloudChart();
+      }
+      if(idx >= 0){
+        canvas.style.cursor = 'pointer';
+        const d = CLOUD_DATA[idx];
+        showTooltip(e.clientX, e.clientY, d.name, d.val + '% market share', d.desc);
+      } else {
+        canvas.style.cursor = 'default';
+        hideTooltip();
+      }
+    });
+
+    canvas.addEventListener('mouseleave', function(){
+      cloudHoveredIdx = -1;
+      drawCloudChart();
+      hideTooltip();
+    });
+
+    canvas.addEventListener('click', function(e){
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const idx = getSegmentAtPoint(mx, my);
+      cloudSelectedIdx = (cloudSelectedIdx === idx) ? -1 : idx;
+      drawCloudChart();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=> setTimeout(setupCloudCanvas, 200));
+})();
+
 // ============================================================
-// COORDINATION COST CALCULATOR
+// COORDINATION COST CALCULATOR (interactive with presets + animation)
 // ============================================================
+let coordCostAnimFrame = null;
+
+function setCoordPreset(players, interdep){
+  document.getElementById('playerSlider').value = players;
+  // Find matching option value
+  const sel = document.getElementById('interdepSelect');
+  for(let i=0; i<sel.options.length; i++){
+    if(parseInt(sel.options[i].value) === interdep){
+      sel.selectedIndex = i; break;
+    }
+  }
+  updateCoordCost();
+}
+
 function updateCoordCost(){
   const players = parseInt(document.getElementById('playerSlider').value);
   const interdep = parseInt(document.getElementById('interdepSelect').value);
   document.getElementById('playerCount').textContent = players;
 
-  // Coordination cost = n*(n-1)/2 * interdependency_multiplier * base_cost
-  // For a single firm, cost ~= 0
   const pairs = players * (players - 1) / 2;
-  const baseCost = 0.15; // billions per pair at low interdependency
+  const baseCost = 0.15;
   const cost = pairs * interdep * baseCost;
 
   const costStr = cost < 1 ? '<$1B' : cost > 999 ? '$' + (cost/1000).toFixed(1) + 'T' : '$' + Math.round(cost) + 'B';
+
+  // Animated counter
   const el = document.getElementById('coordCostVal');
-  el.textContent = costStr;
+  const currentText = el.textContent;
+  const currentNum = parseFloat(currentText.replace(/[^0-9.]/g, '')) || 0;
+  const targetNum = cost;
+
+  if(coordCostAnimFrame) cancelAnimationFrame(coordCostAnimFrame);
+
+  const startTime = performance.now();
+  const duration = 400;
+  function animate(now){
+    const t = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const val = currentNum + (targetNum - currentNum) * eased;
+    const str = val < 1 ? '<$1B' : val > 999 ? '$' + (val/1000).toFixed(1) + 'T' : '$' + Math.round(val) + 'B';
+    el.textContent = str;
+    if(t < 1) coordCostAnimFrame = requestAnimationFrame(animate);
+    else el.textContent = costStr;
+  }
+  coordCostAnimFrame = requestAnimationFrame(animate);
 
   // Color based on severity
   if(cost > 500) el.style.color = '#e63946';
@@ -1961,20 +2367,70 @@ function updateCoordCost(){
 }
 
 // ============================================================
-// STARTUP EXODUS TRACKER
+// STARTUP EXODUS TRACKER (interactive with hover cards, filter, animated counter)
 // ============================================================
 const EXODUS_DATA = [
-  { origin: 'UK', name: '11x', funding: '$50M', dest: 'San Francisco' },
-  { origin: 'UK', name: 'Stability AI', funding: '$101M', dest: 'San Francisco' },
-  { origin: 'France', name: 'Hugging Face', funding: '$395M', dest: 'New York' },
-  { origin: 'UK', name: 'DeepMind', funding: '$Acq. by Google', dest: 'Mountain View' },
-  { origin: 'Germany', name: 'DeepL', funding: '$300M', dest: 'US expansion HQ' },
-  { origin: 'Finland', name: 'Silo AI', funding: '$Acq. by AMD', dest: 'Santa Clara' },
-  { origin: 'Sweden', name: 'Normative', funding: '$18M', dest: 'San Francisco' },
-  { origin: 'France', name: 'Poolside', funding: '$500M', dest: 'San Francisco' },
-  { origin: 'UK', name: 'Wayve', funding: '$1.05B', dest: 'San Francisco' },
-  { origin: 'Switzerland', name: 'Scandit', funding: '$305M', dest: 'US expansion HQ' },
+  { origin: 'UK', name: '11x', funding: '$50M', dest: 'San Francisco', sector: 'Enterprise AI', year: 2024, detail: 'AI digital workers startup. Founded in London by Hasan Sukkar. Moved HQ to SF for talent density and customer proximity.' },
+  { origin: 'UK', name: 'Stability AI', funding: '$101M', dest: 'San Francisco', sector: 'Generative AI', year: 2023, detail: 'Open-source image generation. Started in London, shifted operations to SF amid funding rounds and leadership changes.' },
+  { origin: 'France', name: 'Hugging Face', funding: '$395M', dest: 'New York', sector: 'ML Platform', year: 2021, detail: 'The GitHub of ML. Founded in France, moved HQ to NYC. Now the central hub for open-source AI models.' },
+  { origin: 'UK', name: 'DeepMind', funding: '$Acq. by Google', dest: 'Mountain View', sector: 'Research', year: 2014, detail: 'Acquired by Google for ~$500M. World-class AI research lab. UK operations remain but strategic control is in California.' },
+  { origin: 'Germany', name: 'DeepL', funding: '$300M', dest: 'US expansion HQ', sector: 'NLP', year: 2023, detail: 'Translation AI. German-founded, opened major US HQ. Raised $300M to compete globally from US base.' },
+  { origin: 'Finland', name: 'Silo AI', funding: '$Acq. by AMD', dest: 'Santa Clara', sector: 'Enterprise AI', year: 2024, detail: 'Finland\'s largest private AI lab. Acquired by AMD for $665M. Talent and IP now under US chipmaker.' },
+  { origin: 'Sweden', name: 'Normative', funding: '$18M', dest: 'San Francisco', sector: 'Climate AI', year: 2023, detail: 'Carbon accounting AI. Swedish startup expanded to SF for access to enterprise clients and growth capital.' },
+  { origin: 'France', name: 'Poolside', funding: '$500M', dest: 'San Francisco', sector: 'Code AI', year: 2024, detail: 'AI coding assistant. French founders, raised $500M at $3B valuation. HQ in San Francisco for talent.' },
+  { origin: 'UK', name: 'Wayve', funding: '$1.05B', dest: 'San Francisco', sector: 'Autonomous Driving', year: 2024, detail: 'Self-driving AI. UK-founded, raised $1.05B. Expanding to SF for proximity to AV ecosystem.' },
+  { origin: 'Switzerland', name: 'Scandit', funding: '$305M', dest: 'US expansion HQ', sector: 'Computer Vision', year: 2022, detail: 'Barcode scanning and smart data capture. Swiss roots, US HQ for enterprise sales growth.' },
 ];
+
+let exodusFilter = 'all';
+
+function filterExodus(filter, btn){
+  exodusFilter = filter;
+  document.querySelectorAll('#exodusFilterRow .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+
+  const items = document.querySelectorAll('.exodus-item');
+  let visibleCount = 0;
+  let totalVal = 0;
+
+  items.forEach((item) => {
+    const origin = item.getAttribute('data-origin');
+    const isNordic = ['Sweden','Finland','Norway','Denmark'].includes(origin);
+    const show = filter === 'all'
+      || filter === origin
+      || (filter === 'Nordic' && isNordic);
+
+    item.style.display = show ? 'flex' : 'none';
+    if(show){
+      visibleCount++;
+      const fundStr = item.getAttribute('data-funding');
+      const match = fundStr.match(/\$([\d.]+)(M|B)/);
+      if(match){
+        const val = parseFloat(match[1]);
+        totalVal += match[2] === 'B' ? val : val / 1000;
+      }
+    }
+  });
+
+  // Animate counter
+  animateExodusCounter(totalVal);
+}
+
+function animateExodusCounter(targetVal){
+  const el = document.getElementById('exodusTotal');
+  const currentNum = parseFloat(el.textContent.replace(/[^0-9.]/g, '')) || 0;
+  const startTime = performance.now();
+  const duration = 500;
+
+  function tick(now){
+    const t = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const val = currentNum + (targetVal - currentNum) * eased;
+    el.textContent = '$' + val.toFixed(1) + 'B+';
+    if(t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 
 function buildExodus(){
   const list = document.getElementById('exodusList');
@@ -1984,15 +2440,23 @@ function buildExodus(){
     const li = document.createElement('li');
     li.className = 'exodus-item';
     li.style.transitionDelay = (i * 0.15) + 's';
+    li.setAttribute('data-origin', d.origin);
+    li.setAttribute('data-funding', d.funding);
+    li.setAttribute('data-sector', d.sector);
+    li.setAttribute('data-year', d.year);
     li.innerHTML = `
       <span class="exodus-origin">${d.origin}</span>
       <span class="exodus-name">${d.name}</span>
       <span class="exodus-funding">${d.funding}</span>
       <span class="exodus-arrow">&rarr;</span>
       <span class="exodus-dest">${d.dest}</span>
+      <div class="exodus-detail-card">
+        <strong style="color:white;">${d.name}</strong> (${d.year})<br>
+        <span style="color:var(--cyan);font-size:0.65rem;">${d.sector} &bull; ${d.funding}</span><br>
+        ${d.detail}
+      </div>
     `;
     list.appendChild(li);
-    // parse funding for total
     const match = d.funding.match(/\$([\d.]+)(M|B)/);
     if(match){
       const val = parseFloat(match[1]);
@@ -2182,19 +2646,65 @@ const TALENT_POOL = [
   {name:'Dr. Marco Bianchi',specialty:'AI Ethics',from:'EU AI Office',current:'coalition'}
 ];
 
+// Talent bios for click-to-expand
+const TALENT_BIOS = {
+  'Dr. Chen Wei': 'Leading researcher in multimodal architectures. PhD ETH Zurich. Published 40+ papers on vision-language models. Key contributor to European AI research output.',
+  'Dr. Sofia Petrov': 'Reinforcement learning specialist at Google DeepMind London. Originally from Bulgaria, trained at Cambridge. Works on multi-agent RL systems.',
+  'Dr. Yuki Tanaka': 'Pioneer in efficient training methods at RIKEN. Developed techniques reducing compute requirements by 60%. Collaborates with European institutions.',
+  'Dr. Lars Eriksson': 'NLP expert recruited from Spotify AI. Leading multilingual model efforts for the coalition. Swedish national, committed to European AI sovereignty.',
+  'Dr. Maria Santos': 'Computer vision researcher at Meta FAIR Paris. Portuguese. Works on self-supervised learning. Key European talent at a US lab.',
+  'Dr. Ahmed Hassan': 'Safety and alignment researcher at Anthropic. Egyptian-British. Previously at Oxford. Working on constitutional AI methods.',
+  'Dr. Anna Kowalski': 'Robotics professor at TU Munich. Polish-German. Leading EU robotics research. Has turned down multiple US offers to stay in Europe.',
+  'Dr. James Park': 'Chip design researcher. Previously Samsung, now academic. Korean-American based in EU. Expert in AI accelerator architectures.',
+  'Dr. Claire Moreau': 'Generative models lead at Mistral AI. French. PhD from ENS Paris. Core contributor to Mistral\'s open-weight model family.',
+  'Dr. Raj Patel': 'Distributed systems architect at AWS. Indian-British. Built core infrastructure for large-scale ML training. Based in London.',
+  'Dr. Elena Volkov': 'Speech recognition expert. Left Yandex after 2022. Now at University of Helsinki. Building multilingual speech models for European languages.',
+  'Dr. Thomas Weber': 'Industrial AI lead at Siemens. German. Pioneer in applying ML to manufacturing. Coalition advisor on industrial applications.',
+  'Dr. Mei Lin': 'Foundation model researcher at ByteDance. Chinese. Works on the Doubao model family. Represents China\'s growing AI talent pool.',
+  'Dr. David Kim': 'AI hardware expert. Former NVIDIA principal engineer. Now teaching at TU Delft. Designing European AI chip architectures.',
+  'Dr. Isabella Rossi': 'Medical AI researcher at University of Milan. Italian. Leading EU medical imaging AI. Key talent for sovereign healthcare AI.',
+  'Dr. Kenji Nakamura': 'Autonomous systems researcher. Japanese. At Toyota AI Institute Europe. Works on embodied AI and robotics.',
+  "Dr. Sarah O'Brien": 'Language models researcher at OpenAI. Irish. Recruited from Trinity College Dublin. Works on GPT post-training.',
+  'Dr. Lucas Fischer': 'Quantum ML pioneer at ETH Zurich. Swiss-German. Exploring quantum advantage for AI training. Potential coalition recruit.',
+  'Dr. Priya Sharma': 'Federated learning expert at Google Brain. Indian. Based in Zurich. Key work on privacy-preserving ML training.',
+  'Dr. Marco Bianchi': 'AI Ethics lead at EU AI Office. Italian. Former academic, now shaping EU AI Act implementation. Coalition policy advisor.'
+};
+
+// Affiliation category mapping for filtering
+function getTalentCategory(current){
+  if(current === 'coalition') return 'coalition';
+  if(['openai','google','meta','anthropic','amazon'].includes(current)) return 'us-rivals';
+  if(current === 'bytedance') return 'china';
+  if(current === 'academia') return 'academia';
+  return 'other';
+}
+
+let talentFilter = 'all';
+
+function filterTalent(filter, btn){
+  talentFilter = filter;
+  document.querySelectorAll('#talentFilterRow .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  buildTalentMap();
+}
+
 function buildTalentMap(){
   const container = document.getElementById('talentMapGroups');
   if(!container) return;
 
+  const filteredPool = talentFilter === 'all'
+    ? TALENT_POOL
+    : TALENT_POOL.filter(t => getTalentCategory(t.current) === talentFilter);
+
   const groups = {
-    'Coalition': TALENT_POOL.filter(t=>t.current==='coalition'),
-    'OpenAI': TALENT_POOL.filter(t=>t.current==='openai'),
-    'Google': TALENT_POOL.filter(t=>t.current==='google'),
-    'Meta': TALENT_POOL.filter(t=>t.current==='meta'),
-    'Anthropic': TALENT_POOL.filter(t=>t.current==='anthropic'),
-    'ByteDance': TALENT_POOL.filter(t=>t.current==='bytedance'),
-    'Amazon/AWS': TALENT_POOL.filter(t=>t.current==='amazon'),
-    'Academia': TALENT_POOL.filter(t=>t.current==='academia'),
+    'Coalition': filteredPool.filter(t=>t.current==='coalition'),
+    'OpenAI': filteredPool.filter(t=>t.current==='openai'),
+    'Google': filteredPool.filter(t=>t.current==='google'),
+    'Meta': filteredPool.filter(t=>t.current==='meta'),
+    'Anthropic': filteredPool.filter(t=>t.current==='anthropic'),
+    'ByteDance': filteredPool.filter(t=>t.current==='bytedance'),
+    'Amazon/AWS': filteredPool.filter(t=>t.current==='amazon'),
+    'Academia': filteredPool.filter(t=>t.current==='academia'),
   };
 
   let html = '';
@@ -2203,21 +2713,127 @@ function buildTalentMap(){
     html += `<div class="talent-group-label">${group} (${members.length})</div>`;
     html += '<div class="talent-grid">';
     members.forEach(m => {
-      html += `<div class="talent-card">
+      const bio = TALENT_BIOS[m.name] || 'Researcher specializing in ' + m.specialty + '.';
+      html += `<div class="talent-card" onclick="this.classList.toggle('expanded')">
         <div class="talent-name">${m.name}</div>
         <div class="talent-spec">${m.specialty}</div>
         <div class="talent-from">${m.from}</div>
+        <div class="talent-bio">${bio}</div>
       </div>`;
     });
     html += '</div>';
   }
   container.innerHTML = html;
+
+  // Update counters
+  const coalitionCount = filteredPool.filter(t=>t.current==='coalition').length;
+  const rivalsCount = filteredPool.filter(t=>['openai','google','meta','anthropic','amazon'].includes(t.current)).length;
+  const academiaCount = filteredPool.filter(t=>t.current==='academia').length;
+  const tcC = document.getElementById('tcCoalition');
+  const tcR = document.getElementById('tcRivals');
+  const tcA = document.getElementById('tcAcademia');
+  if(tcC) tcC.textContent = coalitionCount;
+  if(tcR) tcR.textContent = rivalsCount;
+  if(tcA) tcA.textContent = academiaCount;
+}
+
+// ============================================================
+// HEATMAP TABLE INTERACTIVITY (hover highlight, click expand, legend hover)
+// ============================================================
+const HEATMAP_DETAILS = {
+  'Chips (design)': 'Sub-layers: GPU architecture, TPU/custom silicon, edge AI chips. US dominates via NVIDIA (>80% AI training GPU market). EU has zero competitive chip designers for AI workloads.',
+  'Chips (manufacturing)': 'Sub-layers: leading-edge fabs (TSMC 3nm), mature nodes, packaging. ASML (Dutch) makes the EUV lithography machines everyone depends on, but the EU has no leading-edge fab capacity itself.',
+  'Cloud / Compute': 'Sub-layers: IaaS, PaaS, GPU cloud, sovereign cloud. AWS+Azure+GCP control ~70% of EU cloud market. OVHcloud is the largest EU provider at ~2% global share.',
+  'Foundation Models': 'Sub-layers: frontier LLMs, open-weight models, multimodal, specialized. OpenAI + Anthropic + Google lead. Mistral is EU\'s best bet but holds only ~2% market.',
+  'Enterprise AI': 'Sub-layers: CRM AI, ERP AI, cybersecurity AI, HR AI. Microsoft Copilot and Salesforce Einstein dominate. SAP is pivoting to AI but from a legacy position.',
+  'Talent (top researchers)': 'Measured by top-cited AI researchers and NeurIPS/ICML first authors. ~60% work in US institutions. Many EU-educated researchers relocate to US for compensation and compute access.',
+  'Capital ($B invested, 2024)': 'US VC invested ~$100B in AI in 2024. EU invested ~$8B. The 12:1 ratio means EU startups must either stay small or relocate to raise competitive rounds.'
+};
+
+function setupHeatmapInteractivity(){
+  const table = document.querySelector('.heatmap');
+  if(!table) return;
+
+  const rows = table.querySelectorAll('tbody tr');
+  rows.forEach(row => {
+    const layerCell = row.querySelector('td.layer');
+    if(!layerCell) return;
+    const layerName = layerCell.textContent.trim();
+    const detail = HEATMAP_DETAILS[layerName];
+    if(!detail) return;
+
+    // Add expand row after each data row
+    const expandRow = document.createElement('tr');
+    expandRow.className = 'expand-row';
+    expandRow.innerHTML = '<td colspan="4">' + detail + '</td>';
+    row.after(expandRow);
+
+    // Hover tooltip
+    row.addEventListener('mouseenter', function(e){
+      showTooltip(e.clientX, e.clientY, layerName, '', 'Click to expand details');
+    });
+    row.addEventListener('mousemove', function(e){
+      showTooltip(e.clientX, e.clientY, layerName, '', 'Click to expand details');
+    });
+    row.addEventListener('mouseleave', hideTooltip);
+
+    // Click to expand
+    row.addEventListener('click', function(){
+      expandRow.classList.toggle('visible');
+    });
+  });
+}
+
+function highlightHeatmapCells(className){
+  const cells = document.querySelectorAll('.heatmap td');
+  cells.forEach(cell => {
+    if(cell.classList.contains(className)){
+      cell.style.outline = '2px solid rgba(255,255,255,0.3)';
+      cell.style.outlineOffset = '-2px';
+    } else if(!cell.classList.contains('layer')){
+      cell.style.opacity = '0.3';
+    }
+  });
+}
+
+function clearHeatmapHighlight(){
+  const cells = document.querySelectorAll('.heatmap td');
+  cells.forEach(cell => {
+    cell.style.outline = '';
+    cell.style.outlineOffset = '';
+    cell.style.opacity = '';
+  });
+}
+
+// ============================================================
+// DASHBOARD CARDS INTERACTIVITY
+// ============================================================
+function setupDashboardCards(){
+  const cards = document.querySelectorAll('.dashboard-card');
+  cards.forEach(card => {
+    const sourceLink = card.querySelector('.source-link');
+    if(sourceLink){
+      // Add visual affordance
+      const affordance = document.createElement('div');
+      affordance.style.cssText = 'font-size:0.6rem;font-family:var(--mono);color:rgba(255,255,255,0.15);margin-top:4px;transition:color 0.2s;';
+      affordance.textContent = 'Click source link for data >';
+      sourceLink.parentNode.insertBefore(affordance, sourceLink.nextSibling);
+
+      card.addEventListener('mouseenter', ()=>{
+        affordance.style.color = 'rgba(255,255,255,0.35)';
+      });
+      card.addEventListener('mouseleave', ()=>{
+        affordance.style.color = 'rgba(255,255,255,0.15)';
+      });
+    }
+  });
 }
 
 // ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', ()=>{
+  initTooltip();
   updateCoordCost();
   buildExodus();
   setTimeout(animateExodus, 100);
@@ -2225,6 +2841,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   buildTalentMap();
   buildDashboardBars();
   fetchDashboardData();
+  setupHeatmapInteractivity();
+  setupDashboardCards();
 
   // Draw charts when they come into view
   const chartObs = new IntersectionObserver((entries)=>{
