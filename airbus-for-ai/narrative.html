@@ -606,35 +606,52 @@ body::after {
 
 /* === DOCUMENT INSET === */
 .doc-inset {
-  max-width: 600px; margin: 2rem auto; padding: 2.5rem 2rem;
-  background: var(--bg-raised); color: var(--text-primary) !important;
-  font-family: var(--mono); font-size: 0.85rem; line-height: 1.7;
-  border: 0.5px solid rgba(255,255,255,0.08); box-shadow: none;
-  position: relative; border-radius: 10px;
+  max-width: 620px; margin: 2rem auto; padding: 3rem 2.5rem 2.5rem;
+  background: #f5f1e8;
+  color: #1a1a1a !important;
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: 0.82rem; line-height: 1.65;
+  border: none;
+  box-shadow: 4px 6px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.1);
+  position: relative; border-radius: 2px;
+  /* Paper texture */
+  background-image:
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 100% 1.65em;
 }
-.doc-inset, .doc-inset * { color: var(--text-secondary) !important; }
-.doc-inset strong { color: var(--text-primary) !important; font-weight: 700; }
-.doc-inset .doc-subtitle { color: var(--text-dim) !important; }
-.doc-inset .doc-section { color: var(--amber) !important; }
+.doc-inset::before {
+  /* Top red/blue header stripe */
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, #002868, #002868 33%, #bf0a30 33%, #bf0a30 66%, #002868 66%);
+}
+.doc-inset, .doc-inset * { color: #2a2a2a !important; }
+.doc-inset strong { color: #111 !important; font-weight: 700; }
+.doc-inset .doc-subtitle { color: #444 !important; }
+.doc-inset .doc-section { color: #1a1a1a !important; }
 .doc-inset h4 {
-  font-size: 1rem; text-align: center; margin-bottom: 0.3rem;
-  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text-primary) !important; font-family: var(--mono);
+  font-size: 1.05rem; text-align: center; margin-bottom: 0.5rem;
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #111 !important; font-family: 'Times New Roman', Georgia, serif;
+  border-bottom: 2px solid #111; padding-bottom: 0.5rem;
 }
 .doc-inset .doc-subtitle {
-  text-align: center; font-style: normal; margin-bottom: 1.5rem;
-  color: var(--text-dim) !important; font-size: 0.8rem;
+  text-align: center; font-style: italic; margin-bottom: 1.5rem;
+  color: #444 !important; font-size: 0.78rem;
+  padding-bottom: 1rem; border-bottom: 0.5px solid #ccc;
 }
-.doc-inset p { margin-bottom: 0.8rem; text-indent: 1.5rem; color: var(--text-secondary) !important; }
+.doc-inset p {
+  margin-bottom: 0.7rem; text-indent: 2rem;
+  color: #2a2a2a !important; text-align: justify;
+}
 .doc-inset .doc-section {
-  font-weight: 700; margin-top: 1.2rem; margin-bottom: 0.4rem;
-  text-indent: 0; font-size: 0.9rem; color: var(--amber) !important;
+  font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem;
+  text-indent: 0; font-size: 0.88rem; color: #111 !important;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  border-bottom: 0.5px solid #bbb; padding-bottom: 0.3rem;
 }
 .doc-inset .doc-stamp {
-  position: absolute; top: 20px; right: 20px;
-  font-family: var(--mono); font-size: 0.7rem; color: var(--red) !important;
-  border: 2px solid var(--red); padding: 4px 8px; transform: rotate(12deg);
-  font-weight: 700; letter-spacing: 0.1em; opacity: 0.8;
+  display: none;
 }
 
 /* === INTERACTIVE WIDGETS === */
