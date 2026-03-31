@@ -254,9 +254,10 @@ body::after {
   to { opacity: 1; }
 }
 .chapter-overlay-close {
+  display: none;
   position: fixed;
   bottom: 2rem; right: 2rem;
-  z-index: 510;
+  z-index: 600;
   background: rgba(5,9,15,0.9);
   border: 0.5px solid rgba(255,255,255,0.2);
   color: var(--text-secondary);
@@ -265,10 +266,12 @@ body::after {
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
+}
+.chapter-overlay.open ~ .chapter-overlay-close {
+  display: flex;
 }
 .chapter-overlay-close:hover {
   border-color: var(--cyan);
@@ -1300,9 +1303,9 @@ body::after {
 
 <!-- Chapter overlay container -->
 <div class="chapter-overlay" id="chapterOverlay" role="dialog" aria-modal="true" aria-label="Chapter view">
-  <button class="chapter-overlay-close" onclick="closeChapter()" aria-label="Close chapter and return to overview">&larr; Back</button>
   <div id="chapterOverlayContent"></div>
 </div>
+<button class="chapter-overlay-close" id="chapterCloseBtn" onclick="closeChapter()" aria-label="Close chapter and return to overview">&larr; Back</button>
 
 <!-- ==================== SECTION 1: Dublin + Economics + Dependency Data ==================== -->
 <div class="split-section" data-chapter-idx="0">
