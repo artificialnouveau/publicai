@@ -1543,11 +1543,51 @@ body::after {
       <div class="reveal">
         <h2>EU Fragmentation</h2>
       </div>
-      <div class="reveal">
-        <canvas id="fragmentationCanvas" style="width:100%;height:220px;"></canvas>
-      </div>
-      <div class="reveal">
-        <p style="font-size:0.85rem;color:var(--text-dim);text-align:center;margin:0.5rem 0 1.5rem;">If each actor optimizes only for itself: lots of small efforts, duplicated spending, weak scale, slow adaptation. The capital ends up in the US anyway.</p>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:12px;margin:1rem 0 1.5rem;">
+        <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+            <div style="font-family:var(--mono);font-weight:700;font-size:0.8rem;color:var(--cyan);text-transform:uppercase;letter-spacing:0.1em;">US / China Model</div>
+            <div style="font-family:var(--mono);font-size:1.2rem;font-weight:300;color:var(--cyan);">1&ndash;3 players</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">One decision-maker per stack layer. OpenAI, Google, Meta each control compute, models, cloud, and deployment internally. Coordination cost: near zero.</div>
+        </div>
+        <div style="text-align:center;font-family:var(--mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.1em;">VS</div>
+        <div style="padding:1.25rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:10px;background:rgba(255,51,51,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+            <div style="font-family:var(--mono);font-weight:700;font-size:0.8rem;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;">EU Model</div>
+            <div style="font-family:var(--mono);font-size:1.2rem;font-weight:300;color:var(--red);">27 players</div>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;margin-bottom:0.75rem;">27 countries. 27 regulators. 24 languages. Each with its own procurement rules, capital pools, political incentives. Every change requires renegotiation across all of them.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;">
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">DE</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">FR</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">IT</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">ES</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">NL</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">PL</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">BE</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">SE</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">AT</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">DK</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">FI</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">IE</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">PT</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">CZ</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">RO</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">HU</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">SK</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">BG</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">HR</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">LT</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">SI</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">LV</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">EE</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">LU</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">MT</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">CY</span>
+            <span style="font-family:var(--mono);font-size:9px;padding:2px 6px;border:0.5px solid rgba(255,51,51,0.2);border-radius:3px;color:rgba(255,255,255,0.4);">GR</span>
+          </div>
+        </div>
       </div>
       <div class="chart-container reveal">
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
