@@ -170,7 +170,7 @@ body::after {
   min-height: 100vh;
 }
 .split-narrative {
-  padding: 6rem 3rem 6rem 4rem;
+  padding: 6rem 3rem 6rem 5rem;
 }
 .split-narrative p {
   font-size: 15px; line-height: 1.8;
@@ -850,7 +850,7 @@ body::after {
 /* === NON-LINEAR TIMELINE INDICATOR === */
 .timeline-indicator {
   position: fixed;
-  left: 24px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 150;
@@ -858,6 +858,13 @@ body::after {
   flex-direction: column;
   align-items: center;
   gap: 0;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.timeline-indicator.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 .tl-track {
   width: 1px;
@@ -890,12 +897,19 @@ body::after {
   font-family: var(--mono);
   color: rgba(232,224,204,0.55);
   letter-spacing: 0.06em;
-  transition: color 0.3s;
+  line-height: 1.4;
+  transition: all 0.3s;
   pointer-events: none;
+  opacity: 0;
+  transform: translateX(-4px);
+  top: 50%;
+  transform: translateX(-4px) translateY(-50%);
 }
 .tl-node:hover .tl-node-label,
 .tl-node.active .tl-node-label {
   color: var(--cyan);
+  opacity: 1;
+  transform: translateX(0) translateY(-50%);
 }
 .tl-jump-line {
   position: absolute;
@@ -930,16 +944,16 @@ body::after {
     <!-- Nodes positioned chronologically: Apr 2026 = 0%, Jun 2026 = 14%, Feb 2027 = 67%, Apr 2027 = 80% -->
     <!-- But displayed in narrative order with jump lines -->
     <a class="tl-node" href="#ch-dublin" style="top:0%;" data-date="APR 2026" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
-      <span class="tl-node-label">Dublin &middot; Apr 2026</span>
+      <span class="tl-node-label">Dublin<br>Apr 2026</span>
     </a>
     <a class="tl-node" href="#ch-brussels" style="top:14%;" data-date="JUN 2026" onclick="document.getElementById('ch-brussels').scrollIntoView({behavior:'smooth'})">
-      <span class="tl-node-label">Brussels &middot; Jun 2026</span>
+      <span class="tl-node-label">Brussels<br>Jun 2026</span>
     </a>
     <a class="tl-node" href="#ch-tokyo" style="top:67%;" data-date="FEB 2027" onclick="document.getElementById('ch-tokyo').scrollIntoView({behavior:'smooth'})">
-      <span class="tl-node-label">Tokyo &middot; Feb 2027</span>
+      <span class="tl-node-label">Tokyo<br>Feb 2027</span>
     </a>
     <a class="tl-node" href="#ch-berlin" style="top:80%;" data-date="APR 2027" onclick="document.getElementById('ch-berlin').scrollIntoView({behavior:'smooth'})">
-      <span class="tl-node-label">Berlin &middot; Apr 2027</span>
+      <span class="tl-node-label">Berlin<br>Apr 2027</span>
     </a>
   </div>
   <div class="tl-year-label">2027</div>
@@ -1108,34 +1122,31 @@ body::after {
     <div class="data-panel active" id="panel-dependency" data-panel-id="panel-dependency">
       <div class="reveal">
         <h2 id="data-dependency">The Dependency</h2>
-        <p class="section-sub">When internet control means sovereignty.</p>
       </div>
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Europe can establish governance, but it cannot build.</p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">The Dublin office closed. The Munich office closed. The Paris office closed. The Brussels office closed. The engineering went back to San Francisco. The compliance tools, the multilingual benchmarks, the evaluation pipeline: gone.</p>
       </div>
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Its regulations don&rsquo;t matter if all of the digital infrastructure &mdash; leading models, cloud platforms, accelerators, and tooling &mdash; are American or Chinese.</p>
+        <canvas id="dependencyRingsCanvas" style="width:100%;height:280px;"></canvas>
       </div>
-      <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">A globalized internet means exposure to foreign export controls, foreign pricing power, foreign standards, and foreign political leverage. At every point across the digital value chain, the EU is not in the driver&rsquo;s seat.</p>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:12px;margin-top:1rem;">
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);display:flex;align-items:center;gap:1rem;">
+          <div style="font-family:var(--mono);font-size:1.8rem;font-weight:300;color:var(--red);min-width:70px;text-align:right;">70%</div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">of EU cloud infrastructure is run by AWS, Azure, and Google. The servers Aaron&rsquo;s team deployed on were never European to begin with.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);display:flex;align-items:center;gap:1rem;">
+          <div style="font-family:var(--mono);font-size:1.8rem;font-weight:300;color:var(--red);min-width:70px;text-align:right;">2%</div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">of global AI compute is European. There is nowhere else for Aaron&rsquo;s team to go. No European company can offer what OpenAI took away.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);display:flex;align-items:center;gap:1rem;">
+          <div style="font-family:var(--mono);font-size:1.8rem;font-weight:300;color:var(--red);min-width:70px;text-align:right;">2%</div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">is Mistral&rsquo;s share of the global LLM market. Europe&rsquo;s largest AI company is a rounding error next to the firm that just fired Aaron.</div>
+        </div>
       </div>
-
-      <div class="stat-row reveal">
-        <div class="stat-card">
-          <div class="stat-val">70%</div>
-          <div class="stat-label">EU cloud market controlled by AWS, Azure, Google Cloud</div>
-          <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank">Synergy Research Group, 2024</a>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val">2%</div>
-          <div class="stat-label">EU share of global AI compute by 2027</div>
-          <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank">European Commission, AI Gigafactories Initiative</a>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val">2%</div>
-          <div class="stat-label">Mistral's share of global LLM market</div>
-          <a class="source-link" href="https://www.statista.com/statistics/1482817/market-share-of-ai-chatbots/" target="_blank">Statista / Statcounter, 2025</a>
-        </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.srgresearch.com/articles/european-cloud-providers-local-market-share-now-holds-steady-at-15" target="_blank">Synergy Research: European Cloud Market Share, 2024</a>
+        <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank">European Commission: AI Gigafactories Initiative</a>
+        <a class="source-link" href="https://ecfr.eu/publication/get-over-your-x-a-european-plan-to-escape-american-technology/" target="_blank">ECFR: EuroStack &mdash; European Digital Sovereignty</a>
       </div>
     </div>
 
@@ -1179,16 +1190,16 @@ body::after {
         <canvas id="marketCapChart" height="320"></canvas>
         <div class="market-cap-info" id="mcInfo"></div>
         <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
-          <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/openai-closes-40-billion-funding-round-2025-03-31/" target="_blank">OpenAI valuation: Reuters, Mar 2025</a>
-          <a class="source-link" href="https://www.cnbc.com/2025/01/09/anthropic-is-in-talks-to-raise-2-billion-at-60-billion-valuation.html" target="_blank">Anthropic: CNBC, Jan 2025</a>
-          <a class="source-link" href="https://www.ft.com/content/mistral-ai-valuation" target="_blank">Mistral: Financial Times, 2025</a>
+          <a class="source-link" href="https://www.cnbc.com/2025/03/31/openai-closes-40-billion-in-funding-the-largest-private-fundraise-in-history-softbank-chatgpt.html" target="_blank">OpenAI $40B round: CNBC, Mar 2025</a>
+          <a class="source-link" href="https://www.cnbc.com/2025/01/07/anthropic-in-talks-to-raise-funding-at-60-billion-valuation.html" target="_blank">Anthropic: CNBC, Jan 2025</a>
+          <a class="source-link" href="https://www.cnbc.com/2025/09/09/ai-firm-mistral-valued-at-14-billion-as-asml-takes-major-stake.html" target="_blank">Mistral $14B valuation: CNBC, Sep 2025</a>
         </div>
       </div>
 
       <div class="chart-container reveal">
         <h3>Global Cloud Infrastructure Market Share</h3>
         <canvas id="cloudShareChart" height="320"></canvas>
-        <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank" style="margin-top:8px;display:inline-block;">Source: Synergy Research Group Q4 2024</a>
+        <a class="source-link" href="https://www.srgresearch.com/articles/european-cloud-providers-local-market-share-now-holds-steady-at-15" target="_blank" style="margin-top:8px;display:inline-block;">Source: Synergy Research Group Q4 2024</a>
       </div>
 
       <!-- Coordination Cost Calculator -->
@@ -1337,7 +1348,7 @@ body::after {
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">But just a short hop across the North Sea lands you in Stockholm, where early investment in computer infrastructure meant about 75% of Swedish homes had computers by 2005. Sweden has had its own AI-fueled tech boom. Encouraged by the success of Klarna and Spotify, Stockholm has now been home to companies like Sana, Lovable, and Legora. And yet of its impressive list of start-ups, more than 30% relocate to the US.</p>
       </div>
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">&ldquo;We are graduating all the engineers. We are starting all the companies, but then we&rsquo;re exporting talent to the US. We&rsquo;re exporting companies very cheaply.&rdquo; &mdash; Victor Englesson, EQT</p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">&ldquo;We are graduating all the engineers. We are starting all the companies, but then we&rsquo;re exporting talent to the US. We&rsquo;re exporting companies very cheaply.&rdquo; Victor Englesson, EQT</p>
       </div>
       <div class="reveal">
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;">The EU may be the place to start a company, but it has none of the resources to scale it.</p>
@@ -1357,9 +1368,9 @@ body::after {
           <div class="label">Total value exported to US</div>
         </div>
         <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
-          <a class="source-link" href="https://www.ft.com/content/europe-scale-up-problem" target="_blank">Financial Times: Europe's scale-up problem</a>
+          <a class="source-link" href="https://sifted.eu/articles/state-european-tech-report-2025" target="_blank">Sifted: State of European Tech 2025</a>
           <a class="source-link" href="https://www.crunchbase.com/" target="_blank">Crunchbase funding data</a>
-          <a class="source-link" href="https://www.nytimes.com/2024/11/06/technology/11x-ai-startup-london-san-francisco.html" target="_blank">NYT: 11x relocation</a>
+          <a class="source-link" href="https://sifted.eu/articles/11x-series-a" target="_blank">Sifted: 11x relocates to US with $24M Series A</a>
         </div>
       </div>
     </div>
@@ -1368,10 +1379,17 @@ body::after {
     <div class="data-panel" id="panel-stack" data-panel-id="panel-stack">
       <div class="reveal">
         <h2 id="data-stack">The Full Stack Gap</h2>
-        <p class="section-sub">Compute, chips, data access, talent, cloud, procurement, regulatory approval, defense deployment.</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">Compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense and industrial deployment &mdash; each layer of the stack, and who controls it. Only 6% of European STEM graduates are expected to enter the chip industry by 2030. Estonia and Greece commissioned OpenAI for their education systems. The European Parliament uses Anthropic&rsquo;s Claude.</p>
+        <p class="section-sub">Virkkunen asks: &ldquo;How can I stand in front of you and talk about sovereignty?&rdquo; This is why.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Her speech names the gaps: no frontier-scale compute, no way to train or deploy models at scale, public services hosted on American cloud layers, capital pools diluted, startups relocating. The heatmap below puts numbers to every layer she described.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:0.5rem;">How deep does it go? Estonia and Greece commissioned OpenAI for their education systems. The European Parliament uses Anthropic&rsquo;s Claude for its archives. Only 6% of European STEM graduates are expected to enter the chip industry by 2030.</p>
       </div>
 
+      <div class="reveal" style="margin-bottom:0.5rem;">
+      </div>
       <div class="heatmap-wrap reveal">
         <table class="heatmap">
           <thead>
@@ -1436,12 +1454,12 @@ body::after {
         <span class="heatmap-legend-item" data-hm-class="absent" onmouseenter="highlightHeatmapCells('absent')" onmouseleave="clearHeatmapHighlight()" style="color:var(--text-dim);">Gray = absent</span>
       </p>
       <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
-        <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank">Synergy Research Group</a>
+        <a class="source-link" href="https://www.srgresearch.com/articles/european-cloud-providers-local-market-share-now-holds-steady-at-15" target="_blank">Synergy Research Group</a>
         <a class="source-link" href="https://www.crunchbase.com/hub/artificial-intelligence-startups" target="_blank">Crunchbase AI Startups</a>
         <a class="source-link" href="https://oecd.ai/en/data" target="_blank">OECD AI Policy Observatory</a>
         <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2024</a>
         <a class="source-link" href="https://www.eca.europa.eu/en/publications/SR-2024-10" target="_blank">EU Court of Auditors: Chips Act</a>
-        <a class="source-link" href="https://ecfr.eu/publication/the-eurostack/" target="_blank">ECFR: The EuroStack</a>
+        <a class="source-link" href="https://ecfr.eu/publication/get-over-your-x-a-european-plan-to-escape-american-technology/" target="_blank">ECFR: The EuroStack</a>
       </div>
     </div>
 
@@ -1475,7 +1493,6 @@ body::after {
 
       <!-- DOCUMENT INSET: Digital Liberty Act -->
       <div class="doc-inset reveal">
-        <div class="doc-stamp"></div>
         <h4>The Digital Liberty Act</h4>
         <p class="doc-subtitle">The United States of America has declared that, in the interest of the continued safety of our digital infrastructure, we are mandating that any and all access to American-based frontier AI technologies is dependent on the full and unmitigated acceptance of The Digital Liberty Act the pillars of which are the following:</p>
 
@@ -1565,33 +1582,31 @@ body::after {
     <!-- Data Panel: Simulation -->
     <div class="data-panel active" id="panel-simulation" data-panel-id="panel-simulation">
       <div class="reveal" style="margin-bottom:1.5rem;">
-        <h3 style="font-size:1rem;color:var(--cyan);margin-bottom:0.75rem;font-weight:600;">What triggers coalition-building?</h3>
+        <h2>What triggers coalition-building?</h2>
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Licensing tightens, deliveries stall, or cloud access becomes conditional on alignment with foreign policy demands. Once leaders believe compute can be throttled from abroad, coalition-building stops being optional.</p>
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">A European government realizes that core ministries, hospitals, defense planners, or education systems depend on non-European foundation models and cloud providers, and then pricing changes, access changes, or legal conditions shift.</p>
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">What exact event makes a French minister, a German chancellor, and a Dutch finance official all say within 72 hours: &ldquo;we cannot leave this to the market anymore&rdquo;?</p>
       </div>
-      <div class="sim-section" id="sim-decisions">
-        <div class="sim-inner">
-          <div class="reveal">
-            <span class="dateline"></span>
-            <h2 style="font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:0.5rem;">Key Decisions</h2>
-            <p style="color:var(--text-dim);margin-bottom:0.75rem;font-size:0.85rem;">
-              Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
-            </p>
-            <div class="sim-skip">
-              <a href="#data-talent">Skip to Talent Map &darr;</a>
-            </div>
-          </div>
+      <!-- Scenario Impact Visualization -->
+      <div class="reveal">
+        <h2>Scenario Impact</h2>
+        <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.9rem;line-height:1.7;">
+          The Digital Liberty Act sorts countries into three tiers. This is what each tier means for European AI capacity.
+        </p>
+      </div>
 
-          <!-- Running metrics bar -->
-          <div class="reveal" style="display:flex;gap:0.75rem;flex-wrap:wrap;margin:1.5rem 0;justify-content:center;" id="simRunningMetrics">
-            <div class="sim-metric"><span class="m-label">Share:</span><span class="m-val" id="simShare" style="color:var(--cyan)">2%</span></div>
-            <div class="sim-metric"><span class="m-label">Cap:</span><span class="m-val" id="simCap" style="color:var(--green)">$8B</span></div>
-            <div class="sim-metric"><span class="m-label">Talent:</span><span class="m-val" id="simTalent" style="color:var(--gold)">15</span></div>
-            <div class="sim-metric"><span class="m-label">Coalition:</span><span class="m-val" id="simCoalition" style="color:var(--cyan)">0</span></div>
-          </div>
-
-          <div id="simDecisions"></div>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:10px;margin-top:0.5rem;">
+        <div style="padding:1rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:8px;background:rgba(26,108,212,0.03);">
+          <div style="font-size:0.85rem;font-weight:600;color:var(--cyan);margin-bottom:4px;">Status Quo (Aligned)</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">Full access to frontier model APIs, cloud training clusters, and model weights. Where Europe is today: dependent, but with access. The 70% cloud dependency and 2% compute share are already locked in.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(201,106,43,0.3);border-radius:8px;background:rgba(201,106,43,0.03);">
+          <div style="font-size:0.85rem;font-weight:600;color:var(--gold);margin-bottom:4px;">Managed Access (Germany&rsquo;s scenario in the story)</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">Delayed model releases (90&ndash;180 days), restricted APIs, inference-only access, mandatory telemetry sharing. This is what Merz is reading at 5am: Germany downgraded because of its China trade relationships.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="font-size:0.85rem;font-weight:600;color:var(--red);margin-bottom:4px;">Full Restriction</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">Complete denial of access. No frontier models, no cloud compute, no model weights. The scenario Merz calls &ldquo;signing off our death warrant.&rdquo; Hospitals go dark. Universities lose their tools. Ministries scramble.</div>
         </div>
       </div>
     </div>
@@ -1629,7 +1644,7 @@ body::after {
       <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
         <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI: AI talent flows</a>
         <a class="source-link" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo: Global AI Talent Tracker</a>
-        <a class="source-link" href="https://www.nber.org/papers/w31873" target="_blank">NBER: AI researcher migration</a>
+        <a class="source-link" href="https://www.nber.org/papers/w28671" target="_blank">NBER: Immigration and Regional Specialization in AI</a>
       </div>
     </div>
 
@@ -1667,6 +1682,9 @@ body::after {
         <p class="section-sub">A timeline comparison: aviation then, AI now.</p>
         <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Wi-Fi Alliance formed in 1999: six companies united to guarantee interoperability. A rising tide lifts all ships, so long as everyone agrees to open their respective dams. The Airbus precedent took thirteen years from first talks to first breakthrough. Two timelines, side by side.</p>
       </div>
+      <div class="reveal">
+        <canvas id="timelineArcsCanvas" style="width:100%;height:200px;margin-bottom:1rem;"></canvas>
+      </div>
       <div class="widget reveal">
         <h3>Timeline: The Airbus Parallel</h3>
         <div class="timeline-dual">
@@ -1692,7 +1710,7 @@ body::after {
         <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
           <a class="source-link" href="https://www.airbus.com/en/who-we-are/our-history" target="_blank">Airbus: Corporate history</a>
           <a class="source-link" href="https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds316_e.htm" target="_blank">WTO: DS316 Boeing-Airbus dispute</a>
-          <a class="source-link" href="https://ecfr.eu/publication/the-eurostack/" target="_blank">ECFR: The EuroStack</a>
+          <a class="source-link" href="https://ecfr.eu/publication/get-over-your-x-a-european-plan-to-escape-american-technology/" target="_blank">ECFR: The EuroStack</a>
         </div>
       </div>
     </div>
@@ -1701,183 +1719,6 @@ body::after {
 </div>
 
 <!-- ==================== CONCLUSION (full-width) ==================== -->
-<section class="conclusion" id="conclusion">
-  <div class="conclusion-inner">
-    <div class="reveal">
-      <h2>The Argument</h2>
-    </div>
-    <div class="reveal">
-      <p>Europe does not have a technology problem. It has a coordination problem. The talent exists. The capital exists, if aggregated. The market exists. What does not exist is a structure that can act at the speed and scale that AI requires.</p>
-    </div>
-    <div class="reveal">
-      <p>The Airbus precedent is not a guarantee. It is proof of concept. It shows that European countries can, under sufficient pressure, build industrial champions that compete with American incumbents. It also shows that it takes a decade of ugly compromises to get there.</p>
-    </div>
-    <div class="reveal">
-      <p>The question is whether Europe starts now — imperfectly, messily, with all the political friction that entails — or waits until the dependency is so deep that the cost of building an alternative exceeds the cost of accepting the terms.</p>
-    </div>
-    <div class="reveal">
-      <p><strong>The slow boil is already underway. The only question is whether anyone turns off the heat.</strong></p>
-    </div>
-    <div class="conclusion-buttons reveal">
-      <a href="simulation.html" class="btn btn-primary">Play the Simulation</a>
-      <a href="index.html" class="btn btn-outline">Build the Coalition Yourself</a>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== LIVE DASHBOARD ==================== -->
-<section style="padding:5rem 2rem;background:var(--bg);border-top:1px solid var(--border);" id="dashboard">
-  <div style="max-width:1100px;margin:0 auto;">
-    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
-      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;margin-bottom:0.5rem;color:var(--cyan);font-family:var(--font);letter-spacing:-0.01em;">Live Dashboard</h2>
-      <p style="color:var(--text-dim);font-size:0.85rem;font-family:var(--mono);">Real-time indicators of European AI sovereignty. How the numbers stand today.</p>
-    </div>
-
-    <!-- Static report cards -->
-    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:2rem;">
-
-      <!-- Card: EU Cloud Dependency (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Cloud Dependency</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
-        </div>
-        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">70%</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">controlled by US hyperscalers</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
-          <div style="width:70%;height:100%;background:var(--red);border-radius:4px;"></div>
-        </div>
-        <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank" style="margin-top:8px;display:inline-block;">Synergy Research, 2024</a>
-      </div>
-
-      <!-- Card: EU AI Compute (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Share of Global AI Compute</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
-        </div>
-        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">projected by 2027</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
-          <div style="width:2%;height:100%;background:var(--red);border-radius:4px;"></div>
-        </div>
-        <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank" style="margin-top:8px;display:inline-block;">European Commission</a>
-      </div>
-
-      <!-- Card: EU Frontier Model Share (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Frontier Model Share</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
-        </div>
-        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">Mistral AI's global LLM market</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
-          <div style="width:2%;height:100%;background:var(--red);border-radius:4px;"></div>
-        </div>
-        <a class="source-link" href="https://www.statista.com/statistics/1482817/market-share-of-ai-chatbots/" target="_blank" style="margin-top:8px;display:inline-block;">Statista, 2025</a>
-      </div>
-
-      <!-- Card: Startup Exodus (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU AI Startup Relocation Rate</div>
-          <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
-        </div>
-        <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;">>30%</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">relocate to the United States</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
-          <div style="width:30%;height:100%;background:var(--gold);border-radius:4px;"></div>
-        </div>
-        <a class="source-link" href="https://www.ft.com/content/europe-scale-up-problem" target="_blank" style="margin-top:8px;display:inline-block;">Financial Times, 2025</a>
-      </div>
-
-    </div>
-
-    <!-- LIVE: Top AI Models from HuggingFace -->
-    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Top AI Models — Who Dominates the Ecosystem</div>
-        <span id="hfLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> LOADING</span>
-      </div>
-      <div id="hfModelSummary" style="display:flex;gap:16px;margin-bottom:1rem;flex-wrap:wrap;"></div>
-      <div id="hfModelTable" style="font-size:0.75rem;font-family:var(--mono);color:var(--text-dim);">
-        <div style="display:flex;align-items:center;gap:8px;color:var(--text-dim);"><svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite;"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="28" stroke-dashoffset="8"/></svg> Loading live data from HuggingFace...</div>
-        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-      </div>
-      <div style="margin-top:12px;">
-        <a class="source-link" href="https://huggingface.co/models" target="_blank">HuggingFace Model Hub (live)</a>
-      </div>
-    </div>
-
-    <!-- LIVE: Open Source AI Activity from GitHub -->
-    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Open Source AI Activity — Top Repositories</div>
-        <span id="ghLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> LOADING</span>
-      </div>
-      <div id="ghRepoSummary" style="display:flex;gap:16px;margin-bottom:1rem;flex-wrap:wrap;"></div>
-      <div id="ghRepoTable" style="font-size:0.75rem;font-family:var(--mono);color:var(--text-dim);">
-        <div style="display:flex;align-items:center;gap:8px;color:var(--text-dim);"><svg width="16" height="16" viewBox="0 0 16 16" style="animation:spin 1s linear infinite;"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="28" stroke-dashoffset="8"/></svg> Loading live data from GitHub...</div>
-      </div>
-      <div style="margin-top:12px;">
-        <a class="source-link" href="https://github.com/topics/artificial-intelligence" target="_blank">GitHub AI Topics (live)</a>
-      </div>
-    </div>
-
-    <!-- Market cap comparison bar (semi-live) -->
-    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">AI Company Valuations — US vs EU ($B)</div>
-        <span id="mktCapBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
-      </div>
-      <div id="dashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
-      <div id="mktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);"></div>
-      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
-        <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/" target="_blank">Reuters AI valuations</a>
-        <a class="source-link" href="https://www.cbinsights.com/research-ai-trends" target="_blank">CB Insights AI Trends</a>
-      </div>
-    </div>
-
-    <!-- Talent distribution -->
-    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Top AI Researchers by Region</div>
-        <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
-      </div>
-      <div style="display:flex;gap:16px;align-items:flex-end;height:120px;">
-        <div style="flex:1;text-align:center;">
-          <div style="height:72px;background:var(--red);border-radius:4px;opacity:0.7;"></div>
-          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--red);margin-top:4px;">~60%</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);">United States</div>
-        </div>
-        <div style="flex:1;text-align:center;">
-          <div style="height:30px;background:var(--gold);border-radius:4px;opacity:0.7;"></div>
-          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--gold);margin-top:4px;">~25%</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);">China</div>
-        </div>
-        <div style="flex:1;text-align:center;">
-          <div style="height:12px;background:var(--cyan);border-radius:4px;opacity:0.7;"></div>
-          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--cyan);margin-top:4px;">~10%</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);">Europe</div>
-        </div>
-        <div style="flex:1;text-align:center;">
-          <div style="height:6px;background:var(--text-dim);border-radius:4px;"></div>
-          <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--text-dim);margin-top:4px;">~5%</div>
-          <div style="font-size:0.7rem;color:var(--text-dim);">Other</div>
-        </div>
-      </div>
-      <div style="margin-top:12px;">
-        <a class="source-link" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo Global AI Talent Tracker</a>
-        <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank" style="margin-left:8px;">Stanford HAI AI Index 2024</a>
-      </div>
-    </div>
-
-    <div class="reveal" style="text-align:center;margin-top:2rem;color:var(--text-dim);font-size:0.75rem;font-family:var(--mono);">
-      Cards marked LIVE pull real-time data from public APIs (HuggingFace, GitHub). Cards marked REPORT DATA use published industry estimates.
-    </div>
-  </div>
-</section>
 
 <!-- ==================== NEW DATA VISUALIZATIONS ==================== -->
 <section style="padding:5rem 2rem;background:var(--bg);border-top:0.5px solid rgba(255,255,255,0.08);" id="deep-data">
@@ -1894,7 +1735,7 @@ body::after {
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Capital Flow — Where EU AI Money Ends Up</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $146B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
 
       <canvas id="capitalFlowCanvas" style="width:100%;height:320px;"></canvas>
 
@@ -1902,11 +1743,11 @@ body::after {
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--cyan);font-variant-numeric:tabular-nums;">$14B</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">EU AI Funding (2024)</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">EU AI Funding (Atomico, 2024)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--red);font-variant-numeric:tabular-nums;">$146B</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">US AI Funding (2024)</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">US AI Funding (Atomico, 2024)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--gold);font-variant-numeric:tabular-nums;">57%</div>
@@ -2092,9 +1933,23 @@ body::after {
         </div>
       </div>
       <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
-        <a class="source-link" href="https://www.wipo.int/web-publications/patent-landscape-report-generative-artificial-intelligence-genai/" target="_blank">WIPO GenAI Patent Landscape Report</a>
+        <a class="source-link" href="https://www.wipo.int/web-publications/patent-landscape-report-generative-artificial-intelligence-genai/en/index.html" target="_blank">WIPO GenAI Patent Landscape Report</a>
         <a class="source-link" href="https://intellectual-property-helpdesk.ec.europa.eu/news-events/news/epo-publishes-patent-index-2024" target="_blank">EPO Patent Index 2024</a>
         <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
+      </div>
+    </div>
+
+    <!-- ===== AI COMPANY VALUATIONS ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">AI Company Valuations &mdash; US vs EU ($B)</div>
+      </div>
+      <div id="dashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div id="mktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);"></div>
+      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.reuters.com/technology/artificial-intelligence/" target="_blank">Reuters AI valuations</a>
+        <a class="source-link" href="https://www.cnbc.com/2025/03/31/openai-closes-40-billion-in-funding-the-largest-private-fundraise-in-history-softbank-chatgpt.html" target="_blank">OpenAI: CNBC, 2025</a>
+        <a class="source-link" href="https://www.cnbc.com/2025/09/09/ai-firm-mistral-valued-at-14-billion-as-asml-takes-major-stake.html" target="_blank">Mistral: CNBC, 2025</a>
       </div>
     </div>
 
@@ -2149,6 +2004,31 @@ body::after {
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ==================== THE ARGUMENT (full-width) ==================== -->
+<section class="conclusion" id="conclusion">
+  <div class="conclusion-inner">
+    <div class="reveal">
+      <h2>The Argument</h2>
+    </div>
+    <div class="reveal">
+      <p>Europe does not have a technology problem. It has a coordination problem. The talent exists. The capital exists, if aggregated. The market exists. What does not exist is a structure that can act at the speed and scale that AI requires.</p>
+    </div>
+    <div class="reveal">
+      <p>The Airbus precedent is not a guarantee. It is proof of concept. It shows that European countries can, under sufficient pressure, build industrial champions that compete with American incumbents. It also shows that it takes a decade of ugly compromises to get there.</p>
+    </div>
+    <div class="reveal">
+      <p>The question is whether Europe starts now — imperfectly, messily, with all the political friction that entails — or waits until the dependency is so deep that the cost of building an alternative exceeds the cost of accepting the terms.</p>
+    </div>
+    <div class="reveal">
+      <p><strong>The slow boil is already underway. The only question is whether anyone turns off the heat.</strong></p>
+    </div>
+    <div class="conclusion-buttons reveal">
+      <a href="simulation.html" class="btn btn-primary">Play the Simulation</a>
+      <a href="index.html" class="btn btn-outline">Build the Coalition Yourself</a>
+    </div>
   </div>
 </section>
 
@@ -3613,7 +3493,7 @@ async function fetchDashboardData() {
   ];
   // Column 3: Economic result
   const colC = [
-    {label:'$146B US AI ecosystem', x:0.93, y:0.22, col:'#ff3333'},
+    {label:'$109B US AI ecosystem', x:0.93, y:0.22, col:'#ff3333'},
     {label:'$14B EU AI ecosystem', x:0.93, y:0.52, col:'#0fa37a'},
     {label:'Diluted / lost', x:0.93, y:0.80, col:'rgba(232,224,204,0.3)'}
   ];
@@ -4197,9 +4077,15 @@ async function fetchDashboardData() {
   const ptMeta = document.getElementById('ptMeta');
   const ptDesc = document.getElementById('ptDesc');
 
+  const dpr = window.devicePixelRatio || 1;
   function resize() {
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = 500;
+    const w = canvas.parentElement.clientWidth;
+    const h = 500;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();
 
@@ -4282,8 +4168,8 @@ async function fetchDashboardData() {
 
   players.forEach(p => {
     const c = regionCenters[p.region];
-    p.x = (c.x + (Math.random()-0.5)*0.3) * canvas.width;
-    p.y = (c.y + (Math.random()-0.5)*0.4) * canvas.height;
+    p.x = (c.x + (Math.random()-0.5)*0.3) * (canvas.width / dpr);
+    p.y = (c.y + (Math.random()-0.5)*0.4) * (canvas.height / dpr);
     p.vx = 0; p.vy = 0;
     p.visible = true;
   });
@@ -4299,7 +4185,7 @@ async function fetchDashboardData() {
     players.forEach(p => {
       if (!p.visible) return;
       const dx = p.x - mx, dy = p.y - my;
-      if (Math.sqrt(dx*dx+dy*dy) < p.r + 4) hoveredNode = p;
+      if (Math.sqrt(dx*dx+dy*dy) < p.r + 12) hoveredNode = p;
     });
     if (hoveredNode) {
       canvas.style.cursor = 'pointer';
@@ -4321,7 +4207,7 @@ async function fetchDashboardData() {
   });
 
   function simulate() {
-    const W = canvas.width, H = canvas.height;
+    const W = canvas.width / dpr, H = canvas.height / dpr;
 
     players.forEach((n, i) => {
       if (!n.visible) return;
@@ -4368,7 +4254,7 @@ async function fetchDashboardData() {
 
   let t = 0;
   function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
     t++;
 
     simulate();
@@ -4489,10 +4375,399 @@ async function fetchDashboardData() {
       const dRect = dublin.getBoundingClientRect();
       const cRect = tokyo.getBoundingClientRect();
       const visible = dRect.top < window.innerHeight && cRect.top > 0;
-      indicator.style.opacity = visible ? '1' : '0';
-      indicator.style.pointerEvents = visible ? 'auto' : 'none';
+      indicator.classList.toggle('visible', visible);
     }
   });
+})();
+
+// ============================================================
+// ANIMATED RIGHT-SIDE PANEL VISUALIZATIONS
+// ============================================================
+
+// --- Dependency Bars (panel-dependency) ---
+(function(){
+  const canvas = document.getElementById('dependencyRingsCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  function resize() {
+    const w = canvas.parentElement.clientWidth;
+    const h = 320;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize(); window.addEventListener('resize', () => { resize(); draw(); });
+
+  const bars = [
+    {label:'Cloud infra', foreign:0.70, fLabel:'70% US hyperscalers', eu:0.15, col:'#ff3333'},
+    {label:'AI compute', foreign:0.98, fLabel:'98% US + China', eu:0.02, col:'#ff3333'},
+    {label:'Frontier models', foreign:0.98, fLabel:'98% US/China', eu:0.02, col:'#ff3333'},
+    {label:'Top researchers', foreign:0.85, fLabel:'57% US + 28% China', eu:0.10, col:'#c96a2b'},
+    {label:'AI investment', foreign:0.90, fLabel:'$109B US (Stanford HAI)', eu:0.04, col:'#c96a2b'},
+    {label:'Chip design', foreign:0.95, fLabel:'NVIDIA, AMD, Qualcomm', eu:0.00, col:'#ff3333'}
+  ];
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    const W = canvas.width / dpr, H = canvas.height / dpr;
+    const barH = 28, gap = 22, labelW = 110, startY = 16;
+    const barMaxW = W - labelW - 20;
+
+    bars.forEach((b, i) => {
+      const y = startY + i * (barH + gap);
+      ctx.fillStyle = '#e0d8c4';
+      ctx.font = '13px Inter, sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText(b.label, labelW - 12, y + barH/2);
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      ctx.beginPath(); ctx.roundRect(labelW, y, barMaxW, barH, 4); ctx.fill();
+      const fW = barMaxW * b.foreign;
+      ctx.fillStyle = b.col + '20';
+      ctx.beginPath(); ctx.roundRect(labelW, y, fW, barH, 4); ctx.fill();
+      ctx.strokeStyle = b.col + '70'; ctx.lineWidth = 0.6;
+      ctx.beginPath(); ctx.roundRect(labelW, y, fW, barH, 4); ctx.stroke();
+      if (b.eu > 0.005) {
+        const euW = Math.max(barMaxW * b.eu, 4);
+        ctx.fillStyle = '#1a6cd430';
+        ctx.fillRect(labelW + fW, y, euW, barH);
+        ctx.strokeStyle = '#1a6cd480'; ctx.lineWidth = 0.6;
+        ctx.strokeRect(labelW + fW, y, euW, barH);
+      }
+      if (fW > 80) {
+        ctx.fillStyle = 'rgba(232,224,204,0.6)';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.fillText(b.fLabel, labelW + 10, y + barH/2);
+      }
+    });
+    const ly = H - 10;
+    [{label:'Foreign control',col:'#ff3333',x:labelW},{label:'EU share',col:'#1a6cd4',x:labelW+140}].forEach(l => {
+      ctx.beginPath(); ctx.arc(l.x, ly, 4, 0, Math.PI*2);
+      ctx.fillStyle = l.col; ctx.fill();
+      ctx.fillStyle = 'rgba(232,224,204,0.6)';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(l.label, l.x + 10, ly);
+    });
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- Stack Flow (panel-stack, above heatmap) ---
+(function(){
+  const canvas = document.getElementById('stackFlowCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.parentElement.clientWidth; canvas.height = 240; }
+  resize(); window.addEventListener('resize', resize);
+
+  const layers = [
+    {label:'Chips', us:0.90, cn:0.08, eu:0.02},
+    {label:'Cloud', us:0.70, cn:0.18, eu:0.12},
+    {label:'Models', us:0.65, cn:0.30, eu:0.05},
+    {label:'Enterprise', us:0.55, cn:0.20, eu:0.25},
+    {label:'Talent', us:0.60, cn:0.25, eu:0.10},
+    {label:'Capital', us:0.72, cn:0.22, eu:0.06}
+  ];
+
+  let t = 0;
+  let grown = layers.map(() => 0);
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W = canvas.width, H = canvas.height;
+    t++;
+    grown = grown.map(g => Math.min(g + 0.015, 1));
+
+    const barH = 20;
+    const gap = 16;
+    const labelW = 70;
+    const startY = 10;
+    const barW = W - labelW - 20;
+
+    layers.forEach((l, i) => {
+      const y = startY + i * (barH + gap);
+      const g = grown[i];
+
+      // Label
+      ctx.fillStyle = 'rgba(232,224,204,0.6)';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(l.label, labelW - 10, y + barH/2 + 3);
+
+      // Background
+      ctx.fillStyle = 'rgba(255,255,255,0.02)';
+      ctx.beginPath(); ctx.roundRect(labelW, y, barW, barH, 4); ctx.fill();
+
+      // US segment
+      const usW = barW * l.us * g;
+      ctx.fillStyle = 'rgba(255,51,51,0.25)';
+      ctx.beginPath(); ctx.roundRect(labelW, y, usW, barH, 4); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,51,51,0.6)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.roundRect(labelW, y, usW, barH, 4); ctx.stroke();
+
+      // China segment
+      const cnW = barW * l.cn * g;
+      ctx.fillStyle = 'rgba(201,106,43,0.25)';
+      ctx.fillRect(labelW + usW, y, cnW, barH);
+
+      // EU segment
+      const euW = barW * l.eu * g;
+      ctx.fillStyle = 'rgba(26,108,212,0.3)';
+      ctx.fillRect(labelW + usW + cnW, y, euW, barH);
+      ctx.strokeStyle = 'rgba(26,108,212,0.6)';
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(labelW + usW + cnW, y, euW, barH);
+
+      // Travelling dot along US portion
+      const dotX = labelW + ((t * 0.003 + i * 0.2) % 1) * usW;
+      ctx.beginPath();
+      ctx.arc(dotX, y + barH/2, 1.5, 0, Math.PI*2);
+      ctx.fillStyle = '#ff3333';
+      ctx.fill();
+    });
+
+    // Legend
+    const ly = H - 8;
+    [{label:'US',col:'#ff3333'},{label:'China',col:'#c96a2b'},{label:'EU',col:'#1a6cd4'}].forEach((item, i) => {
+      const lx = labelW + i * 80;
+      ctx.beginPath(); ctx.arc(lx, ly, 3, 0, Math.PI*2);
+      ctx.fillStyle = item.col; ctx.fill();
+      ctx.fillStyle = 'rgba(232,224,204,0.5)';
+      ctx.font = '9px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(item.label, lx + 8, ly + 3);
+    });
+
+    const allDone = grown.every(g => g >= 1);
+    if (!allDone) requestAnimationFrame(draw);
+    else {
+      // Keep travelling dots going
+      requestAnimationFrame(draw);
+    }
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- Scenario Impact Chart (panel-simulation) ---
+(function(){
+  const canvas = document.getElementById('scenarioImpactCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  function resize() {
+    const w = canvas.parentElement.clientWidth;
+    const h = 360;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize(); window.addEventListener('resize', () => { resize(); draw(); });
+
+  const metrics = ['Cloud access','AI compute','Model availability','Talent retention','Investment flow'];
+  const scenarios = [
+    {name:'Status quo', col:'#1a6cd4', vals:[0.30, 0.02, 0.05, 0.15, 0.10]},
+    {name:'Managed Access', col:'#c96a2b', vals:[0.15, 0.02, 0.02, 0.10, 0.06]},
+    {name:'Full Restriction', col:'#ff3333', vals:[0.05, 0.01, 0.00, 0.05, 0.02]}
+  ];
+
+  function draw() {
+    const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
+    const leftPad = 120, rightPad = 30, topPad = 40, bottomPad = 50;
+    const chartW = W - leftPad - rightPad;
+    const chartH = H - topPad - bottomPad;
+    const rowH = chartH / metrics.length;
+
+    ctx.font = '10px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(232,224,204,0.3)';
+    ctx.fillText('EU SHARE / CAPACITY', leftPad + chartW / 2, topPad - 22);
+
+    [0, 0.10, 0.20, 0.30].forEach(v => {
+      const x = leftPad + (v / 0.35) * chartW;
+      ctx.beginPath(); ctx.moveTo(x, topPad); ctx.lineTo(x, topPad + chartH);
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5; ctx.stroke();
+      ctx.fillStyle = 'rgba(232,224,204,0.35)';
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(Math.round(v * 100) + '%', x, topPad - 6);
+    });
+
+    metrics.forEach((m, mi) => {
+      const y = topPad + mi * rowH + rowH / 2;
+      ctx.fillStyle = '#e0d8c4'; ctx.font = '12px Inter, sans-serif';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.fillText(m, leftPad - 14, y);
+      ctx.beginPath(); ctx.moveTo(leftPad, topPad + mi * rowH);
+      ctx.lineTo(leftPad + chartW, topPad + mi * rowH);
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5; ctx.stroke();
+
+      const dotY = [y - 10, y, y + 10];
+      scenarios.forEach((s, si) => {
+        const val = s.vals[mi];
+        const x = leftPad + (val / 0.35) * chartW;
+        ctx.beginPath(); ctx.arc(x, dotY[si], 5, 0, Math.PI * 2);
+        ctx.fillStyle = s.col + '40'; ctx.fill();
+        ctx.beginPath(); ctx.arc(x, dotY[si], 3, 0, Math.PI * 2);
+        ctx.fillStyle = s.col; ctx.fill();
+        if (mi < metrics.length - 1) {
+          const nx = leftPad + (s.vals[mi + 1] / 0.35) * chartW;
+          const ny = topPad + (mi + 1) * rowH + rowH / 2 + (si - 1) * 10;
+          ctx.beginPath(); ctx.moveTo(x, dotY[si]); ctx.lineTo(nx, ny);
+          ctx.strokeStyle = s.col + '18'; ctx.lineWidth = 1; ctx.stroke();
+        }
+      });
+    });
+
+    const ly = H - 16;
+    scenarios.forEach((s, i) => {
+      const lx = leftPad + i * 140;
+      ctx.beginPath(); ctx.arc(lx, ly, 4, 0, Math.PI * 2);
+      ctx.fillStyle = s.col; ctx.fill();
+      ctx.fillStyle = 'rgba(232,224,204,0.6)'; ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(s.name, lx + 10, ly);
+    });
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- Timeline Arcs (panel-timeline, above Airbus comparison) ---
+(function(){
+  const canvas = document.getElementById('timelineArcsCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.parentElement.clientWidth; canvas.height = 200; }
+  resize(); window.addEventListener('resize', resize);
+
+  const events = [
+    {year:'1967', label:'Talks begin', x:0.08, col:'#1a6cd4', row:0},
+    {year:'1970', label:'Airbus GIE', x:0.24, col:'#1a6cd4', row:0},
+    {year:'1974', label:'A300 flies', x:0.40, col:'#1a6cd4', row:0},
+    {year:'1985', label:'A320', x:0.56, col:'#1a6cd4', row:0},
+    {year:'2000', label:'EADS merger', x:0.72, col:'#1a6cd4', row:0},
+    {year:'2019', label:'Airbus #1', x:0.88, col:'#1a6cd4', row:0},
+    {year:'2026', label:'Crisis', x:0.08, col:'#c96a2b', row:1},
+    {year:'2027', label:'Coalition', x:0.24, col:'#c96a2b', row:1},
+    {year:'2028', label:'First model', x:0.40, col:'#c96a2b', row:1},
+    {year:'2030', label:'Enterprise', x:0.56, col:'#c96a2b', row:1},
+    {year:'2033', label:'Competitive', x:0.72, col:'#c96a2b', row:1},
+    {year:'2035', label:'Parity', x:0.88, col:'#c96a2b', row:1}
+  ];
+
+  let t = 0;
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W = canvas.width, H = canvas.height;
+    t++;
+
+    const rowY = [H * 0.3, H * 0.7];
+
+    // Row labels with color indicator
+    ctx.font = '600 10px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    // Aviation row
+    ctx.beginPath(); ctx.arc(W * 0.02, rowY[0] - 34, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#1a6cd4'; ctx.fill();
+    ctx.fillStyle = 'rgba(232,224,204,0.4)';
+    ctx.fillText('AIRBUS (AVIATION)', W * 0.02 + 12, rowY[0] - 31);
+    // AI row
+    ctx.beginPath(); ctx.arc(W * 0.02, rowY[1] - 34, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#c96a2b'; ctx.fill();
+    ctx.fillStyle = 'rgba(232,224,204,0.4)';
+    ctx.fillText('AI COALITION (PROJECTED)', W * 0.02 + 12, rowY[1] - 31);
+
+    // Horizontal track lines
+    [0,1].forEach(row => {
+      ctx.beginPath();
+      ctx.moveTo(W * 0.05, rowY[row]);
+      ctx.lineTo(W * 0.95, rowY[row]);
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+
+    // Draw events
+    events.forEach((e, i) => {
+      const x = e.x * W;
+      const y = rowY[e.row];
+      const pulse = 1 + 0.15 * Math.sin(t * 0.025 + i * 0.7);
+
+      // Glow
+      ctx.beginPath();
+      ctx.arc(x, y, 10 * pulse, 0, Math.PI*2);
+      ctx.fillStyle = e.col + '08';
+      ctx.fill();
+
+      // Dot
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI*2);
+      ctx.fillStyle = e.col;
+      ctx.fill();
+
+      // Year
+      ctx.fillStyle = e.col;
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.year, x, y - 14);
+
+      // Label
+      ctx.fillStyle = 'rgba(232,224,204,0.45)';
+      ctx.font = '8px Inter, sans-serif';
+      ctx.fillText(e.label, x, y + 18);
+    });
+
+    // Connecting arcs between sequential events in same row
+    [0,1].forEach(row => {
+      const rowEvents = events.filter(e => e.row === row);
+      for (let i = 0; i < rowEvents.length - 1; i++) {
+        const a = rowEvents[i], b = rowEvents[i+1];
+        const x1 = a.x * W, x2 = b.x * W, y = rowY[row];
+        ctx.beginPath();
+        ctx.moveTo(x1, y);
+        ctx.quadraticCurveTo((x1+x2)/2, y - 20, x2, y);
+        ctx.strokeStyle = a.col + '20';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Travelling dot
+        const prog = ((t * 0.005 + i * 0.2) % 1);
+        const dx = x1 + (x2-x1)*prog;
+        const dy = y - 20 * Math.sin(prog * Math.PI);
+        ctx.beginPath();
+        ctx.arc(dx, dy, 1.5, 0, Math.PI*2);
+        ctx.fillStyle = a.col + '60';
+        ctx.fill();
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
 })();
 </script>
 </body>
