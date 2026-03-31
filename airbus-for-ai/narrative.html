@@ -1581,34 +1581,58 @@ body::after {
 
     <!-- Data Panel: Simulation -->
     <div class="data-panel active" id="panel-simulation" data-panel-id="panel-simulation">
-      <div class="reveal" style="margin-bottom:1.5rem;">
-        <h2>What triggers coalition-building?</h2>
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Licensing tightens, deliveries stall, or cloud access becomes conditional on alignment with foreign policy demands. Once leaders believe compute can be throttled from abroad, coalition-building stops being optional.</p>
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">A European government realizes that core ministries, hospitals, defense planners, or education systems depend on non-European foundation models and cloud providers, and then pricing changes, access changes, or legal conditions shift.</p>
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">What exact event makes a French minister, a German chancellor, and a Dutch finance official all say within 72 hours: &ldquo;we cannot leave this to the market anymore&rdquo;?</p>
-      </div>
-      <!-- Scenario Impact Visualization -->
       <div class="reveal">
-        <h2>Scenario Impact</h2>
-        <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.9rem;line-height:1.7;">
-          The Digital Liberty Act sorts countries into three tiers. This is what each tier means for European AI capacity.
-        </p>
+        <h2>What triggers coalition-building?</h2>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">What exact event makes a French minister, a German chancellor, and a Dutch finance official all say within 72 hours: &ldquo;we cannot leave this to the market anymore&rdquo;? It has already started happening.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;">
+          <a class="source-link" href="https://ecfr.eu/publication/get-over-your-x-a-european-plan-to-escape-american-technology/" target="_blank">ECFR: European plan to escape American technology</a>
+          <a class="source-link" href="https://www.brookings.edu/articles/the-new-ai-diffusion-export-control-rule-will-undermine-us-ai-leadership/" target="_blank">Brookings: AI Diffusion Rule analysis</a>
+          <a class="source-link" href="https://www.crossborderdataforum.org/cloudactfaqs/" target="_blank">Cross-Border Data Forum: CLOUD Act</a>
+          <a class="source-link" href="https://www.csis.org/analysis/understanding-us-allies-current-legal-authority-implement-ai-and-semiconductor-export-controls" target="_blank">CSIS: Allied export control authority</a>
+        </div>
       </div>
 
-      <div class="reveal" style="display:flex;flex-direction:column;gap:10px;margin-top:0.5rem;">
-        <div style="padding:1rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:8px;background:rgba(26,108,212,0.03);">
-          <div style="font-size:0.85rem;font-weight:600;color:var(--cyan);margin-bottom:4px;">Status Quo (Aligned)</div>
-          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">Full access to frontier model APIs, cloud training clusters, and model weights. Where Europe is today: dependent, but with access. The 70% cloud dependency and 2% compute share are already locked in.</div>
+      <!-- Real precedents timeline -->
+      <div class="reveal">
+        <canvas id="precedentsCanvas" style="width:100%;height:340px;"></canvas>
+      </div>
+
+      <!-- Real-world precedent cards -->
+      <div class="reveal" style="display:flex;flex-direction:column;gap:10px;margin-top:1rem;">
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--red);">CLOUD Act (2018)</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">US LAW</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">US law enforcement can compel American companies to hand over data stored abroad. Even if your data is hosted in Frankfurt by an American provider, US authorities can legally access it without involving any European authority.</div>
+          <a class="source-link" href="https://www.crossborderdataforum.org/cloudactfaqs/" target="_blank" style="margin-top:6px;display:inline-block;">Cross-Border Data Forum: CLOUD Act FAQ</a>
         </div>
         <div style="padding:1rem;border:0.5px solid rgba(201,106,43,0.3);border-radius:8px;background:rgba(201,106,43,0.03);">
-          <div style="font-size:0.85rem;font-weight:600;color:var(--gold);margin-bottom:4px;">Managed Access (Germany&rsquo;s scenario in the story)</div>
-          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">Delayed model releases (90&ndash;180 days), restricted APIs, inference-only access, mandatory telemetry sharing. This is what Merz is reading at 5am: Germany downgraded because of its China trade relationships.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--gold);">AI Chip Export Controls (2022&ndash;2025)</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">US EXPORT CONTROL</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">The Biden &ldquo;AI Diffusion Rule&rdquo; (Jan 2025) sorted the world into three tiers. 18 allies got full access. ~150 countries got capped at ~50,000 GPUs. ~24 countries were banned entirely. 17 EU members were placed in the capped tier, not the trusted tier.</div>
+          <a class="source-link" href="https://www.brookings.edu/articles/the-new-ai-diffusion-export-control-rule-will-undermine-us-ai-leadership/" target="_blank" style="margin-top:6px;display:inline-block;">Brookings: AI Diffusion Rule Analysis</a>
         </div>
-        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
-          <div style="font-size:0.85rem;font-weight:600;color:var(--red);margin-bottom:4px;">Full Restriction</div>
-          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">Complete denial of access. No frontier models, no cloud compute, no model weights. The scenario Merz calls &ldquo;signing off our death warrant.&rdquo; Hospitals go dark. Universities lose their tools. Ministries scramble.</div>
+        <div style="padding:1rem;border:0.5px solid rgba(201,106,43,0.3);border-radius:8px;background:rgba(201,106,43,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--gold);">OpenAI Service Withdrawal (Jul 2024)</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">CORPORATE ACTION</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">OpenAI began blocking API access from &ldquo;unsupported&rdquo; countries. Not a government order. A corporate decision about where to offer service. The trigger does not have to be a total cutoff.</div>
+          <a class="source-link" href="https://www.theregister.com/2024/06/25/openai_unsupported_countries/" target="_blank" style="margin-top:6px;display:inline-block;">The Register: OpenAI pulls plug on unsupported nations</a>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:8px;background:rgba(26,108,212,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--cyan);">ECFR: Weaponisation Risk</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">POLICY ANALYSIS</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">&ldquo;You can have the chips, but only under our security terms.&rdquo; Advanced AI chip exports for data centres now require licenses, with exemptions tied to technology-security agreements and broader political bargaining.</div>
+          <a class="source-link" href="https://ecfr.eu/publication/get-over-your-x-a-european-plan-to-escape-american-technology/" target="_blank" style="margin-top:6px;display:inline-block;">ECFR: Get Over Your X</a>
         </div>
       </div>
+
     </div>
 
     <!-- Data Panel: Talent Map -->
@@ -4562,86 +4586,106 @@ async function fetchDashboardData() {
 })();
 
 
-// --- Scenario Impact Chart (panel-simulation) ---
+// --- Precedents Timeline (panel-simulation) ---
 (function(){
-  const canvas = document.getElementById('scenarioImpactCanvas');
+  const canvas = document.getElementById('precedentsCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   function resize() {
     const w = canvas.parentElement.clientWidth;
-    const h = 360;
+    const h = 340;
     canvas.width = w * dpr; canvas.height = h * dpr;
     canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize(); window.addEventListener('resize', () => { resize(); draw(); });
 
-  const metrics = ['Cloud access','AI compute','Model availability','Talent retention','Investment flow'];
-  const scenarios = [
-    {name:'Status quo', col:'#1a6cd4', vals:[0.30, 0.02, 0.05, 0.15, 0.10]},
-    {name:'Managed Access', col:'#c96a2b', vals:[0.15, 0.02, 0.02, 0.10, 0.06]},
-    {name:'Full Restriction', col:'#ff3333', vals:[0.05, 0.01, 0.00, 0.05, 0.02]}
+  const events = [
+    {year:'2018', label:'CLOUD Act', desc:'US accesses data stored abroad', x:0.10, col:'#c96a2b', severity:0.35},
+    {year:'2022', label:'Chip export controls', desc:'AI chip restrictions begin', x:0.32, col:'#c96a2b', severity:0.50},
+    {year:'2024', label:'OpenAI blocks access', desc:'APIs cut from unsupported nations', x:0.55, col:'#ff3333', severity:0.55},
+    {year:'2025', label:'AI Diffusion Rule', desc:'17 EU states in capped tier', x:0.78, col:'#ff3333', severity:0.85}
   ];
 
+  let t = 0;
   function draw() {
     const W = canvas.width / dpr, H = canvas.height / dpr;
     ctx.clearRect(0, 0, W, H);
-    const leftPad = 120, rightPad = 30, topPad = 40, bottomPad = 50;
-    const chartW = W - leftPad - rightPad;
-    const chartH = H - topPad - bottomPad;
-    const rowH = chartH / metrics.length;
+    t++;
 
-    ctx.font = '10px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(232,224,204,0.3)';
-    ctx.fillText('EU SHARE / CAPACITY', leftPad + chartW / 2, topPad - 22);
+    const trackY = H * 0.45;
+    const leftPad = 10, rightPad = 10;
 
-    [0, 0.10, 0.20, 0.30].forEach(v => {
-      const x = leftPad + (v / 0.35) * chartW;
-      ctx.beginPath(); ctx.moveTo(x, topPad); ctx.lineTo(x, topPad + chartH);
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5; ctx.stroke();
-      ctx.fillStyle = 'rgba(232,224,204,0.35)';
-      ctx.font = '10px JetBrains Mono, monospace';
+    // Title
+    ctx.fillStyle = 'rgba(232,224,204,0.2)';
+    ctx.font = '600 10px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('ESCALATION OF US TECHNOLOGY LEVERAGE', leftPad, 18);
+
+    // Severity label
+    ctx.textAlign = 'right';
+    ctx.fillText('LEVERAGE INTENSITY', W - rightPad, 18);
+
+    // Track line
+    ctx.beginPath();
+    ctx.moveTo(leftPad, trackY);
+    ctx.lineTo(W - rightPad, trackY);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    // Severity bars + dots + labels
+    events.forEach((e, i) => {
+      const x = leftPad + e.x * (W - leftPad - rightPad);
+      const barH = e.severity * (trackY - 40);
+      const barTop = trackY - barH;
+
+      // Severity bar
+      ctx.fillStyle = e.col + '15';
+      ctx.beginPath();
+      ctx.roundRect(x - 14, barTop, 28, barH, 4);
+      ctx.fill();
+      ctx.strokeStyle = e.col + '40';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.roundRect(x - 14, barTop, 28, barH, 4);
+      ctx.stroke();
+
+      // Dot on track
+      const pulse = 1 + 0.08 * Math.sin(t * 0.03 + i * 1.1);
+      ctx.beginPath();
+      ctx.arc(x, trackY, 5 * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = e.col;
+      ctx.fill();
+
+      // Year label above
+      ctx.fillStyle = e.col;
+      ctx.font = '600 10px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(Math.round(v * 100) + '%', x, topPad - 6);
-    });
+      ctx.fillText(e.year, x, barTop - 6);
 
-    metrics.forEach((m, mi) => {
-      const y = topPad + mi * rowH + rowH / 2;
-      ctx.fillStyle = '#e0d8c4'; ctx.font = '12px Inter, sans-serif';
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-      ctx.fillText(m, leftPad - 14, y);
-      ctx.beginPath(); ctx.moveTo(leftPad, topPad + mi * rowH);
-      ctx.lineTo(leftPad + chartW, topPad + mi * rowH);
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5; ctx.stroke();
+      // Event name below track
+      ctx.fillStyle = 'rgba(232,224,204,0.65)';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.label, x, trackY + 18);
 
-      const dotY = [y - 10, y, y + 10];
-      scenarios.forEach((s, si) => {
-        const val = s.vals[mi];
-        const x = leftPad + (val / 0.35) * chartW;
-        ctx.beginPath(); ctx.arc(x, dotY[si], 5, 0, Math.PI * 2);
-        ctx.fillStyle = s.col + '40'; ctx.fill();
-        ctx.beginPath(); ctx.arc(x, dotY[si], 3, 0, Math.PI * 2);
-        ctx.fillStyle = s.col; ctx.fill();
-        if (mi < metrics.length - 1) {
-          const nx = leftPad + (s.vals[mi + 1] / 0.35) * chartW;
-          const ny = topPad + (mi + 1) * rowH + rowH / 2 + (si - 1) * 10;
-          ctx.beginPath(); ctx.moveTo(x, dotY[si]); ctx.lineTo(nx, ny);
-          ctx.strokeStyle = s.col + '18'; ctx.lineWidth = 1; ctx.stroke();
-        }
+      // Description
+      ctx.fillStyle = 'rgba(232,224,204,0.4)';
+      ctx.font = '8px Inter, sans-serif';
+      // Word wrap the description
+      const words = e.desc.split(' ');
+      let line1 = '', line2 = '';
+      words.forEach(w => {
+        if (ctx.measureText(line1 + ' ' + w).width < 70) line1 += (line1 ? ' ' : '') + w;
+        else line2 += (line2 ? ' ' : '') + w;
       });
+      ctx.fillText(line1, x, trackY + 30);
+      if (line2) ctx.fillText(line2, x, trackY + 40);
     });
 
-    const ly = H - 16;
-    scenarios.forEach((s, i) => {
-      const lx = leftPad + i * 140;
-      ctx.beginPath(); ctx.arc(lx, ly, 4, 0, Math.PI * 2);
-      ctx.fillStyle = s.col; ctx.fill();
-      ctx.fillStyle = 'rgba(232,224,204,0.6)'; ctx.font = '11px Inter, sans-serif';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-      ctx.fillText(s.name, lx + 10, ly);
-    });
+    requestAnimationFrame(draw);
   }
 
   const obs = new IntersectionObserver(entries => {
