@@ -606,49 +606,62 @@ body::after {
 
 /* === DOCUMENT INSET === */
 .doc-inset {
-  max-width: 620px; margin: 2rem auto; padding: 3rem 2.5rem 2.5rem;
-  background: #f5f1e8;
+  max-width: 620px; margin: 2rem auto;
+  padding: 0;
+  background: #fff;
   color: #1a1a1a !important;
   font-family: 'Times New Roman', Georgia, serif;
-  font-size: 0.82rem; line-height: 1.65;
+  font-size: 0.82rem; line-height: 1.7;
   border: none;
-  box-shadow: 4px 6px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.1);
-  position: relative; border-radius: 2px;
-  /* Paper texture */
-  background-image:
-    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
-  background-size: 100% 1.65em;
+  box-shadow: 4px 6px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.08);
+  position: relative; border-radius: 0;
+  overflow: hidden;
 }
+/* Presidential header block */
 .doc-inset::before {
-  /* Top red/blue header stripe */
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 4px;
-  background: linear-gradient(90deg, #002868, #002868 33%, #bf0a30 33%, #bf0a30 66%, #002868 66%);
+  content: 'THE WHITE HOUSE \A \A OFFICE OF THE PRESIDENT \A WASHINGTON';
+  white-space: pre;
+  display: block;
+  text-align: center;
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #002868;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 3px double #002868;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.8;
 }
-.doc-inset, .doc-inset * { color: #2a2a2a !important; }
-.doc-inset strong { color: #111 !important; font-weight: 700; }
-.doc-inset .doc-subtitle { color: #444 !important; }
-.doc-inset .doc-section { color: #1a1a1a !important; }
+.doc-inset-body {
+  padding: 1.5rem 2.5rem 2.5rem;
+}
+.doc-inset, .doc-inset * { color: #222 !important; }
+.doc-inset strong { color: #000 !important; font-weight: 700; }
+.doc-inset .doc-subtitle { color: #333 !important; }
+.doc-inset .doc-section { color: #000 !important; }
 .doc-inset h4 {
-  font-size: 1.05rem; text-align: center; margin-bottom: 0.5rem;
-  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: #111 !important; font-family: 'Times New Roman', Georgia, serif;
-  border-bottom: 2px solid #111; padding-bottom: 0.5rem;
+  font-size: 1.1rem; text-align: center; margin-bottom: 1rem;
+  font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #000 !important; font-family: 'Times New Roman', Georgia, serif;
+  padding: 0;
+  border: none;
 }
 .doc-inset .doc-subtitle {
-  text-align: center; font-style: italic; margin-bottom: 1.5rem;
-  color: #444 !important; font-size: 0.78rem;
-  padding-bottom: 1rem; border-bottom: 0.5px solid #ccc;
+  text-align: justify; font-style: normal; margin-bottom: 1.5rem;
+  color: #333 !important; font-size: 0.8rem;
+  padding-bottom: 1rem; border-bottom: 1px solid #ddd;
+  text-indent: 2rem;
 }
 .doc-inset p {
   margin-bottom: 0.7rem; text-indent: 2rem;
-  color: #2a2a2a !important; text-align: justify;
+  color: #222 !important; text-align: justify;
 }
 .doc-inset .doc-section {
   font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem;
-  text-indent: 0; font-size: 0.88rem; color: #111 !important;
-  text-transform: uppercase; letter-spacing: 0.04em;
-  border-bottom: 0.5px solid #bbb; padding-bottom: 0.3rem;
+  text-indent: 0; font-size: 0.85rem; color: #000 !important;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border: none; padding: 0;
 }
 .doc-inset .doc-stamp {
   display: none;
@@ -1987,6 +2000,7 @@ body::after {
 
       <!-- DOCUMENT INSET: Digital Liberty Act -->
       <div class="doc-inset reveal">
+        <div class="doc-inset-body">
         <h4>The Digital Liberty Act</h4>
         <p class="doc-subtitle">The United States of America has declared that, in the interest of the continued safety of our digital infrastructure, we are mandating that any and all access to American-based frontier AI technologies is dependent on the full and unmitigated acceptance of The Digital Liberty Act the pillars of which are the following:</p>
 
@@ -2009,6 +2023,7 @@ body::after {
 
         <p class="doc-section">Snapback Provisions</p>
         <p>The Secretary may suspend, modify, or revoke Aligned AI Security Jurisdiction status upon a determination that the jurisdiction no longer maintains substantially comparable measures, or that entities within the jurisdiction materially support the acquisition, training, deployment, or operationalization of covered artificial intelligence capabilities by a country of concern.</p>
+        </div>
       </div>
 
       <div class="reveal">
