@@ -666,6 +666,23 @@ body::after {
 .doc-inset .doc-stamp {
   display: none;
 }
+.doc-inset .doc-item {
+  text-indent: 0 !important;
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.doc-inset .doc-item strong {
+  display: block;
+  padding-left: 0;
+  margin-left: -1.5rem;
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+}
+.doc-inset .doc-list-intro {
+  text-indent: 0 !important;
+  margin-bottom: 0.5rem;
+}
 
 /* === INTERACTIVE WIDGETS === */
 .widget {
@@ -2008,18 +2025,18 @@ body::after {
         <p>It is the policy of the United States to ensure that access by foreign persons to advanced U.S. artificial intelligence models, model weights, and large-scale cloud compute capacity occurs only in jurisdictions that maintain technology security measures substantially comparable to those of the United States with respect to the People&rsquo;s Republic of China</p>
 
         <p class="doc-section">Jurisdictional Access</p>
-        <p><strong>Aligned Jurisdictions:</strong> full access to specified frontier model APIs, cloud training clusters, and advanced model-weight transfers, subject to compliance rules.</p>
-        <p><strong>Managed-access Jurisdictions:</strong> Limited access, slower approvals, inference-only access in some cases, no export of certain weights, no dedicated reserved compute beyond a threshold.</p>
-        <p><strong>Restricted Jurisdictions:</strong> full denial of access.</p>
+        <p class="doc-item"><strong>(a) Aligned Jurisdictions.</strong> Full access to specified frontier model APIs, cloud training clusters, and advanced model-weight transfers, subject to compliance rules.</p>
+        <p class="doc-item"><strong>(b) Managed-access Jurisdictions.</strong> Limited access, slower approvals, inference-only access in some cases, no export of certain weights, no dedicated reserved compute beyond a threshold.</p>
+        <p class="doc-item"><strong>(c) Restricted Jurisdictions.</strong> Full denial of access.</p>
 
         <p class="doc-section">Authority for General AI Aligned Countries (AGAIC)</p>
         <p>The establishment of AGAIC defines &ldquo;alignment&rdquo; as: exports, reexports, or transfers (in-country) of controlled advanced closed-weight AI model weights, or access to covered training or fine-tuning capacity using covered advanced computing integrated circuits, are authorized only for entities located in jurisdictions designated by the Secretary of Commerce, in consultation with the Secretary of State and the Secretary of the Treasury, as Aligned AI Security Jurisdictions.</p>
 
         <p class="doc-section">Alignment Criteria</p>
-        <p>To be considered &ldquo;Aligned&rdquo; a participating nation needs to meet the following criteria:</p>
-        <p><strong>China Technology Controls:</strong> member states seeking Tier 1 status, must adopt measures &ldquo;substantially comparable&rdquo; to the US on: outbound investment screening or restrictions for AI, semiconductor, and quantum sectors involving China; advanced semiconductor export controls; restrictions on support for PRC military-intelligence end uses; restrictions on transfers of advanced model weights or large-scale compute to PRC-linked entities.</p>
-        <p><strong>Public-sector and Critical-infrastructure Exclusion:</strong> No public authority, state-owned enterprise, operator of critical infrastructure, defense contractor, or publicly funded health or education system within the applicant jurisdiction shall procure, host, fine-tune, or operationally rely upon covered cloud, AI, or telecommunications services provided by entities organized under the laws of, headquartered in, or effectively controlled by the People&rsquo;s Republic of China.</p>
-        <p><strong>Audit and Compliance:</strong> to remain continually compliant the following processes would need to occur on a regular basis which already comply with US IaaS rules: annual government certification; designated national enforcement authority; audit rights or compliance data sharing; mandatory reporting of violations; cloud customer identification and beneficial ownership checks for high-end AI usage.</p>
+        <p class="doc-list-intro">To be considered &ldquo;Aligned,&rdquo; a participating nation shall meet the following criteria:</p>
+        <p class="doc-item"><strong>(i) China Technology Controls.</strong> Member states seeking Tier 1 status must adopt measures &ldquo;substantially comparable&rdquo; to the United States on: outbound investment screening or restrictions for AI, semiconductor, and quantum sectors involving China; advanced semiconductor export controls; restrictions on support for PRC military-intelligence end uses; restrictions on transfers of advanced model weights or large-scale compute to PRC-linked entities.</p>
+        <p class="doc-item"><strong>(ii) Public-sector and Critical-infrastructure Exclusion.</strong> No public authority, state-owned enterprise, operator of critical infrastructure, defense contractor, or publicly funded health or education system within the applicant jurisdiction shall procure, host, fine-tune, or operationally rely upon covered cloud, AI, or telecommunications services provided by entities organized under the laws of, headquartered in, or effectively controlled by the People&rsquo;s Republic of China.</p>
+        <p class="doc-item"><strong>(iii) Audit and Compliance.</strong> To remain continually compliant, the following processes shall occur on a regular basis: annual government certification; designated national enforcement authority; audit rights or compliance data sharing; mandatory reporting of violations; cloud customer identification and beneficial ownership checks for high-end AI usage.</p>
 
         <p class="doc-section">Snapback Provisions</p>
         <p>The Secretary may suspend, modify, or revoke Aligned AI Security Jurisdiction status upon a determination that the jurisdiction no longer maintains substantially comparable measures, or that entities within the jurisdiction materially support the acquisition, training, deployment, or operationalization of covered artificial intelligence capabilities by a country of concern.</p>
