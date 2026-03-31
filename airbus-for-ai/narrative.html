@@ -5244,7 +5244,7 @@ async function fetchDashboardData() {
 })();
 
 
-// --- Precedents Timeline (panel-simulation) ---
+// --- Precedents Scatter Plot (panel-simulation) ---
 (function(){
   const canvas = document.getElementById('precedentsCanvas');
   if (!canvas) return;
@@ -5259,91 +5259,109 @@ async function fetchDashboardData() {
   }
   resize(); window.addEventListener('resize', () => { resize(); draw(); });
 
+  // Events with year as numeric for Y positioning, type for X grouping
   const events = [
-    {year:'2018', label:'CLOUD Act', desc:'US accesses data stored abroad', x:0.10, col:'#c96a2b', severity:0.35},
-    {year:'2022', label:'Chip export controls', desc:'AI chip restrictions begin', x:0.32, col:'#c96a2b', severity:0.50},
-    {year:'2024', label:'OpenAI blocks access', desc:'APIs cut from unsupported nations', x:0.55, col:'#ff3333', severity:0.55},
-    {year:'2025', label:'AI Diffusion Rule', desc:'17 EU states in capped tier', x:0.78, col:'#ff3333', severity:0.85}
+    {year:2018, label:'CLOUD Act', desc:'US can access data stored abroad via US providers', type:'Legal', col:'#c96a2b'},
+    {year:2022, label:'Chip export controls', desc:'First restrictions on advanced AI chip exports', type:'Export', col:'#c96a2b'},
+    {year:2023, label:'Entity List expansion', desc:'140 companies added to restricted list', type:'Export', col:'#ff3333'},
+    {year:2024, label:'OpenAI blocks access', desc:'API access cut from unsupported countries', type:'Corporate', col:'#ff3333'},
+    {year:2025, label:'AI Diffusion Rule', desc:'3-tier system, 17 EU states capped', type:'Export', col:'#ff3333'},
   ];
 
-  let t = 0;
   function draw() {
     const W = canvas.width / dpr, H = canvas.height / dpr;
     ctx.clearRect(0, 0, W, H);
-    t++;
 
-    const trackY = H * 0.45;
-    const leftPad = 10, rightPad = 10;
+    const leftPad = 50, rightPad = 20, topPad = 30, bottomPad = 40;
+    const chartW = W - leftPad - rightPad;
+    const chartH = H - topPad - bottomPad;
 
-    // Title
-    ctx.fillStyle = 'rgba(232,224,204,0.2)';
-    ctx.font = '600 10px Inter, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('ESCALATION OF US TECHNOLOGY LEVERAGE', leftPad, 18);
+    // Y-axis: years (2018 at top, 2025 at bottom — chronological downward)
+    const minYear = 2017, maxYear = 2026;
+    function yForYear(y) { return topPad + ((y - minYear) / (maxYear - minYear)) * chartH; }
 
-    // Severity label
-    ctx.textAlign = 'right';
-    ctx.fillText('LEVERAGE INTENSITY', W - rightPad, 18);
-
-    // Track line
-    ctx.beginPath();
-    ctx.moveTo(leftPad, trackY);
-    ctx.lineTo(W - rightPad, trackY);
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-    ctx.lineWidth = 0.5;
-    ctx.stroke();
-
-    // Severity bars + dots + labels
-    events.forEach((e, i) => {
-      const x = leftPad + e.x * (W - leftPad - rightPad);
-      const barH = e.severity * (trackY - 40);
-      const barTop = trackY - barH;
-
-      // Severity bar
-      ctx.fillStyle = e.col + '15';
+    // Y-axis labels and gridlines
+    for (let yr = 2018; yr <= 2025; yr++) {
+      const y = yForYear(yr);
+      // Gridline
       ctx.beginPath();
-      ctx.roundRect(x - 14, barTop, 28, barH, 4);
-      ctx.fill();
-      ctx.strokeStyle = e.col + '40';
+      ctx.moveTo(leftPad, y);
+      ctx.lineTo(W - rightPad, y);
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
       ctx.lineWidth = 0.5;
-      ctx.beginPath();
-      ctx.roundRect(x - 14, barTop, 28, barH, 4);
       ctx.stroke();
-
-      // Dot on track
-      const pulse = 1 + 0.08 * Math.sin(t * 0.03 + i * 1.1);
-      ctx.beginPath();
-      ctx.arc(x, trackY, 5 * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = e.col;
-      ctx.fill();
-
-      // Year label above
-      ctx.fillStyle = e.col;
-      ctx.font = '600 10px JetBrains Mono, monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(e.year, x, barTop - 6);
-
-      // Event name below track
-      ctx.fillStyle = 'rgba(232,224,204,0.65)';
-      ctx.font = '10px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(e.label, x, trackY + 18);
-
-      // Description
+      // Year label
       ctx.fillStyle = 'rgba(232,224,204,0.4)';
-      ctx.font = '8px Inter, sans-serif';
-      // Word wrap the description
-      const words = e.desc.split(' ');
-      let line1 = '', line2 = '';
-      words.forEach(w => {
-        if (ctx.measureText(line1 + ' ' + w).width < 70) line1 += (line1 ? ' ' : '') + w;
-        else line2 += (line2 ? ' ' : '') + w;
-      });
-      ctx.fillText(line1, x, trackY + 30);
-      if (line2) ctx.fillText(line2, x, trackY + 40);
+      ctx.font = '11px JetBrains Mono, monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(yr, leftPad - 10, y);
+    }
+
+    // X-axis: type categories
+    const types = ['Legal', 'Export', 'Corporate'];
+    const typeX = {};
+    types.forEach((t, i) => {
+      const x = leftPad + ((i + 0.5) / types.length) * chartW;
+      typeX[t] = x;
+      // Column label
+      ctx.fillStyle = 'rgba(232,224,204,0.25)';
+      ctx.font = '600 9px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(t.toUpperCase(), x, H - bottomPad + 12);
     });
 
-    requestAnimationFrame(draw);
+    // Vertical column separators
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    ctx.lineWidth = 0.5;
+    types.forEach((t, i) => {
+      if (i === 0) return;
+      const x = leftPad + (i / types.length) * chartW;
+      ctx.beginPath(); ctx.moveTo(x, topPad); ctx.lineTo(x, H - bottomPad); ctx.stroke();
+    });
+
+    // Connecting line through events chronologically
+    ctx.beginPath();
+    events.forEach((e, i) => {
+      const x = typeX[e.type];
+      const y = yForYear(e.year);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = 'rgba(255,51,51,0.2)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Scatter points + labels
+    events.forEach((e) => {
+      const x = typeX[e.type];
+      const y = yForYear(e.year);
+
+      // Outer glow
+      ctx.beginPath();
+      ctx.arc(x, y, 14, 0, Math.PI * 2);
+      ctx.fillStyle = e.col + '10';
+      ctx.fill();
+
+      // Dot
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = e.col;
+      ctx.fill();
+
+      // Event label (to the right of dot)
+      ctx.fillStyle = '#e0d8c4';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(e.label, x + 14, y - 6);
+
+      // Description
+      ctx.fillStyle = 'rgba(232,224,204,0.45)';
+      ctx.font = '9px Inter, sans-serif';
+      ctx.fillText(e.desc, x + 14, y + 8);
+    });
   }
 
   const obs = new IntersectionObserver(entries => {
