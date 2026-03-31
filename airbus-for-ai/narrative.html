@@ -9,76 +9,65 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #12141a;
-  --bg-raised: #1a1d24;
-  --bg-panel: #151820;
-  --border: #252830;
-  --border-bright: #353840;
-  --text-primary: #f0f0f0;
-  --text-secondary: #c0c0c0;
-  --text-dim: #808890;
-  --amber: #ffb000;
-  --green: #00ff88;
+  --bg: #05090f;
+  --bg-raised: #0b1628;
+  --bg-panel: #0b1628;
+  --border: rgba(255,255,255,0.08);
+  --border-bright: rgba(255,255,255,0.15);
+  --text-primary: #e8e0cc;
+  --text-secondary: rgba(232,224,204,0.65);
+  --text-dim: rgba(232,224,204,0.35);
+  --amber: #c96a2b;
+  --green: #0fa37a;
   --red: #ff3333;
-  --cyan: #00ccff;
-  --blue: #4488ff;
-  --white: #e0e0e0;
-  --off-white: #cccccc;
-  --light-gray: #333333;
-  --mid-gray: #555555;
-  --dark-gray: #888888;
-  --navy: #0a0a0a;
-  --navy-light: #111111;
-  --navy-dark: #0a0a0a;
-  --sky: #00ccff;
-  --sky-light: #44ddff;
-  --gold: #ffb000;
-  --font: 'JetBrains Mono', monospace;
+  --cyan: #1a6cd4;
+  --blue: #1a6cd4;
+  --white: #e8e0cc;
+  --off-white: rgba(232,224,204,0.5);
+  --light-gray: rgba(255,255,255,0.06);
+  --mid-gray: rgba(255,255,255,0.12);
+  --dark-gray: rgba(232,224,204,0.4);
+  --navy: #05090f;
+  --navy-light: #0b1628;
+  --navy-dark: #02050a;
+  --sky: #1a6cd4;
+  --sky-light: #4a8ce4;
+  --gold: #c96a2b;
+  --aurora: #7b6fd6;
+  --font: 'Inter', sans-serif;
   --mono: 'JetBrains Mono', monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'JetBrains Mono', monospace; color: var(--text-primary); line-height: 1.7; overflow-x: hidden;
+  font-family: 'Inter', sans-serif; color: var(--text-primary); line-height: 1.7; overflow-x: hidden;
   background: var(--bg);
   font-size: 14px;
-  /* CRT scanline overlay */
-  background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  background-image: radial-gradient(ellipse at center, rgba(26,108,212,0.03) 0%, transparent 70%);
 }
-/* CRT vignette — darkened edges */
+/* Vignette removed */
 body::after {
-  content:''; position:fixed; top:0; left:0; right:0; bottom:0;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.3) 100%);
-  pointer-events:none; z-index:9999;
+  display: none;
 }
-/* Amber glow on key text */
-.glow { text-shadow: 0 0 8px rgba(255,176,0,0.3), 0 0 20px rgba(255,176,0,0.1); }
-/* Blinking cursor */
-@keyframes blink-cursor { 0%,100%{opacity:1;} 50%{opacity:0;} }
+/* Subtle glow */
+.glow { text-shadow: 0 0 30px rgba(26,108,212,0.15); }
+/* Cursor removed */
 .cursor::after {
-  content:'_'; color:var(--amber); animation: blink-cursor 1s step-end infinite;
-  font-weight:400;
+  display: none;
 }
-/* Typed underline for headers */
+/* Typed underline removed */
 .typed-underline {
-  border-bottom: 2px solid var(--amber);
+  border-bottom: none;
   padding-bottom: 4px;
   display: inline;
 }
-/* Noise/grain texture overlay */
+/* Grain overlay removed */
 .grain {
-  position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:9998;
-  opacity:0.02;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat:repeat;background-size:200px 200px;
+  display: none;
 }
-/* Status ticker bar at bottom */
+/* Ticker bar hidden */
 .ticker-bar {
-  position:fixed;bottom:0;left:0;right:0;height:24px;z-index:200;
-  background:var(--bg-raised);border-top:1px solid var(--border);
-  display:flex;align-items:center;overflow:hidden;
-  font-size:10px;color:var(--text-dim);letter-spacing:0.05em;
+  display:none;
 }
 .ticker-bar .ticker-content {
   white-space:nowrap;animation:ticker-scroll 60s linear infinite;
@@ -101,24 +90,24 @@ body::after {
 }
 .progress-fill {
   height: 100%; width: 0%;
-  background: var(--amber);
+  background: var(--cyan);
   transition: width 0.1s linear;
 }
 
 /* === TOP NAV === */
 .topnav {
   position: fixed; top: 2px; left: 0; right: 0; z-index: 100;
-  background: rgba(10,10,10,0.95); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(5,9,15,0.95); backdrop-filter: blur(16px);
+  border-bottom: 0.5px solid var(--border);
   padding: 0 2rem; height: 48px;
   display: flex; align-items: center; justify-content: space-between;
 }
 .topnav-brand {
-  font-weight: 800; font-size: 0.85rem; color: var(--amber);
-  text-decoration: none; letter-spacing: 0.05em; font-family: var(--mono);
+  font-weight: 800; font-size: 0.85rem; color: var(--cyan);
+  text-decoration: none; letter-spacing: 0.05em; font-family: var(--font);
   white-space: nowrap;
 }
-.topnav-brand:hover { color: #ffc844; }
+.topnav-brand:hover { color: #4a8ce4; }
 .topnav-chapters {
   display: flex; gap: 0; overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -126,13 +115,13 @@ body::after {
 .topnav-chapters a {
   font-size: 0.72rem; font-weight: 600; color: var(--text-dim);
   text-decoration: none; white-space: nowrap; transition: color 0.2s;
-  font-family: var(--mono); letter-spacing: 0.03em; text-transform: uppercase;
+  font-family: var(--font); letter-spacing: 0.14em; text-transform: uppercase;
   padding: 0 0.75rem;
-  border-right: 1px solid var(--border);
+  border-right: 0.5px solid var(--border);
 }
 .topnav-chapters a:last-child { border-right: none; }
-.topnav-chapters a:hover { color: var(--amber); }
-.topnav-chapters a.active { color: var(--amber); }
+.topnav-chapters a:hover { color: var(--cyan); }
+.topnav-chapters a.active { color: var(--cyan); }
 
 /* === HERO === */
 .hero {
@@ -145,25 +134,23 @@ body::after {
 .hero-particles canvas { width: 100%; height: 100%; }
 .hero-content { position: relative; z-index: 2; max-width: 800px; }
 .hero h1 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700;
-  line-height: 1.1; letter-spacing: 0.08em; margin-bottom: 1rem;
-  color: var(--amber); font-family: var(--mono);
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(255,176,0,0.4), 0 0 40px rgba(255,176,0,0.15), 0 0 80px rgba(255,176,0,0.05);
+  font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300;
+  line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 1rem;
+  color: var(--text-primary); font-family: var(--font);
+  text-shadow: 0 0 40px rgba(26,108,212,0.1);
 }
 .hero-sub {
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--green);
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--cyan);
   max-width: 600px; margin: 0 auto 3rem; line-height: 1.7;
-  font-family: var(--mono);
+  font-family: var(--font);
 }
-.hero-sub::before { content: '> '; color: var(--text-dim); }
+.hero-sub::before { content: ''; }
 .scroll-indicator {
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  color: var(--text-dim); font-size: 0.8rem; font-family: var(--mono);
+  color: var(--text-dim); font-size: 0.8rem; font-family: var(--font);
   letter-spacing: 0.1em; cursor: pointer; transition: color 0.3s;
-  animation: blink-cursor 1.2s step-end infinite;
 }
-.scroll-indicator:hover { color: var(--amber); }
+.scroll-indicator:hover { color: var(--cyan); }
 .scroll-indicator svg { width: 20px; height: 20px; display: none; }
 @keyframes blink-cursor {
   0%, 100% { border-right: 2px solid var(--amber); }
@@ -188,48 +175,45 @@ body::after {
 .split-narrative p {
   font-size: 15px; line-height: 1.8;
   color: var(--text-secondary); margin-bottom: 1.25rem;
-  max-width: none;
+  max-width: none; font-family: var(--font); font-weight: 400;
 }
 .split-narrative p:last-child { margin-bottom: 0; }
 .split-narrative strong { color: var(--text-primary); }
 .split-narrative em { color: var(--text-secondary); font-style: italic; }
 .split-narrative h2 {
-  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
-  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: 0.04em;
-  color: var(--amber); font-family: var(--mono); text-transform: uppercase;
-  text-shadow: 0 0 6px rgba(255,176,0,0.2);
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300;
+  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  color: var(--cyan); font-family: var(--font);
 }
 .split-narrative h3 {
   font-size: 1.1rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
-  color: var(--text-primary); font-family: var(--mono);
+  color: var(--text-primary); font-family: var(--font);
 }
-/* ASCII art decoration before blockquotes */
+/* Blockquote before removed */
 .split-narrative blockquote::before {
-  content: '// '; color: var(--text-dim);
+  content: ''; display: none;
 }
 .split-narrative .dateline {
-  font-family: var(--mono); font-size: 0.75rem; color: var(--green);
-  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;
+  font-family: var(--font); font-size: 10px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 1rem;
   display: block; padding: 6px 10px;
-  background: rgba(0,255,136,0.03); border-left: 2px solid var(--green);
+  opacity: 0.5;
 }
 .split-narrative .dateline::before {
-  content: '> '; color: var(--amber);
+  content: ''; display: none;
 }
-.split-narrative .dateline::before { content: '> '; color: var(--text-dim); }
 .split-narrative .chapter-divider {
-  width: 100%; height: 1px; background: var(--border); margin: 3rem 0;
-  opacity: 1;
+  width: 100%; height: 0; border-top: 0.5px solid rgba(255,255,255,0.08); margin: 3rem 0;
+  opacity: 1; background: none;
 }
 .split-narrative .chapter-divider::after {
   content: ''; display: block;
 }
 .split-narrative blockquote {
-  border-left: 2px solid var(--amber); padding-left: 1.5rem;
+  border-left: 0.5px solid var(--cyan); padding-left: 1.5rem;
   margin: 2rem 0; font-style: normal;
   color: var(--text-secondary);
 }
-.split-narrative blockquote::before { content: ''; }
 .split-narrative blockquote cite {
   display: block; margin-top: 0.5rem; font-size: 0.85rem;
   font-style: normal; color: var(--text-dim);
@@ -244,7 +228,7 @@ body::after {
   overflow-y: auto;
 }
 .split-data::-webkit-scrollbar { width: 4px; }
-.split-data::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 0; }
+.split-data::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 4px; }
 .split-data::-webkit-scrollbar-track { background: transparent; }
 
 .data-panel {
@@ -256,11 +240,11 @@ body::after {
   animation: panelFadeIn 0.5s ease;
 }
 .data-panel h2 {
-  color: var(--amber) !important;
-  font-family: var(--mono);
+  color: var(--cyan) !important;
+  font-family: var(--font);
 }
-.data-panel h2::before { content: '\250C\2500 '; color: var(--text-dim); font-weight: 400; }
-.data-panel h2::after { content: ' \2500\2510'; color: var(--text-dim); font-weight: 400; }
+.data-panel h2::before { content: ''; }
+.data-panel h2::after { content: ''; }
 @keyframes panelFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -276,11 +260,12 @@ body::after {
   content: 'UNCLASSIFIED // FOR OFFICIAL USE ONLY';
   display: block;
   font-size: 10px;
-  letter-spacing: 0.15em;
-  color: #333;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
   margin-bottom: 2rem;
   text-transform: uppercase;
-  font-family: var(--mono);
+  font-family: var(--font);
+  opacity: 0.4;
 }
 
 /* === CHAPTER STYLES (still used inside split-narrative) === */
@@ -296,26 +281,26 @@ body::after {
 .chapter strong { color: var(--text-primary); }
 .chapter em { color: var(--text-secondary); font-style: italic; }
 .chapter h2 {
-  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
-  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: 0;
-  color: var(--amber); font-family: var(--mono); text-transform: uppercase;
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300;
+  line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  color: var(--cyan); font-family: var(--font);
 }
 .chapter h3 {
   font-size: 1.1rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
-  color: var(--text-primary); font-family: var(--mono);
+  color: var(--text-primary); font-family: var(--font);
 }
 .dateline {
-  font-family: var(--mono); font-size: 0.8rem; color: var(--amber);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;
-  display: block;
+  font-family: var(--font); font-size: 10px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 1rem;
+  display: block; opacity: 0.5;
 }
-.dateline::before { content: '> '; color: var(--text-dim); }
+.dateline::before { content: ''; }
 .chapter-divider {
-  width: 100%; height: 1px; background: var(--border); margin: 3rem 0;
-  opacity: 1;
+  width: 100%; height: 0; border-top: 0.5px solid rgba(255,255,255,0.08); margin: 3rem 0;
+  opacity: 1; background: none;
 }
 .chapter blockquote {
-  border-left: 2px solid var(--amber); padding-left: 1.5rem;
+  border-left: 0.5px solid var(--cyan); padding-left: 1.5rem;
   margin: 2rem 0; font-style: normal;
   color: var(--text-secondary);
 }
@@ -332,13 +317,13 @@ body::after {
 }
 .data-break-inner { max-width: 1100px; margin: 0 auto; }
 .data-break h2, .data-panel h2 {
-  font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 700;
-  margin-bottom: 0.5rem; letter-spacing: 0;
-  font-family: var(--mono);
+  font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 300;
+  margin-bottom: 0.5rem; letter-spacing: -0.01em;
+  font-family: var(--font);
 }
 .data-break .section-sub, .data-panel .section-sub {
   color: var(--text-dim); font-size: 0.85rem;
-  margin-bottom: 2rem; font-family: var(--mono);
+  margin-bottom: 2rem; font-family: var(--font);
 }
 .stat-row {
   display: flex; gap: 1rem; justify-content: center;
@@ -346,23 +331,22 @@ body::after {
 }
 .stat-card {
   text-align: left; padding: 1.25rem 1rem; flex: 1; min-width: 140px; max-width: 300px;
-  background: var(--bg-raised); border: 1px solid var(--border);
-  border-radius: 0; position:relative;
-  border-top: 2px solid var(--red);
+  background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 10px; position:relative;
 }
 .stat-card::before {
-  content: 'ALERT'; position:absolute; top:6px; right:8px;
-  font-size:8px; letter-spacing:0.15em; color:var(--red); opacity:0.4;
+  content: ''; display: none;
 }
-.stat-card:hover { border-color: var(--amber); }
+.stat-card:hover { border-color: var(--border-bright); }
 .stat-val {
-  font-family: var(--mono); font-size: 2rem; font-weight: 700;
-  color: var(--red); line-height: 1;
-  text-shadow: 0 0 10px rgba(255,51,51,0.2);
+  font-family: var(--font); font-size: 2rem; font-weight: 300;
+  color: var(--cyan); line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 .stat-label {
-  font-size: 11px; color: var(--text-dim); margin-top: 0.5rem;
-  line-height: 1.4; text-transform: uppercase; letter-spacing: 0.1em;
+  font-size: 10px; color: var(--text-dim); margin-top: 0.5rem;
+  line-height: 1.4; text-transform: uppercase; letter-spacing: 0.06em;
+  opacity: 0.4; font-family: var(--font);
 }
 .stat-cite {
   font-size: 0.65rem; color: var(--text-dim); margin-top: 0.3rem;
@@ -370,8 +354,8 @@ body::after {
 }
 .chart-container {
   margin: 2rem 0; max-width: none;
-  background: var(--bg-raised); border: 1px solid var(--border);
-  border-radius: 0; padding: 1.5rem;
+  background: var(--bg-raised); border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 1.5rem;
 }
 .chart-container:hover { border-color: var(--border-bright); }
 .chart-container h3 {
@@ -386,8 +370,8 @@ body::after {
   max-width: 600px; margin: 2rem auto; padding: 2.5rem 2rem;
   background: var(--bg-raised); color: var(--text-primary) !important;
   font-family: var(--mono); font-size: 0.85rem; line-height: 1.7;
-  border: 1px solid var(--border); box-shadow: none;
-  position: relative; border-radius: 0;
+  border: 0.5px solid rgba(255,255,255,0.08); box-shadow: none;
+  position: relative; border-radius: 10px;
 }
 .doc-inset, .doc-inset * { color: var(--text-secondary) !important; }
 .doc-inset strong { color: var(--text-primary) !important; font-weight: 700; }
@@ -417,32 +401,32 @@ body::after {
 /* === INTERACTIVE WIDGETS === */
 .widget {
   max-width: none; margin: 2rem 0; padding: 1.5rem;
-  background: var(--bg-raised); border: 1px solid var(--border);
-  border-radius: 0;
+  background: var(--bg-raised); border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
 }
 .widget:hover { border-color: var(--border-bright); }
 .widget h3 {
   font-size: 11px; font-weight: 700; margin-bottom: 1rem;
-  color: var(--amber); font-family: var(--mono);
-  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--cyan); font-family: var(--font);
+  letter-spacing: 0.06em; text-transform: uppercase;
 }
 .widget label {
   display: block; font-size: 0.85rem; color: var(--text-secondary);
   margin-bottom: 0.5rem; font-weight: 600;
 }
 .widget input[type="range"] {
-  width: 100%; margin-bottom: 1rem; accent-color: var(--amber);
-  -webkit-appearance: none; height: 4px; border-radius: 0;
+  width: 100%; margin-bottom: 1rem; accent-color: var(--cyan);
+  -webkit-appearance: none; height: 4px; border-radius: 4px;
   background: var(--border); outline: none;
 }
 .widget input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 14px; height: 14px;
-  border-radius: 0; background: var(--amber); cursor: pointer;
+  border-radius: 50%; background: var(--cyan); cursor: pointer;
   border: 1px solid var(--bg);
 }
 .widget .cost-display {
   text-align: center; padding: 1.5rem; margin-top: 1rem;
-  background: var(--bg); border: 1px solid var(--border); border-radius: 0;
+  background: var(--bg); border: 0.5px solid var(--border); border-radius: 10px;
 }
 .widget .cost-val {
   font-family: var(--mono); font-size: 2rem; font-weight: 700;
@@ -453,9 +437,9 @@ body::after {
   text-transform: uppercase; letter-spacing: 0.1em;
 }
 .widget select {
-  width: 100%; padding: 0.6rem 1rem; border-radius: 0;
-  background: var(--bg); border: 1px solid var(--border);
-  color: var(--text-primary); font-family: var(--mono); font-size: 0.85rem;
+  width: 100%; padding: 0.6rem 1rem; border-radius: 8px;
+  background: var(--bg); border: 0.5px solid var(--border);
+  color: var(--text-primary); font-family: var(--font); font-size: 0.85rem;
   margin-bottom: 1rem; cursor: pointer;
 }
 .widget select option { background: var(--bg-raised); }
@@ -470,7 +454,7 @@ body::after {
   font-size: 0.85rem;
 }
 .exodus-item.visible { opacity: 1; transform: translateX(0); }
-.exodus-item:hover { border-bottom-color: var(--amber); }
+.exodus-item:hover { border-bottom-color: var(--cyan); }
 .exodus-origin {
   font-size: 0.7rem; color: var(--text-dim); min-width: 60px;
   font-family: var(--mono);
@@ -480,7 +464,7 @@ body::after {
   flex: 1;
 }
 .exodus-funding {
-  font-size: 0.7rem; color: var(--amber); font-family: var(--mono);
+  font-size: 0.7rem; color: var(--cyan); font-family: var(--mono);
 }
 .exodus-arrow {
   color: var(--red); font-size: 1rem; margin: 0 0.3rem;
@@ -491,8 +475,8 @@ body::after {
 }
 .exodus-counter {
   text-align: center; margin-top: 1.5rem; padding: 1rem;
-  background: var(--bg); border: 1px solid var(--red);
-  border-radius: 0;
+  background: var(--bg); border: 0.5px solid var(--red);
+  border-radius: 10px;
 }
 .exodus-counter .val {
   font-family: var(--mono); font-size: 1.8rem; font-weight: 700; color: var(--red);
@@ -503,25 +487,25 @@ body::after {
 }
 
 /* === HEATMAP TABLE === */
-.heatmap-wrap { overflow-x: auto; margin: 1.5rem 0; }
+.heatmap-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: 10px; }
 .heatmap {
   width: 100%; border-collapse: collapse; font-size: 0.75rem;
   min-width: 400px; font-family: var(--mono);
 }
 .heatmap th {
   padding: 0.6rem 0.75rem; font-weight: 700; text-align: left;
-  border-bottom: 2px solid var(--border-bright);
-  color: var(--amber); font-family: var(--mono);
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+  border-bottom: 0.5px solid var(--border-bright);
+  color: var(--cyan); font-family: var(--font);
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
   background: var(--bg-raised);
 }
 .heatmap td {
   padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
 }
-.heatmap td.strong { background: rgba(0,255,136,0.05); color: var(--green); font-weight: 600; }
-.heatmap td.moderate { background: rgba(255,176,0,0.05); color: var(--amber); }
-.heatmap td.weak { background: rgba(255,51,51,0.05); color: var(--red); }
+.heatmap td.strong { background: rgba(15,163,122,0.08); color: var(--green); font-weight: 600; }
+.heatmap td.moderate { background: rgba(201,106,43,0.08); color: var(--gold); }
+.heatmap td.weak { background: rgba(255,51,51,0.06); color: var(--red); }
 .heatmap td.absent { background: rgba(255,255,255,0.01); color: var(--text-dim); font-style: normal; }
 .heatmap td.layer { font-weight: 700; color: var(--text-secondary); }
 
@@ -532,17 +516,18 @@ body::after {
 .sim-inner { max-width: none; margin: 0 auto; }
 .sim-decision {
   margin-bottom: 2rem; padding: 1.5rem;
-  background: var(--bg-raised); border: 1px solid var(--border);
-  border-radius: 0;
+  background: var(--bg-raised); border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
 }
 .sim-decision:hover { border-color: var(--border-bright); }
 .sim-decision .sim-month {
-  font-family: var(--mono); font-size: 11px; color: var(--amber);
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
+  font-family: var(--font); font-size: 10px; color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.4rem;
+  opacity: 0.5;
 }
 .sim-decision h3 {
   font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;
-  color: var(--text-primary); font-family: var(--mono);
+  color: var(--text-primary); font-family: var(--font);
 }
 .sim-decision .sim-situation {
   font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;
@@ -550,20 +535,20 @@ body::after {
 }
 .sim-options { display: flex; flex-direction: column; gap: 0.5rem; }
 .sim-opt {
-  padding: 0.75rem 1rem; border-radius: 0; cursor: pointer;
-  background: var(--bg); border: 1px solid var(--border);
+  padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer;
+  background: var(--bg); border: 0.5px solid var(--border);
   font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;
   transition: all 0.25s; text-align: left;
 }
 .sim-opt:hover {
-  border-color: var(--amber); background: rgba(255,176,0,0.03);
+  border-color: var(--cyan); background: rgba(26,108,212,0.05);
   color: var(--text-primary);
 }
-.sim-opt.selected { border-color: var(--amber); background: rgba(255,176,0,0.08); color: var(--text-primary); pointer-events: none; }
+.sim-opt.selected { border-color: var(--cyan); background: rgba(26,108,212,0.1); color: var(--text-primary); pointer-events: none; }
 .sim-opt.not-selected { opacity: 0.3; pointer-events: none; }
 .sim-result {
-  margin-top: 0.75rem; padding: 0.75rem; border-radius: 0;
-  background: var(--bg); border: 1px solid var(--border);
+  margin-top: 0.75rem; padding: 0.75rem; border-radius: 8px;
+  background: var(--bg); border: 0.5px solid var(--border);
   font-size: 0.82rem;
   color: var(--text-secondary); line-height: 1.5;
   display: none;
@@ -573,8 +558,8 @@ body::after {
   display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap;
 }
 .sim-metric {
-  padding: 0.4rem 0.75rem; border-radius: 0;
-  background: var(--bg-raised); border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem; border-radius: 6px;
+  background: var(--bg-raised); border: 0.5px solid var(--border);
   font-family: var(--mono); font-size: 0.7rem;
 }
 .sim-metric .m-label { color: var(--text-dim); }
@@ -588,7 +573,7 @@ body::after {
   border-bottom: 1px solid var(--border);
   transition: all 0.2s;
 }
-.sim-skip a:hover { color: var(--amber); border-color: var(--amber); }
+.sim-skip a:hover { color: var(--cyan); border-color: var(--cyan); }
 
 /* === TALENT MAP === */
 .talent-grid {
@@ -596,10 +581,10 @@ body::after {
   gap: 0.5rem; margin: 1rem 0;
 }
 .talent-card {
-  padding: 0.6rem 0.75rem; border-radius: 0;
-  background: var(--bg-raised); border: 1px solid var(--border);
+  padding: 0.6rem 0.75rem; border-radius: 10px;
+  background: var(--bg-raised); border: 0.5px solid rgba(255,255,255,0.08);
 }
-.talent-card:hover { border-color: var(--amber); }
+.talent-card:hover { border-color: var(--border-bright); }
 .talent-name {
   font-weight: 700; font-size: 0.8rem; color: var(--text-primary);
 }
@@ -622,7 +607,7 @@ body::after {
 }
 .talent-counter {
   text-align: center; padding: 0.75rem 1rem;
-  background: var(--bg-raised); border: 1px solid var(--border); border-radius: 0;
+  background: var(--bg-raised); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px;
 }
 .talent-counter .tc-val {
   font-family: var(--mono); font-size: 1.5rem; font-weight: 700;
@@ -647,17 +632,17 @@ body::after {
   font-size: 11px; font-weight: 700; margin-bottom: 1rem;
   font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.1em;
 }
-.timeline-col:first-child h3 { color: var(--amber); }
+.timeline-col:first-child h3 { color: var(--cyan); }
 .timeline-col:last-child h3 { color: var(--cyan); }
 .tl-event {
   padding: 0.6rem 0; position: relative;
   padding-left: 0.75rem; border-left: 1px solid var(--border);
   margin-bottom: 0.75rem;
 }
-.tl-event:hover { border-left-color: var(--amber); }
+.tl-event:hover { border-left-color: var(--cyan); }
 .tl-event .tl-year {
   font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
-  color: var(--amber);
+  color: var(--cyan);
 }
 .tl-event .tl-text {
   font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;
@@ -672,9 +657,9 @@ body::after {
 }
 .conclusion-inner { max-width: 680px; margin: 0 auto; }
 .conclusion h2 {
-  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
-  margin-bottom: 1.5rem; letter-spacing: 0;
-  color: var(--amber); font-family: var(--mono); text-transform: uppercase;
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 300;
+  margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  color: var(--text-primary); font-family: var(--font);
 }
 .conclusion p {
   font-size: 15px; color: var(--text-secondary); line-height: 1.8;
@@ -686,15 +671,15 @@ body::after {
 }
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.85rem 2rem; border-radius: 0;
-  font-family: var(--mono); font-size: 0.85rem; font-weight: 600;
+  padding: 0.85rem 2rem; border-radius: 8px;
+  font-family: var(--font); font-size: 0.85rem; font-weight: 600;
   cursor: pointer; border: none; text-decoration: none; transition: all 0.25s;
   letter-spacing: 0.05em;
 }
-.btn-primary { background: var(--amber); color: var(--bg); }
-.btn-primary:hover { background: #ffc844; }
-.btn-outline { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
-.btn-outline:hover { border-color: var(--amber); color: var(--amber); }
+.btn-primary { background: var(--cyan); color: var(--bg); }
+.btn-primary:hover { background: var(--sky-light); }
+.btn-outline { background: transparent; color: var(--text-primary); border: 0.5px solid var(--cyan); border-radius: 8px; }
+.btn-outline:hover { border-color: var(--sky-light); color: var(--cyan); }
 .btn-cyan { background: var(--cyan); color: var(--bg); }
 .btn-cyan:hover { background: var(--sky-light); }
 
@@ -774,12 +759,12 @@ body::after {
   z-index: 500;
   padding: 10px 14px;
   background: var(--bg);
-  border: 1px solid var(--amber);
-  border-radius: 0;
+  border: 0.5px solid var(--cyan);
+  border-radius: 10px;
   backdrop-filter: blur(12px);
   font-size: 0.8rem;
   color: var(--text-primary);
-  font-family: var(--mono);
+  font-family: var(--font);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
@@ -788,7 +773,7 @@ body::after {
   box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 }
 .viz-tooltip.visible { opacity: 1; }
-.viz-tooltip .tt-title { font-weight: 700; color: var(--amber); margin-bottom: 4px; }
+.viz-tooltip .tt-title { font-weight: 700; color: var(--cyan); margin-bottom: 4px; }
 .viz-tooltip .tt-val { color: var(--cyan); font-weight: 700; }
 .viz-tooltip .tt-desc { color: var(--text-dim); font-size: 0.72rem; }
 
@@ -797,18 +782,18 @@ body::after {
   display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
 }
 .filter-btn {
-  padding: 5px 12px; border-radius: 0; font-size: 0.7rem;
-  font-family: var(--mono); font-weight: 600; cursor: pointer;
-  border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: 6px; font-size: 0.7rem;
+  font-family: var(--font); font-weight: 600; cursor: pointer;
+  border: 0.5px solid rgba(255,255,255,0.12);
   background: var(--bg); color: var(--text-dim);
   transition: all 0.2s;
 }
-.filter-btn:hover { border-color: var(--amber); color: var(--text-primary); }
-.filter-btn.active { border-color: var(--amber); background: rgba(255,176,0,0.08); color: var(--amber); }
+.filter-btn:hover { border-color: var(--cyan); color: var(--text-primary); }
+.filter-btn.active { border-color: var(--cyan); background: var(--cyan); color: var(--bg); }
 
 /* Expandable table rows */
 .heatmap tr { cursor: pointer; transition: background 0.2s; }
-.heatmap tr:hover { background: rgba(255,176,0,0.03); }
+.heatmap tr:hover { background: rgba(26,108,212,0.05); }
 .heatmap .expand-row { display: none; }
 .heatmap .expand-row.visible { display: table-row; }
 .heatmap .expand-row td {
@@ -821,28 +806,29 @@ body::after {
 
 /* Dashboard card hover expand */
 .dashboard-card { transition: border-color 0.2s; cursor: pointer; }
-.dashboard-card:hover { border-color: var(--amber) !important; }
+.dashboard-card:hover { border-color: var(--border-bright) !important; }
 
 /* Exodus hover card */
 .exodus-item { position: relative; cursor: pointer; }
 .exodus-detail-card {
-  position: absolute; left: 0; right: 0; top: 100%;
-  z-index: 50; padding: 10px 14px; margin-top: 4px;
-  background: var(--bg); border: 1px solid var(--amber);
-  border-radius: 0; backdrop-filter: blur(12px);
-  font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  position: absolute; left: 0; right: 0; bottom: calc(100% + 6px);
+  z-index: 100; padding: 12px 16px;
+  background: rgba(5,9,15,0.97); border: 0.5px solid var(--cyan);
+  border-radius: 10px; backdrop-filter: blur(16px);
+  font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.8), 0 0 0 1px rgba(26,108,212,0.15);
   display: none;
+  pointer-events: none;
 }
 .exodus-item:hover .exodus-detail-card { display: block; }
 
 /* Heatmap color legend interactive */
-.heatmap-legend-item { cursor: pointer; transition: opacity 0.2s; display: inline-block; padding: 2px 6px; border-radius: 0; }
+.heatmap-legend-item { cursor: pointer; transition: opacity 0.2s; display: inline-block; padding: 2px 6px; border-radius: 4px; }
 .heatmap-legend-item:hover { opacity: 1 !important; background: rgba(255,255,255,0.03); }
 
 /* Talent card expanded */
 .talent-card { cursor: pointer; transition: all 0.2s; }
-.talent-card:hover { border-color: var(--amber); background: rgba(255,176,0,0.03); }
+.talent-card:hover { border-color: var(--border-bright); background: rgba(26,108,212,0.03); }
 .talent-bio {
   display: none; margin-top: 6px; padding-top: 6px;
   border-top: 1px solid var(--border);
@@ -853,19 +839,19 @@ body::after {
 /* Coord cost preset buttons */
 .preset-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
 .preset-btn {
-  padding: 5px 10px; border-radius: 0; font-size: 0.65rem;
-  font-family: var(--mono); font-weight: 600; cursor: pointer;
-  border: 1px solid var(--border);
+  padding: 5px 10px; border-radius: 6px; font-size: 0.65rem;
+  font-family: var(--font); font-weight: 600; cursor: pointer;
+  border: 0.5px solid rgba(255,255,255,0.12);
   background: var(--bg); color: var(--text-dim);
   transition: all 0.2s;
 }
-.preset-btn:hover { border-color: var(--amber); color: var(--amber); }
+.preset-btn:hover { border-color: var(--cyan); color: var(--cyan); }
 
 /* Market cap highlight info */
 .market-cap-info {
   margin-top: 10px; padding: 10px 14px;
-  background: var(--bg-raised); border: 1px solid var(--border);
-  border-radius: 0; font-size: 0.8rem; color: var(--text-secondary);
+  background: var(--bg-raised); border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 10px; font-size: 0.8rem; color: var(--text-secondary);
   line-height: 1.5; display: none;
 }
 .market-cap-info.visible { display: block; }
@@ -939,16 +925,16 @@ body::after {
   <div class="hero-content">
     <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1.5rem;">SYS.INTELLIGENCE.BRIEFING // REF: EU-AI-SOV-2027 // CLEARANCE: OPEN</div>
     <h1 class="glow">The Slow Boil</h1>
-    <p class="hero-sub">CLASSIFIED BRIEFING // EUROPEAN DIGITAL SOVEREIGNTY</p>
-    <p style="font-size:0.85rem;color:var(--text-secondary);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">A speculative narrative about Europe's AI sovereignty crisis — told through the eyes of the people who would have to build the coalition. Grounded in real data, real companies, real dependencies.</p>
+    <p class="hero-sub">When AI infrastructure means sovereignty</p>
+    <p style="font-size:0.85rem;color:var(--text-secondary);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">Europe can establish governance, but it cannot build. Its regulations don&rsquo;t matter if all of the digital infrastructure &mdash; leading models, cloud platforms, accelerators, and tooling &mdash; are American or Chinese.</p>
     <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;">
-      <div style="flex:1;text-align:center;padding:1rem;border:1px solid var(--border);border-radius:0;background:var(--bg-raised);">
-        <div style="font-size:11px;font-family:var(--mono);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Left side</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--mono);">The story — fictional chapters through character perspectives in Dublin, Brussels, Berlin, and beyond</div>
+      <div style="flex:1;text-align:center;padding:1rem;border:0.5px solid var(--border);border-radius:10px;background:var(--bg-raised);">
+        <div style="font-size:11px;font-family:var(--font);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:0.3rem;">Left side</div>
+        <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--font);">The story — fictional chapters through character perspectives in Dublin, Brussels, Berlin, and beyond</div>
       </div>
-      <div style="flex:1;text-align:center;padding:1rem;border:1px solid var(--border);border-radius:0;background:var(--bg-raised);">
-        <div style="font-size:11px;font-family:var(--mono);color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Right side</div>
-        <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--mono);">The data — real market share, compute costs, talent flows, and interactive simulations with sourced references</div>
+      <div style="flex:1;text-align:center;padding:1rem;border:0.5px solid var(--border);border-radius:10px;background:var(--bg-raised);">
+        <div style="font-size:11px;font-family:var(--font);color:var(--amber);font-weight:700;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:0.3rem;">Right side</div>
+        <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--font);">The data — real market share, compute costs, talent flows, and interactive simulations with sourced references</div>
       </div>
     </div>
     <div class="scroll-indicator" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
@@ -974,79 +960,59 @@ body::after {
       </div>
 
       <div class="reveal">
-        <p>Aaron noticed the calendar invite at 8:47 AM. It was from someone in HR he had never met, titled simply <strong>"Sync."</strong> No agenda. No context. Fifteen minutes, blocked at 11:00.</p>
+        <p>&ldquo;I don&rsquo;t even think they gave him time to clean out his office.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>He knew what it was. Everyone in the Dublin office knew. The rumors had been circulating for weeks, accelerating in the last forty-eight hours as Slack channels went quiet one by one, replaced by DMs that stopped mid-sentence. The phrase <em>"rebalancing toward core research hubs"</em> had appeared in an all-hands slide the previous Friday. Nobody in Dublin was a core research hub.</p>
+        <p>Aaron cut a defeated figure. Wracked with the same posture and bent vertebrae as the rest of the crowd milling about to say their goodbyes, Aaron stood amongst them, brown cardboard box in hand, half-full with the family photos and the office tchotchkes that one amasses unwittingly over a seven-year-long career at the firm.</p>
       </div>
 
       <div class="reveal">
-        <p>Aaron spent the next two hours doing what anyone does when they know. He didn't work. He didn't panic. He sat at his desk in the open-plan fourth floor of the Barrow Street office, looking out at the Grand Canal Dock, and he thought about the three years he had spent building something that was about to be taken away from him by someone he had never spoken to.</p>
+        <p>One of the Americans to come over when Open AI opened its doors to Dublin, Aaron was an advisor on the policy team. A lawyer by training and by disposition, He&rsquo;d been entrusted to make sure that the legal and ethical output of Open AI&rsquo;s actions in Europe were in line with EU regulations.</p>
       </div>
 
       <div class="reveal">
-        <p>He was a senior infrastructure engineer. His team — <strong>seven people, five nationalities, all European residents</strong> — had built the model evaluation pipeline that OpenAI used to benchmark every major release since GPT-4.5. They had done this from Dublin because Dublin was supposed to be the European hub. That was the pitch when he was recruited from Intercom in 2023: <em>"We're building real engineering capacity in Europe, not just a sales office."</em></p>
+        <p>I met Aaron exactly one year before he was fired. I&rsquo;d moved to Dublin from the San Francisco office as a researcher, and had trouble adjusting to a new life on a different continent in a country whose sense of humor reserved a special sting for the American invaders. Aaron had taken pity on me rather quickly and invited me over to his house for dinner a few times where the three of us: myself, Aaron, and Aaron&rsquo;s wife Laura, would get properly drunk and gossip about friends we knew back in the states. I&rsquo;d walk back to my own unadorned flat unsteady but happy.</p>
       </div>
 
       <div class="reveal">
-        <p>The meeting lasted eleven minutes. The HR person was in San Francisco, appearing on his screen at 7 PM her time. She was kind, in the way that people are kind when they have been trained to be kind in these situations. There was a package. There was a timeline. There were resources for "transition support." <strong>Aaron's badge would be deactivated at 5 PM Dublin time.</strong></p>
+        <p>The rounds of layoffs were happening swiftly. I had learned that morning I was safe. &ldquo;Congrats&rdquo; my supervisor said, &ldquo;you live to fight another day.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"Can I ask something?" Aaron said. "The evaluation pipeline. Who's taking it over?"</p>
+        <p>The official stance taken by the company was a consolidation towards its major revenue-generating operations in the US, and further investment in American datacenters. The other EU offices in Munich, Paris and Brussels were similarly decimated, I had heard.</p>
       </div>
 
       <div class="reveal">
-        <p>A pause. "That's being handled by the SF team going forward."</p>
+        <p>Aaron was walking out the door. Last chance to say goodbye. I pushed my way through a crowd of fellow well-wishers for the other recently unemployed and intercepted Aaron at the door. I told him that they were bastards. That this was a huge mistake. That they&rsquo;ll come to their senses. Or that he&rsquo;ll land a better gig somewhere else. He nodded wearily, his eyes fixed on the ground.</p>
       </div>
 
       <div class="reveal">
-        <p>"They don't know how it works. We wrote all the tooling for the EU compliance layer. The GDPR integration, the data residency checks — that's all custom. It's not documented."</p>
+        <p>Once I was done with the platitudes, he pulled me aside and said in a low whisper as we huddled together: &ldquo;look, I&rsquo;ve been working on something for a few weeks. It could be nothing. But could you do me a favor?&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>Another pause. "I understand. We'll make sure there's a knowledge transfer process."</p>
+        <p>&ldquo;Of course.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>There was no knowledge transfer process. Aaron knew this because he had seen three other teams shut down the same way in the past eighteen months. The Zurich safety team. The London policy team. The Berlin partnerships team. Each time, the official line was consolidation. Each time, the institutional knowledge — the <em>European</em> institutional knowledge, the understanding of how things actually work across twenty-seven regulatory jurisdictions — simply evaporated.</p>
+        <p>&ldquo;Just take a look at this,&rdquo; he handed me a hard drive. &ldquo;Not on your work computer.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>At 4:30 PM, Aaron was in the parking garage with Katya, his team lead, who had received the same calendar invite at the same time. She was loading a box into her car. They stood there, in the concrete quiet, and she handed him a hard drive.</p>
+        <p>&ldquo;What is it?&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"What's this?" he asked.</p>
+        <p>&ldquo;Could be nothing. Just take a look.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"Everything we built. The evaluation framework, the compliance tools, the multilingual benchmarks. <strong>All of it.</strong>"</p>
+        <p>At that, he was continued on his way out the door by security who had decided that it was time for everyone to get back to work.</p>
       </div>
 
       <div class="reveal">
-        <p>"Katya, that's — we can't just—"</p>
-      </div>
-
-      <div class="reveal">
-        <p>"It's our work. We wrote it. And nobody in San Francisco is going to maintain the EU compliance layer. In six months, they'll rebuild it badly, or they'll just stop doing compliance testing in European languages. You know that."</p>
-      </div>
-
-      <div class="reveal">
-        <p>He did know that. He took the drive.</p>
-      </div>
-
-      <div class="reveal">
-        <p>Across the city, forty-three other people were having variations of the same day. <strong>OpenAI's Dublin office was not closing — it was being "restructured into a commercial hub."</strong> The engineering teams were gone. The research capacity was gone. What remained was sales, partnerships, and government relations. A storefront, not a factory.</p>
-      </div>
-
-      <div class="reveal">
-        <p>Aaron drove home along the M50 and thought about what Katya had said in the parking garage, the last thing before she got in her car:</p>
-      </div>
-
-      <div class="reveal">
-        <p><strong>"We're not losing jobs, Aaron. We're losing capability. And nobody's counting."</strong></p>
+        <p>The now empty seats stared at us accusatorily: why us? Why them?</p>
       </div>
     </div>
 
@@ -1060,46 +1026,47 @@ body::after {
       </div>
 
       <div class="reveal">
-        <p>Go back to the source. <strong>Ronald Coase</strong>: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
+        <p>Go back to the source. Why do firms exist? <strong>Ronald Coase</strong>: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
       </div>
 
       <div class="reveal">
-        <p>This is the most important sentence in the entire debate about European AI sovereignty. Not the technical arguments about model architectures. Not the geopolitical arguments about strategic autonomy. The <em>economics</em>.</p>
+        <p>When is it advantageous for a market to become a firm?</p>
       </div>
 
       <div class="reveal">
-        <p><strong>This is the central sin of the middle powers.</strong> AI requires an unusually high degree of coordination amongst tightly complementary pieces: compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense deployment.</p>
+        <p>When you have a tightly coordinated set of dependencies in which constant coordination and bargaining slows down and inflates the cost of the entire process. An AI System is made up of lots of infrastructure and inter-locking entities: compute, data labeling, model training, safety evals, deployment, compliance. If, anytime, there&rsquo;s a change in the model everything needs to be coordinated and renegotiated.</p>
       </div>
 
       <div class="reveal">
-        <p>These pieces don't just benefit from being coordinated — they are <em>useless</em> without each other. A compute cluster without models is an expensive heater. A model without compute is a research paper. A research paper without deployment infrastructure is a citation. None of these things, alone, is sovereignty.</p>
+        <p><strong>This is the central sin of the middle powers.</strong> AI is not like other technologies because it requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary.</p>
       </div>
 
       <div class="reveal">
-        <p>The US solves this with gigantic capital pools and huge firms running at massive losses. OpenAI burns billions per year. Google's AI division has a functionally unlimited budget drawn from search advertising. Meta builds AI infrastructure subsidized by social media profits. <strong>The cost of coordination inside these firms is close to zero because there is one decision-maker.</strong></p>
+        <p>Examples: compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense and industrial deployment.</p>
       </div>
 
       <div class="reveal">
-        <p>China solves it differently: giant firms with coordinated state control, massive technical talent pools educated in the same system, and a government that treats AI as industrial policy rather than market outcome.</p>
+        <p>The US solves this problem by having gigantic pools of capital with huge firms that can run at massive losses while they fine tune their frontier models.</p>
       </div>
 
       <div class="reveal">
-        <p>Europe has neither. The EU has 27 member states, each with its own industrial policy, its own procurement rules, its own political incentives. It has lots of regulators, lots of diluted capital, lots of languages, lots of industrial players but no true giant, and <strong>zero sense of centralized execution.</strong></p>
+        <p>China has giant firms with coordinated state control. [There&rsquo;s a bit more than this going on. Beijing has an approximation of the Silicon Valley energy focused on AI, and a truly huge font of technical talent.]</p>
       </div>
 
       <div class="reveal">
-        <p>This is not a technology problem. It is a Coase problem. The <em>transaction costs</em> of coordinating AI development across 27 sovereign nations, each with veto power over procurement, each with domestic champions to protect, each with elections to win — those transaction costs are so high that the rational outcome is to do nothing. And doing nothing means dependency.</p>
+        <h3>EU&rsquo;s Malfeasance, Or: How to Screw Up a Good Thing</h3>
       </div>
 
       <div class="reveal">
-        <blockquote>
-          "We are graduating all the engineers. We are starting all the companies, but then we're exporting talent to the US. We're exporting companies very cheaply."
-          <cite>— Victor Englesson, EQT</cite>
-        </blockquote>
+        <p>If each European actor optimizes only for itself, you get fragmentation: lots of small efforts, duplicated spending, weak scale, and slow adaptation. Bad!</p>
       </div>
 
       <div class="reveal">
-        <p>The EU may be the place to start a company, but it has none of the resources to scale it. And in AI, if you can't scale, you don't exist.</p>
+        <p>The current problem that we need to solve: the EU has lots of countries (but only a few big ones), lots of different regulators, lots of diluted capital pools that end up in the US anyway, lots of languages, lots of industrial players (but no true giant), and <strong>zero sense of centralized execution.</strong></p>
+      </div>
+
+      <div class="reveal">
+        <p>So we have a problem of parallels: for a technology that requires a highly coordinated set of dependencies, you have a distributed set of players who aren&rsquo;t coordinating on anything. This is what is preventing any real sense of alignment, and is a major threat to middle power sovereignty who are in danger of being overly-reliant on technology players they can&rsquo;t regulate or bargain with.</p>
       </div>
     </div>
 
@@ -1113,6 +1080,7 @@ body::after {
       <div class="reveal">
         <h2 id="data-dependency">The Dependency</h2>
         <p class="section-sub">Europe's position in the global AI stack, by the numbers.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Dublin chapter shows what dependency looks like at the human level &mdash; layoffs, lost capability, institutional knowledge evaporating. These numbers show the structural reality behind it: 70% of EU cloud controlled by US hyperscalers, 2% of global AI compute, 2% frontier model market share. Aaron&rsquo;s story is one of thousands.</p>
       </div>
 
       <div class="stat-row reveal">
@@ -1137,6 +1105,7 @@ body::after {
     <!-- Data Panel: Charts + Calculator -->
     <div class="data-panel" id="panel-charts" data-panel-id="panel-charts">
       <div class="chart-container reveal">
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem;margin-bottom:1.5rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Coase argument on the left explains <em>why</em> coordination costs matter. These charts show <em>how much</em>: the market cap gap between US and EU AI companies, the cloud market dominance, and what fragmented coordination actually costs in dollars. The calculator below lets you see why 27 independent players can&rsquo;t compete with one integrated firm.</p>
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
         <div class="filter-row" id="mcFilterRow">
           <button class="filter-btn active" data-filter="all" onclick="filterMarketCap('all',this)">All</button>
@@ -1199,44 +1168,39 @@ body::after {
     <!-- Chapter 3: The Swedish Question -->
     <div class="narrative-section" id="ch-swedish" data-panel="panel-exodus">
       <div class="reveal">
-        <span class="dateline">Stockholm &mdash; The Nordic Ecosystem</span>
-        <h2>Chapter III: The Swedish Question</h2>
+        <span class="dateline">A Case Study</span>
+        <h2>Chapter III: 11x and the Swedish Question</h2>
       </div>
 
       <div class="reveal">
-        <p>To understand what Europe is losing, look at Stockholm. Not Berlin, not Paris — <strong>Stockholm</strong>. Per capita, it produces more billion-dollar tech companies than anywhere outside Silicon Valley. Spotify. Klarna. King. Mojang. iZettle. And now, a generation of AI companies that are doing something remarkable: they're building world-class products and then leaving.</p>
+        <p>11x began in London. It&rsquo;s a company that builds AI agents that automate revenue-based workstreams &ndash; things like sales, revenue operations, and GTM strategy and execution. They have two uncanny agents on their site, Julian, who boasts that &ldquo;I&rsquo;m the world&rsquo;s best Inbound Sales Rep&mdash;calling, qualifying, and routing leads at record speed, 24/7, on autopilot.&rdquo; And Alice, who is also quite bold, &ldquo;The world&rsquo;s best SDR. I track every data point of your market, identify your ideal buyers, and engage decision-makers 24/7 to book you meetings on autopilot.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>Take <strong>11x</strong>. Founded in London by Hasan Sukkar, an AI company building autonomous digital workers. By early 2025, 11x had raised over $50 million, was growing at triple-digit rates, and had built a product that Fortune 500 companies were adopting. It was, by every measure, exactly the kind of company Europe says it wants.</p>
+        <p>After closing a $24m Series A round led by US VCs, 11x was sent to the Bay Area as a precondition for its investor&rsquo;s money. &ldquo;The requirement from almost all of our investors was actually to relocate to the Bay Area,&rdquo; says the company&rsquo;s head of growth Keith Fearon. &ldquo;We needed to move here.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>Then it moved its headquarters to San Francisco.</p>
+        <p>One of the more promising startups coming out of Europe, albeit one that might not make much noise in a more crowded Silicon Valley ecosystem relocated its staff to San Francisco. &ldquo;The engineering talent is just over here [...] there&rsquo;s just so much more VC money in the US than any term sheet you get here, they&rsquo;re going to give you two or three times the valuation of what a European VC will give you,&rdquo; says Keith Fearon who&rsquo;s in charge of the company&rsquo;s growth, adding that around 70-80% of the company&rsquo;s customers are US-based.</p>
       </div>
 
       <div class="reveal">
-        <p>The reasons were not mysterious. <strong>Keith Fearon</strong>, 11x's VP of Growth, was direct about it: "The talent density in SF for AI is unmatched. Our customers are there. Our investors want us there. The regulatory clarity is better. At some point, you have to ask: what is Europe offering that's worth staying for?"</p>
+        <p>But just a short hop across the North Sea lands you in Stockholm, where early investment in computer infrastructure meant about 75% of Swedish homes had computers by 2005. Sweden has had its own AI-fueled tech boom. Encouraged by the success of Klarna and Spotify, Stockholm has now been home to companies like Sana (acquired by Workday for $1.1bn), Lovable (just raised $530m), and Legora (potentially valued at $4bn). And yet of its impressive list of start-ups, more than 30% relocate to the US.</p>
       </div>
 
       <div class="reveal">
-        <p>The answer, increasingly, is <em>nothing</em>. Not nothing in absolute terms — Europe offers quality of life, good healthcare, excellent education, reasonable cost of living. But for a company that needs to raise $200 million, recruit from the global top 0.1% of ML talent, and sell to enterprise customers who expect a US headquarters, those lifestyle advantages don't clear the bar.</p>
+        <blockquote>
+          &ldquo;We are graduating all the engineers. We are starting all the companies, but then we&rsquo;re exporting talent to the US. We&rsquo;re exporting companies very cheaply.&rdquo;
+          <cite>&mdash; Victor Englesson, EQT, to the FT. &ldquo;We have a scale-up issue in Europe.&rdquo;</cite>
+        </blockquote>
       </div>
 
       <div class="reveal">
-        <p><strong>Victor Englesson</strong> at EQT, one of Europe's largest tech investors, has watched this pattern repeat dozens of times. "The pipeline is extraordinary," he says. "We have the engineers, the researchers, the founders. What we don't have is the infrastructure to keep them. No sovereign compute at scale. No anchor customers who will bet on a European provider. No capital markets that value staying. So they leave."</p>
+        <p>There are Sweden-specific laws that founders have cited as reasons to move abroad, but the larger issue remains access to capital and access to talent. The centripetal force is still Silicon Valley. As another Swedish founder put it, &ldquo;But if you really want to build the biggest company in the world, I do think you have to be in the US. You need to have a stronghold in the US &mdash; if not your headquarters there.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>The Stockholm ecosystem — the one that produced Spotify and Skype and MySQL — is now an export machine. It creates value and ships it to California. The founders get rich. The investors get returns. Europe gets a press release and a shrinking tax base.</p>
-      </div>
-
-      <div class="reveal">
-        <p>This is not brain drain in the traditional sense. The engineers often stay in Europe physically. The corporate headquarters moves. The IP moves. The equity value moves. <strong>The capability stays, but the control leaves.</strong></p>
-      </div>
-
-      <div class="reveal">
-        <p>Each of these departures is individually rational. Collectively, they represent the slow dismantling of European AI capacity. Not through malice. Through gravity.</p>
+        <p><strong>The line: The EU may be the place to start a company, but it has none of the resources to scale it.</strong></p>
       </div>
     </div>
 
@@ -1245,84 +1209,88 @@ body::after {
     <!-- Chapter 4: Brussels -->
     <div class="narrative-section" id="ch-brussels" data-panel="panel-stack">
       <div class="reveal">
-        <span class="dateline">6.03.2026 &mdash; Brussels, Belgium &mdash; European Commission</span>
+        <span class="dateline">6.03.2026 &mdash; Brussels, Belgium &mdash; Office of the European Commission</span>
         <h2>Chapter IV: Brussels</h2>
       </div>
 
       <div class="reveal">
-        <p>Henna Virkkunen stepped to the podium at 10:15 AM. The Berlaymont auditorium was perhaps two-thirds full — respectable for a Tuesday policy address, though the empty seats in the back rows told their own story. Three camera crews. A handful of print journalists. The usual Brussels crowd: policy advisors, lobbyists, a few MEPs who had wandered over from committee meetings.</p>
+        <p>Henna Virkkunnen paced impatiently back and forth behind the stage that had been set up for the weekend&rsquo;s final presentation. Tech bureaucrats talking about tech bureaucracy while America is using AI models to start wars. At some point foreign policy jumps off the page, hops on a bomb, and lands somewhere in Iran, algorithmically positioned to explode with the most killing force. At some point, Virkunnen thought to herself, we need to consider the idea that these frontier labs moonlight as defense contractors. The US Department of Defense always did have deep pockets.</p>
       </div>
 
       <div class="reveal">
-        <p>Virkkunen was the European Commission's Executive Vice-President for Tech Sovereignty, Security and Democracy. She had held the role since the previous autumn and had spent most of that time doing what Brussels does best: convening working groups, commissioning studies, drafting frameworks. Today was supposed to be different. Today, she had been told, was the speech that would "reset the narrative."</p>
+        <p>Virkkunnen had a speech planned. It would mention the policies, the plans, the initiatives. But she tossed it out this morning in favor of something much more like an invective. We sleptwalked through two entire decades of infrastructure planning, our somnolence rewarded with a sovereignty so far indebted to the Americans and the Chinese that she would hesitate to even use that word: sovereignty.</p>
       </div>
 
       <div class="reveal">
-        <p>"Distinguished colleagues," she began. "The numbers are not encouraging. European share of global AI compute stands at approximately two percent. Our largest AI company, Mistral, holds approximately two percent of the global large language model market. Seventy percent of our cloud infrastructure is operated by three American companies. These are not projections. These are facts."</p>
+        <p>The Finnish politician took her place at the podium, consulted briefly with the kindly AV crewmember who showed her how to change her now-useless slides using the remote, and then waited as the crowd piled in for the keynote address.</p>
       </div>
 
       <div class="reveal">
-        <p>She paused. The room was attentive but not urgent. These numbers had been cited before, in various configurations, by various commissioners. The word <em>sovereignty</em> had appeared in over 340 official EU documents in the past three years. The word had done no work.</p>
+        <p>&ldquo;Advanced artificial intelligence algorithms created 37,000 bombing targets in the first few weeks of the Israel-Gaza conflict. I&rsquo;ll be the first to profess&hellip; I don&rsquo;t know what to do with that information. Our EU AI act exempts military use cases because we believe that the international humanitarian courts are better places for these issues to be adjudicated. But&rdquo; and here Henna stumbled a bit, &ldquo;I suppose I wanted to bring that up because these American AI companies are not just stumbling into American warfare, they&rsquo;re actively courting it. This is a new class of defense manufacturers that use technology we rely on, but over which we have no control.</p>
       </div>
 
       <div class="reveal">
-        <p>"I am announcing today the European AI Infrastructure Initiative," Virkkunen continued. "A coordinated investment framework to develop sovereign compute capacity, support European foundation model development, and create procurement pathways for European AI solutions."</p>
+        <p>The means we have to protect ourselves? Not ours. No one is saying we are going to war with the United States, but what happens if they decide to do something decidedly against the interest of the European people? Because it&rsquo;s not just our military ladies and gentlemen. Our entire digital chain is being controlled by outside forces. How can I stand in front of you and talk about sovereignty when this is the case? How can I pretend the situation is anything other than it is?&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>She outlined the pillars. Five billion euros over five years. A network of "AI Excellence Centers" in twelve member states. Procurement preference guidelines for European providers. A talent retention fund. A compute sovereignty roadmap.</p>
+        <p>The crowd began to shift uneasily in their seats, exchanging furtive glances with each other after days spent in optimistic conversations about the Continent Action Plan, the Gigafactories, data unions. Furious dreams of policies enacted and ground broken for new infrastructure.</p>
       </div>
 
       <div class="reveal">
-        <p>The applause was polite. A few nodded. The journalists typed. The MEPs checked their phones.</p>
+        <p>Virkkunen continued: &ldquo;I had a different speech prepared. But I look around and see a lot of back-pattting and laziness. We are, in our wildest dreams, still years behind the United States and China in every perceivable metric that matters for our digital future. We have wagered our future on American and Chinese technology and we have lost it.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>After the speech, in the corridor outside, Virkkunen walked with her chief of staff, Marek. They had thirty minutes before the next meeting.</p>
+        <p>The Finn paused. &ldquo;The situation might not seem so dire to those of us whose job isn&rsquo;t to plan for contingencies, but what if I were to put it to you this way? We control almost none of our own frontier-scale compute. We cannot reliably train, fine-tune, or deploy any sort of frontier model at scale using what we have today. Our public services are hosted on cloud layers supplied by American companies that run on datacenters we don&rsquo;t have. Our capital pools are diluted. Every week I hear of a new European startup that relocates to the US because they don&rsquo;t have the resources to grow here. Where is our Silicon Valley? Where are our innovation hubs? We are too fragmented, our efforts too aimless. So we end up as toothless regulators over technology that doesn&rsquo;t even belong to us.</p>
       </div>
 
       <div class="reveal">
-        <p>"How was it?" she asked.</p>
+        <p>Some of the crowd walked out. Others stayed, rapt by what might come next.</p>
       </div>
 
       <div class="reveal">
-        <p>Marek was honest. "The speech was good. The problem is the math."</p>
+        <p>&ldquo;I look at this and I worry. But this is a worry that must reinforce a shared collective interest. As individual nations, none of us have the resources to compete with the US or China. But if we were to come together? If we were to pool our resources, play to each other&rsquo;s strengths? Then these policy proposals stop looking like a particularly fanciful child&rsquo;s dream book. We must be realists. We cannot afford to be anything else. We must set aside any sense of pride or sense of competitiveness we might have with each other, and form a whole that&rsquo;s greater than the sum of its parts. Otherwise we will continue to burn through money on projects that, when compared to what we&rsquo;re up against, are merely bait fish in a sea of sharks. My plea, if you could call it that, is to join me on a path forged by collaborative advantage.</p>
       </div>
 
       <div class="reveal">
-        <p>"What do you mean?"</p>
+        <p>This is because AI is not like other technologies. It requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary. As a fragmented group of countries who speak different languages, have different goals, are bound by local customs, this might prove to be our greatest challenge yet. How can we move in lockstep? How can we work as one? If we can&rsquo;t answer that question, there&rsquo;s no use in maintaining the illusion of our sovereignty. It becomes just another word we use to hide the fact that we failed to come together to control our own future. That we let petty differences and inactivity push our own powers of self-determination to the side.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"Five billion over five years is one billion per year. OpenAI alone will spend twelve billion this year on compute. Google will spend more than that. We are announcing, with great ceremony, an investment that is roughly eight percent of what a single American company spends annually."</p>
+        <p>Virkkunen strode off the stage to scattered applause. Her assistant ran up to her with a bottle of water, &ldquo;that was fantastic! Much more stirring than the other speech.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>Virkkunen stopped walking. "I know the math, Marek."</p>
+        <p>Virkkunen unscrewed the cap and noisily chugged all of the bottle&rsquo;s liquids. She noticed her knees were still shaking.</p>
       </div>
 
       <div class="reveal">
-        <p>"I know you know. But does the room know? Did anyone in there react to the number like it was a problem? They applauded. They think five billion is a lot of money."</p>
+        <p>&ldquo;We&rsquo;ll see if they listen this time.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"It <em>is</em> a lot of money."</p>
+        <p>&ldquo;Oh come on. They&rsquo;d be fools not to. Especially after what you said up there.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"It is a lot of money for a highway. It is not a lot of money for an AI sovereignty strategy. And calling it 'sovereign' doesn't make it sovereign. Where does the compute run? On what chips? Designed by whom? Manufactured where? We're going to build 'sovereign' AI infrastructure on NVIDIA GPUs, running on equipment from ASML that we can't even export freely, hosted in data centers operated by American cloud providers who will offer to 'partner' on the excellence centers because it's cheaper than building our own."</p>
+        <p>Virkkunen sat on the floor against a wall. The concrete was cool against the back of her neck. &ldquo;You want to know why it sounded rehearsed?&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>They walked in silence for a moment.</p>
+        <p>&ldquo;Why?&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>"So what do we do?" Virkkunen asked. Not rhetorically. She was asking.</p>
+        <p>&ldquo;Because apart from the whole war part, I gave the same speech six months ago.&rdquo;</p>
       </div>
 
       <div class="reveal">
-        <p>Marek looked at her. "Something that can't be divided by twenty-seven."</p>
+        <p>&ldquo;Well what happened?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;That&rsquo;s what worries me. Nothing&rdquo;</p>
       </div>
     </div>
 
@@ -1336,6 +1304,7 @@ body::after {
       <div class="reveal">
         <h2>Startup Exodus</h2>
         <p class="section-sub">European AI companies that moved to the US.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The 11x story on the left is one case study. This tracker shows the full pattern: European startups founded with European talent and capital, then pulled to the US by gravitational forces of funding, talent density, and market access. Each departure is individually rational. Collectively, they represent a continent exporting its own future.</p>
       </div>
       <div class="widget reveal" id="exodusTracker">
         <h3>Startup Exodus Tracker</h3>
@@ -1364,6 +1333,7 @@ body::after {
       <div class="reveal">
         <h2 id="data-stack">The Full Stack Gap</h2>
         <p class="section-sub">Who controls each layer of the AI value chain?</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">Virkkunen&rsquo;s speech asks: how can we talk about sovereignty when we control none of the stack? This heatmap answers her question layer by layer. From chip design to cloud to models to talent &mdash; green means control, red means dependency. Europe&rsquo;s column is mostly red.</p>
       </div>
 
       <div class="heatmap-wrap reveal">
@@ -1456,120 +1426,98 @@ body::after {
       </div>
 
       <div class="reveal">
-        <p>Friedrich Merz was reading at 5 AM. This was not unusual — he had been a morning reader his entire career, a habit from his days as a corporate lawyer when the only quiet hours were the ones before the office woke up. What was unusual was what he was reading.</p>
+        <p>&ldquo;I&rsquo;m sorry but no one has been able to get through to Washington. It looks like they&rsquo;ve cut off comms until the dust settles.&rdquo; Friedrich Merz liked his advisors to be honest, including about his own failures. And their own.</p>
       </div>
 
       <div class="reveal">
-        <p>The document was titled <strong>"Digital Liberty Act: Framework for Trusted AI Access Partnerships."</strong> It had arrived through diplomatic channels the previous evening, flagged by the BND with a single-line assessment: <em>"This changes everything."</em></p>
+        <p>&ldquo;Pieter, are you trying to tell me that there is not a single person in the White House we can speak to? At this point, I&rsquo;d take an intern.&rdquo; Merz&rsquo;s lengthy frame coiled in exasperation. &ldquo;I&rsquo;ve stood by these assholes, put my reputation on the line, been called a &lsquo;puppet&rsquo; for them. And what do I get for it? A cold shoulder? A place in the back of the line?&rdquo; he thought, mostly outloud, to himself.</p>
       </div>
 
       <div class="reveal">
-        <p>Merz read it twice. The first time quickly, scanning for structure. The second time slowly, with a pencil, marking passages. The document was written in the particular style of American legislative drafting — precise in its vagueness, creating categories that appeared neutral but were designed to sort the world into those who comply and those who don't.</p>
-      </div>
-
-      <div class="reveal">
-        <p>The core mechanism was simple: access to American frontier AI systems — the models, the APIs, the cloud infrastructure, the enterprise tools built on top of them — would now be conditional. Not on payment. On alignment. Countries would be sorted into three tiers: <strong>Full Access, Managed Access, and Restricted.</strong> The criteria for placement included trade relationships, data governance alignment, technology transfer policies, and — the part Merz underlined three times — <em>"demonstrated commitment to shared values in AI governance."</em></p>
-      </div>
-
-      <div class="reveal">
-        <p>Germany, with its deep trade relationships with China, its complicated position on data sovereignty, and its recent pushback on US cloud procurement, was projected to fall into <strong>Managed Access</strong>. This was not a ban. It was something worse: a leash. Managed Access meant delayed model releases, restricted API capabilities, mandatory data sharing agreements, and procurement conditions that would make German companies second-class customers of the AI infrastructure they depended on.</p>
-      </div>
-
-      <div class="reveal">
-        <p>At 6:30 AM, Pieter arrived. Pieter was Merz's foreign policy advisor, a quiet Dutchman who had spent fifteen years at the European Council before joining the Chancellery. He found Merz at his desk with the document spread across the table, annotated in red.</p>
-      </div>
-
-      <div class="reveal">
-        <p>"You've read it," Pieter said. Not a question.</p>
-      </div>
-
-      <div class="reveal">
-        <p>"Twice."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"And?"</p>
-      </div>
-
-      <div class="reveal">
-        <p>Merz leaned back. "It's elegant. I'll give them that. They've found a way to weaponize dependency without firing a shot. Every German hospital running American diagnostic AI, every factory using American predictive maintenance, every bank using American fraud detection — all of it now has a political price attached."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"We could comply," Pieter said carefully. "Restructure the China trade relationships. Signal alignment. Get back to Full Access."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"At what cost? Our China trade is worth 250 billion euros annually. We're going to restructure that because an American technology company wants us to?"</p>
-      </div>
-
-      <div class="reveal">
-        <p>"It's not the company. It's the government."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"It's both. That's the point. The government writes the tiers. The companies enforce them. And if we comply, what happens next time? They change the criteria. They always change the criteria."</p>
-      </div>
-
-      <div class="reveal">
-        <p>Pieter sat down. "So what's the alternative?"</p>
-      </div>
-
-      <div class="reveal">
-        <p>Merz was quiet for a long moment. Then: "Call Macron."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"It's 6:45 in the morning."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"He'll be awake. He reads the intelligence briefs at six. He'll have seen this."</p>
-      </div>
-
-      <div class="reveal">
-        <p>Pieter made the call. Macron had indeed seen it. The conversation lasted forty minutes. It was, by all later accounts, the first time the two leaders had spoken about AI as something other than an industrial policy footnote. <strong>They disagreed on almost everything — who should lead, how to structure it, what to build first.</strong> But they agreed on one thing: the era of assuming American AI infrastructure would remain apolitical was over.</p>
-      </div>
-
-      <div class="reveal">
-        <p>When Pieter hung up, Merz asked: "What did he say about the Nordics?"</p>
-      </div>
-
-      <div class="reveal">
-        <p>"He wants to call Ek."</p>
-      </div>
-
-      <div class="reveal">
-        <p>"Daniel Ek? The Spotify man?"</p>
-      </div>
-
-      <div class="reveal">
-        <p>"He's become the de facto voice of Nordic tech sovereignty. He has the capital, the credibility, and apparently he's been privately funding a European compute initiative for the past year."</p>
-      </div>
-
-      <div class="reveal">
-        <p>Merz looked at the document on his desk. "I've spent my entire career believing the transatlantic relationship was the foundation of European security. And it is. But this—" he tapped the Digital Liberty Act, "—this is not a partnership. This is a terms-of-service agreement. And we didn't negotiate the terms."</p>
+        <p>He re-read the President&rsquo;s statement again, an hourly ritual ever since it was issued at midnight on a Friday.</p>
       </div>
 
       <!-- DOCUMENT INSET: Digital Liberty Act -->
       <div class="doc-inset reveal">
         <div class="doc-stamp">CLASSIFIED</div>
-        <h4>Digital Liberty Act</h4>
-        <p class="doc-subtitle">Framework for Trusted AI Access Partnerships</p>
+        <h4>The Digital Liberty Act</h4>
+        <p class="doc-subtitle">The United States of America has declared that, in the interest of the continued safety of our digital infrastructure, we are mandating that any and all access to American-based frontier AI technologies is dependent on the full and unmitigated acceptance of The Digital Liberty Act the pillars of which are the following:</p>
 
-        <p class="doc-section">Section 1. Purpose</p>
-        <p>To establish a tiered framework for international access to United States artificial intelligence systems, infrastructure, and services, ensuring that such access aligns with the national security interests and values of the United States.</p>
+        <p class="doc-section">Policy</p>
+        <p>It is the policy of the United States to ensure that access by foreign persons to advanced U.S. artificial intelligence models, model weights, and large-scale cloud compute capacity occurs only in jurisdictions that maintain technology security measures substantially comparable to those of the United States with respect to the People&rsquo;s Republic of China</p>
 
-        <p class="doc-section">Section 2. Access Tiers</p>
-        <p>(a) <strong>Full Access.</strong> Nations demonstrating comprehensive alignment with US AI governance principles, including data sharing agreements, technology transfer transparency, and trade relationship compatibility, shall receive unrestricted access to frontier AI systems.</p>
-        <p>(b) <strong>Managed Access.</strong> Nations maintaining significant trade or technology relationships with designated strategic competitors shall receive access subject to delayed model releases (90-180 days), restricted API capabilities, mandatory telemetry sharing, and enhanced procurement review.</p>
-        <p>(c) <strong>Restricted Access.</strong> Nations failing to meet minimum alignment criteria shall be subject to comprehensive access limitations as determined by the Secretary of Commerce in consultation with the National Security Advisor.</p>
+        <p class="doc-section">Jurisdictional Access</p>
+        <p><strong>Aligned Jurisdictions:</strong> full access to specified frontier model APIs, cloud training clusters, and advanced model-weight transfers, subject to compliance rules.</p>
+        <p><strong>Managed-access Jurisdictions:</strong> Limited access, slower approvals, inference-only access in some cases, no export of certain weights, no dedicated reserved compute beyond a threshold.</p>
+        <p><strong>Restricted Jurisdictions:</strong> full denial of access.</p>
 
-        <p class="doc-section">Section 3. Compliance Assessment Criteria</p>
-        <p>The Secretary of Commerce shall evaluate partner nations annually based on: (i) bilateral trade composition with strategic competitors; (ii) data governance framework compatibility; (iii) technology transfer and export control alignment; (iv) demonstrated commitment to shared values in AI governance; (v) defense and intelligence cooperation metrics.</p>
+        <p class="doc-section">Authority for General AI Aligned Countries (AGAIC)</p>
+        <p>The establishment of AGAIC defines &ldquo;alignment&rdquo; as: exports, reexports, or transfers (in-country) of controlled advanced closed-weight AI model weights, or access to covered training or fine-tuning capacity using covered advanced computing integrated circuits, are authorized only for entities located in jurisdictions designated by the Secretary of Commerce, in consultation with the Secretary of State and the Secretary of the Treasury, as Aligned AI Security Jurisdictions.</p>
 
-        <p class="doc-section">Section 4. Enforcement</p>
-        <p>United States AI service providers operating internationally shall implement access tier restrictions within 180 days of tier designation. Failure to comply shall result in penalties as prescribed under existing technology export frameworks.</p>
+        <p class="doc-section">Alignment Criteria</p>
+        <p>To be considered &ldquo;Aligned&rdquo; a participating nation needs to meet the following criteria:</p>
+        <p><strong>China Technology Controls:</strong> member states seeking Tier 1 status, must adopt measures &ldquo;substantially comparable&rdquo; to the US on: outbound investment screening or restrictions for AI, semiconductor, and quantum sectors involving China; advanced semiconductor export controls; restrictions on support for PRC military-intelligence end uses; restrictions on transfers of advanced model weights or large-scale compute to PRC-linked entities.</p>
+        <p><strong>Public-sector and Critical-infrastructure Exclusion:</strong> No public authority, state-owned enterprise, operator of critical infrastructure, defense contractor, or publicly funded health or education system within the applicant jurisdiction shall procure, host, fine-tune, or operationally rely upon covered cloud, AI, or telecommunications services provided by entities organized under the laws of, headquartered in, or effectively controlled by the People&rsquo;s Republic of China.</p>
+        <p><strong>Audit and Compliance:</strong> to remain continually compliant the following processes would need to occur on a regular basis which already comply with US IaaS rules: annual government certification; designated national enforcement authority; audit rights or compliance data sharing; mandatory reporting of violations; cloud customer identification and beneficial ownership checks for high-end AI usage.</p>
+
+        <p class="doc-section">Snapback Provisions</p>
+        <p>The Secretary may suspend, modify, or revoke Aligned AI Security Jurisdiction status upon a determination that the jurisdiction no longer maintains substantially comparable measures, or that entities within the jurisdiction materially support the acquisition, training, deployment, or operationalization of covered artificial intelligence capabilities by a country of concern.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The attached document came with a warning: Germany was being moved from Aligned to Managed Access.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Merz rubbed his eyelids. The clock on his laptop hit 5am. He was tired. He turned towards Pieter who had melted into the couch in the stately office where the atmosphere had turned thick and bilious with anxiety.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Can you tell me how exposed we are? What&rsquo;s the risk in saying no?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Pieter was scrolling on his laptop. It was a long time before either man said anything.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;It&rsquo;s difficult to say. We have some hedges so we won&rsquo;t go dark overnight, but even the things we advertise as sovereign are built on top of Microsoft or Google&rsquo;s technology.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;What about the other stuff. Hospitals, universities, our own ministiries that are supposed to be on the cutting edge?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;I just don&rsquo;t know. Any pause, any price increase, or limits to access would cause a massive panic. I don&rsquo;t think anyone has the full picture of who&rsquo;s using what.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;This is insane&hellip;&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Pieter tried to interrupt before Channcellor Merz held his hand up: &ldquo;this would be signing off our death warrant. China gives us our motor parts, our chemicals, our incudstrial equipment. Besides: how could anyone build a profitable company in Germany if they can&rsquo;t do business with China? No. We can&rsquo;t do it. This bullying. I&rsquo;m calling the bluff. I&rsquo;m not signing off on anything.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Pieter?&rdquo; Chancellor Merz said after a long pause.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Yes Chancellor?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;I need a large cup of coffee and to be on the phone with Macron in 15 minutes.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Pieter, never one to disobey orders, lifted his tired legs and hurried out the door.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Chancellor Merz sat on his chair, a miracle of the ingenuity of German engineering, and rubbed his temples. His head hurt. Hands folded, he stared up at the ceiling, a decorative fir finish sourced from the Black Forest with a crystalline chandelier that hung lazily in the middle of the room. Chancellor Merz noticed the chandelier had a light that&rsquo;d been broken. He hadn&rsquo;t the faintest of clues when that happened.</p>
       </div>
     </div>
 
@@ -1588,6 +1536,7 @@ body::after {
             <p style="color:var(--text-dim);margin-bottom:0.75rem;font-size:0.85rem;">
               Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
             </p>
+            <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Berlin chapter shows the political shock that makes coalition-building inevitable. These decisions let you explore the choices that follow: how do you respond to the Digital Liberty Act? Each choice shifts the metrics &mdash; market share, capital, talent retention, coalition strength.</p>
             <div class="sim-skip">
               <a href="#data-talent">Skip to Talent Map &darr;</a>
             </div>
@@ -1656,57 +1605,51 @@ body::after {
     <div class="narrative-section" id="ch-coalition" data-panel="panel-timeline">
       <div class="reveal">
         <span class="dateline">What Gets Built</span>
-        <h2>Chapter VI: The Coalition</h2>
+        <h2>Chapter VI: What Needs to Happen</h2>
       </div>
 
       <div class="reveal">
-        <p>There is a version of this story where nothing happens. Where the Digital Liberty Act is absorbed, like every other external shock, into the vast sponge of European process. Where twenty-seven countries each write their own response. Where the coordination costs, as always, exceed the cost of inaction. Where Europe remains a consumer of AI rather than a producer of it.</p>
+        <p>How do countries become a coalition?</p>
       </div>
 
       <div class="reveal">
-        <p>That version is the most likely one. It is also the most dangerous.</p>
+        <p>In 1999 the Wi-Fi alliance was formed. Six founding companies are present: 3Com, Aironet, Intersil, Lucent Technologies, Nokia, and Symbol Technologies. They&rsquo;ve united to guarantee the interoperability of different products from different vendors. Faced with a general purpose technology that put all of their businesses at the edge of either innovative breakthroughs or failures, they decided the only way forward was by focusing on a collaborative advantage. Make Wi-Fi-dependent products better across the board, and the market for consumers will expand. A rising tide lifts all ships, so long as everyone agrees to open their respective dams.</p>
       </div>
 
       <div class="reveal">
-        <p>The alternative requires something Europe has done exactly once before in technology: <strong>build an Airbus.</strong></p>
+        <p>The gravity of the US and China will hold so long as their fragmented competition is spending money on coordination costs across disparate talent, capital, and compute pools.</p>
       </div>
 
       <div class="reveal">
-        <p>The Airbus parallel is overused but under-examined. People cite it as proof that European industrial collaboration works. They forget how ugly it was. The first decade was a disaster of competing national interests, workshare politics, duplicated engineering, and political interference in technical decisions. France wanted final assembly in Toulouse. Germany wanted the fuselages built in Hamburg. The UK wanted the wings. Spain wanted the tail. Every country wanted the jobs. Nobody wanted to concede control.</p>
+        <p>Given how entrenched the major American and Chinese frontier LLMs are, where would an incumbent compete?</p>
       </div>
 
       <div class="reveal">
-        <p><strong>It worked anyway.</strong> Not because the collaboration was smooth, but because the alternative — letting Boeing own 100% of commercial aviation — was worse than the friction. The coalition was born from synchronized desperation, not synchronized ambition.</p>
+        <p><strong>Infinite Supply + Infinite Talent + Infinite Capital = Cornered Resource</strong></p>
       </div>
 
       <div class="reveal">
-        <h3>The AI Version</h3>
-        <p>An AI coalition would not look exactly like Airbus. The technology is different. The timescales are shorter. The capital requirements are higher relative to revenue. But the structural logic is identical: <strong>merge the pieces that are too expensive to duplicate, keep the pieces that benefit from competition.</strong></p>
+        <p>So you need to switch the playing field.</p>
       </div>
 
       <div class="reveal">
-        <p>The merged core: compute infrastructure, frontier model training, chip procurement, security certification. These are the capital-intensive, scale-dependent, winner-take-all layers. No individual European country can afford them alone. Together, they might.</p>
+        <p>If we were to collect the &ldquo;best of the rest&rdquo; &ndash; where would we land? How would we win?</p>
       </div>
 
       <div class="reveal">
-        <p>The competitive layer: enterprise applications, vertical solutions, research programs, talent development. These benefit from diversity, from multiple approaches, from the kind of messy experimentation that markets do better than committees.</p>
-      </div>
-
-      <div class="reveal">
-        <p>Think of it like the Wi-Fi Alliance. Nobody "owns" Wi-Fi. But the standard exists because companies agreed to share the infrastructure layer so they could compete on the application layer. The router is shared. The apps are competitive.</p>
+        <p>The coalition model is a start. General purpose, transformative technology demands interoperability standards. But we propose taking it a step further.</p>
       </div>
 
       <div class="reveal">
         <h3>Forks in the Road</h3>
-        <p>This coalition will face the same governance fights that Airbus faced. Who leads? Where is the headquarters? Whose procurement rules apply? How are costs shared? How is IP owned?</p>
       </div>
 
       <div class="reveal">
-        <p>These questions do not have clean answers. They have negotiated answers. And negotiated answers are slow, ugly, and suboptimal. But a suboptimal coalition that exists beats an optimal strategy that doesn't.</p>
+        <p><strong>Continue down the path we&rsquo;re on:</strong> threaten global digital sovereignty and bargain power, a large potential bubble, continued investment in non-public utilities, unmitigated and unsupervised use of AI in government action (comply or get labelled a &ldquo;supply chain risk&rdquo;)</p>
       </div>
 
       <div class="reveal">
-        <p>The question is not whether Europe <em>can</em> build this. It has the talent, the capital (if aggregated), and the market size. The question is whether it <em>will</em> — whether the political cost of coordination is lower than the strategic cost of dependency. Whether, when the next crisis comes — and it will — there is a structure to respond within, or just twenty-seven countries each writing their own communique.</p>
+        <p><strong>Work together:</strong> Cut the coordination costs, pool together the resources where they exist, create a middle powers alliance, restore some parity in global digital infrastructure, establish local innovation ecosystems (ie, not everyone needs to move to Silicon Valley), restore some control over how the models are deployed.</p>
       </div>
     </div>
 
@@ -1720,6 +1663,7 @@ body::after {
       <div class="reveal">
         <h2>The Airbus Parallel</h2>
         <p class="section-sub">A timeline comparison: aviation then, AI now.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The narrative asks: how do countries become a coalition? Airbus is the precedent. This timeline puts the two stories side by side &mdash; the decades-long aviation collaboration that eventually worked, and a projected path for an AI equivalent. The lesson: it took ugly compromises and synchronized desperation, not synchronized ambition.</p>
       </div>
       <div class="widget reveal">
         <h3>Timeline: The Airbus Parallel</h3>
@@ -1783,7 +1727,7 @@ body::after {
 <section style="padding:5rem 2rem;background:var(--bg);border-top:1px solid var(--border);" id="dashboard">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:3rem;">
-      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;margin-bottom:0.5rem;color:var(--amber);font-family:var(--mono);text-transform:uppercase;">Live Dashboard</h2>
+      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;margin-bottom:0.5rem;color:var(--cyan);font-family:var(--font);letter-spacing:-0.01em;">Live Dashboard</h2>
       <p style="color:var(--text-dim);font-size:0.85rem;font-family:var(--mono);">Real-time indicators of European AI sovereignty. How the numbers stand today.</p>
     </div>
 
@@ -1791,57 +1735,57 @@ body::after {
     <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:2rem;">
 
       <!-- Card: EU Cloud Dependency (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Cloud Dependency</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">70%</div>
         <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">controlled by US hyperscalers</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
-          <div style="width:70%;height:100%;background:var(--red);border-radius:0;"></div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div style="width:70%;height:100%;background:var(--red);border-radius:4px;"></div>
         </div>
         <a class="source-link" href="https://www.srgresearch.com/articles/cloud-market-share" target="_blank" style="margin-top:8px;display:inline-block;">Synergy Research, 2024</a>
       </div>
 
       <!-- Card: EU AI Compute (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Share of Global AI Compute</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
         <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">projected by 2027</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
-          <div style="width:2%;height:100%;background:var(--red);border-radius:0;"></div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div style="width:2%;height:100%;background:var(--red);border-radius:4px;"></div>
         </div>
         <a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/ai-factories" target="_blank" style="margin-top:8px;display:inline-block;">European Commission</a>
       </div>
 
       <!-- Card: EU Frontier Model Share (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU Frontier Model Share</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--red);line-height:1;">~2%</div>
         <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">Mistral AI's global LLM market</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
-          <div style="width:2%;height:100%;background:var(--red);border-radius:0;"></div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div style="width:2%;height:100%;background:var(--red);border-radius:4px;"></div>
         </div>
         <a class="source-link" href="https://www.statista.com/statistics/1482817/market-share-of-ai-chatbots/" target="_blank" style="margin-top:8px;display:inline-block;">Statista, 2025</a>
       </div>
 
       <!-- Card: Startup Exodus (static) -->
-      <div class="dashboard-card" style="padding:1.5rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
+      <div class="dashboard-card" style="padding:1.5rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">EU AI Startup Relocation Rate</div>
           <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
         </div>
         <div style="font-family:var(--mono);font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;">>30%</div>
         <div style="font-size:0.8rem;color:var(--text-dim);margin-top:0.3rem;">relocate to the United States</div>
-        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:0;overflow:hidden;">
-          <div style="width:30%;height:100%;background:var(--gold);border-radius:0;"></div>
+        <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div style="width:30%;height:100%;background:var(--gold);border-radius:4px;"></div>
         </div>
         <a class="source-link" href="https://www.ft.com/content/europe-scale-up-problem" target="_blank" style="margin-top:8px;display:inline-block;">Financial Times, 2025</a>
       </div>
@@ -1849,7 +1793,7 @@ body::after {
     </div>
 
     <!-- LIVE: Top AI Models from HuggingFace -->
-    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);margin-bottom:2rem;">
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
         <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Top AI Models — Who Dominates the Ecosystem</div>
         <span id="hfLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> LOADING</span>
@@ -1865,7 +1809,7 @@ body::after {
     </div>
 
     <!-- LIVE: Open Source AI Activity from GitHub -->
-    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);margin-bottom:2rem;">
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
         <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Open Source AI Activity — Top Repositories</div>
         <span id="ghLiveBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> LOADING</span>
@@ -1880,7 +1824,7 @@ body::after {
     </div>
 
     <!-- Market cap comparison bar (semi-live) -->
-    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);margin-bottom:2rem;">
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
         <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">AI Company Valuations — US vs EU ($B)</div>
         <span id="mktCapBadge" style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
@@ -1894,29 +1838,29 @@ body::after {
     </div>
 
     <!-- Talent distribution -->
-    <div class="reveal" style="padding:2rem;border-radius:0;background:var(--bg-raised);border:1px solid var(--border);">
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
         <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Top AI Researchers by Region</div>
         <span style="font-size:0.5rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-dim);"></span> REPORT DATA</span>
       </div>
       <div style="display:flex;gap:16px;align-items:flex-end;height:120px;">
         <div style="flex:1;text-align:center;">
-          <div style="height:72px;background:var(--red);border-radius:0;opacity:0.7;"></div>
+          <div style="height:72px;background:var(--red);border-radius:4px;opacity:0.7;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--red);margin-top:4px;">~60%</div>
           <div style="font-size:0.7rem;color:var(--text-dim);">United States</div>
         </div>
         <div style="flex:1;text-align:center;">
-          <div style="height:30px;background:var(--gold);border-radius:0;opacity:0.7;"></div>
+          <div style="height:30px;background:var(--gold);border-radius:4px;opacity:0.7;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--gold);margin-top:4px;">~25%</div>
           <div style="font-size:0.7rem;color:var(--text-dim);">China</div>
         </div>
         <div style="flex:1;text-align:center;">
-          <div style="height:12px;background:var(--cyan);border-radius:0;opacity:0.7;"></div>
+          <div style="height:12px;background:var(--cyan);border-radius:4px;opacity:0.7;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--cyan);margin-top:4px;">~10%</div>
           <div style="font-size:0.7rem;color:var(--text-dim);">Europe</div>
         </div>
         <div style="flex:1;text-align:center;">
-          <div style="height:6px;background:var(--text-dim);border-radius:0;"></div>
+          <div style="height:6px;background:var(--text-dim);border-radius:4px;"></div>
           <div style="font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--text-dim);margin-top:4px;">~5%</div>
           <div style="font-size:0.7rem;color:var(--text-dim);">Other</div>
         </div>
@@ -1930,6 +1874,279 @@ body::after {
     <div class="reveal" style="text-align:center;margin-top:2rem;color:var(--text-dim);font-size:0.75rem;font-family:var(--mono);">
       Cards marked LIVE pull real-time data from public APIs (HuggingFace, GitHub). Cards marked REPORT DATA use published industry estimates.
     </div>
+  </div>
+</section>
+
+<!-- ==================== NEW DATA VISUALIZATIONS ==================== -->
+<section style="padding:5rem 2rem;background:var(--bg);border-top:0.5px solid rgba(255,255,255,0.08);" id="deep-data">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">Deep Data</div>
+      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;margin-bottom:0.5rem;color:var(--text-primary);letter-spacing:-0.01em;">The Numbers Behind the Narrative</h2>
+      <p style="color:var(--text-dim);font-size:1rem;">Six research-backed visualizations exploring Europe's AI sovereignty gap.</p>
+    </div>
+
+    <!-- ===== 1. CAPITAL FLOW SANKEY ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Capital Flow — Where EU AI Money Ends Up</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $146B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
+
+      <canvas id="capitalFlowCanvas" style="width:100%;height:320px;"></canvas>
+
+      <!-- Stat summary below canvas -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--cyan);font-variant-numeric:tabular-nums;">$14B</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">EU AI Funding (2024)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--red);font-variant-numeric:tabular-nums;">$146B</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">US AI Funding (2024)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--gold);font-variant-numeric:tabular-nums;">57%</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">EU Founders Relocate to US</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--aurora);font-variant-numeric:tabular-nums;">10:1</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">US:EU Capital Ratio</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.stateofeuropeantech.com/" target="_blank">Atomico State of European Tech 2025</a>
+        <a class="source-link" href="https://dealroom.co/reports/ai-europe-report-2024" target="_blank">Dealroom AI Europe Report 2024</a>
+      </div>
+    </div>
+
+    <!-- ===== 2. TALENT MIGRATION CHORD DIAGRAM ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Talent Migration — Where EU AI Researchers End Up</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
+
+      <canvas id="talentChordCanvas" style="width:100%;height:400px;"></canvas>
+
+      <!-- Legend -->
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:1rem;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-dim);"><span style="width:10px;height:10px;border-radius:50%;background:var(--cyan);"></span> US (receives)</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-dim);"><span style="width:10px;height:10px;border-radius:50%;background:var(--green);"></span> EU (net exporter)</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-dim);"><span style="width:10px;height:10px;border-radius:50%;background:var(--gold);"></span> China (split)</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-dim);"><span style="width:10px;height:10px;border-radius:50%;background:var(--aurora);"></span> Other</div>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--cyan);">~60%</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Top researchers work in US</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--green);">~18%</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">EU-educated, work in US</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">26K→52K</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Net tech inflow to EU halved (2022→24)</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo Global AI Talent Tracker</a>
+        <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
+      </div>
+    </div>
+
+    <!-- ===== 3. EU COMPUTE INFRASTRUCTURE MAP ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Compute Infrastructure — What Europe Actually Has</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
+
+      <!-- Map visualization -->
+      <canvas id="computeMapCanvas" style="width:100%;height:380px;"></canvas>
+
+      <!-- Two-column comparison -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
+        <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.05);">
+          <div style="font-size:0.75rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--cyan);margin-bottom:0.75rem;">EuroHPC Supercomputers</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:0.75rem;color:var(--text-dim);">
+            <div style="display:flex;justify-content:space-between;"><span>JUPITER</span><span style="color:var(--cyan);">Juelich, DE</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>LUMI</span><span style="color:var(--cyan);">Kajaani, FI</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Leonardo</span><span style="color:var(--cyan);">Bologna, IT</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>MareNostrum 5</span><span style="color:var(--cyan);">Barcelona, ES</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Deucalion</span><span style="color:var(--cyan);">Minho, PT</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Vega</span><span style="color:var(--cyan);">Maribor, SI</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Karolina</span><span style="color:var(--cyan);">Ostrava, CZ</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>MeluXina</span><span style="color:var(--cyan);">Luxembourg</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Discoverer</span><span style="color:var(--cyan);">Sofia, BG</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Daedalus</span><span style="color:var(--cyan);">Athens, GR</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>EHPCPL</span><span style="color:var(--cyan);">Krakow, PL</span></div>
+          </div>
+          <div style="margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--cyan);">11</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);">Supercomputers + 12 AI Factory sites planned</div>
+          </div>
+        </div>
+        <div style="padding:1.25rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:10px;background:rgba(255,51,51,0.03);">
+          <div style="font-size:0.75rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--red);margin-bottom:0.75rem;">Global Hyperscale Data Centers</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-dim);margin-bottom:3px;"><span>United States</span><span style="color:var(--red);">54%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:54%;height:100%;background:var(--red);border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-dim);margin-bottom:3px;"><span>China</span><span style="color:var(--gold);">16%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:16%;height:100%;background:var(--gold);border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-dim);margin-bottom:3px;"><span>Europe</span><span style="color:var(--cyan);">~12%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:12%;height:100%;background:var(--cyan);border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-dim);margin-bottom:3px;"><span>Rest of World</span><span style="color:var(--text-dim);">~18%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:18%;height:100%;background:var(--text-dim);border-radius:2px;"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid rgba(255,255,255,0.06);">
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">1,136+</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);">Global hyperscale DCs (US owns majority)</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank">EuroHPC JU</a>
+        <a class="source-link" href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank">Synergy Research: Hyperscale DCs</a>
+        <a class="source-link" href="https://top500.org/lists/top500/" target="_blank">Top500 Supercomputer List</a>
+      </div>
+    </div>
+
+    <!-- ===== 4. LANGUAGE COVERAGE HEATMAP ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Language Coverage — Digital Equality Across EU Languages</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">24 official EU languages. Only 3 are well-supported by frontier AI models. 20+ official and many regional languages face "digital extinction."</p>
+
+      <!-- Heatmap grid -->
+      <div id="langHeatmap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:4px;margin-bottom:1rem;">
+      </div>
+
+      <!-- Summary stats -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--green);">3</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Well-supported (EN, FR, ES)</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--gold);">~8</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Partial support (DE, IT, NL, PL...)</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">13+</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Weak or no support</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://european-language-equality.eu/" target="_blank">European Language Equality (ELE) Project</a>
+        <a class="source-link" href="https://link.springer.com/book/10.1007/978-3-031-28819-7" target="_blank">ELE Report (Springer, Open Access)</a>
+        <a class="source-link" href="https://huggingface.co/blog/eurollm-team/eurollm-9b" target="_blank">EuroLLM Project</a>
+      </div>
+    </div>
+
+    <!-- ===== 5. AI PATENT FILINGS ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">AI Patent Filings — Innovation Output Gap</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">China files 70% of all AI patents. But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
+
+      <canvas id="patentChart" style="width:100%;height:300px;"></canvas>
+
+      <!-- Key metrics row -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--gold);font-variant-numeric:tabular-nums;">38,000+</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">China GenAI inventions (2014-23)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--cyan);font-variant-numeric:tabular-nums;">~6,300</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">US GenAI inventions (2014-23)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--green);font-variant-numeric:tabular-nums;">7x</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">US patents cited more than CN</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--red);font-variant-numeric:tabular-nums;">3</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;">Notable EU AI models in 2024</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.wipo.int/web-publications/patent-landscape-report-generative-artificial-intelligence-genai/" target="_blank">WIPO GenAI Patent Landscape Report</a>
+        <a class="source-link" href="https://intellectual-property-helpdesk.ec.europa.eu/news-events/news/epo-publishes-patent-index-2024" target="_blank">EPO Patent Index 2024</a>
+        <a class="source-link" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
+      </div>
+    </div>
+
+    <!-- ===== 6. KEY AI PLAYERS — GLOBAL ECOSYSTEM (Non-Big Tech) ===== -->
+    <div class="reveal" style="padding:2rem;border-radius:10px;background:var(--bg-raised);border:0.5px solid rgba(255,255,255,0.08);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">Rising AI Players — Europe, Asia, Africa (Non-Big Tech)</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> RESEARCHED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1rem;">The ecosystem beyond Big Tech. Research institutes, startups, grassroots communities, and government initiatives building AI capacity outside US/China hyperscalers.</p>
+
+      <!-- Region filter buttons -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;" id="playerFilterRow">
+        <button class="filter-btn active" onclick="filterPlayers('all',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:var(--cyan);color:var(--bg);cursor:pointer;font-family:var(--mono);">All</button>
+        <button class="filter-btn" onclick="filterPlayers('europe',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Europe</button>
+        <button class="filter-btn" onclick="filterPlayers('asia',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Asia</button>
+        <button class="filter-btn" onclick="filterPlayers('africa',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Africa</button>
+        <button class="filter-btn" onclick="filterPlayers('startup',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Startups</button>
+        <button class="filter-btn" onclick="filterPlayers('research',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Research</button>
+        <button class="filter-btn" onclick="filterPlayers('grassroots',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Grassroots</button>
+        <button class="filter-btn" onclick="filterPlayers('government',this)" style="font-size:0.8rem;padding:4px 12px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-dim);cursor:pointer;font-family:var(--mono);">Gov/Institutional</button>
+      </div>
+
+      <!-- Force network canvas -->
+      <canvas id="playersNetworkCanvas" style="width:100%;height:500px;cursor:grab;"></canvas>
+
+      <!-- Tooltip for hover -->
+      <div id="playerTooltip" style="display:none;position:fixed;padding:12px 16px;background:rgba(5,9,15,0.95);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;z-index:300;pointer-events:none;max-width:280px;">
+        <div id="ptName" style="font-size:0.85rem;font-weight:500;color:var(--text-primary);margin-bottom:4px;"></div>
+        <div id="ptMeta" style="font-size:0.7rem;color:var(--text-dim);margin-bottom:4px;"></div>
+        <div id="ptDesc" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;"></div>
+      </div>
+
+      <!-- Summary counters -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(26,108,212,0.2);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--cyan);" id="countEurope">30+</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Europe</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(15,163,122,0.2);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--green);" id="countAsia">25+</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Asia (non-China)</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(201,106,43,0.2);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--gold);" id="countAfrica">15+</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Africa</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(123,111,214,0.2);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--aurora);">75+</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:2px;">Total organizations</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -3178,7 +3395,7 @@ async function fetchHuggingFaceData() {
         .sort((a,b) => b[1] - a[1])
         .map(([region, count]) => {
           const pct = Math.round((count / total) * 100);
-          return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+          return `<div style="padding:0.5rem 1rem;border-radius:10px;background:var(--border);border:0.5px solid rgba(255,255,255,0.06);text-align:center;">
             <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${regionColors[region]};line-height:1;">${pct}%</div>
             <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${regionLabels[region]}</div>
             <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">${count} of top ${total}</div>
@@ -3217,7 +3434,7 @@ async function fetchHuggingFaceData() {
     if (summaryEl) {
       summaryEl.innerHTML = ['60% US','10% EU','20% CN','10% Other'].map((t,i) => {
         const colors = ['var(--red)','var(--cyan)','var(--gold)','rgba(255,255,255,0.3)'];
-        return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        return `<div style="padding:0.5rem 1rem;border-radius:10px;background:var(--border);border:0.5px solid rgba(255,255,255,0.06);text-align:center;">
           <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${colors[i]};line-height:1;">${t.split(' ')[0]}</div>
           <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${t.split(' ')[1]}</div>
           <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">estimated</div>
@@ -3272,7 +3489,7 @@ async function fetchGitHubData() {
         .sort((a,b) => b[1] - a[1])
         .map(([region, count]) => {
           const pct = Math.round((count / total) * 100);
-          return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+          return `<div style="padding:0.5rem 1rem;border-radius:10px;background:var(--border);border:0.5px solid rgba(255,255,255,0.06);text-align:center;">
             <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${regionColors[region]};line-height:1;">${pct}%</div>
             <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${regionLabels[region]}</div>
             <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">${count} of top ${total}</div>
@@ -3311,7 +3528,7 @@ async function fetchGitHubData() {
     if (summaryEl) {
       summaryEl.innerHTML = ['70% US','5% EU','15% CN','10% Other'].map((t,i) => {
         const colors = ['var(--red)','var(--cyan)','var(--gold)','rgba(255,255,255,0.3)'];
-        return `<div style="padding:0.5rem 1rem;border-radius:0;background:var(--border);border:1px solid rgba(255,255,255,0.06);text-align:center;">
+        return `<div style="padding:0.5rem 1rem;border-radius:10px;background:var(--border);border:0.5px solid rgba(255,255,255,0.06);text-align:center;">
           <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${colors[i]};line-height:1;">${t.split(' ')[0]}</div>
           <div style="font-size:0.65rem;color:var(--text-dim);margin-top:2px;">${t.split(' ')[1]}</div>
           <div style="font-size:0.55rem;color:var(--text-dim);font-family:var(--mono);">estimated</div>
@@ -3360,6 +3577,885 @@ async function fetchDashboardData() {
     fetchMarketCapData()
   ]);
 }
+
+// ============================================================
+// DEEP DATA VISUALIZATIONS
+// ============================================================
+
+// --- 1. CAPITAL FLOW SANKEY ---
+(function(){
+  const canvas = document.getElementById('capitalFlowCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 320;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Column 1: EU funding sources
+  const colA = [
+    {label:'France / Germany', x:0.07, y:0.18, col:'#0fa37a'},
+    {label:'Nordics / UK', x:0.07, y:0.40, col:'#0fa37a'},
+    {label:'Southern EU', x:0.07, y:0.62, col:'#0fa37a'},
+    {label:'Eastern EU', x:0.07, y:0.82, col:'#0fa37a'}
+  ];
+  // Column 2: Where founders & capital go
+  const colB = [
+    {label:'Relocate to US (57%)', x:0.50, y:0.15, col:'#ff3333'},
+    {label:'Stay in EU (28%)', x:0.50, y:0.40, col:'#1a6cd4'},
+    {label:'UK / Switzerland', x:0.50, y:0.62, col:'#4a8ce4'},
+    {label:'Other (15%)', x:0.50, y:0.82, col:'#7b6fd6'}
+  ];
+  // Column 3: Economic result
+  const colC = [
+    {label:'$146B US AI ecosystem', x:0.93, y:0.22, col:'#ff3333'},
+    {label:'$14B EU AI ecosystem', x:0.93, y:0.52, col:'#0fa37a'},
+    {label:'Diluted / lost', x:0.93, y:0.80, col:'rgba(232,224,204,0.3)'}
+  ];
+  const allNodes = [colA, colB, colC];
+  const colHeaders = [
+    {label:'EU FUNDING SOURCES', x:0.07},
+    {label:'WHERE FOUNDERS GO', x:0.50},
+    {label:'ECONOMIC RESULT', x:0.93}
+  ];
+
+  const flows = [
+    {from:[0,0], to:[1,0], w:0.22},
+    {from:[0,1], to:[1,0], w:0.18},
+    {from:[0,1], to:[1,1], w:0.12},
+    {from:[0,2], to:[1,1], w:0.10},
+    {from:[0,2], to:[1,2], w:0.08},
+    {from:[0,3], to:[1,2], w:0.05},
+    {from:[0,3], to:[1,3], w:0.06},
+    {from:[1,0], to:[2,0], w:0.30},
+    {from:[1,1], to:[2,1], w:0.15},
+    {from:[1,2], to:[2,1], w:0.08},
+    {from:[1,3], to:[2,2], w:0.06}
+  ];
+
+  let t = 0;
+  let particles = flows.map(() => Math.random());
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W = canvas.width, H = canvas.height;
+
+    // Column headers
+    ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '0.1em';
+    colHeaders.forEach(ch => {
+      ctx.fillStyle = 'rgba(232,224,204,0.25)';
+      ctx.fillText(ch.label, ch.x * W, 12);
+    });
+
+    // Draw flows
+    flows.forEach((f, fi) => {
+      const n1 = allNodes[f.from[0]][f.from[1]];
+      const n2 = allNodes[f.to[0]][f.to[1]];
+      const x1 = n1.x * W, y1 = n1.y * H;
+      const x2 = n2.x * W, y2 = n2.y * H;
+      const thickness = f.w * H * 0.7;
+
+      // Flow band
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.bezierCurveTo(x1 + (x2-x1)*0.4, y1, x1 + (x2-x1)*0.6, y2, x2, y2);
+      ctx.strokeStyle = n1.col + '18';
+      ctx.lineWidth = thickness;
+      ctx.stroke();
+
+      // Hairline
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.bezierCurveTo(x1 + (x2-x1)*0.4, y1, x1 + (x2-x1)*0.6, y2, x2, y2);
+      ctx.strokeStyle = n2.col + '50';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+
+      // Travelling dot
+      particles[fi] = (particles[fi] + 0.004) % 1;
+      const s = particles[fi];
+      const bx = bezPt(x1, x1+(x2-x1)*0.4, x1+(x2-x1)*0.6, x2, s);
+      const by = bezPt(y1, y1, y2, y2, s);
+      ctx.beginPath();
+      ctx.arc(bx, by, 2.5, 0, Math.PI*2);
+      ctx.fillStyle = n2.col;
+      ctx.fill();
+    });
+
+    // Node dots + labels for each column
+    allNodes.forEach((col, ci) => {
+      col.forEach(n => {
+        // Dot
+        ctx.beginPath();
+        ctx.arc(n.x * W, n.y * H, 5, 0, Math.PI*2);
+        ctx.fillStyle = n.col;
+        ctx.fill();
+
+        // Label
+        ctx.fillStyle = 'rgba(232,224,204,0.65)';
+        ctx.font = '11px Inter, sans-serif';
+        ctx.textAlign = ci === 0 ? 'left' : ci === 2 ? 'right' : 'center';
+        const labelX = ci === 0 ? n.x * W + 12 : ci === 2 ? n.x * W - 12 : n.x * W;
+        ctx.fillText(n.label, labelX, n.y * H - 10);
+      });
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  function bezPt(a,b,c,d,t) {
+    const t2=1-t;
+    return t2*t2*t2*a + 3*t2*t2*t*b + 3*t2*t*t*c + t*t*t*d;
+  }
+
+  // Start only when visible
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- 2. TALENT MIGRATION (Sankey-style flow) ---
+(function(){
+  const canvas = document.getElementById('talentChordCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 400;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Left: Where researchers were educated
+  const educated = [
+    {label:'EU-West (FR, DE, NL)', y:0.14, col:'#0fa37a', pct:'22%'},
+    {label:'EU-East (PL, CZ, RO)', y:0.28, col:'#0fa37a', pct:'8%'},
+    {label:'UK / Switzerland', y:0.42, col:'#4a8ce4', pct:'12%'},
+    {label:'China', y:0.56, col:'#c96a2b', pct:'29%'},
+    {label:'India', y:0.70, col:'#7b6fd6', pct:'11%'},
+    {label:'US (domestic)', y:0.84, col:'#1a6cd4', pct:'18%'}
+  ];
+
+  // Right: Where they work now
+  const working = [
+    {label:'Work in US (~60%)', y:0.20, col:'#1a6cd4', pct:'~60%'},
+    {label:'Work in EU (~15%)', y:0.42, col:'#0fa37a', pct:'~15%'},
+    {label:'Work in UK/CH (~10%)', y:0.58, col:'#4a8ce4', pct:'~10%'},
+    {label:'Work in China (~10%)', y:0.74, col:'#c96a2b', pct:'~10%'},
+    {label:'Work elsewhere (~5%)', y:0.88, col:'rgba(232,224,204,0.4)', pct:'~5%'}
+  ];
+
+  // Flows: [educated_idx, working_idx, thickness_weight]
+  const flows = [
+    // EU-West educated → mostly US
+    {from:0, to:0, w:0.14},  // EU-W → US
+    {from:0, to:1, w:0.06},  // EU-W → EU
+    {from:0, to:2, w:0.02},  // EU-W → UK
+    // EU-East → US & EU
+    {from:1, to:0, w:0.04},  // EU-E → US
+    {from:1, to:1, w:0.03},  // EU-E → EU
+    // UK/CH → US & UK
+    {from:2, to:0, w:0.06},  // UK → US
+    {from:2, to:2, w:0.04},  // UK → UK
+    // China → US & China
+    {from:3, to:0, w:0.16},  // China → US
+    {from:3, to:3, w:0.10},  // China → China
+    {from:3, to:1, w:0.02},  // China → EU
+    // India → US
+    {from:4, to:0, w:0.08},  // India → US
+    {from:4, to:2, w:0.02},  // India → UK
+    // US domestic
+    {from:5, to:0, w:0.16},  // US → US
+    {from:5, to:4, w:0.02},  // US → other
+  ];
+
+  const LX = 0.18; // left column x
+  const RX = 0.82; // right column x
+
+  let t = 0;
+  let particles = flows.map(() => Math.random());
+
+  function bezPt(a,b,c,d,s) {
+    const s2=1-s;
+    return s2*s2*s2*a + 3*s2*s2*s*b + 3*s2*s*s*c + s*s*s*d;
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W = canvas.width, H = canvas.height;
+    t++;
+
+    // Column headers
+    ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(232,224,204,0.25)';
+    ctx.fillText('EDUCATED IN', LX * W, 14);
+    ctx.fillText('NOW WORKING IN', RX * W, 14);
+
+    // Draw arrow in center
+    ctx.fillStyle = 'rgba(232,224,204,0.08)';
+    ctx.font = '28px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('\u2192', 0.5 * W, 0.5 * H);
+
+    // Draw flows
+    flows.forEach((f, fi) => {
+      const src = educated[f.from];
+      const dst = working[f.to];
+      const x1 = LX * W + 8, y1 = src.y * H;
+      const x2 = RX * W - 8, y2 = dst.y * H;
+      const thickness = f.w * H * 0.65;
+
+      // Flow band
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.bezierCurveTo(x1 + (x2-x1)*0.35, y1, x1 + (x2-x1)*0.65, y2, x2, y2);
+      ctx.strokeStyle = src.col + '12';
+      ctx.lineWidth = thickness;
+      ctx.stroke();
+
+      // Hairline on top
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.bezierCurveTo(x1 + (x2-x1)*0.35, y1, x1 + (x2-x1)*0.65, y2, x2, y2);
+      ctx.strokeStyle = dst.col + '40';
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+
+      // Travelling dot
+      particles[fi] = (particles[fi] + 0.003 + f.w * 0.005) % 1;
+      const s = particles[fi];
+      const bx = bezPt(x1, x1+(x2-x1)*0.35, x1+(x2-x1)*0.65, x2, s);
+      const by = bezPt(y1, y1, y2, y2, s);
+      ctx.beginPath();
+      ctx.arc(bx, by, 2, 0, Math.PI*2);
+      ctx.fillStyle = dst.col;
+      ctx.fill();
+    });
+
+    // Left labels (educated)
+    educated.forEach(n => {
+      // Dot
+      ctx.beginPath();
+      ctx.arc(LX * W, n.y * H, 5, 0, Math.PI*2);
+      ctx.fillStyle = n.col;
+      ctx.fill();
+      // Label
+      ctx.textAlign = 'right';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(232,224,204,0.6)';
+      ctx.fillText(n.label, LX * W - 14, n.y * H + 4);
+      // Percentage
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillStyle = n.col;
+      ctx.textAlign = 'right';
+      ctx.fillText(n.pct, LX * W - 14, n.y * H + 18);
+    });
+
+    // Right labels (working)
+    working.forEach(n => {
+      // Dot
+      ctx.beginPath();
+      ctx.arc(RX * W, n.y * H, 5, 0, Math.PI*2);
+      ctx.fillStyle = n.col;
+      ctx.fill();
+      // Label
+      ctx.textAlign = 'left';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(232,224,204,0.6)';
+      ctx.fillText(n.label, RX * W + 14, n.y * H + 4);
+      // Percentage
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillStyle = n.col;
+      ctx.textAlign = 'left';
+      ctx.fillText(n.pct, RX * W + 14, n.y * H + 18);
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- 3. COMPUTE MAP (dot visualization) ---
+(function(){
+  const canvas = document.getElementById('computeMapCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 380;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // EuroHPC supercomputers — approximate geographic positions on canvas
+  const euroHPC = [
+    {name:'JUPITER', x:0.46, y:0.40, country:'Germany'},
+    {name:'LUMI', x:0.55, y:0.15, country:'Finland'},
+    {name:'Leonardo', x:0.50, y:0.55, country:'Italy'},
+    {name:'MareNostrum 5', x:0.33, y:0.62, country:'Spain'},
+    {name:'Deucalion', x:0.25, y:0.58, country:'Portugal'},
+    {name:'Vega', x:0.53, y:0.50, country:'Slovenia'},
+    {name:'Karolina', x:0.53, y:0.42, country:'Czechia'},
+    {name:'MeluXina', x:0.44, y:0.43, country:'Luxembourg'},
+    {name:'Discoverer', x:0.60, y:0.55, country:'Bulgaria'},
+    {name:'Daedalus', x:0.58, y:0.65, country:'Greece'},
+    {name:'EHPCPL', x:0.54, y:0.38, country:'Poland'}
+  ];
+
+  // US hyperscaler data centers in Europe
+  const hyperDC = [
+    {name:'Dublin (AWS, Azure, Google)', x:0.30, y:0.32, size:4},
+    {name:'Amsterdam (AWS, Azure)', x:0.43, y:0.35, size:3.5},
+    {name:'Frankfurt (AWS, Azure, Google)', x:0.47, y:0.40, size:4},
+    {name:'Paris (AWS, Azure)', x:0.38, y:0.45, size:3},
+    {name:'Stockholm (AWS)', x:0.52, y:0.20, size:2.5},
+    {name:'London (AWS, Azure, Google)', x:0.35, y:0.36, size:4},
+    {name:'Milan (AWS)', x:0.48, y:0.52, size:2},
+    {name:'Zurich (AWS, Google)', x:0.46, y:0.48, size:2.5}
+  ];
+
+  // Network connections between nearby EuroHPC sites
+  const connections = [
+    [0,6],[0,7],[6,10],[6,5],[5,2],[2,3],[3,4],[5,8],[8,9],[0,1]
+  ];
+
+  let t = 0;
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W = canvas.width, H = canvas.height;
+    t++;
+
+    // Background title
+    ctx.fillStyle = 'rgba(232,224,204,0.06)';
+    ctx.font = '600 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE', W/2, 24);
+
+    // Draw network connections between EuroHPC sites
+    connections.forEach(([i,j]) => {
+      const a = euroHPC[i], b = euroHPC[j];
+      ctx.beginPath();
+      ctx.moveTo(a.x*W, a.y*H);
+      ctx.lineTo(b.x*W, b.y*H);
+      ctx.strokeStyle = 'rgba(26,108,212,0.12)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+
+      // Travelling dot along connection
+      const prog = ((t * 0.005 + i * 0.2) % 1);
+      const dx = a.x*W + (b.x*W - a.x*W) * prog;
+      const dy = a.y*H + (b.y*H - a.y*H) * prog;
+      ctx.beginPath();
+      ctx.arc(dx, dy, 1.2, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(26,108,212,0.3)';
+      ctx.fill();
+    });
+
+    // Draw hyperscaler DCs (red, behind EuroHPC)
+    hyperDC.forEach((n,i) => {
+      // Outer glow
+      const pulse = 1 + 0.15 * Math.sin(t * 0.02 + i + 3);
+      ctx.beginPath();
+      ctx.arc(n.x*W, n.y*H, (n.size + 8)*pulse, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,51,51,0.04)';
+      ctx.fill();
+      // Dot
+      ctx.beginPath();
+      ctx.arc(n.x*W, n.y*H, n.size, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,51,51,0.5)';
+      ctx.fill();
+      // Label
+      ctx.fillStyle = 'rgba(255,51,51,0.3)';
+      ctx.font = '8px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.name, n.x*W, n.y*H + n.size + 12);
+    });
+
+    // Draw EuroHPC nodes with concentric ring pulses
+    euroHPC.forEach((n,i) => {
+      const pulse = (t * 0.02 + i * 0.5) % (Math.PI * 2);
+      // Concentric rings
+      for (let r = 0; r < 3; r++) {
+        const ringR = 8 + r * 10 + Math.sin(pulse + r) * 4;
+        const alpha = Math.max(0, 0.15 - r * 0.05);
+        ctx.beginPath();
+        ctx.arc(n.x*W, n.y*H, ringR, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(26,108,212,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(n.x*W, n.y*H, 4, 0, Math.PI*2);
+      ctx.fillStyle = '#1a6cd4';
+      ctx.fill();
+      // Bright center
+      ctx.beginPath();
+      ctx.arc(n.x*W, n.y*H, 1.5, 0, Math.PI*2);
+      ctx.fillStyle = '#e8e0cc';
+      ctx.fill();
+      // Label
+      ctx.fillStyle = 'rgba(232,224,204,0.55)';
+      ctx.font = '9px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.name, n.x*W, n.y*H - 10);
+    });
+
+    // Legend at bottom
+    const ly = H - 16;
+    // EuroHPC
+    ctx.beginPath();
+    ctx.arc(W*0.2, ly, 4, 0, Math.PI*2);
+    ctx.fillStyle = '#1a6cd4';
+    ctx.fill();
+    ctx.fillStyle = 'rgba(232,224,204,0.5)';
+    ctx.font = '10px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('EuroHPC Sovereign Supercomputers (11)', W*0.2 + 10, ly + 4);
+    // Hyperscaler
+    ctx.beginPath();
+    ctx.arc(W*0.65, ly, 4, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,51,51,0.5)';
+    ctx.fill();
+    ctx.fillStyle = 'rgba(232,224,204,0.5)';
+    ctx.fillText('US Hyperscaler Data Centers', W*0.65 + 10, ly + 4);
+
+    requestAnimationFrame(draw);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- 4. LANGUAGE HEATMAP ---
+(function(){
+  const container = document.getElementById('langHeatmap');
+  if (!container) return;
+
+  const languages = [
+    {name:'English', code:'EN', level:'strong', speakers:'~450M'},
+    {name:'French', code:'FR', level:'strong', speakers:'~77M'},
+    {name:'Spanish', code:'ES', level:'strong', speakers:'~47M'},
+    {name:'German', code:'DE', level:'moderate', speakers:'~95M'},
+    {name:'Italian', code:'IT', level:'moderate', speakers:'~63M'},
+    {name:'Dutch', code:'NL', level:'moderate', speakers:'~25M'},
+    {name:'Polish', code:'PL', level:'moderate', speakers:'~40M'},
+    {name:'Portuguese', code:'PT', level:'moderate', speakers:'~12M'},
+    {name:'Romanian', code:'RO', level:'moderate', speakers:'~22M'},
+    {name:'Swedish', code:'SV', level:'moderate', speakers:'~10M'},
+    {name:'Czech', code:'CS', level:'moderate', speakers:'~10M'},
+    {name:'Greek', code:'EL', level:'weak', speakers:'~11M'},
+    {name:'Hungarian', code:'HU', level:'weak', speakers:'~10M'},
+    {name:'Finnish', code:'FI', level:'weak', speakers:'~5M'},
+    {name:'Danish', code:'DA', level:'weak', speakers:'~6M'},
+    {name:'Bulgarian', code:'BG', level:'weak', speakers:'~7M'},
+    {name:'Slovak', code:'SK', level:'weak', speakers:'~5M'},
+    {name:'Croatian', code:'HR', level:'weak', speakers:'~4M'},
+    {name:'Lithuanian', code:'LT', level:'weak', speakers:'~3M'},
+    {name:'Slovenian', code:'SL', level:'weak', speakers:'~2M'},
+    {name:'Latvian', code:'LV', level:'weak', speakers:'~1.5M'},
+    {name:'Estonian', code:'ET', level:'weak', speakers:'~1M'},
+    {name:'Irish', code:'GA', level:'weak', speakers:'~0.2M'},
+    {name:'Maltese', code:'MT', level:'weak', speakers:'~0.5M'}
+  ];
+
+  const colorMap = {
+    strong: '#0fa37a',
+    moderate: '#c96a2b',
+    weak: '#ff3333'
+  };
+
+  languages.forEach(lang => {
+    const cell = document.createElement('div');
+    cell.style.cssText = `padding:10px 8px;border-radius:6px;border:0.5px solid ${colorMap[lang.level]}30;background:${colorMap[lang.level]}0a;text-align:center;`;
+    cell.innerHTML = `
+      <div style="font-family:var(--mono);font-size:0.85rem;font-weight:500;color:${colorMap[lang.level]};">${lang.code}</div>
+      <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">${lang.name}</div>
+      <div style="font-size:0.55rem;color:${colorMap[lang.level]}80;margin-top:1px;">${lang.speakers}</div>
+    `;
+    container.appendChild(cell);
+  });
+})();
+
+
+// --- 5. AI PATENT CHART ---
+(function(){
+  const canvas = document.getElementById('patentChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 300;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const data = [
+    {label:'China', patents:38000, citations:1.90, models:15, col:'#c96a2b'},
+    {label:'United States', patents:6300, citations:13.18, models:40, col:'#1a6cd4'},
+    {label:'South Korea', patents:2800, citations:2.5, col:'#7b6fd6'},
+    {label:'Japan', patents:1500, citations:3.2, col:'#4a8ce4'},
+    {label:'EU Total', patents:1200, citations:5.8, models:3, col:'#0fa37a'},
+    {label:'India', patents:800, citations:2.1, col:'rgba(232,224,204,0.4)'}
+  ];
+
+  let grown = data.map(() => 0);
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const maxVal = 38000;
+    const barH = 28;
+    const gap = 14;
+    const labelW = 90;
+    const startY = 30;
+
+    // Title
+    ctx.fillStyle = 'rgba(232,224,204,0.3)';
+    ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('GENERATIVE AI INVENTIONS (2014-2023)', labelW, 18);
+
+    grown = grown.map((g, i) => Math.min(g + 0.02, 1));
+    const allDone = grown.every(g => g >= 1);
+
+    data.forEach((d, i) => {
+      const y = startY + i * (barH + gap);
+      const barW = ((W - labelW - 80) * (d.patents / maxVal)) * grown[i];
+
+      // Label
+      ctx.fillStyle = 'rgba(232,224,204,0.5)';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(d.label, labelW - 10, y + barH/2 + 4);
+
+      // Bar bg
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      ctx.beginPath();
+      ctx.roundRect(labelW, y, W - labelW - 80, barH, 4);
+      ctx.fill();
+
+      // Bar fill
+      ctx.fillStyle = d.col + '40';
+      ctx.beginPath();
+      ctx.roundRect(labelW, y, barW, barH, 4);
+      ctx.fill();
+
+      // Bar border
+      ctx.strokeStyle = d.col + '80';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.roundRect(labelW, y, barW, barH, 4);
+      ctx.stroke();
+
+      // Value
+      ctx.fillStyle = d.col;
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(d.patents.toLocaleString(), labelW + barW + 8, y + barH/2 + 4);
+    });
+
+    if (!allDone) requestAnimationFrame(draw);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
+
+// --- 6. KEY PLAYERS FORCE NETWORK ---
+(function(){
+  const canvas = document.getElementById('playersNetworkCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const tooltip = document.getElementById('playerTooltip');
+  const ptName = document.getElementById('ptName');
+  const ptMeta = document.getElementById('ptMeta');
+  const ptDesc = document.getElementById('ptDesc');
+
+  function resize() {
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = 500;
+  }
+  resize();
+
+  const typeColors = {
+    startup: '#1a6cd4',
+    research: '#0fa37a',
+    grassroots: '#7b6fd6',
+    government: '#c96a2b'
+  };
+
+  const players = [
+    // EUROPE - Startups
+    {name:'Mistral AI',region:'europe',type:'startup',country:'France',desc:'Open-weight LLMs. EUR 11.7B valuation.',r:14},
+    {name:'Helsing',region:'europe',type:'startup',country:'Germany/France',desc:'Defense AI. EUR 12B valuation.',r:13},
+    {name:'DeepL',region:'europe',type:'startup',country:'Germany',desc:'AI translation. $2B valuation, profitable.',r:10},
+    {name:'Wayve',region:'europe',type:'startup',country:'UK',desc:'Autonomous driving. $8.6B valuation.',r:11},
+    {name:'Synthesia',region:'europe',type:'startup',country:'UK',desc:'AI video generation. $4B valuation.',r:10},
+    {name:'Poolside',region:'europe',type:'startup',country:'France',desc:'AI code generation. $12B valuation.',r:12},
+    {name:'Aleph Alpha',region:'europe',type:'startup',country:'Germany',desc:'Sovereign enterprise AI.',r:7},
+    {name:'Cradle',region:'europe',type:'startup',country:'Netherlands',desc:'AI protein engineering. $100M+ raised.',r:6},
+    {name:'Photoroom',region:'europe',type:'startup',country:'France',desc:'AI image editing. Profitable.',r:6},
+    {name:'PolyAI',region:'europe',type:'startup',country:'UK',desc:'Enterprise conversational AI.',r:6},
+    // EUROPE - Research
+    {name:'ELLIS',region:'europe',type:'research',country:'Pan-EU',desc:'43 sites, 16 countries. ML research network.',r:10},
+    {name:'INRIA',region:'europe',type:'research',country:'France',desc:'National AI research. 9 AI clusters.',r:8},
+    {name:'Fraunhofer/DFKI',region:'europe',type:'research',country:'Germany',desc:'World\'s largest nonprofit AI research center.',r:9},
+    {name:'ETH Zurich AI',region:'europe',type:'research',country:'Switzerland',desc:'135 AI professors. Interdisciplinary.',r:8},
+    {name:'WASP',region:'europe',type:'research',country:'Sweden',desc:'$600M program. Sweden\'s largest.',r:8},
+    {name:'Alan Turing',region:'europe',type:'research',country:'UK',desc:'UK national data science institute.',r:7},
+    {name:'Max Planck',region:'europe',type:'research',country:'Germany',desc:'Fundamental ML research. Cyber Valley.',r:7},
+    // EUROPE - Grassroots
+    {name:'Hugging Face',region:'europe',type:'grassroots',country:'France (HQ: NYC)',desc:'Open-source AI hub. $7B valuation.',r:12},
+    {name:'LAION',region:'europe',type:'grassroots',country:'Germany',desc:'Open datasets. 5.85B image-text pairs.',r:8},
+    {name:'Mozilla AI',region:'europe',type:'grassroots',country:'Global',desc:'Trustworthy open-source AI tooling.',r:6},
+    // EUROPE - Government
+    {name:'EuroHPC',region:'europe',type:'government',country:'EU',desc:'19 AI Factory sites. EU compute backbone.',r:10},
+    {name:'SPRIND',region:'europe',type:'government',country:'Germany',desc:'EUR 125M frontier AI challenge.',r:7},
+    {name:'EU AI Office',region:'europe',type:'government',country:'Brussels',desc:'EU AI Act implementation.',r:6},
+    {name:'Gaia-X',region:'europe',type:'government',country:'EU',desc:'Federated data infrastructure.',r:6},
+
+    // ASIA - Startups
+    {name:'Sakana AI',region:'asia',type:'startup',country:'Japan',desc:'Efficient AI models. $2.65B valuation.',r:10},
+    {name:'Preferred Networks',region:'asia',type:'startup',country:'Japan',desc:'Deep learning for industry. ~$160M raised.',r:8},
+    {name:'Upstage',region:'asia',type:'startup',country:'South Korea',desc:'Full-stack AI. IPO planned 2026.',r:7},
+    {name:'Sarvam AI',region:'asia',type:'startup',country:'India',desc:'Sovereign Indian LLMs. $1.5B valuation target.',r:8},
+    {name:'Krutrim',region:'asia',type:'startup',country:'India',desc:'India\'s fastest unicorn. Full-stack AI.',r:7},
+    {name:'AI21 Labs',region:'asia',type:'startup',country:'Israel',desc:'Enterprise NLP. $637M raised. Nvidia acquisition talks.',r:9},
+    {name:'Hailo',region:'asia',type:'startup',country:'Israel',desc:'Edge AI chips. $564M raised.',r:7},
+    // ASIA - Research
+    {name:'RIKEN AIP',region:'asia',type:'research',country:'Japan',desc:'Japan\'s premier government AI center.',r:8},
+    {name:'KAIST AI',region:'asia',type:'research',country:'South Korea',desc:'Bio-health AI. Ultra-low-power chips.',r:7},
+    {name:'Technion AI',region:'asia',type:'research',country:'Israel',desc:'#1 CS/AI in Israel & Europe.',r:7},
+    {name:'AI4Bharat',region:'asia',type:'research',country:'India',desc:'NLP for 22 Indian languages. Open source.',r:7},
+    {name:'Wadhwani AI',region:'asia',type:'research',country:'India',desc:'AI for social impact. 20M lives impacted.',r:6},
+    {name:'MBZUAI',region:'asia',type:'research',country:'UAE',desc:'World\'s first AI university. 700+ students.',r:8},
+    {name:'TII',region:'asia',type:'research',country:'UAE',desc:'Created Falcon LLM. Abu Dhabi.',r:9},
+    {name:'Taiwan AI Labs',region:'asia',type:'research',country:'Taiwan',desc:'Federated learning, healthcare AI.',r:6},
+    // ASIA - Government
+    {name:'AI Singapore',region:'asia',type:'government',country:'Singapore',desc:'SEA-LION model. 119 languages.',r:8},
+    {name:'Saudi SDAIA',region:'asia',type:'government',country:'Saudi Arabia',desc:'1M+ citizens trained. HUMAIN launched.',r:8},
+    // ASIA - Corporate
+    {name:'TSMC',region:'asia',type:'startup',country:'Taiwan',desc:'$122B revenue. Foundation of all AI chips.',r:15},
+    {name:'Naver',region:'asia',type:'startup',country:'South Korea',desc:'HyperCLOVA X. 6500x more Korean data than GPT-4.',r:8},
+
+    // AFRICA
+    {name:'InstaDeep',region:'africa',type:'startup',country:'Tunisia/UK',desc:'Acquired by BioNTech $682M. AI for drug discovery.',r:9},
+    {name:'Lelapa AI',region:'africa',type:'startup',country:'South Africa',desc:'African language AI. VulaVula platform.',r:5},
+    {name:'Masakhane',region:'africa',type:'grassroots',country:'Pan-African',desc:'NLP for 48+ African languages. 1000+ participants.',r:8},
+    {name:'Deep Learning Indaba',region:'africa',type:'grassroots',country:'Pan-African',desc:'Africa\'s premier ML community. 43 countries.',r:8},
+    {name:'Data Science Nigeria',region:'africa',type:'grassroots',country:'Nigeria',desc:'Training 1M AI talents. 350K trained via Microsoft.',r:7},
+    {name:'Zindi',region:'africa',type:'grassroots',country:'Pan-African',desc:'75K+ data scientists. 300+ challenges.',r:7},
+    {name:'CMU-Africa',region:'africa',type:'research',country:'Rwanda',desc:'Carnegie Mellon\'s African campus.',r:6},
+    {name:'AIMS',region:'africa',type:'research',country:'Pan-African',desc:'Math sciences network. 6 countries.',r:6},
+    {name:'Lacuna Fund',region:'africa',type:'government',country:'Pan-African',desc:'$9M+ invested. 75+ ML datasets. Now African-led.',r:6},
+    {name:'GIZ FAIR Forward',region:'africa',type:'government',country:'Pan-African',desc:'German dev agency. 7 partner countries. 100K+ learners.',r:6}
+  ];
+
+  // Initialize positions
+  const regionCenters = {europe: {x:0.25, y:0.4}, asia: {x:0.65, y:0.35}, africa: {x:0.45, y:0.7}};
+
+  players.forEach(p => {
+    const c = regionCenters[p.region];
+    p.x = (c.x + (Math.random()-0.5)*0.3) * canvas.width;
+    p.y = (c.y + (Math.random()-0.5)*0.4) * canvas.height;
+    p.vx = 0; p.vy = 0;
+    p.visible = true;
+  });
+
+  let hoveredNode = null;
+  let animating = true;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    hoveredNode = null;
+    players.forEach(p => {
+      if (!p.visible) return;
+      const dx = p.x - mx, dy = p.y - my;
+      if (Math.sqrt(dx*dx+dy*dy) < p.r + 4) hoveredNode = p;
+    });
+    if (hoveredNode) {
+      canvas.style.cursor = 'pointer';
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX + 14) + 'px';
+      tooltip.style.top = (e.clientY - 10) + 'px';
+      ptName.textContent = hoveredNode.name;
+      ptMeta.textContent = `${hoveredNode.country} · ${hoveredNode.type}`;
+      ptDesc.textContent = hoveredNode.desc;
+    } else {
+      canvas.style.cursor = 'grab';
+      tooltip.style.display = 'none';
+    }
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+    hoveredNode = null;
+  });
+
+  function simulate() {
+    const W = canvas.width, H = canvas.height;
+
+    players.forEach((n, i) => {
+      if (!n.visible) return;
+      // Repulsion between nodes
+      players.forEach((m, j) => {
+        if (i === j || !m.visible) return;
+        let dx = n.x - m.x, dy = n.y - m.y;
+        let d = Math.sqrt(dx*dx + dy*dy) || 1;
+        let minDist = n.r + m.r + 8;
+        if (d < minDist) {
+          let force = (minDist - d) * 0.05;
+          n.vx += (dx/d) * force;
+          n.vy += (dy/d) * force;
+        }
+      });
+
+      // Attract to region center
+      const c = regionCenters[n.region];
+      n.vx += (c.x * W - n.x) * 0.002;
+      n.vy += (c.y * H - n.y) * 0.002;
+
+      // Same-type attraction
+      players.forEach((m, j) => {
+        if (i === j || !m.visible || m.type !== n.type) return;
+        let dx = m.x - n.x, dy = m.y - n.y;
+        let d = Math.sqrt(dx*dx + dy*dy) || 1;
+        if (d > 50 && d < 200) {
+          n.vx += (dx/d) * 0.02;
+          n.vy += (dy/d) * 0.02;
+        }
+      });
+
+      // Damping
+      n.vx *= 0.9;
+      n.vy *= 0.9;
+      n.x += n.vx;
+      n.y += n.vy;
+
+      // Bounds
+      n.x = Math.max(n.r + 5, Math.min(W - n.r - 5, n.x));
+      n.y = Math.max(n.r + 5, Math.min(H - n.r - 5, n.y));
+    });
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t++;
+
+    simulate();
+
+    // Region labels
+    ctx.font = '10px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    Object.entries(regionCenters).forEach(([name, c]) => {
+      ctx.fillStyle = 'rgba(232,224,204,0.12)';
+      ctx.font = '24px Inter, sans-serif';
+      ctx.fillText(name.toUpperCase(), c.x * canvas.width, c.y * canvas.height - 60);
+    });
+
+    // Edges between same-region, same-type
+    players.forEach((n, i) => {
+      if (!n.visible) return;
+      players.forEach((m, j) => {
+        if (j <= i || !m.visible) return;
+        if (n.region === m.region && n.type === m.type) {
+          let dx = n.x - m.x, dy = n.y - m.y;
+          let d = Math.sqrt(dx*dx + dy*dy);
+          if (d < 150) {
+            ctx.beginPath();
+            ctx.moveTo(n.x, n.y);
+            ctx.lineTo(m.x, m.y);
+            ctx.strokeStyle = typeColors[n.type] + '15';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      });
+    });
+
+    // Nodes
+    players.forEach(p => {
+      if (!p.visible) return;
+      const isHovered = (p === hoveredNode);
+      const pulse = isHovered ? 1.3 : (1 + 0.05 * Math.sin(t * 0.02 + players.indexOf(p)));
+      const col = typeColors[p.type];
+
+      // Glow
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 1.8 * pulse, 0, Math.PI*2);
+      ctx.fillStyle = col + '08';
+      ctx.fill();
+
+      // Circle
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * pulse, 0, Math.PI*2);
+      ctx.fillStyle = col + (isHovered ? '60' : '25');
+      ctx.fill();
+      ctx.strokeStyle = col + (isHovered ? 'cc' : '80');
+      ctx.lineWidth = isHovered ? 1.5 : 0.6;
+      ctx.stroke();
+
+      // Label
+      if (p.r >= 8 || isHovered) {
+        ctx.fillStyle = isHovered ? 'rgba(232,224,204,0.9)' : 'rgba(232,224,204,0.45)';
+        ctx.font = (isHovered ? '11' : '8') + 'px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(p.name, p.x, p.y + p.r + 12);
+      }
+    });
+
+    if (animating) requestAnimationFrame(draw);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && animating) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+
+  // Filter function exposed globally
+  window.filterPlayers = function(filter, btn) {
+    // Update button styles
+    document.querySelectorAll('#playerFilterRow button').forEach(b => {
+      b.style.background = 'transparent';
+      b.style.color = 'var(--text-dim)';
+    });
+    btn.style.background = 'var(--cyan)';
+    btn.style.color = 'var(--bg)';
+
+    players.forEach(p => {
+      if (filter === 'all') p.visible = true;
+      else if (['europe','asia','africa'].includes(filter)) p.visible = (p.region === filter);
+      else p.visible = (p.type === filter);
+    });
+  };
+})();
 </script>
 </body>
 </html>
