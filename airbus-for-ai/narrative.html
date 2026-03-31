@@ -310,8 +310,8 @@ body::after {
   padding: 6rem 3rem 6rem 5rem;
 }
 .split-narrative p {
-  font-size: 15px; line-height: 1.8;
-  color: var(--text-secondary); margin-bottom: 1.25rem;
+  font-size: 15px; line-height: 1.9;
+  color: var(--text-secondary); margin-bottom: 1.75rem;
   max-width: none; font-family: var(--font); font-weight: 400;
 }
 .split-narrative p:last-child { margin-bottom: 0; }
@@ -1366,32 +1366,37 @@ body::after {
 
     <!-- Data Panel: Charts + Calculator -->
     <div class="data-panel" id="panel-charts" data-panel-id="panel-charts">
+
+      <!-- Coase Visual: Hierarchy vs Market -->
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Go back to the source. Why do firms exist? Ronald Coase: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
+        <h2>The Coordination Problem</h2>
+        <p class="section-sub">Why do firms exist? Ronald Coase: when it is cheaper to organize inside a hierarchy than through constant market bargaining.</p>
+      </div>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1rem 0;">
+        <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.03);text-align:center;">
+          <div style="font-size:2rem;margin-bottom:0.5rem;">1</div>
+          <div style="font-family:var(--mono);font-size:0.85rem;font-weight:600;color:var(--cyan);margin-bottom:0.5rem;">US MODEL</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">One decision-maker. Gigantic capital pools. Firms run at massive losses. Coordination cost: near zero.</div>
+        </div>
+        <div style="padding:1.25rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:10px;background:rgba(255,51,51,0.03);text-align:center;">
+          <div style="font-size:2rem;margin-bottom:0.5rem;">27</div>
+          <div style="font-family:var(--mono);font-size:0.85rem;font-weight:600;color:var(--red);margin-bottom:0.5rem;">EU MODEL</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;">27 countries. Different regulators, languages, capital pools. Zero centralized execution. Coordination cost: catastrophic.</div>
+        </div>
       </div>
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">When is it advantageous for a market to become a firm?</p>
+        <p style="font-size:0.85rem;color:var(--text-dim);text-align:center;margin-bottom:1.5rem;">AI requires an unusually high degree of coordination amongst tightly complementary pieces: compute, chips, data, talent, models, cloud, procurement, regulatory approval, defense deployment. Each piece is useless without the others.</p>
+      </div>
+
+      <!-- EU Fragmentation Visual -->
+      <div class="reveal">
+        <h2>EU Fragmentation</h2>
       </div>
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">When you have a tightly coordinated set of dependencies in which constant coordination and bargaining slows down and inflates the cost of the entire process. An AI System is made up of lots of infrastructure and inter-locking entities: compute, data labeling, model training, safety evals, deployment, compliance. If, anytime, there&rsquo;s a change in the model everything needs to be coordinated and renegotiated.</p>
+        <canvas id="fragmentationCanvas" style="width:100%;height:220px;"></canvas>
       </div>
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">This is the central sin of the middle powers. AI is not like other technologies because it requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary.</p>
-      </div>
-      <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">The US solves this problem by having gigantic pools of capital with huge firms that can run at massive losses while they fine tune their frontier models.</p>
-      </div>
-      <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">China has giant firms with coordinated state control.</p>
-      </div>
-      <div class="reveal">
-        <h3 style="font-size:1rem;color:var(--cyan);margin:1.5rem 0 0.75rem;font-weight:600;">EU&rsquo;s Malfeasance</h3>
-      </div>
-      <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">If each European actor optimizes only for itself, you get fragmentation: lots of small efforts, duplicated spending, weak scale, and slow adaptation.</p>
-      </div>
-      <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;">The current problem that we need to solve: the EU has lots of countries (but only a few big ones), lots of different regulators, lots of diluted capital pools that end up in the US anyway, lots of languages, lots of industrial players (but no true giant), and zero sense of centralized execution.</p>
+        <p style="font-size:0.85rem;color:var(--text-dim);text-align:center;margin:0.5rem 0 1.5rem;">If each actor optimizes only for itself: lots of small efforts, duplicated spending, weak scale, slow adaptation. The capital ends up in the US anyway.</p>
       </div>
       <div class="chart-container reveal">
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
@@ -4688,6 +4693,92 @@ async function fetchDashboardData() {
 // ============================================================
 // ANIMATED RIGHT-SIDE PANEL VISUALIZATIONS
 // ============================================================
+
+// --- EU Fragmentation Visual ---
+(function(){
+  const canvas = document.getElementById('fragmentationCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  function resize() {
+    const w = canvas.parentElement.clientWidth;
+    const h = 220;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize(); window.addEventListener('resize', () => { resize(); draw(); });
+
+  const countries = [
+    'DE','FR','IT','ES','NL','PL','BE','SE','AT','DK',
+    'FI','IE','PT','CZ','RO','HU','SK','BG','HR','LT',
+    'SI','LV','EE','LU','MT','CY','GR'
+  ];
+
+  function draw() {
+    const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
+
+    const cols = 9, rows = 3;
+    const dotR = 8;
+    const gapX = (W - 40) / cols;
+    const gapY = (H - 60) / rows;
+    const startX = 20 + gapX/2;
+    const startY = 25;
+
+    // Draw disconnected dots for each country
+    countries.forEach((c, i) => {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const x = startX + col * gapX;
+      const y = startY + row * gapY;
+
+      // Dot
+      ctx.beginPath();
+      ctx.arc(x, y, dotR, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,51,51,0.12)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,51,51,0.3)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+
+      // Country code
+      ctx.fillStyle = 'rgba(232,224,204,0.5)';
+      ctx.font = '8px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(c, x, y);
+    });
+
+    // "No connections" — draw a few faint broken lines to show lack of coordination
+    ctx.setLineDash([2, 4]);
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 8; i++) {
+      const a = Math.floor(Math.random() * countries.length);
+      const b = Math.floor(Math.random() * countries.length);
+      if (a === b) continue;
+      const ax = startX + (a % cols) * gapX;
+      const ay = startY + Math.floor(a / cols) * gapY;
+      const bx = startX + (b % cols) * gapX;
+      const by = startY + Math.floor(b / cols) * gapY;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // Bottom label
+    ctx.fillStyle = 'rgba(232,224,204,0.25)';
+    ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('27 MEMBER STATES  ·  24 LANGUAGES  ·  27 REGULATORS  ·  0 CENTRALIZED EXECUTION', W/2, H - 8);
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
+  });
+  obs.observe(canvas);
+})();
+
 
 // --- Dependency Bars (panel-dependency) ---
 (function(){
