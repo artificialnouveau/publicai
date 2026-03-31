@@ -15,18 +15,18 @@
   --border: rgba(255,255,255,0.08);
   --border-bright: rgba(255,255,255,0.15);
   --text-primary: #e8e0cc;
-  --text-secondary: rgba(232,224,204,0.65);
-  --text-dim: rgba(232,224,204,0.35);
+  --text-secondary: rgba(232,224,204,0.85);
+  --text-dim: rgba(232,224,204,0.55);
   --amber: #c96a2b;
   --green: #0fa37a;
   --red: #ff3333;
   --cyan: #1a6cd4;
   --blue: #1a6cd4;
   --white: #e8e0cc;
-  --off-white: rgba(232,224,204,0.5);
-  --light-gray: rgba(255,255,255,0.06);
-  --mid-gray: rgba(255,255,255,0.12);
-  --dark-gray: rgba(232,224,204,0.4);
+  --off-white: rgba(232,224,204,0.7);
+  --light-gray: rgba(255,255,255,0.08);
+  --mid-gray: rgba(255,255,255,0.15);
+  --dark-gray: rgba(232,224,204,0.6);
   --navy: #05090f;
   --navy-light: #0b1628;
   --navy-dark: #02050a;
@@ -855,9 +855,100 @@ body::after {
   line-height: 1.5; display: none;
 }
 .market-cap-info.visible { display: block; }
+/* === NON-LINEAR TIMELINE INDICATOR === */
+.timeline-indicator {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.tl-track {
+  width: 1px;
+  height: 200px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+}
+.tl-node {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(232,224,204,0.3);
+  background: var(--bg);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.tl-node:hover, .tl-node.active {
+  border-color: var(--cyan);
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(26,108,212,0.4);
+}
+.tl-node-label {
+  position: absolute;
+  right: 16px;
+  white-space: nowrap;
+  font-size: 9px;
+  font-family: var(--mono);
+  color: rgba(232,224,204,0.3);
+  letter-spacing: 0.06em;
+  transition: color 0.3s;
+  pointer-events: none;
+}
+.tl-node:hover .tl-node-label,
+.tl-node.active .tl-node-label {
+  color: var(--cyan);
+}
+.tl-jump-line {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  background: var(--cyan);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.tl-jump-line.visible {
+  opacity: 0.3;
+}
+.tl-year-label {
+  font-size: 8px;
+  font-family: var(--mono);
+  color: rgba(232,224,204,0.2);
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin: 4px 0;
+}
+@media (max-width: 900px) {
+  .timeline-indicator { display: none; }
+}
 </style>
 </head>
 <body>
+
+<!-- NON-LINEAR TIMELINE INDICATOR -->
+<div class="timeline-indicator" id="timelineIndicator">
+  <div class="tl-year-label">2026</div>
+  <div class="tl-track">
+    <!-- Nodes positioned chronologically: Apr 2026 = 0%, Jun 2026 = 14%, Feb 2027 = 67%, Apr 2027 = 80% -->
+    <!-- But displayed in narrative order with jump lines -->
+    <a class="tl-node" href="#ch-dublin" style="top:0%;" data-date="APR 2026" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Dublin &middot; Apr 2026</span>
+    </a>
+    <a class="tl-node" href="#ch-brussels" style="top:14%;" data-date="JUN 2026" onclick="document.getElementById('ch-brussels').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Brussels &middot; Jun 2026</span>
+    </a>
+    <a class="tl-node" href="#ch-berlin" style="top:80%;" data-date="APR 2027" onclick="document.getElementById('ch-berlin').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Berlin &middot; Apr 2027</span>
+    </a>
+  </div>
+  <div class="tl-year-label">2027</div>
+</div>
 
 <!-- CRT grain overlay -->
 <div class="grain"></div>
@@ -907,15 +998,13 @@ body::after {
 <nav class="topnav">
   <a href="index.html" class="topnav-brand glow">AIRBUS_FOR_AI &gt;</a>
   <div class="topnav-chapters">
-    <a href="#ch-dublin">DUBLIN</a>
-    <a href="#data-dependency">DEPENDENCY</a>
+    <a href="#ch-dublin">DUBLIN &middot; APR 2026</a>
     <a href="#ch-economics">ECONOMICS</a>
-    <a href="#ch-swedish">SWEDEN</a>
-    <a href="#ch-brussels">BRUSSELS</a>
-    <a href="#data-stack">STACK</a>
-    <a href="#ch-berlin">BERLIN</a>
-    <a href="#sim-decisions">DECISIONS</a>
+    <a href="#ch-swedish">11X &amp; SWEDEN</a>
+    <a href="#ch-brussels">BRUSSELS &middot; JUN 2026</a>
+    <a href="#ch-berlin">BERLIN &middot; APR 2027</a>
     <a href="#ch-coalition">COALITION</a>
+    <a href="#deep-data">DATA</a>
   </div>
 </nav>
 
@@ -956,7 +1045,7 @@ body::after {
     <div class="narrative-section" id="ch-dublin" data-panel="panel-dependency">
       <div class="reveal">
         <span class="dateline">4.23.2026 &mdash; Dublin, Ireland &mdash; OpenAI Offices</span>
-        <h2>Chapter I: Dublin</h2>
+        <h2>Dublin</h2>
       </div>
 
       <div class="reveal">
@@ -968,7 +1057,7 @@ body::after {
       </div>
 
       <div class="reveal">
-        <p>One of the Americans to come over when Open AI opened its doors to Dublin, Aaron was an advisor on the policy team. A lawyer by training and by disposition, He&rsquo;d been entrusted to make sure that the legal and ethical output of Open AI&rsquo;s actions in Europe were in line with EU regulations.</p>
+        <p>One of the Americans to come over when OpenAI opened its doors to Dublin, Aaron was an advisor on the policy team. A lawyer by training and by disposition, He&rsquo;d been entrusted to make sure that the legal and ethical output of OpenAI&rsquo;s actions in Europe were in line with EU regulations.</p>
       </div>
 
       <div class="reveal">
@@ -1022,7 +1111,7 @@ body::after {
     <div class="narrative-section" id="ch-economics" data-panel="panel-charts">
       <div class="reveal">
         <span class="dateline">The Argument</span>
-        <h2>Chapter II: Economics 101</h2>
+        <h2>Economics 101</h2>
       </div>
 
       <div class="reveal">
@@ -1079,8 +1168,8 @@ body::after {
     <div class="data-panel active" id="panel-dependency" data-panel-id="panel-dependency">
       <div class="reveal">
         <h2 id="data-dependency">The Dependency</h2>
-        <p class="section-sub">Europe's position in the global AI stack, by the numbers.</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Dublin chapter shows what dependency looks like at the human level &mdash; layoffs, lost capability, institutional knowledge evaporating. These numbers show the structural reality behind it: 70% of EU cloud controlled by US hyperscalers, 2% of global AI compute, 2% frontier model market share. Aaron&rsquo;s story is one of thousands.</p>
+        <p class="section-sub">Foreign export controls, foreign pricing power, foreign standards, foreign political leverage.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">AWS, Azure, and Google Cloud control 70% of the European cloud market. France and the EU&rsquo;s AI gigafactories initiative will make up only 2% of the world&rsquo;s compute by 2027. Mistral AI represents 2% of the global LLM market. Foreign export controls, foreign pricing power, foreign standards, foreign political leverage &mdash; at every point across the digital value chain, the EU is not in the driver&rsquo;s seat.</p>
       </div>
 
       <div class="stat-row reveal">
@@ -1105,7 +1194,7 @@ body::after {
     <!-- Data Panel: Charts + Calculator -->
     <div class="data-panel" id="panel-charts" data-panel-id="panel-charts">
       <div class="chart-container reveal">
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem;margin-bottom:1.5rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Coase argument on the left explains <em>why</em> coordination costs matter. These charts show <em>how much</em>: the market cap gap between US and EU AI companies, the cloud market dominance, and what fragmented coordination actually costs in dollars. The calculator below lets you see why 27 independent players can&rsquo;t compete with one integrated firm.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem;margin-bottom:1.5rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">Coase&rsquo;s question: when is it cheaper to organize inside a hierarchy than to bargain across a market? The US answers with gigantic capital pools and firms running at massive losses. China answers with coordinated state control. The EU has 27 countries, diluted capital pools that end up in the US anyway, and zero centralized execution. The calculator below models the cost.</p>
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
         <div class="filter-row" id="mcFilterRow">
           <button class="filter-btn active" data-filter="all" onclick="filterMarketCap('all',this)">All</button>
@@ -1169,7 +1258,7 @@ body::after {
     <div class="narrative-section" id="ch-swedish" data-panel="panel-exodus">
       <div class="reveal">
         <span class="dateline">A Case Study</span>
-        <h2>Chapter III: 11x and the Swedish Question</h2>
+        <h2>11x and the Swedish Question</h2>
       </div>
 
       <div class="reveal">
@@ -1210,7 +1299,7 @@ body::after {
     <div class="narrative-section" id="ch-brussels" data-panel="panel-stack">
       <div class="reveal">
         <span class="dateline">6.03.2026 &mdash; Brussels, Belgium &mdash; Office of the European Commission</span>
-        <h2>Chapter IV: Brussels</h2>
+        <h2>Brussels</h2>
       </div>
 
       <div class="reveal">
@@ -1304,7 +1393,7 @@ body::after {
       <div class="reveal">
         <h2>Startup Exodus</h2>
         <p class="section-sub">European AI companies that moved to the US.</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The 11x story on the left is one case study. This tracker shows the full pattern: European startups founded with European talent and capital, then pulled to the US by gravitational forces of funding, talent density, and market access. Each departure is individually rational. Collectively, they represent a continent exporting its own future.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">&ldquo;The requirement from almost all of our investors was actually to relocate to the Bay Area.&rdquo; More than 30% of Stockholm&rsquo;s startups relocate to the US. The EU may be the place to start a company, but it has none of the resources to scale it.</p>
       </div>
       <div class="widget reveal" id="exodusTracker">
         <h3>Startup Exodus Tracker</h3>
@@ -1332,8 +1421,8 @@ body::after {
     <div class="data-panel" id="panel-stack" data-panel-id="panel-stack">
       <div class="reveal">
         <h2 id="data-stack">The Full Stack Gap</h2>
-        <p class="section-sub">Who controls each layer of the AI value chain?</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">Virkkunen&rsquo;s speech asks: how can we talk about sovereignty when we control none of the stack? This heatmap answers her question layer by layer. From chip design to cloud to models to talent &mdash; green means control, red means dependency. Europe&rsquo;s column is mostly red.</p>
+        <p class="section-sub">Compute, chips, data access, talent, cloud, procurement, regulatory approval, defense deployment.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">Compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense and industrial deployment &mdash; each layer of the stack, and who controls it. Only 6% of European STEM graduates are expected to enter the chip industry by 2030. Estonia and Greece commissioned OpenAI for their education systems. The European Parliament uses Anthropic&rsquo;s Claude.</p>
       </div>
 
       <div class="heatmap-wrap reveal">
@@ -1422,7 +1511,7 @@ body::after {
     <div class="narrative-section" id="ch-berlin" data-panel="panel-simulation">
       <div class="reveal">
         <span class="dateline">4.16.2027 &mdash; Berlin, Germany &mdash; Federal Chancellery</span>
-        <h2>Chapter V: Berlin</h2>
+        <h2>Berlin</h2>
       </div>
 
       <div class="reveal">
@@ -1536,7 +1625,7 @@ body::after {
             <p style="color:var(--text-dim);margin-bottom:0.75rem;font-size:0.85rem;">
               Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
             </p>
-            <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Berlin chapter shows the political shock that makes coalition-building inevitable. These decisions let you explore the choices that follow: how do you respond to the Digital Liberty Act? Each choice shifts the metrics &mdash; market share, capital, talent retention, coalition strength.</p>
+            <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">What exact event makes a French minister, a German chancellor, and a Dutch finance official all say within 72 hours: &ldquo;we cannot leave this to the market anymore&rdquo;? Licensing tightens. Cloud access becomes conditional. Compute gets throttled from abroad. Make the choices and watch the numbers move.</p>
             <div class="sim-skip">
               <a href="#data-talent">Skip to Talent Map &darr;</a>
             </div>
@@ -1605,7 +1694,7 @@ body::after {
     <div class="narrative-section" id="ch-coalition" data-panel="panel-timeline">
       <div class="reveal">
         <span class="dateline">What Gets Built</span>
-        <h2>Chapter VI: What Needs to Happen</h2>
+        <h2>What Needs to Happen</h2>
       </div>
 
       <div class="reveal">
@@ -1663,7 +1752,7 @@ body::after {
       <div class="reveal">
         <h2>The Airbus Parallel</h2>
         <p class="section-sub">A timeline comparison: aviation then, AI now.</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The narrative asks: how do countries become a coalition? Airbus is the precedent. This timeline puts the two stories side by side &mdash; the decades-long aviation collaboration that eventually worked, and a projected path for an AI equivalent. The lesson: it took ugly compromises and synchronized desperation, not synchronized ambition.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Wi-Fi Alliance formed in 1999: six companies united to guarantee interoperability. A rising tide lifts all ships, so long as everyone agrees to open their respective dams. The Airbus precedent took thirteen years from first talks to first breakthrough. Two timelines, side by side.</p>
       </div>
       <div class="widget reveal">
         <h3>Timeline: The Airbus Parallel</h3>
@@ -4455,6 +4544,42 @@ async function fetchDashboardData() {
       else p.visible = (p.type === filter);
     });
   };
+})();
+// ============================================================
+// NON-LINEAR TIMELINE INDICATOR
+// ============================================================
+(function(){
+  const indicator = document.getElementById('timelineIndicator');
+  if (!indicator) return;
+  const nodes = indicator.querySelectorAll('.tl-node');
+  const storyIds = ['ch-dublin','ch-brussels','ch-berlin'];
+
+  // Highlight active node based on scroll position
+  window.addEventListener('scroll', () => {
+    let activeIdx = -1;
+    storyIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
+        activeIdx = i;
+      }
+    });
+    nodes.forEach((n, i) => {
+      n.classList.toggle('active', i === activeIdx);
+    });
+
+    // Show/hide indicator (only visible during story sections)
+    const dublin = document.getElementById('ch-dublin');
+    const coalition = document.getElementById('ch-coalition');
+    if (dublin && coalition) {
+      const dRect = dublin.getBoundingClientRect();
+      const cRect = coalition.getBoundingClientRect();
+      const visible = dRect.top < window.innerHeight && cRect.top > 0;
+      indicator.style.opacity = visible ? '1' : '0';
+      indicator.style.pointerEvents = visible ? 'auto' : 'none';
+    }
+  });
 })();
 </script>
 </body>
