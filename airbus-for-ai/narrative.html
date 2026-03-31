@@ -15,18 +15,18 @@
   --border: rgba(255,255,255,0.08);
   --border-bright: rgba(255,255,255,0.15);
   --text-primary: #e8e0cc;
-  --text-secondary: rgba(232,224,204,0.85);
-  --text-dim: rgba(232,224,204,0.55);
+  --text-secondary: #e0d8c4;
+  --text-dim: rgba(232,224,204,0.72);
   --amber: #c96a2b;
   --green: #0fa37a;
   --red: #ff3333;
   --cyan: #1a6cd4;
   --blue: #1a6cd4;
   --white: #e8e0cc;
-  --off-white: rgba(232,224,204,0.7);
-  --light-gray: rgba(255,255,255,0.08);
-  --mid-gray: rgba(255,255,255,0.15);
-  --dark-gray: rgba(232,224,204,0.6);
+  --off-white: rgba(232,224,204,0.8);
+  --light-gray: rgba(255,255,255,0.10);
+  --mid-gray: rgba(255,255,255,0.18);
+  --dark-gray: rgba(232,224,204,0.75);
   --navy: #05090f;
   --navy-light: #0b1628;
   --navy-dark: #02050a;
@@ -255,17 +255,9 @@ body::after {
   /* just a marker class; no layout change */
 }
 
-/* Classification marker */
+/* Classification marker — removed */
 .narrative-section::before {
-  content: 'UNCLASSIFIED // FOR OFFICIAL USE ONLY';
-  display: block;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--text-dim);
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-  font-family: var(--font);
-  opacity: 0.4;
+  display: none;
 }
 
 /* === CHAPTER STYLES (still used inside split-narrative) === */
@@ -858,7 +850,7 @@ body::after {
 /* === NON-LINEAR TIMELINE INDICATOR === */
 .timeline-indicator {
   position: fixed;
-  right: 24px;
+  left: 24px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 150;
@@ -892,11 +884,11 @@ body::after {
 }
 .tl-node-label {
   position: absolute;
-  right: 16px;
+  left: 16px;
   white-space: nowrap;
   font-size: 9px;
   font-family: var(--mono);
-  color: rgba(232,224,204,0.3);
+  color: rgba(232,224,204,0.55);
   letter-spacing: 0.06em;
   transition: color 0.3s;
   pointer-events: none;
@@ -942,6 +934,9 @@ body::after {
     </a>
     <a class="tl-node" href="#ch-brussels" style="top:14%;" data-date="JUN 2026" onclick="document.getElementById('ch-brussels').scrollIntoView({behavior:'smooth'})">
       <span class="tl-node-label">Brussels &middot; Jun 2026</span>
+    </a>
+    <a class="tl-node" href="#ch-tokyo" style="top:67%;" data-date="FEB 2027" onclick="document.getElementById('ch-tokyo').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Tokyo &middot; Feb 2027</span>
     </a>
     <a class="tl-node" href="#ch-berlin" style="top:80%;" data-date="APR 2027" onclick="document.getElementById('ch-berlin').scrollIntoView({behavior:'smooth'})">
       <span class="tl-node-label">Berlin &middot; Apr 2027</span>
@@ -999,11 +994,9 @@ body::after {
   <a href="index.html" class="topnav-brand glow">AIRBUS_FOR_AI &gt;</a>
   <div class="topnav-chapters">
     <a href="#ch-dublin">DUBLIN &middot; APR 2026</a>
-    <a href="#ch-economics">ECONOMICS</a>
-    <a href="#ch-swedish">11X &amp; SWEDEN</a>
     <a href="#ch-brussels">BRUSSELS &middot; JUN 2026</a>
     <a href="#ch-berlin">BERLIN &middot; APR 2027</a>
-    <a href="#ch-coalition">COALITION</a>
+    <a href="#ch-tokyo">TOKYO &middot; FEB 2027</a>
     <a href="#deep-data">DATA</a>
   </div>
 </nav>
@@ -1012,7 +1005,7 @@ body::after {
 <section class="hero" id="hero">
   <div class="hero-particles"><canvas id="heroCanvas"></canvas></div>
   <div class="hero-content">
-    <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1.5rem;">SYS.INTELLIGENCE.BRIEFING // REF: EU-AI-SOV-2027 // CLEARANCE: OPEN</div>
+    <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1.5rem;"></div>
     <h1 class="glow">The Slow Boil</h1>
     <p class="hero-sub">When AI infrastructure means sovereignty</p>
     <p style="font-size:0.85rem;color:var(--text-secondary);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">Europe can establish governance, but it cannot build. Its regulations don&rsquo;t matter if all of the digital infrastructure &mdash; leading models, cloud platforms, accelerators, and tooling &mdash; are American or Chinese.</p>
@@ -1027,7 +1020,7 @@ body::after {
       </div>
     </div>
     <div class="scroll-indicator" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
-      &gt; PROCEED TO BRIEFING_
+      &darr;
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M10 4 L10 16 M5 11 L10 16 L15 11"/>
       </svg>
@@ -1105,59 +1098,6 @@ body::after {
       </div>
     </div>
 
-    <div class="chapter-divider"></div>
-
-    <!-- Chapter 2: Economics 101 -->
-    <div class="narrative-section" id="ch-economics" data-panel="panel-charts">
-      <div class="reveal">
-        <span class="dateline">The Argument</span>
-        <h2>Economics 101</h2>
-      </div>
-
-      <div class="reveal">
-        <p>Go back to the source. Why do firms exist? <strong>Ronald Coase</strong>: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
-      </div>
-
-      <div class="reveal">
-        <p>When is it advantageous for a market to become a firm?</p>
-      </div>
-
-      <div class="reveal">
-        <p>When you have a tightly coordinated set of dependencies in which constant coordination and bargaining slows down and inflates the cost of the entire process. An AI System is made up of lots of infrastructure and inter-locking entities: compute, data labeling, model training, safety evals, deployment, compliance. If, anytime, there&rsquo;s a change in the model everything needs to be coordinated and renegotiated.</p>
-      </div>
-
-      <div class="reveal">
-        <p><strong>This is the central sin of the middle powers.</strong> AI is not like other technologies because it requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary.</p>
-      </div>
-
-      <div class="reveal">
-        <p>Examples: compute, chips, data access, frontier research talent, model evaluation, cloud infrastructure, procurement, regulatory approval, defense and industrial deployment.</p>
-      </div>
-
-      <div class="reveal">
-        <p>The US solves this problem by having gigantic pools of capital with huge firms that can run at massive losses while they fine tune their frontier models.</p>
-      </div>
-
-      <div class="reveal">
-        <p>China has giant firms with coordinated state control. [There&rsquo;s a bit more than this going on. Beijing has an approximation of the Silicon Valley energy focused on AI, and a truly huge font of technical talent.]</p>
-      </div>
-
-      <div class="reveal">
-        <h3>EU&rsquo;s Malfeasance, Or: How to Screw Up a Good Thing</h3>
-      </div>
-
-      <div class="reveal">
-        <p>If each European actor optimizes only for itself, you get fragmentation: lots of small efforts, duplicated spending, weak scale, and slow adaptation. Bad!</p>
-      </div>
-
-      <div class="reveal">
-        <p>The current problem that we need to solve: the EU has lots of countries (but only a few big ones), lots of different regulators, lots of diluted capital pools that end up in the US anyway, lots of languages, lots of industrial players (but no true giant), and <strong>zero sense of centralized execution.</strong></p>
-      </div>
-
-      <div class="reveal">
-        <p>So we have a problem of parallels: for a technology that requires a highly coordinated set of dependencies, you have a distributed set of players who aren&rsquo;t coordinating on anything. This is what is preventing any real sense of alignment, and is a major threat to middle power sovereignty who are in danger of being overly-reliant on technology players they can&rsquo;t regulate or bargain with.</p>
-      </div>
-    </div>
 
   </div>
 
@@ -1168,8 +1108,16 @@ body::after {
     <div class="data-panel active" id="panel-dependency" data-panel-id="panel-dependency">
       <div class="reveal">
         <h2 id="data-dependency">The Dependency</h2>
-        <p class="section-sub">Foreign export controls, foreign pricing power, foreign standards, foreign political leverage.</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">AWS, Azure, and Google Cloud control 70% of the European cloud market. France and the EU&rsquo;s AI gigafactories initiative will make up only 2% of the world&rsquo;s compute by 2027. Mistral AI represents 2% of the global LLM market. Foreign export controls, foreign pricing power, foreign standards, foreign political leverage &mdash; at every point across the digital value chain, the EU is not in the driver&rsquo;s seat.</p>
+        <p class="section-sub">When internet control means sovereignty.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Europe can establish governance, but it cannot build.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Its regulations don&rsquo;t matter if all of the digital infrastructure &mdash; leading models, cloud platforms, accelerators, and tooling &mdash; are American or Chinese.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">A globalized internet means exposure to foreign export controls, foreign pricing power, foreign standards, and foreign political leverage. At every point across the digital value chain, the EU is not in the driver&rsquo;s seat.</p>
       </div>
 
       <div class="stat-row reveal">
@@ -1193,8 +1141,34 @@ body::after {
 
     <!-- Data Panel: Charts + Calculator -->
     <div class="data-panel" id="panel-charts" data-panel-id="panel-charts">
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Go back to the source. Why do firms exist? Ronald Coase: firms exist when it is cheaper to organize activity inside a hierarchy than through constant market bargaining.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">When is it advantageous for a market to become a firm?</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">When you have a tightly coordinated set of dependencies in which constant coordination and bargaining slows down and inflates the cost of the entire process. An AI System is made up of lots of infrastructure and inter-locking entities: compute, data labeling, model training, safety evals, deployment, compliance. If, anytime, there&rsquo;s a change in the model everything needs to be coordinated and renegotiated.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">This is the central sin of the middle powers. AI is not like other technologies because it requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">The US solves this problem by having gigantic pools of capital with huge firms that can run at massive losses while they fine tune their frontier models.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">China has giant firms with coordinated state control.</p>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:1rem;color:var(--cyan);margin:1.5rem 0 0.75rem;font-weight:600;">EU&rsquo;s Malfeasance</h3>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">If each European actor optimizes only for itself, you get fragmentation: lots of small efforts, duplicated spending, weak scale, and slow adaptation.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;">The current problem that we need to solve: the EU has lots of countries (but only a few big ones), lots of different regulators, lots of diluted capital pools that end up in the US anyway, lots of languages, lots of industrial players (but no true giant), and zero sense of centralized execution.</p>
+      </div>
       <div class="chart-container reveal">
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem;margin-bottom:1.5rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">Coase&rsquo;s question: when is it cheaper to organize inside a hierarchy than to bargain across a market? The US answers with gigantic capital pools and firms running at massive losses. China answers with coordinated state control. The EU has 27 countries, diluted capital pools that end up in the US anyway, and zero centralized execution. The calculator below models the cost.</p>
         <h3>AI Company Market Capitalization / Valuation ($B)</h3>
         <div class="filter-row" id="mcFilterRow">
           <button class="filter-btn active" data-filter="all" onclick="filterMarketCap('all',this)">All</button>
@@ -1253,47 +1227,6 @@ body::after {
 
   <!-- LEFT: Narrative -->
   <div class="split-narrative">
-
-    <!-- Chapter 3: The Swedish Question -->
-    <div class="narrative-section" id="ch-swedish" data-panel="panel-exodus">
-      <div class="reveal">
-        <span class="dateline">A Case Study</span>
-        <h2>11x and the Swedish Question</h2>
-      </div>
-
-      <div class="reveal">
-        <p>11x began in London. It&rsquo;s a company that builds AI agents that automate revenue-based workstreams &ndash; things like sales, revenue operations, and GTM strategy and execution. They have two uncanny agents on their site, Julian, who boasts that &ldquo;I&rsquo;m the world&rsquo;s best Inbound Sales Rep&mdash;calling, qualifying, and routing leads at record speed, 24/7, on autopilot.&rdquo; And Alice, who is also quite bold, &ldquo;The world&rsquo;s best SDR. I track every data point of your market, identify your ideal buyers, and engage decision-makers 24/7 to book you meetings on autopilot.&rdquo;</p>
-      </div>
-
-      <div class="reveal">
-        <p>After closing a $24m Series A round led by US VCs, 11x was sent to the Bay Area as a precondition for its investor&rsquo;s money. &ldquo;The requirement from almost all of our investors was actually to relocate to the Bay Area,&rdquo; says the company&rsquo;s head of growth Keith Fearon. &ldquo;We needed to move here.&rdquo;</p>
-      </div>
-
-      <div class="reveal">
-        <p>One of the more promising startups coming out of Europe, albeit one that might not make much noise in a more crowded Silicon Valley ecosystem relocated its staff to San Francisco. &ldquo;The engineering talent is just over here [...] there&rsquo;s just so much more VC money in the US than any term sheet you get here, they&rsquo;re going to give you two or three times the valuation of what a European VC will give you,&rdquo; says Keith Fearon who&rsquo;s in charge of the company&rsquo;s growth, adding that around 70-80% of the company&rsquo;s customers are US-based.</p>
-      </div>
-
-      <div class="reveal">
-        <p>But just a short hop across the North Sea lands you in Stockholm, where early investment in computer infrastructure meant about 75% of Swedish homes had computers by 2005. Sweden has had its own AI-fueled tech boom. Encouraged by the success of Klarna and Spotify, Stockholm has now been home to companies like Sana (acquired by Workday for $1.1bn), Lovable (just raised $530m), and Legora (potentially valued at $4bn). And yet of its impressive list of start-ups, more than 30% relocate to the US.</p>
-      </div>
-
-      <div class="reveal">
-        <blockquote>
-          &ldquo;We are graduating all the engineers. We are starting all the companies, but then we&rsquo;re exporting talent to the US. We&rsquo;re exporting companies very cheaply.&rdquo;
-          <cite>&mdash; Victor Englesson, EQT, to the FT. &ldquo;We have a scale-up issue in Europe.&rdquo;</cite>
-        </blockquote>
-      </div>
-
-      <div class="reveal">
-        <p>There are Sweden-specific laws that founders have cited as reasons to move abroad, but the larger issue remains access to capital and access to talent. The centripetal force is still Silicon Valley. As another Swedish founder put it, &ldquo;But if you really want to build the biggest company in the world, I do think you have to be in the US. You need to have a stronghold in the US &mdash; if not your headquarters there.&rdquo;</p>
-      </div>
-
-      <div class="reveal">
-        <p><strong>The line: The EU may be the place to start a company, but it has none of the resources to scale it.</strong></p>
-      </div>
-    </div>
-
-    <div class="chapter-divider"></div>
 
     <!-- Chapter 4: Brussels -->
     <div class="narrative-section" id="ch-brussels" data-panel="panel-stack">
@@ -1393,7 +1326,21 @@ body::after {
       <div class="reveal">
         <h2>Startup Exodus</h2>
         <p class="section-sub">European AI companies that moved to the US.</p>
-        <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">&ldquo;The requirement from almost all of our investors was actually to relocate to the Bay Area.&rdquo; More than 30% of Stockholm&rsquo;s startups relocate to the US. The EU may be the place to start a company, but it has none of the resources to scale it.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">11x began in London. It&rsquo;s a company that builds AI agents that automate revenue-based workstreams &ndash; things like sales, revenue operations, and GTM strategy and execution.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">After closing a $24m Series A round led by US VCs, 11x was sent to the Bay Area as a precondition for its investor&rsquo;s money. &ldquo;The requirement from almost all of our investors was actually to relocate to the Bay Area,&rdquo; says the company&rsquo;s head of growth Keith Fearon. &ldquo;We needed to move here.&rdquo;</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">But just a short hop across the North Sea lands you in Stockholm, where early investment in computer infrastructure meant about 75% of Swedish homes had computers by 2005. Sweden has had its own AI-fueled tech boom. Encouraged by the success of Klarna and Spotify, Stockholm has now been home to companies like Sana, Lovable, and Legora. And yet of its impressive list of start-ups, more than 30% relocate to the US.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">&ldquo;We are graduating all the engineers. We are starting all the companies, but then we&rsquo;re exporting talent to the US. We&rsquo;re exporting companies very cheaply.&rdquo; &mdash; Victor Englesson, EQT</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;">The EU may be the place to start a company, but it has none of the resources to scale it.</p>
       </div>
       <div class="widget reveal" id="exodusTracker">
         <h3>Startup Exodus Tracker</h3>
@@ -1528,7 +1475,7 @@ body::after {
 
       <!-- DOCUMENT INSET: Digital Liberty Act -->
       <div class="doc-inset reveal">
-        <div class="doc-stamp">CLASSIFIED</div>
+        <div class="doc-stamp"></div>
         <h4>The Digital Liberty Act</h4>
         <p class="doc-subtitle">The United States of America has declared that, in the interest of the continued safety of our digital infrastructure, we are mandating that any and all access to American-based frontier AI technologies is dependent on the full and unmitigated acceptance of The Digital Liberty Act the pillars of which are the following:</p>
 
@@ -1617,15 +1564,20 @@ body::after {
 
     <!-- Data Panel: Simulation -->
     <div class="data-panel active" id="panel-simulation" data-panel-id="panel-simulation">
+      <div class="reveal" style="margin-bottom:1.5rem;">
+        <h3 style="font-size:1rem;color:var(--cyan);margin-bottom:0.75rem;font-weight:600;">What triggers coalition-building?</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Licensing tightens, deliveries stall, or cloud access becomes conditional on alignment with foreign policy demands. Once leaders believe compute can be throttled from abroad, coalition-building stops being optional.</p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">A European government realizes that core ministries, hospitals, defense planners, or education systems depend on non-European foundation models and cloud providers, and then pricing changes, access changes, or legal conditions shift.</p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">What exact event makes a French minister, a German chancellor, and a Dutch finance official all say within 72 hours: &ldquo;we cannot leave this to the market anymore&rdquo;?</p>
+      </div>
       <div class="sim-section" id="sim-decisions">
         <div class="sim-inner">
           <div class="reveal">
-            <span class="dateline">Interactive</span>
+            <span class="dateline"></span>
             <h2 style="font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:800;margin-bottom:0.5rem;">Key Decisions</h2>
             <p style="color:var(--text-dim);margin-bottom:0.75rem;font-size:0.85rem;">
               Eight pivotal moments that shaped the coalition. Make a choice at each, see the consequence.
             </p>
-            <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">What exact event makes a French minister, a German chancellor, and a Dutch finance official all say within 72 hours: &ldquo;we cannot leave this to the market anymore&rdquo;? Licensing tightens. Cloud access becomes conditional. Compute gets throttled from abroad. Make the choices and watch the numbers move.</p>
             <div class="sim-skip">
               <a href="#data-talent">Skip to Talent Map &darr;</a>
             </div>
@@ -1690,55 +1642,16 @@ body::after {
   <!-- LEFT: Narrative -->
   <div class="split-narrative">
 
-    <!-- Chapter 6: The Coalition -->
-    <div class="narrative-section" id="ch-coalition" data-panel="panel-timeline">
+    <div class="narrative-section" id="ch-tokyo" data-panel="panel-timeline">
       <div class="reveal">
-        <span class="dateline">What Gets Built</span>
-        <h2>What Needs to Happen</h2>
+        <span class="dateline">2.19.2027 &mdash; Tokyo, Japan &mdash; Office of the Prime Minister</span>
+        <h2>Tokyo</h2>
       </div>
-
       <div class="reveal">
-        <p>How do countries become a coalition?</p>
+        <p><em>Her Excellency Sanae Takaichi</em></p>
       </div>
-
       <div class="reveal">
-        <p>In 1999 the Wi-Fi alliance was formed. Six founding companies are present: 3Com, Aironet, Intersil, Lucent Technologies, Nokia, and Symbol Technologies. They&rsquo;ve united to guarantee the interoperability of different products from different vendors. Faced with a general purpose technology that put all of their businesses at the edge of either innovative breakthroughs or failures, they decided the only way forward was by focusing on a collaborative advantage. Make Wi-Fi-dependent products better across the board, and the market for consumers will expand. A rising tide lifts all ships, so long as everyone agrees to open their respective dams.</p>
-      </div>
-
-      <div class="reveal">
-        <p>The gravity of the US and China will hold so long as their fragmented competition is spending money on coordination costs across disparate talent, capital, and compute pools.</p>
-      </div>
-
-      <div class="reveal">
-        <p>Given how entrenched the major American and Chinese frontier LLMs are, where would an incumbent compete?</p>
-      </div>
-
-      <div class="reveal">
-        <p><strong>Infinite Supply + Infinite Talent + Infinite Capital = Cornered Resource</strong></p>
-      </div>
-
-      <div class="reveal">
-        <p>So you need to switch the playing field.</p>
-      </div>
-
-      <div class="reveal">
-        <p>If we were to collect the &ldquo;best of the rest&rdquo; &ndash; where would we land? How would we win?</p>
-      </div>
-
-      <div class="reveal">
-        <p>The coalition model is a start. General purpose, transformative technology demands interoperability standards. But we propose taking it a step further.</p>
-      </div>
-
-      <div class="reveal">
-        <h3>Forks in the Road</h3>
-      </div>
-
-      <div class="reveal">
-        <p><strong>Continue down the path we&rsquo;re on:</strong> threaten global digital sovereignty and bargain power, a large potential bubble, continued investment in non-public utilities, unmitigated and unsupervised use of AI in government action (comply or get labelled a &ldquo;supply chain risk&rdquo;)</p>
-      </div>
-
-      <div class="reveal">
-        <p><strong>Work together:</strong> Cut the coordination costs, pool together the resources where they exist, create a middle powers alliance, restore some parity in global digital infrastructure, establish local innovation ecosystems (ie, not everyone needs to move to Silicon Valley), restore some control over how the models are deployed.</p>
+        <p style="color:var(--text-dim);font-style:italic;">This chapter is forthcoming.</p>
       </div>
     </div>
 
@@ -4552,7 +4465,7 @@ async function fetchDashboardData() {
   const indicator = document.getElementById('timelineIndicator');
   if (!indicator) return;
   const nodes = indicator.querySelectorAll('.tl-node');
-  const storyIds = ['ch-dublin','ch-brussels','ch-berlin'];
+  const storyIds = ['ch-dublin','ch-brussels','ch-tokyo','ch-berlin'];
 
   // Highlight active node based on scroll position
   window.addEventListener('scroll', () => {
@@ -4571,10 +4484,10 @@ async function fetchDashboardData() {
 
     // Show/hide indicator (only visible during story sections)
     const dublin = document.getElementById('ch-dublin');
-    const coalition = document.getElementById('ch-coalition');
-    if (dublin && coalition) {
+    const tokyo = document.getElementById('ch-tokyo');
+    if (dublin && tokyo) {
       const dRect = dublin.getBoundingClientRect();
-      const cRect = coalition.getBoundingClientRect();
+      const cRect = tokyo.getBoundingClientRect();
       const visible = dRect.top < window.innerHeight && cRect.top > 0;
       indicator.style.opacity = visible ? '1' : '0';
       indicator.style.pointerEvents = visible ? 'auto' : 'none';
