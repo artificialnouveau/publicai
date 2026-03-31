@@ -108,45 +108,20 @@ body::after {
   white-space: nowrap;
 }
 .topnav-brand:hover { color: #4a8ce4; }
-.timeline-nav {
-  display: flex; align-items: center; gap: 0; flex: 1;
-  position: relative; margin-left: 2rem;
+.topnav-chapters {
+  display: flex; gap: 0; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.timeline-line {
-  position: absolute; top: 50%; left: 0; right: 0;
-  height: 1px; background: rgba(255,255,255,0.08);
-  transform: translateY(-50%);
+.topnav-chapters a {
+  font-size: 0.72rem; font-weight: 600; color: var(--text-dim);
+  text-decoration: none; white-space: nowrap; transition: color 0.2s;
+  font-family: var(--font); letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0 0.75rem;
+  border-right: 0.5px solid var(--border);
 }
-.timeline-node {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  gap: 2px; background: none; border: none; cursor: pointer;
-  position: relative; z-index: 1; padding: 4px 0;
-  transition: all 0.3s;
-}
-.node-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  border: 1.5px solid rgba(232,224,204,0.3);
-  background: var(--bg);
-  transition: all 0.3s;
-}
-.timeline-node:hover .node-dot,
-.timeline-node.active .node-dot {
-  border-color: var(--cyan); background: var(--cyan);
-  box-shadow: 0 0 10px rgba(26,108,212,0.4);
-}
-.node-city {
-  font-size: 9px; font-family: var(--mono); font-weight: 600;
-  color: rgba(232,224,204,0.4); text-transform: uppercase;
-  letter-spacing: 0.08em; transition: color 0.3s;
-}
-.node-date {
-  font-size: 8px; font-family: var(--mono);
-  color: rgba(232,224,204,0.25); letter-spacing: 0.06em;
-}
-.timeline-node:hover .node-city,
-.timeline-node.active .node-city { color: var(--cyan); }
-.timeline-node:hover .node-date,
-.timeline-node.active .node-date { color: rgba(232,224,204,0.5); }
+.topnav-chapters a:last-child { border-right: none; }
+.topnav-chapters a:hover { color: var(--cyan); }
+.topnav-chapters a.active { color: var(--cyan); }
 
 /* === HERO === */
 .hero {
@@ -193,48 +168,6 @@ body::after {
   max-width: 1400px;
   margin: 0 auto;
   min-height: 100vh;
-}
-.dispatch-container {
-  position: relative;
-  overflow: hidden;
-}
-.dispatch-container .split-section {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-  z-index: 0;
-  transition: opacity 0.4s ease;
-}
-.dispatch-container .split-section.active-dispatch {
-  position: relative;
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
-  z-index: 1;
-}
-.dispatch-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  max-width: 1400px; margin: 0 auto;
-  padding: 1.5rem 4rem;
-  border-top: 0.5px solid rgba(255,255,255,0.08);
-}
-.dispatch-btn {
-  background: none; border: 0.5px solid rgba(255,255,255,0.12);
-  color: var(--text-dim); font-family: var(--mono); font-size: 0.8rem;
-  padding: 8px 20px; border-radius: 8px; cursor: pointer;
-  transition: all 0.3s; letter-spacing: 0.05em;
-}
-.dispatch-btn:hover:not(:disabled) {
-  border-color: var(--cyan); color: var(--cyan);
-}
-.dispatch-btn:disabled {
-  opacity: 0.3; cursor: not-allowed;
-}
-.dispatch-counter {
-  font-family: var(--mono); font-size: 0.75rem;
-  color: rgba(232,224,204,0.4); letter-spacing: 0.1em;
 }
 .split-narrative {
   padding: 6rem 3rem 6rem 5rem;
@@ -800,13 +733,9 @@ body::after {
   .timeline-dual { grid-template-columns: 1fr; }
   .timeline-dual::before { display: none; }
   .talent-grid { grid-template-columns: 1fr; }
-  .timeline-nav { margin-left: 0.5rem; }
-  .node-date { display: none; }
-  .dispatch-nav { padding: 1rem 1.5rem; }
 }
 @media (max-width: 768px) {
-  .timeline-nav .timeline-line { display: none; }
-  .node-city { font-size: 8px; }
+  .topnav-chapters { display: none; }
   .stat-row { flex-direction: column; align-items: center; }
   .stat-card { min-width: 100%; }
   .hero h1 { font-size: 2rem; }
@@ -918,10 +847,117 @@ body::after {
   line-height: 1.5; display: none;
 }
 .market-cap-info.visible { display: block; }
+/* === NON-LINEAR TIMELINE INDICATOR === */
+.timeline-indicator {
+  position: fixed;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.timeline-indicator.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.tl-track {
+  width: 1px;
+  height: 200px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+}
+.tl-node {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(232,224,204,0.3);
+  background: var(--bg);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.tl-node:hover, .tl-node.active {
+  border-color: var(--cyan);
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(26,108,212,0.4);
+}
+.tl-node-label {
+  position: absolute;
+  left: 16px;
+  white-space: nowrap;
+  font-size: 9px;
+  font-family: var(--mono);
+  color: rgba(232,224,204,0.55);
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  transition: all 0.3s;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-4px);
+  top: 50%;
+  transform: translateX(-4px) translateY(-50%);
+}
+.tl-node:hover .tl-node-label,
+.tl-node.active .tl-node-label {
+  color: var(--cyan);
+  opacity: 1;
+  transform: translateX(0) translateY(-50%);
+}
+.tl-jump-line {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  background: var(--cyan);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.tl-jump-line.visible {
+  opacity: 0.3;
+}
+.tl-year-label {
+  font-size: 8px;
+  font-family: var(--mono);
+  color: rgba(232,224,204,0.2);
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin: 4px 0;
+}
+@media (max-width: 900px) {
+  .timeline-indicator { display: none; }
+}
 </style>
 </head>
 <body>
 
+<!-- NON-LINEAR TIMELINE INDICATOR -->
+<div class="timeline-indicator" id="timelineIndicator">
+  <div class="tl-year-label">2026</div>
+  <div class="tl-track">
+    <!-- Nodes positioned chronologically: Apr 2026 = 0%, Jun 2026 = 14%, Feb 2027 = 67%, Apr 2027 = 80% -->
+    <!-- But displayed in narrative order with jump lines -->
+    <a class="tl-node" href="#ch-dublin" style="top:0%;" data-date="APR 2026" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Dublin<br>Apr 2026</span>
+    </a>
+    <a class="tl-node" href="#ch-brussels" style="top:14%;" data-date="JUN 2026" onclick="document.getElementById('ch-brussels').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Brussels<br>Jun 2026</span>
+    </a>
+    <a class="tl-node" href="#ch-tokyo" style="top:67%;" data-date="FEB 2027" onclick="document.getElementById('ch-tokyo').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Tokyo<br>Feb 2027</span>
+    </a>
+    <a class="tl-node" href="#ch-berlin" style="top:80%;" data-date="APR 2027" onclick="document.getElementById('ch-berlin').scrollIntoView({behavior:'smooth'})">
+      <span class="tl-node-label">Berlin<br>Apr 2027</span>
+    </a>
+  </div>
+  <div class="tl-year-label">2027</div>
+</div>
 
 <!-- CRT grain overlay -->
 <div class="grain"></div>
@@ -970,33 +1006,12 @@ body::after {
 <!-- TOP NAV -->
 <nav class="topnav">
   <a href="index.html" class="topnav-brand glow">AIRBUS_FOR_AI &gt;</a>
-  <div class="timeline-nav" id="timelineNav">
-    <div class="timeline-line"></div>
-    <button class="timeline-node active" data-index="0" onclick="switchDispatch(0)">
-      <span class="node-dot"></span>
-      <span class="node-city">Dublin</span>
-      <span class="node-date">Apr 2026</span>
-    </button>
-    <button class="timeline-node" data-index="1" onclick="switchDispatch(1)">
-      <span class="node-dot"></span>
-      <span class="node-city">Brussels</span>
-      <span class="node-date">Jun 2026</span>
-    </button>
-    <button class="timeline-node" data-index="2" onclick="switchDispatch(2)">
-      <span class="node-dot"></span>
-      <span class="node-city">Tokyo</span>
-      <span class="node-date">Feb 2027</span>
-    </button>
-    <button class="timeline-node" data-index="3" onclick="switchDispatch(3)">
-      <span class="node-dot"></span>
-      <span class="node-city">Berlin</span>
-      <span class="node-date">Apr 2027</span>
-    </button>
-    <button class="timeline-node" data-index="4" onclick="document.getElementById('deep-data').scrollIntoView({behavior:'smooth'})">
-      <span class="node-dot" style="background:var(--aurora);border-color:var(--aurora);"></span>
-      <span class="node-city">Data</span>
-      <span class="node-date">&nbsp;</span>
-    </button>
+  <div class="topnav-chapters">
+    <a href="#ch-dublin">DUBLIN &middot; APR 2026</a>
+    <a href="#ch-brussels">BRUSSELS &middot; JUN 2026</a>
+    <a href="#ch-berlin">BERLIN &middot; APR 2027</a>
+    <a href="#ch-tokyo">TOKYO &middot; FEB 2027</a>
+    <a href="#deep-data">DATA</a>
   </div>
 </nav>
 
@@ -1008,7 +1023,7 @@ body::after {
     <h1 class="glow">The Slow Boil</h1>
     <p class="hero-sub">When AI infrastructure means sovereignty</p>
     <p style="font-size:0.85rem;color:var(--text-secondary);max-width:520px;margin:0 auto 1.5rem;line-height:1.7;font-family:var(--mono);">Europe can establish governance, but it cannot build. Its regulations don&rsquo;t matter if all of the digital infrastructure &mdash; leading models, cloud platforms, accelerators, and tooling &mdash; are American or Chinese.</p>
-    <div class="hero-guide" style="display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;">
+    <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;">
       <div style="flex:1;text-align:center;padding:1rem;border:0.5px solid var(--border);border-radius:10px;background:var(--bg-raised);">
         <div style="font-size:11px;font-family:var(--font);color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:0.3rem;">The Story</div>
         <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--font);">Fictional chapters through character perspectives in Dublin, Brussels, Berlin, and beyond</div>
@@ -1018,7 +1033,7 @@ body::after {
         <div style="font-size:0.8rem;color:var(--text-dim);font-family:var(--font);">Real market share, compute costs, talent flows, and interactive simulations with sourced references</div>
       </div>
     </div>
-    <div class="scroll-indicator" onclick="switchDispatch(0); document.getElementById('dispatchContainer').scrollIntoView({behavior:'smooth'})">
+    <div class="scroll-indicator" onclick="document.getElementById('ch-dublin').scrollIntoView({behavior:'smooth'})">
       &darr;
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M10 4 L10 16 M5 11 L10 16 L15 11"/>
@@ -1028,8 +1043,7 @@ body::after {
 </section>
 
 <!-- ==================== SECTION 1: Dublin + Economics + Dependency Data ==================== -->
-<div class="dispatch-container" id="dispatchContainer">
-<div class="split-section active-dispatch">
+<div class="split-section">
 
   <!-- LEFT: Narrative -->
   <div class="split-narrative">
@@ -1140,19 +1154,15 @@ body::after {
         <h2>Funding the Dependency</h2>
         <p class="section-sub">European pension money builds the infrastructure Europe depends on.</p>
       </div>
-
       <div class="reveal">
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Norway&rsquo;s Government Pension Fund Global, the world&rsquo;s largest sovereign wealth fund at $2.2 trillion, holds 1.3% stakes in both Nvidia and Microsoft. The same companies that control the AI chips and cloud infrastructure Aaron&rsquo;s team depended on.</p>
       </div>
-
       <div class="reveal">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Dutch pension funds have &euro;150 billion invested in tech companies, 43% of their equity portfolios. Their exposure to the &ldquo;Magnificent Seven&rdquo; (Alphabet, Amazon, Apple, Meta, Microsoft, Nvidia, Tesla) nearly tripled from 7% to 19% of equities between 2020 and 2025. The Dutch central bank has warned of vulnerability to an &ldquo;abrupt correction.&rdquo;</p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Dutch pension funds have &euro;150 billion invested in tech companies, 43% of their equity portfolios. Their exposure to the &ldquo;Magnificent Seven&rdquo; nearly tripled from 7% to 19% of equities between 2020 and 2025. The Dutch central bank has warned of vulnerability to an &ldquo;abrupt correction.&rdquo;</p>
       </div>
-
       <div class="reveal">
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Meanwhile, EU pension funds contribute just 5% of capital raised by European VC funds, compared to over 50% in the US. European citizens&rsquo; retirement savings flow to US tech companies rather than funding European alternatives.</p>
       </div>
-
       <div class="reveal" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:0.5rem;">
         <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);">
           <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">$2.2T</div>
@@ -1497,6 +1507,10 @@ body::after {
         <p class="section-sub">Virkkunen: &ldquo;These American AI companies are not just stumbling into American warfare, they&rsquo;re actively courting it.&rdquo;</p>
       </div>
 
+      <div class="reveal">
+        <canvas id="defenseCanvas" style="width:100%;height:300px;"></canvas>
+      </div>
+
       <div class="reveal" style="display:flex;flex-direction:column;gap:10px;margin-top:1rem;">
         <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
           <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -1824,14 +1838,6 @@ body::after {
     </div>
 
   </div>
-</div>
-
-</div>
-<!-- Dispatch navigation -->
-<div class="dispatch-nav" id="dispatchNav">
-  <button class="dispatch-btn" id="prevBtn" onclick="switchDispatch(currentDispatchIndex - 1)" disabled>&larr; Previous</button>
-  <span class="dispatch-counter" id="dispatchCounter">1 / 4</span>
-  <button class="dispatch-btn" id="nextBtn" onclick="switchDispatch(currentDispatchIndex + 1)">Next &rarr;</button>
 </div>
 
 <!-- ==================== CONCLUSION (full-width) ==================== -->
@@ -2255,6 +2261,26 @@ const revealObs = new IntersectionObserver((entries)=>{
 
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
+// ============================================================
+// ACTIVE NAV TRACKING
+// ============================================================
+const navLinks = document.querySelectorAll('.topnav-chapters a');
+const sections = [];
+navLinks.forEach(a => {
+  const id = a.getAttribute('href').replace('#','');
+  const el = document.getElementById(id);
+  if(el) sections.push({el, link: a});
+});
+
+window.addEventListener('scroll', ()=>{
+  let current = null;
+  for(const s of sections){
+    const rect = s.el.getBoundingClientRect();
+    if(rect.top <= 200) current = s;
+  }
+  navLinks.forEach(a=>a.classList.remove('active'));
+  if(current) current.link.classList.add('active');
+});
 
 // ============================================================
 // DATA PANEL SWITCHING (IntersectionObserver)
@@ -4441,74 +4467,39 @@ async function fetchDashboardData() {
   };
 })();
 // ============================================================
-// DISPATCH NAVIGATION
+// NON-LINEAR TIMELINE INDICATOR
 // ============================================================
-let currentDispatchIndex = 0;
-const dispatchChapters = ['dublin', 'brussels', 'tokyo', 'berlin'];
-
-function switchDispatch(index) {
-  if (index < 0 || index >= 4) return;
-  currentDispatchIndex = index;
-
-  const sections = document.querySelectorAll('.dispatch-container .split-section');
-  const nodes = document.querySelectorAll('.timeline-node');
-
-  // Switch active section
-  sections.forEach((s, i) => {
-    s.classList.toggle('active-dispatch', i === index);
-    // Trigger reveal animations for newly visible section
-    if (i === index) {
-      s.querySelectorAll('.reveal:not(.visible)').forEach(el => {
-        el.classList.add('visible');
-      });
-      // Re-trigger canvas observers by forcing a layout
-      s.querySelectorAll('canvas').forEach(c => {
-        c.style.display = 'none';
-        c.offsetHeight; // force reflow
-        c.style.display = '';
-      });
-    }
-  });
-
-  // Update timeline nodes (only first 4, not the Data node)
-  nodes.forEach((n, i) => {
-    if (i < 4) n.classList.toggle('active', i === index);
-  });
-
-  // Update prev/next
-  document.getElementById('prevBtn').disabled = (index === 0);
-  document.getElementById('nextBtn').disabled = (index === 3);
-  document.getElementById('dispatchCounter').textContent = (index + 1) + ' / 4';
-
-  // Activate default data panel
-  const activeSection = sections[index];
-  if (activeSection) {
-    const dataCol = activeSection.querySelector('.split-data');
-    if (dataCol) {
-      dataCol.querySelectorAll('.data-panel').forEach((p, pi) => {
-        p.classList.toggle('active', pi === 0);
-      });
-    }
-  }
-
-  // Scroll to dispatch area
-  document.getElementById('dispatchContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  // Update URL hash
-  history.replaceState(null, '', '#ch-' + dispatchChapters[index]);
-}
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' && currentDispatchIndex < 3) switchDispatch(currentDispatchIndex + 1);
-  if (e.key === 'ArrowLeft' && currentDispatchIndex > 0) switchDispatch(currentDispatchIndex - 1);
-});
-
-// Handle initial hash
 (function(){
-  const hash = window.location.hash.replace('#ch-', '');
-  const idx = dispatchChapters.indexOf(hash);
-  if (idx >= 0) switchDispatch(idx);
+  const indicator = document.getElementById('timelineIndicator');
+  if (!indicator) return;
+  const nodes = indicator.querySelectorAll('.tl-node');
+  const storyIds = ['ch-dublin','ch-brussels','ch-tokyo','ch-berlin'];
+
+  // Highlight active node based on scroll position
+  window.addEventListener('scroll', () => {
+    let activeIdx = -1;
+    storyIds.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
+        activeIdx = i;
+      }
+    });
+    nodes.forEach((n, i) => {
+      n.classList.toggle('active', i === activeIdx);
+    });
+
+    // Show/hide indicator (only visible during story sections)
+    const dublin = document.getElementById('ch-dublin');
+    const tokyo = document.getElementById('ch-tokyo');
+    if (dublin && tokyo) {
+      const dRect = dublin.getBoundingClientRect();
+      const cRect = tokyo.getBoundingClientRect();
+      const visible = dRect.top < window.innerHeight && cRect.top > 0;
+      indicator.classList.toggle('visible', visible);
+    }
+  });
 })();
 
 // ============================================================
