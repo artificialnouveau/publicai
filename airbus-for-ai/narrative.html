@@ -191,7 +191,7 @@ body::after {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  opacity: 0.15;
+  opacity: 0.6;
 }
 .chapter-card-content {
   position: relative;
@@ -578,11 +578,9 @@ body::after {
 .exodus-item {
   display: flex; align-items: center; gap: 0.75rem;
   padding: 0.6rem 0; border-bottom: 1px solid var(--border);
-  opacity: 0; transform: translateX(-30px);
-  transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+  opacity: 1; transform: none;
   font-size: 0.85rem;
 }
-.exodus-item.visible { opacity: 1; transform: translateX(0); }
 .exodus-item:hover { border-bottom-color: var(--cyan); }
 .exodus-origin {
   font-size: 0.7rem; color: var(--text-dim); min-width: 60px;
@@ -1306,10 +1304,7 @@ body::after {
       <div class="reveal">
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">The Dublin office closed. The Munich office closed. The Paris office closed. The Brussels office closed. The engineering went back to San Francisco. The compliance tools, the multilingual benchmarks, the evaluation pipeline: gone.</p>
       </div>
-      <div class="reveal">
-        <canvas id="dependencyRingsCanvas" style="width:100%;height:280px;"></canvas>
-      </div>
-      <div class="reveal" style="display:flex;flex-direction:column;gap:12px;margin-top:1rem;">
+      <div class="reveal" style="display:flex;flex-direction:column;gap:12px;margin-top:0.5rem;">
         <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);display:flex;align-items:center;gap:1rem;">
           <div style="font-family:var(--mono);font-size:1.8rem;font-weight:300;color:var(--red);min-width:70px;text-align:right;">70%</div>
           <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">of EU cloud infrastructure is run by AWS, Azure, and Google. The servers Aaron&rsquo;s team deployed on were never European to begin with.</div>
@@ -1581,9 +1576,20 @@ body::after {
           <button class="filter-btn" onclick="filterExodus('Germany',this)">Germany</button>
           <button class="filter-btn" onclick="filterExodus('Nordic',this)">Nordic</button>
         </div>
-        <ul class="exodus-list" id="exodusList"></ul>
+        <ul class="exodus-list" id="exodusList">
+          <li class="exodus-item visible" data-origin="UK"><span class="exodus-origin">UK</span><span class="exodus-name">11x</span><span class="exodus-funding">$50M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">SF</span></li>
+          <li class="exodus-item visible" data-origin="UK"><span class="exodus-origin">UK</span><span class="exodus-name">Stability AI</span><span class="exodus-funding">$101M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">SF</span></li>
+          <li class="exodus-item visible" data-origin="France"><span class="exodus-origin">France</span><span class="exodus-name">Hugging Face</span><span class="exodus-funding">$395M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">NYC</span></li>
+          <li class="exodus-item visible" data-origin="UK"><span class="exodus-origin">UK</span><span class="exodus-name">DeepMind</span><span class="exodus-funding">Acq. Google</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">MTV</span></li>
+          <li class="exodus-item visible" data-origin="Germany"><span class="exodus-origin">Germany</span><span class="exodus-name">DeepL</span><span class="exodus-funding">$300M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">US HQ</span></li>
+          <li class="exodus-item visible" data-origin="Finland"><span class="exodus-origin">Finland</span><span class="exodus-name">Silo AI</span><span class="exodus-funding">Acq. AMD</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">Santa Clara</span></li>
+          <li class="exodus-item visible" data-origin="Sweden"><span class="exodus-origin">Sweden</span><span class="exodus-name">Normative</span><span class="exodus-funding">$18M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">SF</span></li>
+          <li class="exodus-item visible" data-origin="France"><span class="exodus-origin">France</span><span class="exodus-name">Poolside</span><span class="exodus-funding">$500M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">SF</span></li>
+          <li class="exodus-item visible" data-origin="UK"><span class="exodus-origin">UK</span><span class="exodus-name">Wayve</span><span class="exodus-funding">$1.05B</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">SF</span></li>
+          <li class="exodus-item visible" data-origin="Switzerland"><span class="exodus-origin">Switzerland</span><span class="exodus-name">Scandit</span><span class="exodus-funding">$305M</span><span class="exodus-arrow">&rarr;</span><span class="exodus-dest">US HQ</span></li>
+        </ul>
         <div class="exodus-counter">
-          <div class="val" id="exodusTotal">$0B</div>
+          <div class="val" id="exodusTotal">$5.4B+</div>
           <div class="label">Total value exported to US</div>
         </div>
         <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
@@ -5178,6 +5184,10 @@ async function fetchDashboardData() {
 // CHAPTER PANELS — Open/Close + Chip Backgrounds
 // ============================================================
 
+let currentOpenSection = null;
+let currentOpenParent = null;
+let currentOpenNextSibling = null;
+
 function openChapter(index) {
   const overlay = document.getElementById('chapterOverlay');
   const content = document.getElementById('chapterOverlayContent');
@@ -5185,29 +5195,44 @@ function openChapter(index) {
 
   if (!section) return;
 
-  // Clone the section into the overlay
+  // Remember where the section was so we can put it back
+  currentOpenSection = section;
+  currentOpenParent = section.parentNode;
+  currentOpenNextSibling = section.nextSibling;
+
+  // Move the actual section into the overlay (not clone)
+  section.style.display = 'grid';
   content.innerHTML = '';
-  const clone = section.cloneNode(true);
-  clone.style.display = 'grid';
-  clone.removeAttribute('data-chapter-idx');
-  content.appendChild(clone);
+  content.appendChild(section);
 
   // Open overlay
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 
   // Trigger reveal animations
-  clone.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  section.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
 
-  // Re-init any canvases in the clone (they won't have the original drawing)
-  // For simplicity, the data panel content (text, cards, tables) will show fine
-  // Canvas-based visualizations won't re-render in the clone, but the HTML content will
+  // Trigger canvas redraws by dispatching a resize
+  window.dispatchEvent(new Event('resize'));
 }
 
 function closeChapter() {
   const overlay = document.getElementById('chapterOverlay');
   overlay.classList.remove('open');
   document.body.style.overflow = '';
+
+  // Move the section back to its original position
+  if (currentOpenSection && currentOpenParent) {
+    currentOpenSection.style.display = '';
+    if (currentOpenNextSibling) {
+      currentOpenParent.insertBefore(currentOpenSection, currentOpenNextSibling);
+    } else {
+      currentOpenParent.appendChild(currentOpenSection);
+    }
+    currentOpenSection = null;
+    currentOpenParent = null;
+    currentOpenNextSibling = null;
+  }
 }
 
 // Close on Escape key
@@ -5239,69 +5264,105 @@ document.getElementById('chapterOverlay').addEventListener('click', (e) => {
     const cols = ['#1a6cd4', '#0fa37a', '#c96a2b', '#7b6fd6'];
     const chipCol = cols[i];
 
-    // Draw pixelated chip pattern
-    const px = 6; // pixel size
+    const px = 4;
     let s = seed;
+    const cx = w/2, cy = h*0.42;
+    const dieW = 100, dieH = 110;
 
-    // Central chip die
-    const cx = w/2, cy = h/2;
-    const dieW = 80, dieH = 100;
+    // Background substrate
+    ctx.fillStyle = '#080c14';
+    ctx.fillRect(0, 0, w, h);
 
-    // Grid lines (traces)
-    for (let x = 0; x < w; x += px) {
-      for (let y = 0; y < h; y += px) {
+    // Bond pads along all 4 edges
+    const padSize = 6, padGap = 10;
+    ctx.fillStyle = chipCol;
+    for (let p = padGap; p < w - padGap; p += padGap) {
+      s++;
+      const r = seededRandom(s);
+      if (r > 0.3) {
+        ctx.globalAlpha = 0.35;
+        ctx.fillRect(p, 3, padSize-1, padSize-1); // top edge
+        ctx.fillRect(p, h - padSize - 3, padSize-1, padSize-1); // bottom edge
+      }
+    }
+    for (let p = padGap; p < h - padGap; p += padGap) {
+      s++;
+      const r = seededRandom(s);
+      if (r > 0.3) {
+        ctx.globalAlpha = 0.35;
+        ctx.fillRect(3, p, padSize-1, padSize-1); // left edge
+        ctx.fillRect(w - padSize - 3, p, padSize-1, padSize-1); // right edge
+      }
+    }
+
+    // Traces from pads to die (horizontal and vertical routing)
+    ctx.globalAlpha = 0.12;
+    ctx.strokeStyle = chipCol;
+    ctx.lineWidth = 0.5;
+    for (let t = 0; t < 20; t++) {
+      s++;
+      const r = seededRandom(s);
+      const isH = r > 0.5;
+      if (isH) {
+        const y = 20 + seededRandom(s+100) * (h - 40);
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      } else {
+        const x = 20 + seededRandom(s+200) * (w - 40);
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+    }
+
+    // Central die — dense grid
+    ctx.fillStyle = chipCol;
+    for (let x = cx - dieW/2; x < cx + dieW/2; x += px) {
+      for (let y = cy - dieH/2; y < cy + dieH/2; y += px) {
         s++;
         const r = seededRandom(s);
-
-        // Distance from center
-        const dx = Math.abs(x - cx), dy = Math.abs(y - cy);
-        const inDie = dx < dieW/2 && dy < dieH/2;
-        const nearDie = dx < dieW && dy < dieH;
-
-        if (inDie) {
-          // Dense grid inside die
-          if (r > 0.4) {
-            ctx.fillStyle = chipCol;
-            ctx.globalAlpha = 0.15 + r * 0.2;
-            ctx.fillRect(x, y, px-1, px-1);
-          }
-        } else if (nearDie) {
-          // Traces radiating from die
-          if (r > 0.7) {
-            ctx.fillStyle = chipCol;
-            ctx.globalAlpha = 0.08 + r * 0.08;
-            ctx.fillRect(x, y, px-1, px-1);
-          }
-          // Horizontal/vertical traces
-          if ((Math.abs(y - cy) < px * 2 || Math.abs(x - cx) < px * 2) && r > 0.3) {
-            ctx.fillStyle = chipCol;
-            ctx.globalAlpha = 0.12;
-            ctx.fillRect(x, y, px-1, px-1);
-          }
-        } else {
-          // Sparse outer area — bond pads and routing
-          if (r > 0.92) {
-            ctx.fillStyle = chipCol;
-            ctx.globalAlpha = 0.06;
-            ctx.fillRect(x, y, px-1, px-1);
-          }
-          // Edge pads
-          if ((x < px*3 || x > w-px*3 || y < px*3 || y > h-px*3) && r > 0.6) {
-            ctx.fillStyle = chipCol;
-            ctx.globalAlpha = 0.04 + r * 0.04;
-            ctx.fillRect(x, y, px-1, px-1);
-          }
+        if (r > 0.25) {
+          ctx.globalAlpha = 0.08 + r * 0.18;
+          ctx.fillRect(x, y, px-1, px-1);
         }
       }
     }
 
-    ctx.globalAlpha = 1;
-
-    // Die outline
+    // Die outline (bright)
+    ctx.globalAlpha = 0.4;
     ctx.strokeStyle = chipCol;
-    ctx.globalAlpha = 0.12;
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = 1;
     ctx.strokeRect(cx - dieW/2, cy - dieH/2, dieW, dieH);
+
+    // Die internal grid lines
+    ctx.globalAlpha = 0.15;
+    ctx.lineWidth = 0.5;
+    for (let gx = cx - dieW/2 + 12; gx < cx + dieW/2; gx += 12) {
+      ctx.beginPath(); ctx.moveTo(gx, cy - dieH/2); ctx.lineTo(gx, cy + dieH/2); ctx.stroke();
+    }
+    for (let gy = cy - dieH/2 + 12; gy < cy + dieH/2; gy += 12) {
+      ctx.beginPath(); ctx.moveTo(cx - dieW/2, gy); ctx.lineTo(cx + dieW/2, gy); ctx.stroke();
+    }
+
+    // Wire bonds from die to pads (fan-out lines)
+    ctx.globalAlpha = 0.18;
+    ctx.lineWidth = 0.3;
+    for (let b = 0; b < 16; b++) {
+      s++;
+      const angle = (b / 16) * Math.PI * 2;
+      const fromX = cx + Math.cos(angle) * (dieW/2);
+      const fromY = cy + Math.sin(angle) * (dieH/2);
+      const toX = cx + Math.cos(angle) * (Math.min(w,h) * 0.45);
+      const toY = cy + Math.sin(angle) * (Math.min(w,h) * 0.45);
+      ctx.beginPath(); ctx.moveTo(fromX, fromY); ctx.lineTo(toX, toY); ctx.stroke();
+    }
+
+    // Gradient overlay for text readability at bottom
+    const grad = ctx.createLinearGradient(0, h*0.5, 0, h);
+    grad.addColorStop(0, 'rgba(5,9,15,0)');
+    grad.addColorStop(0.5, 'rgba(5,9,15,0.6)');
+    grad.addColorStop(1, 'rgba(5,9,15,0.95)');
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, h*0.5, w, h*0.5);
+
     ctx.globalAlpha = 1;
   }
 })();
