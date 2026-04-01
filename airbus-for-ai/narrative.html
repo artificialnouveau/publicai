@@ -127,7 +127,7 @@ body::after {
 .hero {
   min-height: 100vh; display: flex; flex-direction: column;
   justify-content: center; align-items: center; text-align: center;
-  padding: 6rem 2rem 4rem; position: relative; overflow: hidden;
+  padding: 6rem 2rem 2rem; position: relative; overflow: hidden;
   background: var(--bg);
 }
 .hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.3; }
@@ -169,7 +169,7 @@ body::after {
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 2rem 4rem;
+  padding: 0 2rem 4rem;
 }
 .chapter-card {
   position: relative;
@@ -1369,7 +1369,13 @@ body::after {
 </section>
 
 <!-- ==================== CHAPTER PANELS ==================== -->
-<section class="chapter-grid" id="chapterGrid">
+<section id="chapterGrid" style="max-width:1200px;margin:0 auto;padding:0 2rem;">
+  <div style="text-align:center;margin-bottom:1.5rem;">
+    <p style="font-family:var(--mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;">Select a chapter to read</p>
+    <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.4rem;">Each chip is a story. Click to open the narrative and its accompanying data. Arranged chronologically, from Dublin to Berlin.</p>
+  </div>
+</section>
+<section class="chapter-grid">
   <div class="chapter-card" onclick="openChapter(0)" data-chapter="0" role="button" tabindex="0" aria-label="Read Dublin chapter, April 2026" onkeydown="if(event.key==='Enter')openChapter(0)">
     <canvas class="chip-bg" id="chipBg0"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
