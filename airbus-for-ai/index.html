@@ -35,6 +35,12 @@
   --radius: 12px;
   --radius-lg: 20px;
 }
+sup.fn a { color: var(--sky); text-decoration: none; font-size: 0.65em; font-weight: 600; vertical-align: super; }
+sup.fn a:hover { text-decoration: underline; }
+.fn-list { list-style: none; padding: 0; font-size: 0.8rem; line-height: 1.8; }
+.fn-list li { padding-left: 1.5em; text-indent: -1.5em; color: var(--text-secondary); }
+.fn-list li a { color: var(--sky); text-decoration: none; }
+.fn-list li a:hover { text-decoration: underline; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
@@ -582,7 +588,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="hero-content">
     <div class="hero-eyebrow"><span class="dot"></span> The Assembly Lab</div>
     <h1>What if they<br>merged into one?</h1>
-    <p class="hero-sub">ChatGPT holds 79.8% of the global consumer chatbot market. Even Mistral's Le Chat has less than 4% in France. Middle powers face a choice: consolidate or be captured. What happens when you build a Public AI Company?</p>
+    <p class="hero-sub">ChatGPT drives 79.8% of all chatbot referral traffic globally.<sup class="fn"><a href="#fn1">[1]</a></sup> Mistral's Le Chat doesn't even register on tracking in France.<sup class="fn"><a href="#fn2">[2]</a></sup> Middle powers face a choice: consolidate or be captured. What happens when you build a Public AI Company?</p>
     <div class="hero-cta-row">
       <a href="#assembly" class="btn btn-primary">Assemble the Entity</a>
       <a href="narrative.html" class="btn btn-outline">Read the Story</a>
@@ -592,7 +598,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Companies</div></div>
       <div class="hero-stat"><div class="hero-stat-val">11</div><div class="hero-stat-label">Candidate Nations</div></div>
       <div class="hero-stat"><div class="hero-stat-val">$27B+</div><div class="hero-stat-label">Combined Value</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">79.8%</div><div class="hero-stat-label">ChatGPT Market Share</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">79.8%</div><div class="hero-stat-label">ChatGPT Referral Share</div></div>
     </div>
   </div>
 </section>
@@ -606,7 +612,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <h3>They said it couldn't be done</h3>
       <p>In the late 1960s, European aerospace was fragmented. France, Germany, the UK, Spain &mdash; each had their own companies, each too small to challenge Boeing's dominance. This is the "<strong>middle powers' dilemma</strong>" &mdash; too small to compete alone, too proud to surrender.</p>
       <p>So they did something radical: they <strong>merged everything</strong>. Not a loose consortium. A real company with shared R&D, shared manufacturing, one mission. A coordinated public-private partnership that bootstrapped a product and focused relentlessly on market strategy.</p>
-      <p><strong>The result?</strong> Airbus went from 0% to 50% of the global commercial aircraft market. 130,000 employees. Revenue exceeding Boeing's. A $100B+ enterprise. As Tan, Jackson, Berjon &amp; Coyle argue: the playbook exists.</p>
+      <p><strong>The result?</strong> Airbus went from 0% to roughly 50% of the global commercial aircraft market.<sup class="fn"><a href="#fn3">[3]</a></sup> Over 150,000 employees.<sup class="fn"><a href="#fn4">[4]</a></sup> Deliveries and profitability far exceeding Boeing's.<sup class="fn"><a href="#fn5">[5]</a></sup> A $150B+ enterprise.<sup class="fn"><a href="#fn6">[6]</a></sup> As Tan, Jackson, Berjon &amp; Coyle argue: the playbook exists.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
     </div>
   </div>
   <div class="story-grid reverse fade-up">
@@ -614,7 +620,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <div class="story-text">
       <div class="story-tag">2026 &mdash; The Middle Powers' Dilemma</div>
       <h3>Four problems, one solution</h3>
-      <p>Middle powers face four interlocking failures: <strong>scale</strong> (no single nation can match US compute), <strong>limited domestic markets</strong> (too small to sustain a frontier lab), <strong>foreign capture</strong> (ChatGPT holds 79.8% of consumer chatbots globally; Mistral's Le Chat has &lt;4% even in France), and <strong>fragmented sovereignty</strong> (dozens of national AI strategies pulling in different directions).</p>
+      <p>Middle powers face four interlocking failures: <strong>scale</strong> (no single nation can match US compute), <strong>limited domestic markets</strong> (too small to sustain a frontier lab), <strong>foreign capture</strong> (ChatGPT drives 79.8% of chatbot referral traffic globally;<sup class="fn"><a href="#fn1">[1]</a></sup> Mistral's Le Chat doesn't register on tracking even in France<sup class="fn"><a href="#fn2">[2]</a></sup>), and <strong>fragmented sovereignty</strong> (dozens of national AI strategies pulling in different directions).</p>
       <p>But across Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK are <strong>extraordinary AI companies</strong> &mdash; private champions like Mistral and Cohere, infrastructure monopolies like ASML, public labs like BSC and RIKEN, and coalitions like New Nordics AI. Each world-class in a specific domain.</p>
       <p><strong>What if they formed a Public AI Company?</strong> Not a loose consortium, but a real entity &mdash; with shared compute, shared R&D, and a market strategy. Assemble the entity below and find out.</p>
     </div>
@@ -626,8 +632,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="narrative-kicker">The Components</div>
   <h2 class="narrative-heading">The pieces already exist. Nobody has put them together.</h2>
   <div class="narrative-body">
-    <p>Across eleven candidate nations &mdash; Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK &mdash; are <strong>extraordinary AI companies</strong>. Private champions with frontier models. Public labs with sovereign compute. Startups with compression breakthroughs that let frontier models run on a phone. And in the Netherlands, <a href="https://www.cnbc.com/2026/01/29/-ai-boom-nvidia-asml-dutch-chip-equipment-maker-lithography-.html" style="color:var(--sky);">ASML</a> &mdash; the only company on Earth that makes the EUV lithography machines required to manufacture every advanced AI chip.</p>
-    <p>Each is world-class in a specific domain. None can challenge <a href="https://gs.statcounter.com/ai-chatbot-market-share" style="color:var(--sky);">ChatGPT&rsquo;s 79.8% market share</a> alone. But together, they cover the full stack: <strong>models, compute, enterprise distribution, multilingual capability, sovereignty, and open-source community</strong>. The question is whether they stay fragments &mdash; or become something greater.</p>
+    <p>Across eleven candidate nations &mdash; Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK &mdash; are <strong>extraordinary AI companies</strong>. Private champions with frontier models. Public labs with sovereign compute. Startups with compression breakthroughs that let frontier models run on a phone. And in the Netherlands, ASML &mdash; the only company on Earth that makes the EUV lithography machines required to manufacture every advanced AI chip.<sup class="fn"><a href="#fn8">[8]</a></sup></p>
+    <p>Each is world-class in a specific domain. None can challenge ChatGPT's 79.8% referral traffic share<sup class="fn"><a href="#fn1">[1]</a></sup> alone. But together, they cover the full stack: <strong>models, compute, enterprise distribution, multilingual capability, sovereignty, and open-source community</strong>. The question is whether they stay fragments &mdash; or become something greater.</p>
   </div>
   <div class="narrative-stats-row">
     <div class="narrative-stat-item"><div class="val">11</div><div class="label">Candidate Nations</div></div>
@@ -870,7 +876,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <div class="narrative-kicker" style="color: var(--cyan);">The Stress Test</div>
     <h2 class="narrative-heading">Now test it against the incumbents.</h2>
     <div class="narrative-body" style="color: rgba(255,255,255,0.75);">
-      <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI crossed $13B in revenue in 2025. Anthropic hit $14B ARR in February 2026, up from $1B just 14 months earlier. Google Gemini sits atop the world's largest compute infrastructure. xAI's Grok merged with SpaceX at a $250B valuation.</p>
+      <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI crossed $13B in revenue in 2025<sup class="fn"><a href="#fn9">[9]</a></sup> and now runs at ~$24B annualized. Anthropic hit $14B ARR in February 2026, up from $1B just 14 months earlier.<sup class="fn"><a href="#fn10">[10]</a></sup> Google Gemini sits atop the world's largest compute infrastructure. xAI reached a $230B valuation in January 2026.<sup class="fn"><a href="#fn11">[11]</a></sup></p>
       <p>The gap is real. But it's not permanent. Use the <strong style="color:white;">scenario levers</strong> below to model what happens when governments invest: compute buildouts, procurement contracts, capital injections, talent programs. <strong style="color:white;">Every lever you pull changes the outcome.</strong></p>
     </div>
   </div>
@@ -899,8 +905,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="narrative-kicker">The Roadmap</div>
   <h2 class="narrative-heading">From announcement to parity in ten years.</h2>
   <div class="narrative-body">
-    <p>Airbus took three decades to reach parity with Boeing. AI moves faster. With coordinated investment, a merged Public AI Company could reach <strong>competitive parity with leading US labs within a decade</strong>. The roadmap below traces that trajectory &mdash; from the first letters of intent to a 50,000-person, $350B entity serving 30+ allied nations.</p>
-    <p>This isn't speculation. It's the Airbus playbook, applied to the fastest-moving industry in history.</p>
+    <p>Airbus took three decades to reach parity with Boeing.<sup class="fn"><a href="#fn3">[3]</a></sup> AI moves faster. With coordinated investment, a merged Public AI Company could reach <strong>competitive parity with leading US labs within a decade</strong>. The roadmap below traces that trajectory &mdash; from the first letters of intent to a 50,000-person, $350B entity serving 30+ allied nations.</p>
+    <p>This isn't speculation. It's the Airbus playbook,<sup class="fn"><a href="#fn7">[7]</a></sup> applied to the fastest-moving industry in history.</p>
   </div>
 </div>
 
@@ -918,7 +924,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- CTA -->
 <section class="cta-section">
   <h2>The question isn't whether.<br>It's when.</h2>
-  <p>Every month of fragmentation widens the gap. Airbus proved sovereign consolidation works. The playbook exists. The companies exist. The political will is forming across 11 nations. As Sam Altman himself said: he sometimes wishes this was happening in the public sector.</p>
+  <p>Every month of fragmentation widens the gap. Airbus proved sovereign consolidation works.<sup class="fn"><a href="#fn3">[3]</a></sup> The playbook exists.<sup class="fn"><a href="#fn7">[7]</a></sup> The companies exist. The political will is forming across 11 nations.</p>
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
     <a href="#assembly" class="btn btn-primary">Rebuild the Entity</a>
     <button class="btn btn-outline" id="ctaExportBtn">Export Deck</button>
@@ -928,11 +934,27 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- FOOTER -->
 <footer class="site-footer" id="references">
   <div style="max-width:900px; margin:0 auto; text-align:left; padding:2rem;">
+
+    <strong>Footnotes</strong>
+    <ol class="fn-list" style="margin-bottom:2rem;">
+      <li id="fn1"><strong>[1]</strong> StatCounter, "ChatGPT sends 79% of all chatbot referrals to websites" (May 2025). Measures chatbot-driven referral traffic to websites globally. <a href="https://gs.statcounter.com/press/new-statcounter-ai-data-finds-chatgpt-sends-79-perc-of-all-chatbot-referrals-to-websites" target="_blank">gs.statcounter.com</a></li>
+      <li id="fn2"><strong>[2]</strong> StatCounter AI Chatbot Market Share, France (March 2026). Top 5: ChatGPT 76.4%, Gemini 7.5%, Perplexity 7.4%, Copilot 4.9%, Claude 3.9%. Mistral/Le Chat does not appear. <a href="https://gs.statcounter.com/ai-chatbot-market-share/all/france" target="_blank">gs.statcounter.com</a></li>
+      <li id="fn3"><strong>[3]</strong> Airbus was incorporated in 1970 with 0% market share and first surpassed Boeing in deliveries in 2003. Today holds roughly 50-60% of the large commercial aircraft duopoly. <a href="https://en.wikipedia.org/wiki/Competition_between_Airbus_and_Boeing" target="_blank">Wikipedia: Competition between Airbus and Boeing</a></li>
+      <li id="fn4"><strong>[4]</strong> Airbus SE employed 156,921 people as of December 31, 2024. <a href="https://www.macrotrends.net/stocks/charts/EADSY/airbus-se--/number-of-employees" target="_blank">Macrotrends</a></li>
+      <li id="fn5"><strong>[5]</strong> Airbus delivered 766 commercial aircraft in 2024 vs Boeing's 348. Airbus posted strong profits while Boeing recorded an $11.8B loss. <a href="https://fortune.com/europe/2025/02/20/airbus-strong-2024-profits-surge-aircraft-deliveries/" target="_blank">Fortune</a></li>
+      <li id="fn6"><strong>[6]</strong> Airbus SE enterprise value approximately $159B, market capitalization approximately $180B (early 2026). <a href="https://companiesmarketcap.com/airbus/marketcap/" target="_blank">CompaniesMarketCap</a></li>
+      <li id="fn7"><strong>[7]</strong> Tan, Jackson, Berjon &amp; Coyle, "Airbus for AI: A global strategy for public value creation," Bennett School of Public Policy, September 2025. <a href="https://publicai.co/airbus-for-ai.pdf" target="_blank">publicai.co</a></li>
+      <li id="fn8"><strong>[8]</strong> ASML holds a 100% monopoly on EUV lithography systems. All advanced chips at nodes below 7nm require EUV. <a href="https://en.wikipedia.org/wiki/ASML_Holding" target="_blank">Wikipedia: ASML</a>, <a href="https://www.cnbc.com/2022/03/23/inside-asml-the-company-advanced-chipmakers-use-for-euv-lithography.html" target="_blank">CNBC</a></li>
+      <li id="fn9"><strong>[9]</strong> OpenAI projected $12.7-13B revenue for 2025; Sam Altman confirmed exceeding $20B annualized run rate by November 2025. <a href="https://www.cnbc.com/2025/11/06/sam-altman-says-openai-will-top-20-billion-annual-revenue-this-year.html" target="_blank">CNBC</a></li>
+      <li id="fn10"><strong>[10]</strong> Anthropic reached $1B ARR in December 2024 and $14B ARR by February 2026 (14 months). <a href="https://www.saastr.com/anthropic-just-hit-14-billion-in-arr-up-from-1-billion-just-14-months-ago/" target="_blank">SaaStr</a></li>
+      <li id="fn11"><strong>[11]</strong> xAI closed Series E at $230B valuation in January 2026. <a href="https://techfundingnews.com/elon-musk-s-ai-rockets-to-200b-valuation-with-10b-funding-launches-grok-4-fast/" target="_blank">TechFundingNews</a></li>
+    </ol>
+
     <strong>Core Framework</strong><br>
     Based on "<a href="https://publicai.co/airbus-for-ai.pdf">Airbus for AI: A global strategy for public value creation</a>" by Joshua Tan, Brandon Jackson, Robin Berjon &amp; Diane Coyle (Bennett School of Public Policy, Sept 2025).
     <br><br>
     <strong>Market Share</strong><br>
-    ChatGPT 79.8% global consumer chatbot market share (Dec 2025): <a href="https://gs.statcounter.com/ai-chatbot-market-share">StatCounter AI Chatbot Market Share</a>
+    ChatGPT 79.8% global chatbot referral traffic (May 2025): <a href="https://gs.statcounter.com/press/new-statcounter-ai-data-finds-chatgpt-sends-79-perc-of-all-chatbot-referrals-to-websites">StatCounter</a>. France data (Mar 2026): Le Chat does not appear in top 5. <a href="https://gs.statcounter.com/ai-chatbot-market-share/all/france">StatCounter France</a>
     <br><br>
     <strong>Company Data (Middle Powers)</strong><br>
     Mistral AI: $13.8B valuation (Sept 2025), ~$400M ARR (Jan 2026), ~800 employees &mdash; <a href="https://mlq.ai/news/mistral-ai-surges-revenue-20-fold-to-over-400-million-arr-amid-europes-ai-push/">MLQ AI</a>, <a href="https://cloudsummit.eu/blog/mistral-ai-14-billion-valuation-europe-turning-point">Cloud Summit EU</a>, <a href="https://tracxn.com/d/companies/mistralai/">Tracxn</a><br>
@@ -1046,7 +1068,7 @@ const HYPER_RATIONALE = {
     enterprise: { score: 85, facts: ['ChatGPT Enterprise: 1M+ business users', 'API serves 92% of Fortune 500', '$200/mo Pro tier launched'] },
     sovereignty: { score: 20, facts: ['US-only headquarters', 'Subject to CLOUD Act', 'No EU data residency option'] },
     research: { score: 95, facts: ['500+ research staff', 'Pioneered RLHF and scaling laws', 'InstructGPT, DALL-E, Whisper'] },
-    revenue: { score: 95, facts: ['$13B ARR (Jan 2026, SaaStr)', '400M+ weekly active users', '79.8% chatbot market share (StatCounter)'] }
+    revenue: { score: 95, facts: ['$13B ARR (Jan 2026, SaaStr)', '400M+ weekly active users', '79.8% chatbot referral traffic (StatCounter, May 2025)'] }
   },
   gemini: {
     compute: { score: 99, facts: ['World\'s largest AI compute fleet', '1M+ TPU v5p pods', '7 hyperscale data centers for AI'] },
@@ -1363,7 +1385,7 @@ p { font-size: 16px; color: #4a5568; line-height: 1.7; margin-bottom: 12px; }
 <div class="page">
   <div class="eyebrow">The Precedent</div>
   <h2>Airbus proved it works.</h2>
-  <p>In 1970, four nations merged their aerospace companies into Airbus. It went from 0% to 50% global market share, now employing 130,000 people with revenue exceeding Boeing's.</p>
+  <p>In 1970, four nations merged their aerospace companies into Airbus. It went from 0% to roughly 50% global market share, now employing over 150,000 people with deliveries and profitability far exceeding Boeing's.</p>
   <p>The same playbook can work for AI. As Tan, Jackson, Berjon & Coyle argue in their Bennett School analysis: collective action, public goods, sovereignty, and scale without monopoly make the case for a Public AI Company across 11 middle-power nations.</p>
   <h3 style="margin-top: 32px;">The question isn't whether. It's when.</h3>
   <div class="footer-note">Based on "Airbus for AI" (Bennett School of Public Policy, Sept 2025). Generated from airbusforai.org. ${new Date().toLocaleDateString()}</div>
