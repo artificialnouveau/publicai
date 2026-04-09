@@ -1420,86 +1420,86 @@ function exportDeck() {
   const wins = battles.filter(b => b.winner === 'Public AI Co.').length;
 
   const win = window.open('', '_blank');
-  win.document.write(`<!DOCTYPE html><html><head><title>Airbus for AI — Merger Deck</title>
+  win.document.write(`<!DOCTYPE html><html><head><title>The Assembly Lab — Public AI Company Brief</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: white; }
-.page { padding: 60px; min-height: 100vh; page-break-after: always; display: flex; flex-direction: column; justify-content: center; }
-.page:last-child { page-break-after: auto; }
-h1 { font-size: 48px; font-weight: 900; color: #00205b; line-height: 1.1; margin-bottom: 16px; }
-h2 { font-size: 32px; font-weight: 800; color: #00205b; margin-bottom: 12px; }
-h3 { font-size: 20px; font-weight: 700; color: #0077c8; margin-bottom: 8px; }
-p { font-size: 16px; color: #4a5568; line-height: 1.7; margin-bottom: 12px; }
-.subtitle { font-size: 20px; color: #4a5568; max-width: 500px; }
-.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 32px 0; }
-.stat-box { background: #f7f8fa; border-radius: 12px; padding: 24px; text-align: center; }
-.stat-val { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 800; color: #0077c8; }
-.stat-label { font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
-.company-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
-.company-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #f7f8fa; border-radius: 8px; }
-.company-item .flag { font-size: 24px; }
-.company-item .name { font-weight: 700; }
-.company-item .power { font-size: 12px; color: #6b7280; font-family: 'JetBrains Mono', monospace; }
-.battle-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eef0f4; font-size: 14px; }
-.battle-row:last-child { border-bottom: none; }
+body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: white; padding: 40px 50px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 36px; font-weight: 900; color: #00205b; line-height: 1.15; margin-bottom: 6px; }
+h2 { font-size: 16px; font-weight: 800; color: #00205b; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #eef0f4; padding-bottom: 4px; }
+h3 { font-size: 13px; font-weight: 700; color: #0077c8; margin-bottom: 4px; }
+p { font-size: 12px; color: #4a5568; line-height: 1.6; margin-bottom: 6px; }
+.subtitle { font-size: 14px; color: #6b7280; margin-bottom: 16px; }
+.stat-row { display: flex; gap: 12px; margin: 10px 0; flex-wrap: wrap; }
+.stat-box { background: #f7f8fa; border-radius: 8px; padding: 10px 14px; text-align: center; flex: 1; min-width: 100px; }
+.stat-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 800; color: #0077c8; }
+.stat-sm { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #0077c8; }
+.stat-label { font-size: 9px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.company-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.co { padding: 8px 10px; background: #f7f8fa; border-radius: 6px; font-size: 11px; }
+.co .name { font-weight: 700; font-size: 12px; }
+.co .detail { color: #6b7280; margin-top: 2px; }
+.battle-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0f0f0; font-size: 11px; }
 .win { color: #2ec4b6; font-weight: 700; }
 .lose { color: #e63946; font-weight: 700; }
-.eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #0077c8; margin-bottom: 8px; }
-.footer-note { font-size: 11px; color: #9ca3af; margin-top: 32px; }
-@media print { .page { padding: 40px; } }
+.infra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.infra { padding: 8px 10px; background: #f7f8fa; border-radius: 6px; font-size: 11px; }
+.infra .val { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #0077c8; }
+.section-divider { border: none; border-top: 1px solid #eef0f4; margin: 16px 0; }
+.eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #0077c8; margin-bottom: 4px; }
+.footer-note { font-size: 9px; color: #9ca3af; margin-top: 16px; line-height: 1.5; }
+.page-break { page-break-before: always; }
+@media print { body { padding: 30px 40px; } }
 </style></head><body>
 
-<div class="page">
-  <div class="eyebrow">Airbus for AI</div>
-  <h1>What if they merged<br>into one?</h1>
-  <p class="subtitle">A sovereign AI merger analysis. ${sel.length} companies across ${c ? c.countries : 0} nations.</p>
-  <div class="stat-grid">
-    <div class="stat-box"><div class="stat-val">$${c ? c.valuation.toFixed(1) : 0}B</div><div class="stat-label">Combined Valuation</div></div>
-    <div class="stat-box"><div class="stat-val">$${c ? c.arr : 0}M</div><div class="stat-label">Combined ARR</div></div>
-    <div class="stat-box"><div class="stat-val">${c ? c.employees.toLocaleString() : 0}</div><div class="stat-label">Combined Workforce</div></div>
-  </div>
-  <div class="footer-note">Data from public filings & research estimates (2025-2026). ${S.customData ? 'Using custom data.' : ''}</div>
+<div class="eyebrow">The Assembly Lab &mdash; Public AI Company Brief</div>
+<h1>What if they merged into one?</h1>
+<p class="subtitle">ChatGPT drives 79.8% of chatbot referral traffic. Mistral's Le Chat doesn't register in France. Middle powers face a choice: consolidate or be captured.</p>
+
+<h2>The Precedent</h2>
+<p>In 1970, four nations merged aerospace companies into Airbus. It went from 0% to ~50% global market share. Today: 150,000+ employees, $150B+ enterprise value, deliveries and profitability far exceeding Boeing's. Airbus took three decades. AI moves faster.</p>
+
+<h2>The Sovereignty Gap</h2>
+<div class="stat-row">
+  <div class="stat-box"><div class="stat-val">79.8%</div><div class="stat-label">ChatGPT Referral Share</div></div>
+  <div class="stat-box"><div class="stat-val">$146B</div><div class="stat-label">US AI Funding (2024)</div></div>
+  <div class="stat-box"><div class="stat-val">$14B</div><div class="stat-label">EU AI Funding (2024)</div></div>
+  <div class="stat-box"><div class="stat-val">57%</div><div class="stat-label">EU Founders Relocate to US</div></div>
+  <div class="stat-box"><div class="stat-val">~12%</div><div class="stat-label">EU Share of Hyperscale DCs</div></div>
 </div>
 
-<div class="page">
-  <div class="eyebrow">The Components</div>
-  <h2>Selected Companies</h2>
-  <div class="company-list">
-    ${sel.map(c => `<div class="company-item"><span class="flag">${c.flag}</span><div><div class="name">${c.name}</div><div class="power">${c.superpower}</div></div></div>`).join('')}
-  </div>
-  <div class="stat-grid">
-    ${AXES.map(a => `<div class="stat-box"><div class="stat-val">${c ? c.scores[a] : 0}/99</div><div class="stat-label">${AXIS_LABELS[a]}</div></div>`).join('')}
-  </div>
+<h2>Coalition Companies</h2>
+<div class="company-grid">
+  ${sel.map(co => `<div class="co"><div class="name">${co.flag} ${co.name} (${co.country})</div><div class="detail">${co.desc.split('.').slice(0,2).join('.')}.</div></div>`).join('')}
 </div>
 
-<div class="page">
-  <div class="eyebrow">Competitive Analysis</div>
-  <h2>vs. ${h.name}</h2>
-  <p>Head-to-head comparison across 6 key dimensions. Public AI Co. ${wins > 3 ? 'wins' : wins === 3 ? 'ties' : 'trails'} ${wins}-${6-wins}.</p>
-  <div style="margin: 24px 0;">
-    ${battles.map(b => `<div class="battle-row"><span>${b.axis}</span><span>Public AI Co.: <strong>${b.mScore}</strong></span><span>${h.name}: <strong>${b.hScore}</strong></span><span class="${b.winner === 'Public AI Co.' ? 'win' : 'lose'}">${b.winner}</span></div>`).join('')}
-  </div>
+<h2>Coalition Infrastructure</h2>
+<div class="infra-grid">
+  <div class="infra"><strong>ASML (Netherlands)</strong><br>Revenue: <span class="val">$32.7B</span> | Backlog: <span class="val">$33B</span><br>100% EUV monopoly. Every AI chip depends on ASML.</div>
+  <div class="infra"><strong>Helsing (Germany/France)</strong><br>Valuation: <span class="val">$12B</span> | Raised: <span class="val">$1.37B</span><br>4,000 drones for Ukraine. AI in Eurofighter Typhoon.</div>
+  <div class="infra"><strong>Mistral Compute (France)</strong><br>GPUs: <span class="val">18,000</span> | Capacity: <span class="val">200MW</span><br>Nuclear-powered (~70% grid). $830M debt for data centers.</div>
+  <div class="infra"><strong>MareNostrum 5 / BSC (Spain)</strong><br>Performance: <span class="val">314 PFlops</span> | GPUs: <span class="val">4,480 H100</span><br>Salamandra LLMs in 35 European languages.</div>
 </div>
 
-<div class="page">
-  <div class="eyebrow">Scenario Projection (3 Years)</div>
-  <h2>With Government Support</h2>
-  <p>Modeled with: ${compute} EFLOPS compute, $${contracts}B/yr contracts, $${capital}B capital, ${talent} researchers.</p>
-  <div class="stat-grid">
-    <div class="stat-box"><div class="stat-val">$${projVal.toFixed(1)}B</div><div class="stat-label">Projected Valuation</div></div>
-    <div class="stat-box"><div class="stat-val">$${(projArr/1000).toFixed(1)}B</div><div class="stat-label">Projected ARR</div></div>
-    <div class="stat-box"><div class="stat-val">${Math.min(100, (projVal / 300 * 100)).toFixed(0)}%</div><div class="stat-label">vs OpenAI</div></div>
-  </div>
-</div>
+<hr class="section-divider">
 
-<div class="page">
-  <div class="eyebrow">The Precedent</div>
-  <h2>Airbus proved it works.</h2>
-  <p>In 1970, four nations merged their aerospace companies into Airbus. It went from 0% to roughly 50% global market share, now employing over 150,000 people with deliveries and profitability far exceeding Boeing's.</p>
-  <p>The same playbook can work for AI. As Tan, Jackson, Berjon & Coyle argue in their Bennett School analysis: collective action, public goods, sovereignty, and scale without monopoly make the case for a Public AI Company across 11 middle-power nations.</p>
-  <h3 style="margin-top: 32px;">The question isn't whether. It's when.</h3>
-  <div class="footer-note">Based on "Airbus for AI" (Bennett School of Public Policy, Sept 2025). Generated from airbusforai.org. ${new Date().toLocaleDateString()}</div>
+<h2>Your Custom Assembly</h2>
+<p>${sel.length} companies merged across ${c ? c.countries : 0} nations. Head-to-head vs. ${h.name}. Result: ${wins > 3 ? 'Public AI Co. wins' : wins === 3 ? 'tied' : h.name + ' leads'} ${wins}-${6-wins}.</p>
+<div class="stat-row">
+  <div class="stat-box"><div class="stat-sm">$${c ? c.valuation.toFixed(1) : 0}B</div><div class="stat-label">Combined Valuation</div></div>
+  <div class="stat-box"><div class="stat-sm">$${c ? c.arr : 0}M</div><div class="stat-label">Combined ARR</div></div>
+  <div class="stat-box"><div class="stat-sm">${c ? c.employees.toLocaleString() : 0}</div><div class="stat-label">Workforce</div></div>
+  <div class="stat-box"><div class="stat-sm">${c ? c.customers.toLocaleString() : 0}</div><div class="stat-label">Customers</div></div>
+</div>
+<div style="margin:8px 0;">
+  ${battles.map(b => `<div class="battle-row"><span>${b.axis}</span><span>Public AI Co.: <strong>${b.mScore}</strong></span><span>${h.name}: <strong>${b.hScore}</strong></span><span class="${b.winner === 'Public AI Co.' ? 'win' : 'lose'}">${b.winner}</span></div>`).join('')}
+</div>
+<p style="font-size:11px;">With government support (${compute} EFLOPS, $${contracts}B/yr contracts, $${capital}B capital, ${talent} researchers): projected valuation <strong>$${projVal.toFixed(1)}B</strong>, projected ARR <strong>$${(projArr/1000).toFixed(1)}B</strong>.</p>
+
+<div class="footer-note">
+  Based on "Airbus for AI" by Tan, Jackson, Berjon & Coyle (Bennett School of Public Policy, Sept 2025).<br>
+  Sources: StatCounter, Atomico, CNBC, TechCrunch, Bloomberg, MLQ AI, BSC, Wikipedia. All data public estimates (2025-2026).<br>
+  Generated from The Assembly Lab. ${new Date().toLocaleDateString()}
 </div>
 
 </body></html>`);
