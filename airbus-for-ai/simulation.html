@@ -1055,6 +1055,8 @@ function transitionSection(hideEl, showEl, callback) {
       }));
       if(callback) callback();
     },delay);
+  } else if(callback){
+    setTimeout(callback,delay);
   }
 }
 

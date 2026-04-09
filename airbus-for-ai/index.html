@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Airbus for AI — The Public AI Company Simulator</title>
+<title>The Assembly Lab — Public AI Company</title>
 <meta name="description" content="What if middle powers merged their sovereign AI companies into a Public AI Company? Interactive simulator based on the Bennett School analysis by Tan, Jackson, Berjon &amp; Coyle.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -565,12 +565,12 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <nav class="topnav" id="topnav">
   <div class="topnav-brand">
     <svg viewBox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    AIRBUS FOR AI
+    The Assembly Lab
   </div>
   <div class="topnav-links">
-    <a href="narrative.html" style="color:var(--gold);">&#9655; Read the Story</a>
-    <a href="narrative.html#deep-data" style="color:var(--cyan);">&#9671; Dashboard</a>
-    <a href="simulation.html" style="color:var(--cyan);">&#9671; Simulation</a>
+    <a href="#dashboard" style="color:var(--cyan);">Dashboard</a>
+    <a href="narrative.html" style="color:var(--gold);">&#9655; The Story</a>
+    <a href="simulation.html" style="color:var(--green);">&#9655; Situation Room</a>
   </div>
 </nav>
 
@@ -580,13 +580,13 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <section class="hero">
   <div class="hero-particles"><canvas id="particleCanvas"></canvas></div>
   <div class="hero-content">
-    <div class="hero-eyebrow"><span class="dot"></span> Public AI Company Simulator</div>
+    <div class="hero-eyebrow"><span class="dot"></span> The Assembly Lab</div>
     <h1>What if they<br>merged into one?</h1>
     <p class="hero-sub">ChatGPT holds 79.8% of the global consumer chatbot market. Even Mistral's Le Chat has less than 4% in France. Middle powers face a choice: consolidate or be captured. What happens when you build a Public AI Company?</p>
     <div class="hero-cta-row">
-      <a href="#assembly" class="btn btn-primary">Start Building</a>
+      <a href="#assembly" class="btn btn-primary">Enter the Lab</a>
       <a href="narrative.html" class="btn btn-outline">Read the Story</a>
-      <a href="narrative.html#deep-data" class="btn btn-outline" style="border-color: var(--cyan); color: var(--cyan);">Dashboard</a>
+      <a href="simulation.html" class="btn btn-outline" style="border-color: var(--green); color: var(--green);">Enter the Situation Room</a>
     </div>
     <div class="hero-stats-row">
       <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Companies</div></div>
@@ -636,6 +636,190 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);">532K+</a></div><div class="label">Combined Customers</div></div>
   </div>
 </div>
+
+<!-- DASHBOARD -->
+<section id="dashboard" style="padding:5rem 2rem;background:linear-gradient(170deg,#001540 0%,#00205b 40%,#0a1a3a 100%);color:white;--db-text:rgba(232,224,204,0.65);--db-dim:rgba(232,224,204,0.4);--db-border:rgba(255,255,255,0.08);--db-raised:#0b1628;--db-cyan:#1a6cd4;--db-green:#0fa37a;--db-red:#ff3333;--db-gold:#c96a2b;--db-aurora:#7b6fd6;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:3rem;">
+      <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--db-dim);margin-bottom:8px;">Deep Data</div>
+      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;margin-bottom:0.5rem;color:rgba(232,224,204,0.9);letter-spacing:-0.01em;">The Numbers Behind the Narrative</h2>
+      <p style="color:var(--db-dim);font-size:1rem;">Six research-backed visualizations exploring Europe's AI sovereignty gap.</p>
+    </div>
+
+    <!-- 1. CAPITAL FLOW SANKEY -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Capital Flow &mdash; Where EU AI Money Ends Up</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
+      <canvas id="dbCapitalFlowCanvas" style="width:100%;height:320px;"></canvas>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-cyan);font-variant-numeric:tabular-nums;">$14B</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">EU AI Funding (Atomico, 2024)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-red);font-variant-numeric:tabular-nums;">$146B</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US AI Funding (Atomico, 2024)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;">57%</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">EU Founders Relocate to US</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-aurora);font-variant-numeric:tabular-nums;">10:1</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US:EU Capital Ratio</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.stateofeuropeantech.com/" target="_blank">Atomico State of European Tech 2025</a>
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://dealroom.co/reports/ai-europe-report-2024" target="_blank">Dealroom AI Europe Report 2024</a>
+      </div>
+    </div>
+
+    <!-- 2. TALENT MIGRATION -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Talent Migration &mdash; Where EU AI Researchers End Up</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
+      <canvas id="dbTalentChordCanvas" style="width:100%;height:400px;"></canvas>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-cyan);">~60%</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:2px;">Top researchers work in US</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-green);">~18%</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:2px;">EU-educated, work in US</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-red);">26K&rarr;52K</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:2px;">Net tech inflow to EU halved (2022&rarr;24)</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo Global AI Talent Tracker</a>
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
+      </div>
+    </div>
+
+    <!-- 3. COMPUTE INFRASTRUCTURE -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Compute Infrastructure &mdash; What Europe Actually Has</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
+      <canvas id="dbComputeMapCanvas" style="width:100%;height:380px;"></canvas>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
+        <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.05);">
+          <div style="font-size:0.75rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-cyan);margin-bottom:0.75rem;">EuroHPC Supercomputers</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:0.75rem;color:var(--db-dim);">
+            <div style="display:flex;justify-content:space-between;"><span>JUPITER</span><span style="color:var(--db-cyan);">Juelich, DE</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>LUMI</span><span style="color:var(--db-cyan);">Kajaani, FI</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Leonardo</span><span style="color:var(--db-cyan);">Bologna, IT</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>MareNostrum 5</span><span style="color:var(--db-cyan);">Barcelona, ES</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Deucalion</span><span style="color:var(--db-cyan);">Minho, PT</span></div>
+          </div>
+          <div style="margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid var(--db-border);">
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-cyan);">11</div>
+            <div style="font-size:0.75rem;color:var(--db-dim);">Supercomputers + 12 AI Factory sites planned</div>
+          </div>
+        </div>
+        <div style="padding:1.25rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:10px;background:rgba(255,51,51,0.03);">
+          <div style="font-size:0.75rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-red);margin-bottom:0.75rem;">Global Hyperscale Data Centers</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--db-dim);margin-bottom:3px;"><span>United States</span><span style="color:var(--db-red);">54%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:54%;height:100%;background:var(--db-red);border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--db-dim);margin-bottom:3px;"><span>China</span><span style="color:var(--db-gold);">16%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:16%;height:100%;background:var(--db-gold);border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--db-dim);margin-bottom:3px;"><span>Europe</span><span style="color:var(--db-cyan);">~12%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;"><div style="width:12%;height:100%;background:var(--db-cyan);border-radius:2px;"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid var(--db-border);">
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-red);">1,136+</div>
+            <div style="font-size:0.75rem;color:var(--db-dim);">Global hyperscale DCs (US owns majority)</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank">EuroHPC JU</a>
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank">Synergy Research: Hyperscale DCs</a>
+      </div>
+    </div>
+
+    <!-- 4. LANGUAGE HEATMAP -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Language Coverage &mdash; Digital Equality Across EU Languages</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">24 official EU languages. Only 3 are well-supported by frontier AI models. 20+ official and many regional languages face "digital extinction."</p>
+      <div id="dbLangHeatmap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:4px;margin-bottom:1rem;"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-green);">3</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:2px;">Well-supported (EN, FR, ES)</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-gold);">~8</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:2px;">Partial support (DE, IT, NL, PL...)</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-red);">13+</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:2px;">Weak or no support</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. AI PATENT FILINGS -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">AI Patent Filings &mdash; Innovation Output Gap</div>
+        <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">China files 70% of all AI patents. But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
+      <canvas id="dbPatentChart" style="width:100%;height:300px;"></canvas>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;">38,000+</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">China GenAI inventions (2014-23)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-cyan);font-variant-numeric:tabular-nums;">~6,300</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US GenAI inventions (2014-23)</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-green);font-variant-numeric:tabular-nums;">7x</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US patents cited more than CN</div>
+        </div>
+        <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-red);font-variant-numeric:tabular-nums;">3</div>
+          <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">Notable EU AI models in 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. AI COMPANY VALUATIONS -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">AI Company Valuations &mdash; US vs EU ($B)</div>
+      </div>
+      <div id="dbDashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div id="dbMktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);"></div>
+    </div>
+
+  </div>
+</section>
 
 <!-- ASSEMBLY -->
 <section class="assembly-zone" id="assembly">
@@ -1716,6 +1900,212 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// ============================================================
+// DASHBOARD VISUALIZATIONS
+// ============================================================
+
+// --- Dashboard Bars ---
+function buildDbBars() {
+  const el = document.getElementById('dbDashboardBars');
+  if (!el) return;
+  const companies = [
+    {name:'Alphabet (Google AI)', val:200, color:'#4285f4', region:'US'},
+    {name:'OpenAI', val:157, color:'#10a37f', region:'US'},
+    {name:'ByteDance AI', val:80, color:'#ff004f', region:'CN'},
+    {name:'Meta AI', val:60, color:'#0668E1', region:'US'},
+    {name:'Amazon AI/AWS', val:45, color:'#FF9900', region:'US'},
+    {name:'Anthropic', val:30, color:'#D4A574', region:'US'},
+    {name:'Mistral AI', val:6, color:'#1a6cd4', region:'EU'},
+    {name:'Aleph Alpha', val:0.5, color:'#1a6cd4', region:'EU'},
+    {name:'Stability AI', val:1, color:'#1a6cd4', region:'EU'},
+  ];
+  const maxVal = Math.max(...companies.map(c=>c.val));
+  el.innerHTML = companies.map(c => {
+    const pct = (c.val / maxVal) * 100;
+    const isEU = c.region === 'EU';
+    return `<div style="display:flex;align-items:center;gap:10px;">
+      <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isEU?'0.7':'0.4'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
+      <div style="flex:1;height:14px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${c.color};border-radius:2px;opacity:0.7;transition:width 1s;"></div>
+      </div>
+      <div style="min-width:45px;font-size:0.7rem;font-family:var(--mono);color:rgba(232,224,204,0.4);font-weight:700;">$${c.val}B</div>
+    </div>`;
+  }).join('');
+}
+
+// --- Language Heatmap ---
+(function(){
+  const container = document.getElementById('dbLangHeatmap');
+  if (!container) return;
+  const languages = [
+    {name:'English',code:'EN',level:'strong',speakers:'~450M'},
+    {name:'French',code:'FR',level:'strong',speakers:'~77M'},
+    {name:'Spanish',code:'ES',level:'strong',speakers:'~47M'},
+    {name:'German',code:'DE',level:'moderate',speakers:'~95M'},
+    {name:'Italian',code:'IT',level:'moderate',speakers:'~63M'},
+    {name:'Dutch',code:'NL',level:'moderate',speakers:'~25M'},
+    {name:'Polish',code:'PL',level:'moderate',speakers:'~40M'},
+    {name:'Portuguese',code:'PT',level:'moderate',speakers:'~12M'},
+    {name:'Romanian',code:'RO',level:'moderate',speakers:'~22M'},
+    {name:'Swedish',code:'SV',level:'moderate',speakers:'~10M'},
+    {name:'Czech',code:'CS',level:'moderate',speakers:'~10M'},
+    {name:'Greek',code:'EL',level:'weak',speakers:'~11M'},
+    {name:'Hungarian',code:'HU',level:'weak',speakers:'~10M'},
+    {name:'Finnish',code:'FI',level:'weak',speakers:'~5M'},
+    {name:'Danish',code:'DA',level:'weak',speakers:'~6M'},
+    {name:'Bulgarian',code:'BG',level:'weak',speakers:'~7M'},
+    {name:'Slovak',code:'SK',level:'weak',speakers:'~5M'},
+    {name:'Croatian',code:'HR',level:'weak',speakers:'~4M'},
+    {name:'Lithuanian',code:'LT',level:'weak',speakers:'~3M'},
+    {name:'Slovenian',code:'SL',level:'weak',speakers:'~2M'},
+    {name:'Latvian',code:'LV',level:'weak',speakers:'~1.5M'},
+    {name:'Estonian',code:'ET',level:'weak',speakers:'~1M'},
+    {name:'Irish',code:'GA',level:'weak',speakers:'~0.2M'},
+    {name:'Maltese',code:'MT',level:'weak',speakers:'~0.5M'}
+  ];
+  const colorMap = {strong:'#0fa37a',moderate:'#c96a2b',weak:'#ff3333'};
+  languages.forEach(lang => {
+    const cell = document.createElement('div');
+    cell.style.cssText = `padding:10px 8px;border-radius:6px;border:0.5px solid ${colorMap[lang.level]}30;background:${colorMap[lang.level]}0a;text-align:center;`;
+    cell.innerHTML = `
+      <div style="font-family:var(--mono);font-size:0.85rem;font-weight:500;color:${colorMap[lang.level]};">${lang.code}</div>
+      <div style="font-size:0.6rem;color:rgba(232,224,204,0.4);margin-top:2px;">${lang.name}</div>
+      <div style="font-size:0.55rem;color:${colorMap[lang.level]}80;margin-top:1px;">${lang.speakers}</div>
+    `;
+    container.appendChild(cell);
+  });
+})();
+
+// --- Capital Flow Sankey ---
+(function(){
+  const canvas = document.getElementById('dbCapitalFlowCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=320;}
+  resize(); window.addEventListener('resize',resize);
+  const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
+  const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
+  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#ff3333'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0fa37a'},{label:'Diluted / lost',x:0.93,y:0.80,col:'rgba(232,224,204,0.3)'}];
+  const allNodes=[colA,colB,colC];
+  const colHeaders=[{label:'EU FUNDING SOURCES',x:0.07},{label:'WHERE FOUNDERS GO',x:0.50},{label:'ECONOMIC RESULT',x:0.93}];
+  const flows=[{from:[0,0],to:[1,0],w:0.22},{from:[0,1],to:[1,0],w:0.18},{from:[0,1],to:[1,1],w:0.12},{from:[0,2],to:[1,1],w:0.10},{from:[0,2],to:[1,2],w:0.08},{from:[0,3],to:[1,2],w:0.05},{from:[0,3],to:[1,3],w:0.06},{from:[1,0],to:[2,0],w:0.30},{from:[1,1],to:[2,1],w:0.15},{from:[1,2],to:[2,1],w:0.08},{from:[1,3],to:[2,2],w:0.06}];
+  let particles=flows.map(()=>Math.random());
+  function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W=canvas.width,H=canvas.height;
+    ctx.font='9px Inter, sans-serif';ctx.textAlign='center';
+    colHeaders.forEach(ch=>{ctx.fillStyle='rgba(232,224,204,0.25)';ctx.fillText(ch.label,ch.x*W,12);});
+    flows.forEach((f,fi)=>{
+      const n1=allNodes[f.from[0]][f.from[1]],n2=allNodes[f.to[0]][f.to[1]];
+      const x1=n1.x*W,y1=n1.y*H,x2=n2.x*W,y2=n2.y*H,thickness=f.w*H*0.7;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.4,y1,x1+(x2-x1)*0.6,y2,x2,y2);ctx.strokeStyle=n1.col+'18';ctx.lineWidth=thickness;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.4,y1,x1+(x2-x1)*0.6,y2,x2,y2);ctx.strokeStyle=n2.col+'50';ctx.lineWidth=0.8;ctx.stroke();
+      particles[fi]=(particles[fi]+0.004)%1;const s=particles[fi];
+      const bx=bezPt(x1,x1+(x2-x1)*0.4,x1+(x2-x1)*0.6,x2,s),by=bezPt(y1,y1,y2,y2,s);
+      ctx.beginPath();ctx.arc(bx,by,2.5,0,Math.PI*2);ctx.fillStyle=n2.col;ctx.fill();
+    });
+    allNodes.forEach((col,ci)=>{col.forEach(n=>{
+      ctx.beginPath();ctx.arc(n.x*W,n.y*H,5,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
+      ctx.fillStyle='rgba(232,224,204,0.65)';ctx.font='11px Inter, sans-serif';
+      ctx.textAlign=ci===0?'left':ci===2?'right':'center';
+      const labelX=ci===0?n.x*W+12:ci===2?n.x*W-12:n.x*W;
+      ctx.fillText(n.label,labelX,n.y*H-10);
+    });});
+    requestAnimationFrame(draw);
+  }
+  const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
+  obs.observe(canvas);
+})();
+
+// --- Talent Migration ---
+(function(){
+  const canvas=document.getElementById('dbTalentChordCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=400;}
+  resize();window.addEventListener('resize',resize);
+  const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
+  const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(232,224,204,0.4)',pct:'~5%'}];
+  const flows=[{from:0,to:0,w:0.14},{from:0,to:1,w:0.06},{from:0,to:2,w:0.02},{from:1,to:0,w:0.04},{from:1,to:1,w:0.03},{from:2,to:0,w:0.06},{from:2,to:2,w:0.04},{from:3,to:0,w:0.16},{from:3,to:3,w:0.10},{from:3,to:1,w:0.02},{from:4,to:0,w:0.08},{from:4,to:2,w:0.02},{from:5,to:0,w:0.16},{from:5,to:4,w:0.02}];
+  const LX=0.18,RX=0.82;
+  let particles=flows.map(()=>Math.random());
+  function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;
+    ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(232,224,204,0.25)';
+    ctx.fillText('EDUCATED IN',LX*W,14);ctx.fillText('NOW WORKING IN',RX*W,14);
+    ctx.fillStyle='rgba(232,224,204,0.08)';ctx.font='28px Inter, sans-serif';ctx.fillText('\u2192',0.5*W,0.5*H);
+    flows.forEach((f,fi)=>{
+      const src=educated[f.from],dst=working[f.to];const x1=LX*W+8,y1=src.y*H,x2=RX*W-8,y2=dst.y*H,thickness=f.w*H*0.65;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=src.col+'12';ctx.lineWidth=thickness;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=dst.col+'40';ctx.lineWidth=0.7;ctx.stroke();
+      particles[fi]=(particles[fi]+0.003+f.w*0.005)%1;const s=particles[fi];
+      const bx=bezPt(x1,x1+(x2-x1)*0.35,x1+(x2-x1)*0.65,x2,s),by=bezPt(y1,y1,y2,y2,s);
+      ctx.beginPath();ctx.arc(bx,by,2,0,Math.PI*2);ctx.fillStyle=dst.col;ctx.fill();
+    });
+    educated.forEach(n=>{ctx.beginPath();ctx.arc(LX*W,n.y*H,5,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='right';ctx.font='11px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,LX*W-14,n.y*H+4);ctx.font='10px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);});
+    working.forEach(n=>{ctx.beginPath();ctx.arc(RX*W,n.y*H,5,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='left';ctx.font='11px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,RX*W+14,n.y*H+4);ctx.font='10px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);});
+    requestAnimationFrame(draw);
+  }
+  const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
+  obs.observe(canvas);
+})();
+
+// --- Compute Map ---
+(function(){
+  const canvas=document.getElementById('dbComputeMapCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=380;}
+  resize();window.addEventListener('resize',resize);
+  const euroHPC=[{name:'JUPITER',x:0.46,y:0.40},{name:'LUMI',x:0.55,y:0.15},{name:'Leonardo',x:0.50,y:0.55},{name:'MareNostrum 5',x:0.33,y:0.62},{name:'Deucalion',x:0.25,y:0.58},{name:'Vega',x:0.53,y:0.50},{name:'Karolina',x:0.53,y:0.42},{name:'MeluXina',x:0.44,y:0.43},{name:'Discoverer',x:0.60,y:0.55},{name:'Daedalus',x:0.58,y:0.65},{name:'EHPCPL',x:0.54,y:0.38}];
+  const hyperDC=[{name:'Dublin (AWS, Azure, Google)',x:0.30,y:0.32,size:4},{name:'Amsterdam (AWS, Azure)',x:0.43,y:0.35,size:3.5},{name:'Frankfurt (AWS, Azure, Google)',x:0.47,y:0.40,size:4},{name:'Paris (AWS, Azure)',x:0.38,y:0.45,size:3},{name:'Stockholm (AWS)',x:0.52,y:0.20,size:2.5},{name:'London (AWS, Azure, Google)',x:0.35,y:0.36,size:4},{name:'Milan (AWS)',x:0.48,y:0.52,size:2},{name:'Zurich (AWS, Google)',x:0.46,y:0.48,size:2.5}];
+  const connections=[[0,6],[0,7],[6,10],[6,5],[5,2],[2,3],[3,4],[5,8],[8,9],[0,1]];
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;t++;
+    ctx.fillStyle='rgba(232,224,204,0.06)';ctx.font='600 14px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE',W/2,24);
+    connections.forEach(([i,j])=>{const a=euroHPC[i],b=euroHPC[j];ctx.beginPath();ctx.moveTo(a.x*W,a.y*H);ctx.lineTo(b.x*W,b.y*H);ctx.strokeStyle='rgba(26,108,212,0.12)';ctx.lineWidth=0.5;ctx.stroke();const prog=((t*0.005+i*0.2)%1);ctx.beginPath();ctx.arc(a.x*W+(b.x*W-a.x*W)*prog,a.y*H+(b.y*H-a.y*H)*prog,1.2,0,Math.PI*2);ctx.fillStyle='rgba(26,108,212,0.3)';ctx.fill();});
+    hyperDC.forEach((n,i)=>{const pulse=1+0.15*Math.sin(t*0.02+i+3);ctx.beginPath();ctx.arc(n.x*W,n.y*H,(n.size+8)*pulse,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.04)';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,n.size,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(255,51,51,0.3)';ctx.font='8px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H+n.size+12);});
+    euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,4,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,1.5,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.55)';ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
+    const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,4,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font='10px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,4,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
+    requestAnimationFrame(draw);
+  }
+  const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
+  obs.observe(canvas);
+})();
+
+// --- Patent Chart ---
+(function(){
+  const canvas=document.getElementById('dbPatentChart');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=300;}
+  resize();window.addEventListener('resize',resize);
+  const data=[{label:'China',patents:38000,col:'#c96a2b'},{label:'United States',patents:6300,col:'#1a6cd4'},{label:'South Korea',patents:2800,col:'#7b6fd6'},{label:'Japan',patents:1500,col:'#4a8ce4'},{label:'EU Total',patents:1200,col:'#0fa37a'},{label:'India',patents:800,col:'rgba(232,224,204,0.4)'}];
+  let grown=data.map(()=>0);
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;const maxVal=38000,barH=28,gap=14,labelW=90,startY=30;
+    ctx.fillStyle='rgba(232,224,204,0.3)';ctx.font='9px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('GENERATIVE AI INVENTIONS (2014-2023)',labelW,18);
+    grown=grown.map(g=>Math.min(g+0.02,1));const allDone=grown.every(g=>g>=1);
+    data.forEach((d,i)=>{
+      const y=startY+i*(barH+gap),barW=((W-labelW-80)*(d.patents/maxVal))*grown[i];
+      ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font='11px Inter, sans-serif';ctx.textAlign='right';ctx.fillText(d.label,labelW-10,y+barH/2+4);
+      ctx.fillStyle='rgba(255,255,255,0.03)';ctx.beginPath();ctx.roundRect(labelW,y,W-labelW-80,barH,4);ctx.fill();
+      ctx.fillStyle=d.col+'40';ctx.beginPath();ctx.roundRect(labelW,y,barW,barH,4);ctx.fill();
+      ctx.strokeStyle=d.col+'80';ctx.lineWidth=0.5;ctx.beginPath();ctx.roundRect(labelW,y,barW,barH,4);ctx.stroke();
+      ctx.fillStyle=d.col;ctx.font='10px JetBrains Mono, monospace';ctx.textAlign='left';ctx.fillText(d.patents.toLocaleString(),labelW+barW+8,y+barH/2+4);
+    });
+    if(!allDone) requestAnimationFrame(draw);
+  }
+  const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
+  obs.observe(canvas);
+})();
+
+// Init dashboard
+buildDbBars();
 </script>
 </body>
 </html>
