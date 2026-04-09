@@ -612,7 +612,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <h3>They said it couldn't be done</h3>
       <p>In the late 1960s, European aerospace was fragmented. France, Germany, the UK, Spain &mdash; each had their own companies, each too small to challenge Boeing's dominance. This is the "<strong>middle powers' dilemma</strong>" &mdash; too small to compete alone, too proud to surrender.</p>
       <p>So they did something radical: they <strong>merged everything</strong>. Not a loose consortium. A real company with shared R&D, shared manufacturing, one mission. A coordinated public-private partnership that bootstrapped a product and focused relentlessly on market strategy.</p>
-      <p><strong>The result?</strong> Airbus went from 0% to roughly 50% of the global commercial aircraft market.<sup class="fn"><a href="#fn3">[3]</a></sup> Over 150,000 employees.<sup class="fn"><a href="#fn4">[4]</a></sup> Deliveries and profitability far exceeding Boeing's.<sup class="fn"><a href="#fn5">[5]</a></sup> A ~$150B enterprise.<sup class="fn"><a href="#fn6">[6]</a></sup> As Tan, Jackson, Berjon &amp; Coyle argue: the playbook exists.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
+      <p><strong>The result?</strong> Airbus went from 0% to roughly 50% of the global commercial aircraft market.<sup class="fn"><a href="#fn3">[3]</a></sup> Over 150,000 employees.<sup class="fn"><a href="#fn4">[4]</a></sup> Deliveries and profitability far exceeding Boeing's.<sup class="fn"><a href="#fn5">[5]</a></sup> A ~$160B enterprise.<sup class="fn"><a href="#fn6">[6]</a></sup> As Tan, Jackson, Berjon &amp; Coyle argue: the playbook exists.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
     </div>
   </div>
   <div class="story-grid reverse fade-up">
@@ -638,7 +638,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="narrative-stats-row">
     <div class="narrative-stat-item"><div class="val">11</div><div class="label">Candidate Nations</div></div>
     <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);">$25B+</a></div><div class="label">Combined Value</div></div>
-    <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);">220K+</a></div><div class="label">Combined Customers</div></div>
+    <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);">230K+</a></div><div class="label">Combined Customers</div></div>
     <div class="narrative-stat-item"><div class="val">100+</div><div class="label">Languages (DeepL)</div></div>
     <div class="narrative-stat-item"><div class="val">12.6B</div><div class="label">Images Generated (SD)</div></div>
     <div class="narrative-stat-item"><div class="val">&euro;32.7B</div><div class="label">ASML Revenue</div></div>
@@ -820,8 +820,9 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <!-- 6. AI COMPANY VALUATIONS -->
     <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">AI Company Valuations &mdash; US vs EU ($B)</div>
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">AI Company Valuations &mdash; US vs Coalition ($B)</div>
       </div>
+      <p style="font-size:0.75rem;color:var(--db-dim);margin-bottom:0.75rem;">Standalone AI company/division valuations. Alphabet and Meta figures are estimated AI division value, not full market cap.</p>
       <div id="dbDashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
       <div id="dbMktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);"></div>
     </div>
@@ -1104,7 +1105,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     "color": "#3b82f6",
     "superpower": "Frontier Models + Own Compute",
     "desc": "675B MoE models, 13.8K NVIDIA GB300 GPUs",
-    "valuation": 14,
+    "valuation": 13.8,
     "arr": 400,
     "employees": 800,
     "customers": 5000,
@@ -1155,7 +1156,7 @@ let COMPANIES = JSON.parse(JSON.stringify(DEFAULT_COMPANIES));
 const HYPERSCALERS = [
   { id: 'openai', name: 'OpenAI', sub: 'USA ($852B val, Mar 2026)', valuation: 852, arr: 24000, employees: 4500, compute: 95, models: 96, enterprise: 85, sovereignty: 20, research: 95, revenue: 95 },
   { id: 'gemini', name: 'Google Gemini', sub: 'USA (Alphabet)', valuation: 2000, arr: 50000, employees: 5000, compute: 99, models: 97, enterprise: 90, sovereignty: 15, research: 99, revenue: 99 },
-  { id: 'anthropic', name: 'Anthropic', sub: 'USA ($380B val, Feb 2026)', valuation: 380, arr: 14000, employees: 1500, compute: 80, models: 93, enterprise: 75, sovereignty: 25, research: 93, revenue: 88 },
+  { id: 'anthropic', name: 'Anthropic', sub: 'USA ($380B val, Feb 2026)', valuation: 380, arr: 14000, employees: 3000, compute: 80, models: 93, enterprise: 75, sovereignty: 25, research: 93, revenue: 88 },
   { id: 'meta', name: 'Meta AI', sub: 'USA (Meta)', valuation: 1500, arr: 0, employees: 4000, compute: 95, models: 92, enterprise: 50, sovereignty: 10, research: 92, revenue: 70 },
   { id: 'grok', name: 'Grok (xAI)', sub: 'USA ($230B val, Jan 2026)', valuation: 230, arr: 500, employees: 3000, compute: 90, models: 88, enterprise: 40, sovereignty: 15, research: 85, revenue: 45 }
 ];
@@ -1192,7 +1193,7 @@ const HYPER_RATIONALE = {
   anthropic: {
     compute: { score: 80, facts: ['$8B from Amazon (AWS partnership)', 'Custom Trainium chip access via AWS', 'Smaller than OpenAI/Google infra'] },
     models: { score: 93, facts: ['Claude 3.5/4 Opus: top safety benchmarks', '#2 on LMSYS Arena coding tasks', '200K context window, strong reasoning'] },
-    enterprise: { score: 75, facts: ['14K ARR Feb 2026 (SaaStr)', 'Amazon Bedrock integration', 'Growing enterprise API adoption'] },
+    enterprise: { score: 75, facts: ['$14B ARR (Feb 2026, SaaStr)', 'Amazon Bedrock integration', 'Growing enterprise API adoption'] },
     sovereignty: { score: 25, facts: ['US-headquartered, San Francisco', 'Dependent on AWS infrastructure', 'Strong safety/alignment focus'] },
     research: { score: 93, facts: ['Founded by ex-OpenAI researchers', 'Constitutional AI, RLHF advances', '~3,000+ employees, research-heavy'] },
     revenue: { score: 88, facts: ['$14B ARR (Feb 2026)', 'Up from $1B just 14 months prior', '$380B valuation (Series G, Feb 2026)'] }
@@ -1210,8 +1211,8 @@ const HYPER_RATIONALE = {
     models: { score: 88, facts: ['Grok-2: competitive on benchmarks', 'Real-time X/Twitter data access', 'Image generation (Aurora)'] },
     enterprise: { score: 40, facts: ['Limited enterprise offering', 'Primarily consumer (X Premium)', '$500M ARR est. (Sacra)'] },
     sovereignty: { score: 15, facts: ['US-headquartered', 'Tied to X/SpaceX ecosystem', 'Subject to US jurisdiction'] },
-    research: { score: 85, facts: ['1,000 employees, rapid hiring', 'Built Colossus in 122 days', 'Focus on speed over publication'] },
-    revenue: { score: 45, facts: ['~$500M ARR (Business of Apps)', '$250B valuation (SpaceX merger)', 'Revenue mostly from X Premium subs'] }
+    research: { score: 85, facts: ['~3,000 employees, rapid hiring', 'Built Colossus in 122 days', 'Focus on speed over publication'] },
+    revenue: { score: 45, facts: ['~$500M standalone ARR (Sacra est.)', '$230B valuation (Series E, Jan 2026)', 'Revenue mostly from X Premium subs'] }
   }
 };
 
@@ -1887,7 +1888,7 @@ function getScenarioBoost() {
 const MERGE_SNIPPETS = {
   mistral: '<strong>Mistral AI joins.</strong> 675B parameter frontier models and 13.8K NVIDIA GB300 GPUs. The entity now has its own compute and its own models &mdash; the two things every sovereign AI strategy needs first.',
   cohere: '<strong>Cohere joins.</strong> 17,000+ enterprise customers and the North agentic platform. The entity now has distribution &mdash; the hardest thing to build from scratch.',
-  multiverse: '<strong>Multiverse Computing joins.</strong> Their CompactifAI technology compresses frontier models by 95%. Suddenly the entity\'s models run on phones, drones, edge devices. No cloud dependency required.',
+  multiverse: '<strong>Multiverse Computing joins.</strong> Their CompactifAI technology compressed Llama 3.3-70B by 80% with near-zero precision loss (up to 95% on smaller models). Suddenly the entity\'s models run on phones, drones, edge devices. No cloud dependency required.',
   aleph: '<strong>Aleph Alpha joins.</strong> Air-gapped sovereign deployment for governments and defense. The entity can now serve the most security-sensitive customers in the world.',
   deepl: '<strong>DeepL joins.</strong> Best-in-class multilingual AI across 100+ languages, preferred 1.3x more often than Google Translate. The entity doesn\'t just serve Europe &mdash; it speaks Europe.',
   stability: '<strong>Stability AI joins.</strong> Open-source multimodal generation &mdash; images, video, audio. The entity now has a community of millions of developers building on its stack.'
@@ -1938,7 +1939,6 @@ function renderTimeline() {
   container.querySelectorAll('.tl-card').forEach(card => observer.observe(card));
 }
 
-function updateTimeline() { /* now handled by scroll observer */ }
 
 // ============================================================
 // CONFETTI
@@ -2052,14 +2052,14 @@ function buildDbBars() {
     {name:'ByteDance AI', val:80, color:'#ff004f', region:'CN'},
     {name:'Meta AI', val:60, color:'#0668E1', region:'US'},
     {name:'Mistral AI', val:13.8, color:'#1a6cd4', region:'EU'},
-    {name:'Cohere', val:7, color:'#ef4444', region:'EU'},
+    {name:'Cohere', val:7, color:'#ef4444', region:'CA'},
     {name:'DeepL', val:2, color:'#06b6d4', region:'EU'},
     {name:'Stability AI', val:1, color:'#8b5cf6', region:'EU'},
   ];
   const maxVal = Math.max(...companies.map(c=>c.val));
   el.innerHTML = companies.map(c => {
     const pct = (c.val / maxVal) * 100;
-    const isEU = c.region === 'EU';
+    const isEU = c.region !== 'US' && c.region !== 'CN';
     return `<div style="display:flex;align-items:center;gap:10px;">
       <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isEU?'0.7':'0.4'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
       <div style="flex:1;height:14px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
