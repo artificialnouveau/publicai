@@ -57,9 +57,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .topnav-links { display: flex; gap: 1.5rem; }
 .topnav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
 .topnav-links a:hover { color: var(--navy); }
-.topnav-power { display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.8rem; font-weight: 600; }
-.power-bar-mini { width: 120px; height: 8px; background: var(--light-gray); border-radius: 4px; overflow: hidden; }
-.power-bar-mini-fill { height: 100%; background: linear-gradient(90deg, var(--sky), var(--cyan)); border-radius: 4px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); width: 0%; }
 
 
 /* === HERO === */
@@ -405,24 +402,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .round-tooltip .tt-fact { font-size: 0.65rem; color: rgba(255,255,255,0.7); line-height: 1.5; padding-left: 0.6rem; position: relative; }
 .round-tooltip .tt-fact::before { content: '•'; position: absolute; left: 0; color: rgba(255,255,255,0.3); }
 
-/* === STORY GUIDE === */
-.story-guide {
-  position: fixed; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 90;
-  display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-start;
-}
-.guide-step {
-  display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 100px; font-size: 0.65rem; font-weight: 600; color: rgba(255,255,255,0.35);
-  cursor: pointer; transition: all 0.3s; backdrop-filter: blur(8px); text-decoration: none;
-  white-space: nowrap;
-}
-.guide-step:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
-.guide-step.active { background: rgba(0,119,200,0.2); border-color: var(--sky); color: var(--sky); }
-.guide-step .guide-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-.guide-step .guide-num { font-family: var(--mono); font-size: 0.6rem; opacity: 0.6; }
-@media (max-width: 1200px) { .story-guide { display: none; } }
-
 /* === SCENARIO === */
 .scenario-section { padding: 5rem 2rem; background: var(--off-white); }
 .scenario-inner { max-width: 1100px; margin: 0 auto; }
@@ -498,51 +477,6 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
 }
 
-/* === NARRATIVE MODE OVERLAY === */
-.narrative-overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 200;
-  background: rgba(0,0,0,0.92); display: none; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 2rem; color: white;
-}
-.narrative-overlay.active { display: flex; }
-.narrative-card {
-  max-width: 700px; width: 100%; text-align: center;
-  animation: narrativeFadeIn 0.6s ease;
-}
-@keyframes narrativeFadeIn { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-.narrative-chapter {
-  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 1rem;
-}
-.narrative-card h2 {
-  font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900;
-  line-height: 1.1; margin-bottom: 1.5rem;
-}
-.narrative-card p {
-  font-size: 1.1rem; color: rgba(255,255,255,0.7);
-  line-height: 1.8; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;
-}
-.narrative-stat-row {
-  display: flex; gap: 2rem; justify-content: center; margin: 2rem 0;
-  flex-wrap: wrap;
-}
-.narrative-stat { text-align: center; }
-.narrative-stat-val { font-family: var(--mono); font-size: 2rem; font-weight: 900; color: var(--cyan); }
-.narrative-stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
-.narrative-controls {
-  display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;
-}
-.narrative-progress {
-  display: flex; gap: 0.5rem; justify-content: center; margin-top: 2rem;
-}
-.narrative-pip {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.2); transition: all 0.3s;
-}
-.narrative-pip.active { background: var(--cyan); transform: scale(1.3); }
-.narrative-pip.done { background: rgba(255,255,255,0.5); }
-
 /* === DATA IMPORT MODAL === */
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 300;
@@ -609,14 +543,13 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 @media (max-width: 600px) {
   .hero-stats-row { flex-direction: column; gap: 1rem; }
   .topnav-links { display: none; }
-  .topnav-power { display: none; }
   .timeline-vertical { padding-left: 40px; }
   .tl-card::before { left: -28px; }
 }
 
 /* === PRINT / EXPORT === */
 @media print {
-  .topnav, .confetti-overlay, .narrative-overlay, .modal-overlay, .toast, .story-guide { display: none !important; }
+  .topnav, .confetti-overlay, .modal-overlay, .toast { display: none !important; }
   .hero { min-height: auto; padding: 2rem; }
   body { color: black; background: white; }
   .battle-section { background: #f0f0f0; color: black; }
@@ -635,27 +568,12 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     AIRBUS FOR AI
   </div>
   <div class="topnav-links">
-    <a href="#story">The Precedent</a>
-    <a href="#assembly">Assemble</a>
-    <a href="#battle">Stress Test</a>
-    <a href="#timeline">Roadmap</a>
-    <a href="narrative.html" style="color:var(--gold);">&#9655; The Story</a>
+    <a href="narrative.html" style="color:var(--gold);">&#9655; Read the Story</a>
+    <a href="narrative.html#deep-data" style="color:var(--cyan);">&#9671; Dashboard</a>
     <a href="simulation.html" style="color:var(--cyan);">&#9671; Simulation</a>
-    <a href="#" id="narrativeLink" style="color:var(--sky);">Guided Tour</a>
-  </div>
-  <div class="topnav-power">
-    <span id="navPowerLabel">0%</span>
-    <div class="power-bar-mini"><div class="power-bar-mini-fill" id="navPowerBar"></div></div>
   </div>
 </nav>
 
-<!-- STORY GUIDE (right-side sticky nav) -->
-<div class="story-guide" id="storyGuide">
-  <a href="#story" class="guide-step" data-section="story"><span class="guide-num">01</span> The Precedent <span class="guide-dot"></span></a>
-  <a href="#assembly" class="guide-step" data-section="assembly"><span class="guide-num">02</span> Assemble <span class="guide-dot"></span></a>
-  <a href="#battle" class="guide-step" data-section="battle"><span class="guide-num">03</span> Stress Test <span class="guide-dot"></span></a>
-  <a href="#timeline" class="guide-step" data-section="timeline"><span class="guide-num">04</span> Roadmap <span class="guide-dot"></span></a>
-</div>
 
 
 <!-- HERO -->
@@ -667,8 +585,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <p class="hero-sub">ChatGPT holds 79.8% of the global consumer chatbot market. Even Mistral's Le Chat has less than 4% in France. Middle powers face a choice: consolidate or be captured. What happens when you build a Public AI Company?</p>
     <div class="hero-cta-row">
       <a href="#assembly" class="btn btn-primary">Start Building</a>
-      <a href="#story" class="btn btn-outline">Read the Story</a>
-      <button class="btn btn-outline" id="heroNarrativeBtn" style="border-color: var(--cyan); color: var(--cyan);">Guided Tour</button>
+      <a href="narrative.html" class="btn btn-outline">Read the Story</a>
+      <a href="narrative.html#deep-data" class="btn btn-outline" style="border-color: var(--cyan); color: var(--cyan);">Dashboard</a>
     </div>
     <div class="hero-stats-row">
       <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Companies</div></div>
@@ -851,12 +769,6 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <em>Last updated: March 2026. All figures are public estimates and may not reflect the latest private valuations.</em>
   </div>
 </footer>
-
-<!-- NARRATIVE MODE OVERLAY -->
-<div class="narrative-overlay" id="narrativeOverlay">
-  <div class="narrative-card" id="narrativeCard"></div>
-  <div class="narrative-progress" id="narrativePips"></div>
-</div>
 
 <!-- DATA IMPORT MODAL -->
 <div class="modal-overlay" id="importModal">
@@ -1058,79 +970,6 @@ const TIMELINE_DATA = [
 // ============================================================
 // NARRATIVE MODE CHAPTERS
 // ============================================================
-const NARRATIVE_CHAPTERS = [
-  {
-    chapter: 'Chapter 1 of 7',
-    title: 'The Middle Powers\' Dilemma',
-    body: 'ChatGPT holds 79.8% of the global consumer chatbot market. Even in France, Mistral\'s Le Chat has less than 4%. Sam Altman himself has said he sometimes wishes AI development was happening in the public sector.\n\nMiddle powers face four interlocking failures: they lack scale, their domestic markets are too small, they face foreign capture, and their sovereignty efforts are fragmented.',
-    stats: [
-      { val: '79.8%', label: 'ChatGPT Market Share' },
-      { val: '<4%', label: 'Le Chat in France' },
-      { val: '4', label: 'Interlocking Failures' }
-    ],
-    action: null
-  },
-  {
-    chapter: 'Chapter 2 of 7',
-    title: 'The Precedent',
-    body: 'In 1970, Europe faced the same dilemma in aerospace. Boeing dominated. No single European company could compete.\n\nFrance, Germany, the UK, and Spain merged their companies into Airbus \u2014 a coordinated public-private partnership. It went from zero to 50% market share. As the Bennett School analysis argues: the playbook already exists.',
-    stats: [
-      { val: '0% \u2192 50%', label: 'Market Share' },
-      { val: '130K', label: 'Employees' },
-      { val: '$100B+', label: 'Enterprise Value' }
-    ],
-    action: null
-  },
-  {
-    chapter: 'Chapter 3 of 7',
-    title: 'The Pieces Exist',
-    body: 'Across 11 candidate nations \u2014 Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK \u2014 are extraordinary AI companies: private champions, public labs, and national coalitions. Each world-class in a specific domain. And in the Netherlands, ASML \u2014 the only company that makes the EUV lithography machines every advanced AI chip requires.',
-    stats: [
-      { val: '11', label: 'Candidate Nations' },
-      { val: '6', label: 'Core Companies' },
-      { val: '$27B+', label: 'Combined Value' }
-    ],
-    action: 'clear'
-  },
-  {
-    chapter: 'Chapter 4 of 7',
-    title: 'The Frontier Engine',
-    body: 'Mistral AI brings frontier-class models trained on their own nuclear-powered compute. Cohere brings 100,000+ enterprise customers and the North agentic platform. Two powerhouses. One entity.',
-    stats: [
-      { val: '675B', label: 'Mistral Parameters' },
-      { val: '100K+', label: 'Cohere Customers' },
-      { val: '$21B', label: 'Combined Valuation' }
-    ],
-    action: ['mistral', 'cohere']
-  },
-  {
-    chapter: 'Chapter 5 of 7',
-    title: 'The Force Multipliers',
-    body: 'Multiverse Computing compresses those frontier models by 95% &mdash; deployable on phones, drones, even Raspberry Pi. Aleph Alpha makes the stack sovereign and air-gapped. DeepL makes it speak 30+ languages natively.',
-    stats: [
-      { val: '95%', label: 'Compression' },
-      { val: 'Air-gapped', label: 'Sovereignty' },
-      { val: '30+', label: 'Languages' }
-    ],
-    action: ['multiverse', 'aleph', 'deepl']
-  },
-  {
-    chapter: 'Chapter 6 of 7',
-    title: 'The Full Stack',
-    body: 'Add Stability AI for open-source multimodal generation and you have the complete entity: frontier models, enterprise platform, quantum compression, sovereign deployment, multilingual AI, and open-source community.',
-    stats: null,
-    action: ['stability']
-  },
-  {
-    chapter: 'Chapter 7 of 7',
-    title: 'The Public AI Company',
-    body: 'The case rests on four pillars: collective action solves problems no single nation can, AI is a public good that shouldn\'t be monopolized, sovereignty requires a kill switch you actually control, and scale without monopoly is possible through coordination.\n\nAs the Bennett School paper concludes: the question isn\'t whether. It\'s when. Every month of fragmentation is a month the gap widens.',
-    stats: null,
-    action: null,
-    final: true
-  }
-];
-
 // ============================================================
 // STATE
 // ============================================================
@@ -1139,8 +978,6 @@ const S = {
   challenger: 'openai',
   sliders: { compute: 0, contracts: 0, capital: 0, talent: 0 },
   timelineIdx: 0,
-  narrativeIdx: 0,
-  narrativeOpen: false,
   customData: false,
   _confettiFired: false
 };
@@ -1400,72 +1237,6 @@ function resetToDefaults() {
   showToast('Reset to default data');
 }
 
-// ============================================================
-// 5. NARRATIVE MODE
-// ============================================================
-function openNarrative() {
-  S.narrativeIdx = 0;
-  S.narrativeOpen = true;
-  document.getElementById('narrativeOverlay').classList.add('active');
-  renderNarrativeChapter();
-}
-
-function closeNarrative() {
-  S.narrativeOpen = false;
-  document.getElementById('narrativeOverlay').classList.remove('active');
-}
-
-function renderNarrativeChapter() {
-  const ch = NARRATIVE_CHAPTERS[S.narrativeIdx];
-  const card = document.getElementById('narrativeCard');
-  const pips = document.getElementById('narrativePips');
-
-  // Execute action (merge companies)
-  if (ch.action === 'clear') {
-    S.merged.clear();
-    updateEverything();
-  } else if (Array.isArray(ch.action)) {
-    ch.action.forEach(id => S.merged.add(id));
-    updateEverything();
-  }
-
-  const bodyHtml = ch.body.split('\n\n').map(p => `<p>${p}</p>`).join('');
-  const statsHtml = ch.stats ? `<div class="narrative-stat-row">${ch.stats.map(s =>
-    `<div class="narrative-stat"><div class="narrative-stat-val">${s.val}</div><div class="narrative-stat-label">${s.label}</div></div>`
-  ).join('')}</div>` : '';
-
-  const isFirst = S.narrativeIdx === 0;
-  const isLast = S.narrativeIdx === NARRATIVE_CHAPTERS.length - 1;
-
-  card.innerHTML = `
-    <div class="narrative-chapter">${ch.chapter}</div>
-    <h2>${ch.title}</h2>
-    ${bodyHtml}
-    ${statsHtml}
-    <div class="narrative-controls">
-      ${!isFirst ? '<button class="btn btn-outline btn-sm" id="narPrev">Back</button>' : ''}
-      ${!isLast ? '<button class="btn btn-primary btn-sm" id="narNext">Continue</button>' : ''}
-      ${isLast ? '<button class="btn btn-primary btn-sm" id="narClose">Explore the Simulator</button>' : ''}
-      <button class="btn btn-outline btn-sm" id="narSkip" style="opacity:0.5;">Skip Tour</button>
-    </div>
-  `;
-
-  // Pips
-  pips.innerHTML = NARRATIVE_CHAPTERS.map((_, i) =>
-    `<div class="narrative-pip ${i === S.narrativeIdx ? 'active' : ''} ${i < S.narrativeIdx ? 'done' : ''}"></div>`
-  ).join('');
-
-  // Events
-  const next = document.getElementById('narNext');
-  const prev = document.getElementById('narPrev');
-  const close = document.getElementById('narClose');
-  const skip = document.getElementById('narSkip');
-  if (next) next.addEventListener('click', () => { S.narrativeIdx++; renderNarrativeChapter(); });
-  if (prev) prev.addEventListener('click', () => { S.narrativeIdx--; renderNarrativeChapter(); });
-  if (close) close.addEventListener('click', closeNarrative);
-  if (skip) skip.addEventListener('click', closeNarrative);
-}
-
 
 // ============================================================
 // PARTICLES
@@ -1628,11 +1399,6 @@ function updateAchievements() {
   }).join('');
 }
 
-function updateNavPower() {
-  const pct = powerPercent();
-  document.getElementById('navPowerLabel').textContent = pct + '%';
-  document.getElementById('navPowerBar').style.width = pct + '%';
-}
 
 // ============================================================
 // BATTLE
@@ -1902,23 +1668,9 @@ function setupScroll() {
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
-    updateStoryGuide();
   });
 }
 
-function updateStoryGuide() {
-  const sections = ['story', 'assembly', 'battle', 'timeline'];
-  const guide = document.getElementById('storyGuide');
-  if (!guide) return;
-  let active = null;
-  for (const id of sections) {
-    const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < window.innerHeight * 0.5) active = id;
-  }
-  guide.querySelectorAll('.guide-step').forEach(s => {
-    s.classList.toggle('active', s.dataset.section === active);
-  });
-}
 
 // ============================================================
 // UPDATE ALL
@@ -1927,7 +1679,6 @@ function updateEverything() {
   renderDock();
   updateReactor();
   updateLivePanel();
-  updateNavPower();
   updateBattle();
   saveToURL();
   const btn = document.getElementById('mergeAllBtn');
@@ -1945,7 +1696,6 @@ function init() {
   renderDock();
   updateReactor();
   updateLivePanel();
-  updateNavPower();
   renderChallengers();
   updateBattle();
   renderScenarioLevers();
@@ -1957,21 +1707,12 @@ function init() {
   document.getElementById('shareBtn').addEventListener('click', copyShareLink);
   document.getElementById('exportBtn').addEventListener('click', exportDeck);
   document.getElementById('ctaExportBtn').addEventListener('click', exportDeck);
-  document.getElementById('narrativeLink').addEventListener('click', e => { e.preventDefault(); openNarrative(); });
-  document.getElementById('heroNarrativeBtn').addEventListener('click', openNarrative);
   document.getElementById('importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
   document.getElementById('importCancel').addEventListener('click', closeImportModal);
   document.getElementById('importApply').addEventListener('click', applyImportData);
   document.getElementById('importReset').addEventListener('click', resetToDefaults);
   document.getElementById('importModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeImportModal(); });
 
-  // Keyboard for narrative
-  document.addEventListener('keydown', e => {
-    if (!S.narrativeOpen) return;
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); if (S.narrativeIdx < NARRATIVE_CHAPTERS.length-1) { S.narrativeIdx++; renderNarrativeChapter(); } else closeNarrative(); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); if (S.narrativeIdx > 0) { S.narrativeIdx--; renderNarrativeChapter(); } }
-    if (e.key === 'Escape') closeNarrative();
-  });
 }
 
 document.addEventListener('DOMContentLoaded', init);
