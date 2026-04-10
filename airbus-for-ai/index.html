@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Assembly Lab — Public AI Company</title>
 <meta name="description" content="What if middle powers merged their sovereign AI companies into a Public AI Company? Interactive simulator based on the Bennett School analysis by Tan, Jackson, Berjon &amp; Coyle.">
+<meta property="og:title" content="The Assembly Lab — Public AI Company">
+<meta property="og:description" content="ChatGPT drives ~80% of chatbot traffic. What if middle powers merged their AI companies into one? Explore the data, assemble the entity, stress-test it against Big Tech.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Assembly Lab — Public AI Company">
+<meta name="twitter:description" content="ChatGPT drives ~80% of chatbot traffic. What if middle powers merged their AI companies into one?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -533,6 +539,9 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .topnav-links { display: none; }
   .timeline-vertical { padding-left: 40px; }
   .tl-card::before { left: -28px; }
+  #dashboard [style*="grid-template-columns:1fr 1fr"],
+  #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
+  .battle-rounds { grid-template-columns: 1fr !important; }
 }
 
 /* === PRINT / EXPORT === */
@@ -566,7 +575,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-particles"><canvas id="particleCanvas"></canvas></div>
+  <div class="hero-particles"><canvas id="particleCanvas" role="presentation" aria-hidden="true"></canvas></div>
   <div class="hero-content">
     <div class="hero-eyebrow"><span class="dot"></span> The Assembly Lab</div>
     <h1>What if they<br>merged into one?</h1>
@@ -588,7 +597,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- STORY -->
 <section id="story" class="section">
   <div class="story-grid fade-up">
-    <div class="story-visual"><canvas id="airbusCanvas" width="500" height="375"></canvas></div>
+    <div class="story-visual"><canvas id="airbusCanvas" width="500" height="375" role="img" aria-label="Airbus market share growth visualization: 0% to 50% from 1970 to 2003"></canvas></div>
     <div class="story-text">
       <div class="story-tag">1970 &mdash; The Precedent</div>
       <h3>They said it couldn't be done</h3>
@@ -598,7 +607,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
   </div>
   <div class="story-grid reverse fade-up">
-    <div class="story-visual"><canvas id="parallelCanvas" width="500" height="375"></canvas></div>
+    <div class="story-visual"><canvas id="parallelCanvas" width="500" height="375" role="img" aria-label="AI market concentration: ChatGPT ~80% vs fragmented middle powers"></canvas></div>
     <div class="story-text">
       <div class="story-tag">2026 &mdash; The Middle Powers' Dilemma</div>
       <h3>Four problems, one solution</h3>
@@ -643,7 +652,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
-      <canvas id="dbCapitalFlowCanvas" style="width:100%;height:320px;"></canvas>
+      <canvas id="dbCapitalFlowCanvas" style="width:100%;height:320px;" role="img" aria-label="Capital flow diagram: EU AI funding flows to US, showing $14B EU vs $109B US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-cyan);font-variant-numeric:tabular-nums;">$14B</div>
@@ -675,7 +684,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
-      <canvas id="dbTalentChordCanvas" style="width:100%;height:400px;"></canvas>
+      <canvas id="dbTalentChordCanvas" style="width:100%;height:400px;" role="img" aria-label="Talent migration flow: EU-educated AI researchers predominantly work in the US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-cyan);">~60%</div>
@@ -703,7 +712,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
-      <canvas id="dbComputeMapCanvas" style="width:100%;height:380px;"></canvas>
+      <canvas id="dbComputeMapCanvas" style="width:100%;height:380px;" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
         <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.05);">
           <div style="font-size:0.75rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-cyan);margin-bottom:0.75rem;">EuroHPC Supercomputers</div>
@@ -778,7 +787,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">China files 70% of all AI patents. But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
-      <canvas id="dbPatentChart" style="width:100%;height:300px;"></canvas>
+      <canvas id="dbPatentChart" style="width:100%;height:300px;" role="img" aria-label="AI patent filings: China leads with 38,000+ inventions, US 6,300, EU 1,200"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;">38,000+</div>
@@ -816,7 +825,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">These aren't hypothetical startups. The coalition companies are scaling fast, with real enterprise customers and real revenue trajectories.</p>
-      <canvas id="dbGrowthChart" style="width:100%;height:320px;"></canvas>
+      <canvas id="dbGrowthChart" style="width:100%;height:320px;" role="img" aria-label="Coalition revenue growth: Mistral 20x to $400M, Cohere 11x to $240M, DeepL to $185M"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#3b82f6;font-variant-numeric:tabular-nums;">20x</div>
@@ -1124,7 +1133,7 @@ const DEFAULT_COMPANIES = [
   { id: 'cohere', name: 'Cohere', country: 'Canada', flag: '\u{1F1E8}\u{1F1E6}', color: '#ef4444', superpower: 'Enterprise AI + Agentic Platform', desc: 'North agentic platform (on-prem, air-gapped). 17K+ enterprise customers incl. RBC, Dell, SAP, Fujitsu, LG. Aya multilingual models: 70+ languages. $240M ARR (Feb 2026), $240M Canadian federal AI compute investment.', valuation: 7, arr: 240, employees: 800, customers: 17000, patents: 45, scores: { compute: 50, models: 72, enterprise: 95, sovereignty: 70, research: 75, revenue: 68 } },
   { id: 'multiverse', name: 'Multiverse Computing', country: 'Spain', flag: '\u{1F1EA}\u{1F1F8}', color: '#f59e0b', superpower: '95% Quantum LLM Compression', desc: 'CompactifAI: Llama 3.3-70B compressed 80% with near-zero precision loss. Llama 3.1-8B Slim uses 300x fewer training tokens than Meta. 160+ patents. Customers incl. Iberdrola, Bosch, Bank of Canada.', valuation: 0.5, arr: 15, employees: 240, customers: 100, patents: 160, scores: { compute: 30, models: 40, enterprise: 45, sovereignty: 65, research: 92, revenue: 25 } },
   { id: 'aleph', name: 'Aleph Alpha', country: 'Germany', flag: '\u{1F1E9}\u{1F1EA}', color: '#10b981', superpower: 'Sovereign Gov/Defense AI', desc: 'PhariaAI sovereign AI OS deployed to 80,000 German government users (company-reported). Contracts with Federal Employment Agency and BWI (German Armed Forces IT). Runs on German infrastructure via STACKIT. Revenue not publicly disclosed.', valuation: 0.5, arr: 0, employees: 350, customers: 50, patents: 20, scores: { compute: 25, models: 55, enterprise: 50, sovereignty: 98, research: 65, revenue: 10 } },
-  { id: 'deepl', name: 'DeepL', country: 'Germany', flag: '\u{1F1E9}\u{1F1EA}', color: '#06b6d4', superpower: 'Multilingual AI Dominance', desc: '100+ languages. preferred 1.3x more often than Google Translate in blind tests. 200K+ business customers. DeepL Voice preferred by 96% of professional linguists. $185M revenue (2024), exploring $5B IPO.', valuation: 2, arr: 185, employees: 1570, customers: 200000, patents: 35, scores: { compute: 35, models: 60, enterprise: 80, sovereignty: 75, research: 70, revenue: 55 } },
+  { id: 'deepl', name: 'DeepL', country: 'Germany', flag: '\u{1F1E9}\u{1F1EA}', color: '#06b6d4', superpower: 'Multilingual AI Dominance', desc: '100+ languages. Preferred 1.3x more often than Google Translate in blind tests. 200K+ business customers. DeepL Voice preferred by 96% of professional linguists. $185M revenue (2024), exploring $5B IPO.', valuation: 2, arr: 185, employees: 1570, customers: 200000, patents: 35, scores: { compute: 35, models: 60, enterprise: 80, sovereignty: 75, research: 70, revenue: 55 } },
   { id: 'stability', name: 'Stability AI', country: 'United Kingdom', flag: '\u{1F1EC}\u{1F1E7}', color: '#8b5cf6', superpower: 'Open-Source Multimodal', desc: 'Stable Diffusion: est. 12.59B images generated (~80% of all AI imagery). 214M Civitai community downloads. Image, video, audio, 3D generation.', valuation: 1, arr: 60, employees: 190, customers: 10000, patents: 15, scores: { compute: 40, models: 70, enterprise: 35, sovereignty: 55, research: 80, revenue: 30 } }
 ];
 
@@ -1383,6 +1392,7 @@ function copyShareLink() {
 function exportDeck() {
   const c = getCombined();
   const sel = getSelected();
+  if (sel.length === 0) { showToast('Select at least one company first'); return; }
   const h = HYPERSCALERS.find(x => x.id === S.challenger);
   const { compute, contracts, capital, talent } = S.sliders;
   const projVal = c ? c.valuation + capital * 2 + contracts * 10 + compute * 0.5 : 0;
@@ -1470,7 +1480,7 @@ p { font-size: 12px; color: #4a5568; line-height: 1.6; margin-bottom: 6px; }
 <div style="margin:8px 0;">
   ${battles.map(b => `<div class="battle-row"><span>${b.axis}</span><span>Public AI Co.: <strong>${b.mScore}</strong></span><span>${h.name}: <strong>${b.hScore}</strong></span><span class="${b.winner === 'Public AI Co.' ? 'win' : 'lose'}">${b.winner}</span></div>`).join('')}
 </div>
-<p style="font-size:11px;">With government support (${compute} EFLOPS, $${contracts}B/yr contracts, $${capital}B capital, ${talent} researchers): projected valuation <strong>$${projVal.toFixed(1)}B</strong>, projected ARR <strong>$${(projArr/1000).toFixed(1)}B</strong>.</p>
+<p style="font-size:11px;">${(compute+contracts+capital+talent)>0 ? 'With government support ('+compute+' EFLOPS, $'+contracts+'B/yr contracts, $'+capital+'B capital, '+talent+' researchers): projected valuation <strong>$'+projVal.toFixed(1)+'B</strong>, projected ARR <strong>$'+(projArr/1000).toFixed(1)+'B</strong>.' : 'No government investment modeled. Use the scenario levers on the page to project growth with public investment.'}</p>
 
 <div class="footer-note">
   Based on "Airbus for AI" by Tan, Jackson, Berjon & Coyle (Bennett School of Public Policy, Sept 2025).<br>
