@@ -408,27 +408,10 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 .round-tooltip .tt-fact { font-size: 0.65rem; color: rgba(255,255,255,0.7); line-height: 1.5; padding-left: 0.6rem; position: relative; }
 .round-tooltip .tt-fact::before { content: '•'; position: absolute; left: 0; color: rgba(255,255,255,0.3); }
 
-/* === SCENARIO === */
-.scenario-section { padding: 5rem 2rem; background: var(--off-white); }
-.scenario-inner { max-width: 1100px; margin: 0 auto; }
-.scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-.scenario-controls { display: flex; flex-direction: column; gap: 1rem; }
-.slider-card { background: var(--white); border: 1px solid var(--light-gray); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow-sm); }
-.slider-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
-.slider-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
-.slider-val { font-family: var(--mono); font-weight: 700; color: var(--sky); font-size: 0.9rem; }
+/* === RANGE INPUTS === */
 input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: var(--light-gray); border-radius: 3px; outline: none; }
 input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--sky); cursor: pointer; border: 3px solid var(--white); box-shadow: var(--shadow-sm); }
 input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--sky); cursor: pointer; border: 3px solid var(--white); box-shadow: var(--shadow-sm); }
-.scenario-output { background: var(--white); border: 1px solid var(--light-gray); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); }
-.scenario-output h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--navy); }
-.scenario-results { display: flex; flex-direction: column; gap: 1.25rem; }
-.scenario-row { display: flex; justify-content: space-between; align-items: center; }
-.scenario-row-label { font-size: 0.85rem; color: var(--text-secondary); }
-.scenario-row-val { font-family: var(--mono); font-weight: 700; font-size: 1.1rem; }
-.scenario-bar { width: 100%; height: 6px; background: var(--light-gray); border-radius: 3px; margin-top: 0.4rem; overflow: hidden; }
-.scenario-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
-.scenario-verdict { margin-top: 1.5rem; padding: 1rem; background: var(--off-white); border-radius: var(--radius); text-align: center; font-weight: 600; font-size: 0.9rem; }
 
 /* === ROADMAP === */
 .timeline-section { padding: 5rem 2rem; background: var(--off-white); }
@@ -532,7 +515,6 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 /* === ANIMATIONS === */
 .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
-.confetti-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 9999; }
 
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
@@ -555,7 +537,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
 /* === PRINT / EXPORT === */
 @media print {
-  .topnav, .confetti-overlay, .modal-overlay, .toast { display: none !important; }
+  .topnav, .modal-overlay, .toast { display: none !important; }
   .hero { min-height: auto; padding: 2rem; }
   body { color: black; background: white; }
   .battle-section { background: #f0f0f0; color: black; }
@@ -824,7 +806,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       </div>
       <p style="font-size:0.75rem;color:var(--db-dim);margin-bottom:0.75rem;">Standalone AI company/division valuations. Alphabet and Meta figures are estimated AI division value, not full market cap.</p>
       <div id="dbDashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
-      <div id="dbMktCapLastUpdated" style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);"></div>
+      <div style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);">Source: public filings, funding announcements, and industry estimates (2025-2026)</div>
     </div>
 
     <!-- 7. COALITION COMPANY REVENUE GROWTH -->
@@ -1127,9 +1109,6 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- CONFETTI -->
-<canvas class="confetti-overlay" id="confettiCanvas"></canvas>
-
 <script>
 // ============================================================
 // DATA
@@ -1288,9 +1267,6 @@ const TIMELINE_DATA = [
 ];
 
 // ============================================================
-// NARRATIVE MODE CHAPTERS
-// ============================================================
-// ============================================================
 // STATE
 // ============================================================
 const S = {
@@ -1298,8 +1274,7 @@ const S = {
   challenger: 'openai',
   sliders: { compute: 0, contracts: 0, capital: 0, talent: 0 },
   timelineIdx: 0,
-  customData: false,
-  _confettiFired: false
+  customData: false
 };
 
 // ============================================================
@@ -1943,22 +1918,6 @@ function renderTimeline() {
 // ============================================================
 // CONFETTI
 // ============================================================
-function fireConfetti() {
-  const canvas=document.getElementById('confettiCanvas'), ctx=canvas.getContext('2d');
-  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  const pieces=[], colors=['#0077c8','#00b4d8','#f0a500','#2ec4b6','#3b82f6','#ef4444','#8b5cf6','#10b981'];
-  for (let i=0;i<150;i++) pieces.push({x:Math.random()*canvas.width,y:-20-Math.random()*200,w:Math.random()*8+4,h:Math.random()*6+2,vx:(Math.random()-0.5)*4,vy:Math.random()*4+2,rot:Math.random()*Math.PI*2,vr:(Math.random()-0.5)*0.2,color:colors[Math.floor(Math.random()*colors.length)],life:1});
-  let frame=0;
-  function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height); let alive=false;
-    pieces.forEach(p => { if(p.life<=0)return; alive=true; p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.rot+=p.vr;if(p.y>canvas.height)p.life-=0.02;p.life-=0.002;
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
-    });
-    if(alive&&frame<300){frame++;requestAnimationFrame(animate);}else{ctx.clearRect(0,0,canvas.width,canvas.height);}
-  }
-  animate();
-}
-
 // ============================================================
 // MERGE ALL
 // ============================================================
