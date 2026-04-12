@@ -2323,16 +2323,34 @@ function buildDbBars() {
 
 // --- HuggingFace Live Model Dominance ---
 const HF_ORG_REGION = {
-  'meta-llama':'US','meta':'US','facebook':'US','google':'US','openai':'US',
+  // US
+  'meta-llama':'US','meta':'US','facebook':'US','FacebookAI':'US','google':'US','google-bert':'US','openai':'US','openai-community':'US',
   'microsoft':'US','stabilityai':'US','nvidia':'US','apple':'US',
   'anthropic':'US','databricks':'US','salesforce':'US','huggingface':'US',
-  'EleutherAI':'US','CompVis':'US','runwayml':'US','laion':'US',
-  'sentence-transformers':'US','NousResearch':'US','togethercomputer':'US','lmsys':'US',
-  'mistralai':'EU','bigscience':'EU','aleph-alpha':'EU','CohereForAI':'CA',
-  'deepset':'EU','Helsinki-NLP':'EU','camembert':'EU','dbmdz':'EU','flaubert':'EU',
-  'Qwen':'CN','THUDM':'CN','baichuan-inc':'CN','deepseek-ai':'CN',
-  'internlm':'CN','BAAI':'CN','01-ai':'CN','alibaba':'CN',
-  'tencent':'CN','bytedance':'CN','modelscope':'CN','FlagAlpha':'CN'
+  'EleutherAI':'US','CompVis':'US','runwayml':'US','NousResearch':'US','togethercomputer':'US','lmsys':'US',
+  'nomic-ai':'US','colbert-ir':'US','answerdotai':'US','hexgrad':'US','autogluon':'US','Comfy-Org':'US','amazon':'US',
+  // EU - France
+  'mistralai':'France','bigscience':'France','distilbert':'France','pyannote':'France',
+  // EU - Germany
+  'aleph-alpha':'Germany','deepset':'Germany','sentence-transformers':'Germany','cross-encoder':'Germany','laion':'Germany','dbmdz':'Germany',
+  // EU - Other
+  'Helsinki-NLP':'Finland','Kijai':'Finland','camembert':'France','flaubert':'France',
+  // Canada
+  'CohereForAI':'Canada',
+  // China
+  'Qwen':'China','THUDM':'China','baichuan-inc':'China','deepseek-ai':'China',
+  'internlm':'China','BAAI':'China','01-ai':'China','alibaba':'China',
+  'tencent':'China','bytedance':'China','modelscope':'China','FlagAlpha':'China','omni-research':'China',
+  // Asia-Pacific
+  'Bingsu':'South Korea','timm':'Australia','Marqo':'Australia',
+  // Other
+  'Falconsai':'India','dima806':'Ukraine',
+  // UAE
+  'tiiuae':'UAE','MBZUAI':'UAE',
+  // Japan
+  'rinna':'Japan','cyberagent':'Japan','line-corporation':'Japan',
+  // Israel
+  'ai21labs':'Israel'
 };
 function hfClassifyOrg(name){
   if(!name)return 'Other';
@@ -2357,50 +2375,70 @@ async function fetchHFModels(){
     const res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false');
     if(!res.ok)throw new Error('HF API error');
     const models=await res.json();
-    const regionCounts={US:0,EU:0,CA:0,CN:0,Other:0};
+    const countryCounts={};
     const rows=[];
     models.forEach((m,i)=>{
       const org=m.id?m.id.split('/')[0]:'';
-      const region=hfClassifyOrg(org);
-      regionCounts[region]++;
-      if(i<10)rows.push({rank:i+1,name:m.id||'Unknown',downloads:m.downloads||0,region});
+      const country=hfClassifyOrg(org);
+      countryCounts[country]=(countryCounts[country]||0)+1;
+      if(i<10)rows.push({rank:i+1,name:m.id||'Unknown',downloads:m.downloads||0,region:country});
     });
-    // Merge CA into EU for display (coalition-aligned)
-    regionCounts.EU+=regionCounts.CA;
-    delete regionCounts.CA;
+    // Group into display buckets: US, Europe (all EU countries), China, and individual non-US/CN/EU countries
+    const euCountries=['France','Germany','Finland','Netherlands','Sweden','Spain','Switzerland','UK'];
+    const displayGroups={};
+    let euTotal=0;
+    Object.entries(countryCounts).forEach(([c,n])=>{
+      if(c==='US'){displayGroups['United States']=n;}
+      else if(c==='China'){displayGroups['China']=n;}
+      else if(euCountries.includes(c)){euTotal+=n;}
+      else if(c==='Canada'){euTotal+=n;} // coalition-aligned
+      else if(c!=='Other'){displayGroups[c]=n;}
+      else{displayGroups['Other']=n;}
+    });
+    if(euTotal>0)displayGroups['Europe/Coalition']=euTotal;
     const total=models.length;
-    const colors={US:'var(--db-red)',EU:'var(--db-cyan)',CN:'var(--db-gold)',Other:'rgba(232,224,204,0.3)'};
-    const labels={US:'United States',EU:'Europe/Coalition',CN:'China',Other:'Other'};
-    summary.innerHTML=Object.entries(regionCounts).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([region,count])=>{
+    const groupColors={'United States':'var(--db-red)','Europe/Coalition':'var(--db-cyan)','China':'var(--db-gold)',
+      'South Korea':'#7b6fd6','Australia':'#0fa37a','India':'#f59e0b','Ukraine':'#06b6d4','UAE':'#c96a2b',
+      'Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(232,224,204,0.3)'};
+    summary.innerHTML=Object.entries(displayGroups).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([name,count])=>{
       const pct=Math.round((count/total)*100);
-      return `<div style="padding:0.6rem 1.2rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;flex:1;min-width:100px;">
-        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:${colors[region]};line-height:1;">${pct}%</div>
-        <div style="font-size:0.65rem;color:var(--db-dim);margin-top:2px;">${labels[region]}</div>
-        <div style="font-size:0.55rem;color:var(--db-dim);font-family:var(--mono);">${count} of top ${total}</div>
+      const col=groupColors[name]||'rgba(232,224,204,0.3)';
+      return `<div style="padding:0.6rem 1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;min-width:90px;">
+        <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${col};line-height:1;">${pct}%</div>
+        <div style="font-size:0.6rem;color:var(--db-dim);margin-top:2px;">${name}</div>
+        <div style="font-size:0.5rem;color:var(--db-dim);font-family:var(--mono);">${count} of ${total}</div>
       </div>`;
     }).join('');
-    const rcols={US:'var(--db-red)',EU:'var(--db-cyan)',CA:'var(--db-cyan)',CN:'var(--db-gold)',Other:'rgba(232,224,204,0.3)'};
-    table.innerHTML=`<div style="display:grid;grid-template-columns:24px 1fr 80px 50px;gap:4px 12px;align-items:center;">
+    const rcols={'US':'var(--db-red)','France':'var(--db-cyan)','Germany':'var(--db-cyan)','Finland':'var(--db-cyan)','Canada':'var(--db-cyan)',
+      'China':'var(--db-gold)','South Korea':'#7b6fd6','Australia':'#0fa37a','India':'#f59e0b','Ukraine':'#06b6d4',
+      'UAE':'#c96a2b','Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(232,224,204,0.3)'};
+    table.innerHTML=`<div style="display:grid;grid-template-columns:24px 1fr 80px 70px;gap:4px 12px;align-items:center;">
       <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">#</div>
       <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">MODEL</div>
       <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">DOWNLOADS</div>
-      <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">REGION</div>
+      <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">COUNTRY</div>
       ${rows.map(r=>`
         <div style="color:var(--db-dim);">${r.rank}</div>
         <div style="color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.name}">${r.name}</div>
         <div style="color:var(--db-dim);">${hfFormatDl(r.downloads)}</div>
-        <div style="color:${rcols[r.region]||rcols.Other};font-weight:600;">${r.region}</div>
+        <div style="color:${rcols[r.region]||'rgba(232,224,204,0.3)'};font-weight:600;font-size:0.7rem;">${r.region}</div>
       `).join('')}
     </div>`;
     badge.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> LIVE';
     badge.style.color='var(--db-green)';
   }catch(e){
-    summary.innerHTML=['~55% US','~10% EU','~25% CN','~10% Other'].map((t,i)=>{
-      const colors=['var(--db-red)','var(--db-cyan)','var(--db-gold)','rgba(232,224,204,0.3)'];
-      return `<div style="padding:0.6rem 1.2rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;flex:1;min-width:100px;">
-        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:${colors[i]};line-height:1;">${t.split(' ')[0]}</div>
-        <div style="font-size:0.65rem;color:var(--db-dim);margin-top:2px;">${t.split(' ')[1]}</div>
-        <div style="font-size:0.55rem;color:var(--db-dim);font-family:var(--mono);">estimated</div>
+    summary.innerHTML=[
+      {pct:'~44%',label:'United States',col:'var(--db-red)'},
+      {pct:'~20%',label:'China',col:'var(--db-gold)'},
+      {pct:'~16%',label:'Europe/Coalition',col:'var(--db-cyan)'},
+      {pct:'~4%',label:'South Korea',col:'#7b6fd6'},
+      {pct:'~4%',label:'Australia',col:'#0fa37a'},
+      {pct:'~12%',label:'Other',col:'rgba(232,224,204,0.3)'}
+    ].map(g=>{
+      return `<div style="padding:0.6rem 1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;min-width:90px;">
+        <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${g.col};line-height:1;">${g.pct}</div>
+        <div style="font-size:0.6rem;color:var(--db-dim);margin-top:2px;">${g.label}</div>
+        <div style="font-size:0.5rem;color:var(--db-dim);font-family:var(--mono);">estimated</div>
       </div>`;
     }).join('');
     table.innerHTML='<div style="color:var(--db-dim);font-size:0.75rem;">Could not load live data. Estimates based on historical HuggingFace analysis.</div>';
