@@ -1653,9 +1653,9 @@ body::after {
         <canvas id="marketCapChart" height="320"></canvas>
         <div class="market-cap-info" id="mcInfo"></div>
         <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
-          <a class="source-link" href="https://www.cnbc.com/2025/03/31/openai-closes-40-billion-in-funding-the-largest-private-fundraise-in-history-softbank-chatgpt.html" target="_blank">OpenAI $40B round: CNBC, Mar 2025</a>
-          <a class="source-link" href="https://www.cnbc.com/2025/01/07/anthropic-in-talks-to-raise-funding-at-60-billion-valuation.html" target="_blank">Anthropic: CNBC, Jan 2025</a>
-          <a class="source-link" href="https://www.cnbc.com/2025/09/09/ai-firm-mistral-valued-at-14-billion-as-asml-takes-major-stake.html" target="_blank">Mistral $14B valuation: CNBC, Sep 2025</a>
+          <a class="source-link" href="https://www.cnbc.com/2026/03/31/openai-funding-round-ipo.html" target="_blank">OpenAI $852B valuation: CNBC, Mar 2026</a>
+          <a class="source-link" href="https://www.cnbc.com/2026/02/12/anthropic-closes-30-billion-funding-round-at-380-billion-valuation.html" target="_blank">Anthropic $380B valuation: CNBC, Feb 2026</a>
+          <a class="source-link" href="https://www.cnbc.com/2025/09/09/ai-firm-mistral-valued-at-14-billion-as-asml-takes-major-stake.html" target="_blank">Mistral $13.8B valuation: CNBC, Sep 2025</a>
         </div>
       </div>
 
@@ -2429,7 +2429,7 @@ body::after {
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);">AI Patent Filings — Innovation Output Gap</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--text-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">China files 70% of all AI patents. But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
+      <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">China accounts for ~75% of generative AI inventions (2014-2023). But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
 
       <canvas id="patentChart" style="width:100%;height:300px;"></canvas>
 
@@ -4159,27 +4159,29 @@ async function fetchDashboardData() {
   ];
 
   // Flows: [educated_idx, working_idx, thickness_weight]
+  // Weights calibrated to match MacroPolo data: ~60% US, ~15% EU, ~10% UK/CH, ~10% CN, ~5% other
   const flows = [
-    // EU-West educated → mostly US
-    {from:0, to:0, w:0.14},  // EU-W → US
-    {from:0, to:1, w:0.06},  // EU-W → EU
-    {from:0, to:2, w:0.02},  // EU-W → UK
-    // EU-East → US & EU
-    {from:1, to:0, w:0.04},  // EU-E → US
-    {from:1, to:1, w:0.03},  // EU-E → EU
-    // UK/CH → US & UK
-    {from:2, to:0, w:0.06},  // UK → US
-    {from:2, to:2, w:0.04},  // UK → UK
-    // China → US & China
-    {from:3, to:0, w:0.16},  // China → US
+    // EU-West educated
+    {from:0, to:0, w:0.10},  // EU-W → US
+    {from:0, to:1, w:0.08},  // EU-W → EU
+    {from:0, to:2, w:0.03},  // EU-W → UK
+    // EU-East
+    {from:1, to:0, w:0.03},  // EU-E → US
+    {from:1, to:1, w:0.04},  // EU-E → EU
+    // UK/CH
+    {from:2, to:0, w:0.05},  // UK → US
+    {from:2, to:2, w:0.05},  // UK → UK
+    // China
+    {from:3, to:0, w:0.14},  // China → US
     {from:3, to:3, w:0.10},  // China → China
-    {from:3, to:1, w:0.02},  // China → EU
-    // India → US
-    {from:4, to:0, w:0.08},  // India → US
+    {from:3, to:1, w:0.03},  // China → EU
+    // India
+    {from:4, to:0, w:0.06},  // India → US
     {from:4, to:2, w:0.02},  // India → UK
+    {from:4, to:4, w:0.02},  // India → other
     // US domestic
-    {from:5, to:0, w:0.16},  // US → US
-    {from:5, to:4, w:0.02},  // US → other
+    {from:5, to:0, w:0.14},  // US → US
+    {from:5, to:4, w:0.03},  // US → other
   ];
 
   const LX = 0.18; // left column x
