@@ -852,7 +852,21 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       </div>
     </div>
 
-    <!-- 8. COALITION CAPABILITIES -->
+    <!-- 8. HUGGINGFACE LIVE MODEL DOMINANCE -->
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Who Controls Open-Source AI?</div>
+        <span id="hfBadge" style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-dim);"></span> LOADING</span>
+      </div>
+      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1rem;">Live data from HuggingFace: the top 50 most-downloaded AI models, classified by region. Updated every page load.</p>
+      <div id="hfRegionSummary" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem;"></div>
+      <div id="hfModelTable" style="font-size:0.75rem;font-family:var(--mono);"></div>
+      <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://huggingface.co/models" target="_blank">HuggingFace Model Hub</a>
+      </div>
+    </div>
+
+    <!-- 9. COALITION CAPABILITIES -->
     <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Coalition Sovereign Infrastructure</div>
@@ -2307,8 +2321,97 @@ function buildDbBars() {
   obs.observe(canvas);
 })();
 
+// --- HuggingFace Live Model Dominance ---
+const HF_ORG_REGION = {
+  'meta-llama':'US','meta':'US','facebook':'US','google':'US','openai':'US',
+  'microsoft':'US','stabilityai':'US','nvidia':'US','apple':'US',
+  'anthropic':'US','databricks':'US','salesforce':'US','huggingface':'US',
+  'EleutherAI':'US','CompVis':'US','runwayml':'US','laion':'US',
+  'sentence-transformers':'US','NousResearch':'US','togethercomputer':'US','lmsys':'US',
+  'mistralai':'EU','bigscience':'EU','aleph-alpha':'EU','CohereForAI':'CA',
+  'deepset':'EU','Helsinki-NLP':'EU','camembert':'EU','dbmdz':'EU','flaubert':'EU',
+  'Qwen':'CN','THUDM':'CN','baichuan-inc':'CN','deepseek-ai':'CN',
+  'internlm':'CN','BAAI':'CN','01-ai':'CN','alibaba':'CN',
+  'tencent':'CN','bytedance':'CN','modelscope':'CN','FlagAlpha':'CN'
+};
+function hfClassifyOrg(name){
+  if(!name)return 'Other';
+  const lower=name.toLowerCase();
+  for(const[key,region] of Object.entries(HF_ORG_REGION)){
+    if(lower===key.toLowerCase()||lower.includes(key.toLowerCase()))return region;
+  }
+  return 'Other';
+}
+function hfFormatDl(n){
+  if(n>=1e9)return(n/1e9).toFixed(1)+'B';
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1)+'K';
+  return String(n);
+}
+async function fetchHFModels(){
+  const badge=document.getElementById('hfBadge');
+  const summary=document.getElementById('hfRegionSummary');
+  const table=document.getElementById('hfModelTable');
+  if(!summary||!table)return;
+  try{
+    const res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false');
+    if(!res.ok)throw new Error('HF API error');
+    const models=await res.json();
+    const regionCounts={US:0,EU:0,CA:0,CN:0,Other:0};
+    const rows=[];
+    models.forEach((m,i)=>{
+      const org=m.id?m.id.split('/')[0]:'';
+      const region=hfClassifyOrg(org);
+      regionCounts[region]++;
+      if(i<10)rows.push({rank:i+1,name:m.id||'Unknown',downloads:m.downloads||0,region});
+    });
+    // Merge CA into EU for display (coalition-aligned)
+    regionCounts.EU+=regionCounts.CA;
+    delete regionCounts.CA;
+    const total=models.length;
+    const colors={US:'var(--db-red)',EU:'var(--db-cyan)',CN:'var(--db-gold)',Other:'rgba(232,224,204,0.3)'};
+    const labels={US:'United States',EU:'Europe/Coalition',CN:'China',Other:'Other'};
+    summary.innerHTML=Object.entries(regionCounts).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([region,count])=>{
+      const pct=Math.round((count/total)*100);
+      return `<div style="padding:0.6rem 1.2rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;flex:1;min-width:100px;">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:${colors[region]};line-height:1;">${pct}%</div>
+        <div style="font-size:0.65rem;color:var(--db-dim);margin-top:2px;">${labels[region]}</div>
+        <div style="font-size:0.55rem;color:var(--db-dim);font-family:var(--mono);">${count} of top ${total}</div>
+      </div>`;
+    }).join('');
+    const rcols={US:'var(--db-red)',EU:'var(--db-cyan)',CA:'var(--db-cyan)',CN:'var(--db-gold)',Other:'rgba(232,224,204,0.3)'};
+    table.innerHTML=`<div style="display:grid;grid-template-columns:24px 1fr 80px 50px;gap:4px 12px;align-items:center;">
+      <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">#</div>
+      <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">MODEL</div>
+      <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">DOWNLOADS</div>
+      <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">REGION</div>
+      ${rows.map(r=>`
+        <div style="color:var(--db-dim);">${r.rank}</div>
+        <div style="color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.name}">${r.name}</div>
+        <div style="color:var(--db-dim);">${hfFormatDl(r.downloads)}</div>
+        <div style="color:${rcols[r.region]||rcols.Other};font-weight:600;">${r.region}</div>
+      `).join('')}
+    </div>`;
+    badge.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> LIVE';
+    badge.style.color='var(--db-green)';
+  }catch(e){
+    summary.innerHTML=['~55% US','~10% EU','~25% CN','~10% Other'].map((t,i)=>{
+      const colors=['var(--db-red)','var(--db-cyan)','var(--db-gold)','rgba(232,224,204,0.3)'];
+      return `<div style="padding:0.6rem 1.2rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;flex:1;min-width:100px;">
+        <div style="font-family:var(--mono);font-size:1.6rem;font-weight:800;color:${colors[i]};line-height:1;">${t.split(' ')[0]}</div>
+        <div style="font-size:0.65rem;color:var(--db-dim);margin-top:2px;">${t.split(' ')[1]}</div>
+        <div style="font-size:0.55rem;color:var(--db-dim);font-family:var(--mono);">estimated</div>
+      </div>`;
+    }).join('');
+    table.innerHTML='<div style="color:var(--db-dim);font-size:0.75rem;">Could not load live data. Estimates based on historical HuggingFace analysis.</div>';
+    badge.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:var(--db-dim);"></span> OFFLINE';
+    badge.style.color='var(--db-dim)';
+  }
+}
+
 // Init dashboard
 buildDbBars();
+fetchHFModels();
 </script>
 </body>
 </html>
