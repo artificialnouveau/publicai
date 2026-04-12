@@ -1555,7 +1555,7 @@ function applyImportData() {
     renderDock();
     showToast(`Loaded ${data.length} companies!`);
   } catch(e) {
-    alert('Invalid JSON: ' + e.message);
+    showToast('Invalid JSON: ' + e.message);
   }
 }
 
