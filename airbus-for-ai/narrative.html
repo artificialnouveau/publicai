@@ -3662,22 +3662,25 @@ function buildDashboardBars(companiesOverride) {
   const el = document.getElementById('dashboardBars');
   if (!el) return;
   const companies = companiesOverride || [
+    {name:'OpenAI', val:852, color:'#10a37f', region:'US'},
+    {name:'Anthropic', val:380, color:'#D4A574', region:'US'},
+    {name:'xAI (Grok)', val:230, color:'#1a1a2e', region:'US'},
     {name:'Alphabet (Google AI)', val:200, color:'#4285f4', region:'US'},
-    {name:'OpenAI', val:157, color:'#10a37f', region:'US'},
     {name:'ByteDance AI', val:80, color:'#ff004f', region:'CN'},
     {name:'Meta AI', val:60, color:'#0668E1', region:'US'},
-    {name:'Amazon AI/AWS', val:45, color:'#FF9900', region:'US'},
-    {name:'Anthropic', val:30, color:'#D4A574', region:'US'},
-    {name:'Mistral AI', val:6, color:'var(--cyan)', region:'EU'},
-    {name:'Aleph Alpha', val:0.5, color:'var(--cyan)', region:'EU'},
+    {name:'Mistral AI', val:13.8, color:'var(--cyan)', region:'EU'},
+    {name:'Cohere', val:7, color:'#ef4444', region:'CA'},
+    {name:'DeepL', val:2, color:'#06b6d4', region:'EU'},
     {name:'Stability AI', val:1, color:'var(--cyan)', region:'EU'},
+    {name:'Multiverse Computing', val:0.5, color:'#f59e0b', region:'EU'},
+    {name:'Aleph Alpha', val:0.5, color:'var(--cyan)', region:'EU'},
   ];
   const maxVal = Math.max(...companies.map(c=>c.val));
   el.innerHTML = companies.map(c => {
     const pct = (c.val / maxVal) * 100;
-    const isEU = c.region === 'EU';
+    const isCoalition = c.region !== 'US' && c.region !== 'CN';
     return `<div style="display:flex;align-items:center;gap:10px;">
-      <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isEU?'0.7':'0.4'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
+      <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isCoalition?'0.7':'0.4'});font-weight:${isCoalition?'700':'400'};text-align:right;">${c.name}</div>
       <div style="flex:1;height:14px;background:var(--border);border-radius:2px;overflow:hidden;">
         <div style="width:${pct}%;height:100%;background:${c.color};border-radius:2px;opacity:0.7;transition:width 1s;"></div>
       </div>
