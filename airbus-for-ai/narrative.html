@@ -1298,12 +1298,12 @@ body::after {
     <span class="ticker-item"><span class="ticker-dot amber"></span>MISTRAL MARKET SHARE: 2.1%</span>
     <span class="ticker-item"><span class="ticker-dot green"></span>HUGGINGFACE MODELS: 1.2M+</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>EU STARTUP RELOCATIONS: 34% TO US</span>
-    <span class="ticker-item"><span class="ticker-dot amber"></span>OPENAI VALUATION: $157B</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>OPENAI VALUATION: $852B</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>EU CLOUD DEPENDENCY: 70% US-OWNED</span>
-    <span class="ticker-item"><span class="ticker-dot green"></span>ASML MARKET CAP: EUR 280B</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>ASML MARKET CAP: EUR 527B</span>
     <span class="ticker-item"><span class="ticker-dot amber"></span>GLOBAL AI INVESTMENT: $180B (2024)</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>EU AI COMPUTE: ~2% OF GLOBAL</span>
-    <span class="ticker-item"><span class="ticker-dot amber"></span>ANTHROPIC VALUATION: $30B</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>ANTHROPIC VALUATION: $380B</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>CHIPS ACT: MAINSTREAM CHIPS OVERLOOKED</span>
     <span class="ticker-item"><span class="ticker-dot green"></span>WIFI ALLIANCE MODEL: 6 FOUNDERS</span>
     <!-- Duplicate for seamless scroll -->
@@ -1311,12 +1311,12 @@ body::after {
     <span class="ticker-item"><span class="ticker-dot amber"></span>MISTRAL MARKET SHARE: 2.1%</span>
     <span class="ticker-item"><span class="ticker-dot green"></span>HUGGINGFACE MODELS: 1.2M+</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>EU STARTUP RELOCATIONS: 34% TO US</span>
-    <span class="ticker-item"><span class="ticker-dot amber"></span>OPENAI VALUATION: $157B</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>OPENAI VALUATION: $852B</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>EU CLOUD DEPENDENCY: 70% US-OWNED</span>
-    <span class="ticker-item"><span class="ticker-dot green"></span>ASML MARKET CAP: EUR 280B</span>
+    <span class="ticker-item"><span class="ticker-dot green"></span>ASML MARKET CAP: EUR 527B</span>
     <span class="ticker-item"><span class="ticker-dot amber"></span>GLOBAL AI INVESTMENT: $180B (2024)</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>EU AI COMPUTE: ~2% OF GLOBAL</span>
-    <span class="ticker-item"><span class="ticker-dot amber"></span>ANTHROPIC VALUATION: $30B</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span>ANTHROPIC VALUATION: $380B</span>
     <span class="ticker-item"><span class="ticker-dot red"></span>CHIPS ACT: MAINSTREAM CHIPS OVERLOOKED</span>
     <span class="ticker-item"><span class="ticker-dot green"></span>WIFI ALLIANCE MODEL: 6 FOUNDERS</span>
   </div>
@@ -2756,14 +2756,14 @@ let mcBarPositions = [];
 let mcHighlighted = -1;
 let mcFilter = 'all';
 const MC_ALL_DATA = [
-  { name: 'Google DeepMind', val: 200, color: '#4285f4', eu: false, region: 'US', desc: 'Alphabet\'s AI division. Merged Google Brain + DeepMind. Dominates research output.' },
-  { name: 'OpenAI', val: 157, color: '#10a37f', eu: false, region: 'US', desc: 'Creator of GPT series. $157B valuation as of Mar 2025. Largest AI startup ever.' },
+  { name: 'OpenAI', val: 852, color: '#10a37f', eu: false, region: 'US', desc: 'Creator of GPT series. $852B valuation (Mar 2026). ~$24B annualized revenue.' },
+  { name: 'Anthropic', val: 380, color: '#D4A574', eu: false, region: 'US', desc: 'Safety-focused AI lab. Claude models. $380B valuation (Feb 2026). $14B ARR.' },
+  { name: 'xAI (Grok)', val: 230, color: '#1a1a2e', eu: false, region: 'US', desc: 'Elon Musk\'s AI lab. $230B valuation (Jan 2026). 100K H100 Colossus cluster.' },
+  { name: 'Google DeepMind', val: 200, color: '#4285f4', eu: false, region: 'US', desc: 'Alphabet\'s AI division. Estimated standalone value. Dominates research output.' },
   { name: 'ByteDance AI', val: 80, color: '#ff004f', eu: false, region: 'CN', desc: 'TikTok parent. Major AI research lab. Competing in foundation models with Doubao.' },
   { name: 'Meta AI', val: 60, color: '#0668E1', eu: false, region: 'US', desc: 'Meta\'s AI division. Open-sourced LLaMA. Subsidized by social media revenue.' },
-  { name: 'Amazon AI/AWS', val: 45, color: '#FF9900', eu: false, region: 'US', desc: 'AWS Bedrock, Titan models. World\'s largest cloud provider with AI integration.' },
-  { name: 'Anthropic', val: 30, color: '#D4A574', eu: false, region: 'US', desc: 'Safety-focused AI lab. Claude models. $60B valuation target. Backed by Amazon/Google.' },
-  { name: 'All other EU AI', val: 15, color: '#ff3333', eu: true, region: 'EU', desc: 'Combined value of all other European AI companies. Fragmented across 27 nations.' },
-  { name: 'Mistral AI', val: 6, color: '#ff3333', eu: true, region: 'EU', desc: 'France\'s leading AI lab. ~2% global LLM market share. Europe\'s best hope.' },
+  { name: 'Mistral AI', val: 13.8, color: '#ff3333', eu: true, region: 'EU', desc: 'France\'s leading AI lab. $13.8B valuation. ~$400M ARR. 20x growth in 12 months.' },
+  { name: 'Cohere', val: 7, color: '#ef4444', eu: true, region: 'EU', desc: 'Canadian enterprise AI. $7B valuation. North platform. 17K+ enterprise customers.' },
 ];
 
 function filterMarketCap(region, btn){
