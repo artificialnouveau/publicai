@@ -541,6 +541,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; }
   .scenario-levers { gap: 0.5rem; }
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
+  #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 600px) {
   .hero-stats-row { flex-direction: column; gap: 1rem; }
@@ -550,8 +551,10 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   #dashboard [style*="grid-template-columns:1fr 1fr"],
   #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
   .battle-rounds { grid-template-columns: 1fr !important; }
+  #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 480px) {
+  #inactionCards { grid-template-columns: 1fr !important; }
   .company-chip { min-width: 100% !important; flex: none; }
   .reactor-ring { width: min(280px, 75vw); height: min(280px, 75vw); }
   .reactor-power-num { font-size: 2rem; }
@@ -584,6 +587,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
   <div class="topnav-links">
     <a href="#dashboard" style="color:var(--cyan);">Dashboard</a>
+    <a href="#inaction" style="color:var(--red);">Cost of Inaction</a>
     <a href="narrative.html" style="color:var(--gold);">&#9655; The Story</a>
     <a href="simulation.html" style="color:var(--green);">&#9655; Situation Room</a>
   </div>
@@ -1042,6 +1046,43 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <p>From first handshake to competitive parity. Each milestone builds on the last.</p>
     </div>
     <div class="timeline-vertical" id="timelineVertical"></div>
+  </div>
+</section>
+
+<!-- COST OF INACTION -->
+<section class="inaction-section" id="inaction" style="padding:5rem 2rem;background:linear-gradient(170deg, var(--navy-dark) 0%, var(--navy) 100%);color:white;">
+  <div style="max-width:960px;margin:0 auto;">
+    <div class="section-header center fade-up">
+      <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:0.5rem;font-weight:700;">The Cost of Inaction</div>
+      <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:300;margin-bottom:0.5rem;">What happens if middle powers don't consolidate</h2>
+      <p style="font-size:0.9rem;opacity:0.6;max-width:600px;margin:0 auto 2rem;">Every year of fragmentation widens the gap. These projections trace the diverging trajectories of inaction vs. coalition.</p>
+    </div>
+
+    <!-- Controls -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <label for="inactionYear" style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.6;">Year</label>
+        <input type="range" id="inactionYear" min="2026" max="2035" value="2030" step="1" style="width:180px;accent-color:var(--red);">
+        <span id="inactionYearLabel" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:300;min-width:3ch;">2030</span>
+      </div>
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.8rem;opacity:0.7;">
+        <input type="checkbox" id="inactionCompare" style="accent-color:var(--cyan);"> Show coalition trajectory
+      </label>
+    </div>
+
+    <!-- 4 Metric Cards -->
+    <div id="inactionCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;"></div>
+
+    <!-- Chart -->
+    <div style="position:relative;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.2);padding:1rem;">
+      <canvas id="inactionChart" style="width:100%;height:clamp(220px,35vw,360px);display:block;"></canvas>
+      <div id="inactionLegend" style="display:flex;gap:1.5rem;justify-content:center;margin-top:0.75rem;font-size:0.7rem;opacity:0.5;"></div>
+    </div>
+
+    <!-- Sources -->
+    <div style="text-align:center;margin-top:1.5rem;font-size:0.65rem;opacity:0.35;max-width:600px;margin-left:auto;margin-right:auto;">
+      Sources: MacroPolo Global AI Talent Tracker, Synergy Research Group, Stanford HAI AI Index 2025, EuroHPC Joint Undertaking, Atomico State of European Tech 2025. Projections are editorial estimates for illustrative purposes.
+    </div>
   </div>
 </section>
 
@@ -2521,7 +2562,184 @@ window.addEventListener('resize', debounce(() => {
   const pc = document.getElementById('parallelCanvas');
   if (ac) { const fn = ac._drawFn; if (fn) fn(); }
   if (pc) { const fn = pc._drawFn; if (fn) fn(); }
+  // Redraw inaction chart
+  if (typeof renderInaction === 'function') renderInaction();
 }, 250));
+
+// ============================================================
+// COST OF INACTION CALCULATOR
+// ============================================================
+const INACTION_METRICS = [
+  { id: 'talent', label: 'EU Researchers in US', unit: '%', icon: '\u{1F9D1}\u{200D}\u{1F52C}',
+    base: 60, statusQuo: 2.5, coalition: -3, color: '#e63946',
+    source: 'MacroPolo Global AI Talent Tracker' },
+  { id: 'cloud', label: 'EU Cloud US-Owned', unit: '%', icon: '\u2601\uFE0F',
+    base: 70, statusQuo: 1.5, coalition: -2, color: '#f0a500',
+    source: 'Synergy Research Group' },
+  { id: 'capital', label: 'US:EU AI Investment Ratio', unit: ':1', icon: '\u{1F4B0}',
+    base: 8, statusQuo: 0.5, coalition: -1, color: '#7c3aed',
+    source: 'Stanford HAI AI Index 2025, Atomico' },
+  { id: 'compute', label: 'EU Share Global AI Compute', unit: '%', icon: '\u{1F5A5}\uFE0F',
+    base: 2, statusQuo: -0.15, coalition: 0.5, color: '#2ec4b6',
+    source: 'EuroHPC Joint Undertaking', invert: true }
+];
+
+function getInactionVal(m, year, scenario) {
+  const years = year - 2026;
+  const delta = scenario === 'coalition' ? m.coalition : m.statusQuo;
+  let val = m.base + delta * years;
+  if (m.id === 'compute') val = Math.max(0.1, val);
+  if (m.unit === '%') val = Math.min(95, Math.max(0, val));
+  if (m.id === 'capital') val = Math.max(1, val);
+  return Math.round(val * 10) / 10;
+}
+
+function renderInactionCards(year, showCoalition) {
+  const el = document.getElementById('inactionCards');
+  if (!el) return;
+  el.innerHTML = INACTION_METRICS.map(m => {
+    const sq = getInactionVal(m, year, 'statusQuo');
+    const co = getInactionVal(m, year, 'coalition');
+    const worse = m.invert ? sq < m.base : sq > m.base;
+    const arrow = worse ? '\u2191' : '\u2193';
+    const changeColor = worse ? 'var(--red)' : 'var(--green)';
+    return `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;text-align:center;">
+      <div style="font-size:1.4rem;margin-bottom:0.25rem;">${m.icon}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:300;color:${m.color};">${sq}${m.unit}</div>
+      ${showCoalition ? `<div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--cyan);opacity:0.7;margin-top:2px;">${co}${m.unit} <span style="font-size:0.65rem;">w/ coalition</span></div>` : ''}
+      <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;margin-top:0.4rem;">${m.label}</div>
+      <div style="font-size:0.7rem;color:${changeColor};margin-top:0.25rem;">${arrow} ${Math.abs(Math.round((sq - m.base) * 10) / 10)}${m.unit} from 2026</div>
+    </div>`;
+  }).join('');
+}
+
+function renderInactionChart() {
+  const canvas = document.getElementById('inactionChart');
+  if (!canvas) return;
+  const showCoalition = document.getElementById('inactionCompare')?.checked;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  if (W === 0 || H === 0) return;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 50, padR = 20, padT = 20, padB = 35;
+  const cw = W - padL - padR, ch = H - padT - padB;
+  const years = [];
+  for (let y = 2026; y <= 2035; y++) years.push(y);
+
+  // Draw grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + (ch / 4) * i;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + cw, y); ctx.stroke();
+  }
+
+  // X-axis labels
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.font = '10px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  years.forEach((yr, i) => {
+    const x = padL + (i / (years.length - 1)) * cw;
+    ctx.fillText(yr, x, H - 8);
+  });
+
+  // Draw metric lines
+  INACTION_METRICS.forEach(m => {
+    const vals = years.map(yr => getInactionVal(m, yr, 'statusQuo'));
+    const minV = Math.min(m.base * 0.5, ...vals);
+    const maxV = Math.max(m.base * 1.5, ...vals) || 100;
+    const norm = v => padT + ch - ((v - minV) / (maxV - minV)) * ch;
+
+    // Status quo line
+    ctx.strokeStyle = m.color;
+    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    vals.forEach((v, i) => {
+      const x = padL + (i / (years.length - 1)) * cw;
+      i === 0 ? ctx.moveTo(x, norm(v)) : ctx.lineTo(x, norm(v));
+    });
+    ctx.stroke();
+
+    // Fill area under status quo
+    ctx.fillStyle = m.color.replace(')', ',0.08)').replace('rgb', 'rgba').replace('#', '');
+    // Use hex-to-rgba for fill
+    ctx.globalAlpha = 0.08;
+    ctx.fillStyle = m.color;
+    ctx.beginPath();
+    vals.forEach((v, i) => {
+      const x = padL + (i / (years.length - 1)) * cw;
+      i === 0 ? ctx.moveTo(x, norm(v)) : ctx.lineTo(x, norm(v));
+    });
+    ctx.lineTo(padL + cw, padT + ch);
+    ctx.lineTo(padL, padT + ch);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Coalition line (dashed)
+    if (showCoalition) {
+      const cVals = years.map(yr => getInactionVal(m, yr, 'coalition'));
+      ctx.strokeStyle = m.color;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 4]);
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      cVals.forEach((v, i) => {
+        const x = padL + (i / (years.length - 1)) * cw;
+        i === 0 ? ctx.moveTo(x, norm(v)) : ctx.lineTo(x, norm(v));
+      });
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    }
+
+    // Label at end
+    const lastVal = vals[vals.length - 1];
+    ctx.fillStyle = m.color;
+    ctx.font = '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${lastVal}${m.unit}`, padL + cw + 3, norm(lastVal) + 3);
+  });
+
+  // Y-axis label
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '9px JetBrains Mono, monospace';
+  ctx.textAlign = 'right';
+  ctx.fillText('Baseline 2026', padL - 5, padT + ch + 3);
+
+  // Legend
+  const legendEl = document.getElementById('inactionLegend');
+  if (legendEl) {
+    legendEl.innerHTML = INACTION_METRICS.map(m =>
+      `<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:${m.color};display:inline-block;border-radius:2px;"></span>${m.label}</span>`
+    ).join('') + (showCoalition ? '<span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:var(--cyan);display:inline-block;border-radius:2px;border:1px dashed white;"></span>Coalition</span>' : '');
+  }
+}
+
+function renderInaction() {
+  const year = parseInt(document.getElementById('inactionYear')?.value || 2030);
+  const showCoalition = document.getElementById('inactionCompare')?.checked || false;
+  document.getElementById('inactionYearLabel').textContent = year;
+  renderInactionCards(year, showCoalition);
+  renderInactionChart();
+}
+
+// Initialize inaction calculator
+document.getElementById('inactionYear')?.addEventListener('input', renderInaction);
+document.getElementById('inactionCompare')?.addEventListener('change', renderInaction);
+
+// Trigger initial render when section scrolls into view
+const inactionObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { renderInaction(); inactionObs.disconnect(); } });
+}, { threshold: 0.1 });
+const inactionEl = document.getElementById('inaction');
+if (inactionEl) inactionObs.observe(inactionEl);
+
 </script>
 </body>
 </html>
