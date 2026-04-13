@@ -123,11 +123,21 @@ body { font-family: 'Inter', -apple-system, sans-serif; background: var(--off-wh
       id="sovereigntyFrame"
       src="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/"
       title="Model Sovereignty Index Dashboard"
-      loading="lazy"
       allow="clipboard-read; clipboard-write"
       style="display:none;"
-      onload="this.style.display='block'; document.getElementById('dashboardLoading').style.display='none';"
     ></iframe>
+    <script>
+    (function(){
+      var frame = document.getElementById('sovereigntyFrame');
+      var loading = document.getElementById('dashboardLoading');
+      function showFrame(){ frame.style.display='block'; loading.style.display='none'; }
+      frame.addEventListener('load', showFrame);
+      // Fallback: show iframe after 5s even if load event doesn't fire
+      setTimeout(function(){
+        if(frame.style.display==='none'){ showFrame(); }
+      }, 5000);
+    })();
+    </script>
   </div>
   <div style="text-align:center;margin-top:0.75rem;font-size:0.7rem;color:var(--text-secondary);">
     <a href="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/" target="_blank" style="color:var(--sky);text-decoration:none;">Open full dashboard in new tab</a>
@@ -137,21 +147,19 @@ body { font-family: 'Inter', -apple-system, sans-serif; background: var(--off-wh
 </div>
 
 <!-- WHY THIS MATTERS -->
-<div class="method-note">
-  <details>
-    <summary>Why model sovereignty matters for the Public AI Company</summary>
-    <div class="content">
-      <p>The Airbus for AI initiative argues that middle powers need to build, not just buy, frontier AI. But how do you measure whether a country actually controls the AI it depends on? The Model Sovereignty Index provides a concrete, data-driven answer.</p>
-      <p><strong>The six dimensions</strong> map directly to the sovereignty risks identified in the Bennett School policy brief:</p>
-      <p><strong>Training Data Privacy</strong> measures whether a model's training data can be audited and controlled, critical for GDPR compliance and preventing foreign surveillance through training data.</p>
-      <p><strong>Local Training Capability</strong> assesses whether a model can be trained or fine-tuned on domestic infrastructure, the core argument for pooled European compute.</p>
-      <p><strong>Control of Weights</strong> evaluates whether the model's parameters are accessible and modifiable, essential for air-gapped government deployments like Aleph Alpha's PhariaAI.</p>
-      <p><strong>Model Independence</strong> scores how reliant a model is on foreign APIs, cloud services, or proprietary components, the "dependency" risk at the heart of the middle powers' dilemma.</p>
-      <p><strong>Weight Privacy</strong> assesses protection against unauthorized extraction, relevant for defense and critical infrastructure use cases.</p>
-      <p><strong>Country-Specific Knowledge</strong> measures linguistic and cultural coverage, the dimension where DeepL's 100+ languages and Cohere's Aya models provide the coalition's strongest advantage.</p>
-      <p>A Public AI Company would aim to score high across all six dimensions: open weights for sovereignty, trained on domestic compute, independent of foreign cloud, with deep multilingual coverage. Use the index to see which existing models come closest, and where the gaps are.</p>
-    </div>
-  </details>
+<div style="max-width:800px;margin:0 auto;padding:0 2rem 3rem;">
+  <h2 style="font-size:1.2rem;color:var(--navy);margin-bottom:1rem;">Why model sovereignty matters for the Public AI Company</h2>
+  <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
+    <p style="margin-bottom:0.75rem;">The Airbus for AI initiative argues that middle powers need to build, not just buy, frontier AI. But how do you measure whether a country actually controls the AI it depends on? The Model Sovereignty Index provides a concrete, data-driven answer.</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">The six dimensions</strong> map directly to the sovereignty risks identified in the Bennett School policy brief:</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Training Data Privacy</strong> measures whether a model's training data can be audited and controlled, critical for GDPR compliance and preventing foreign surveillance through training data.</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Local Training Capability</strong> assesses whether a model can be trained or fine-tuned on domestic infrastructure, the core argument for pooled European compute.</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Control of Weights</strong> evaluates whether the model's parameters are accessible and modifiable, essential for air-gapped government deployments like Aleph Alpha's PhariaAI.</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Model Independence</strong> scores how reliant a model is on foreign APIs, cloud services, or proprietary components, the "dependency" risk at the heart of the middle powers' dilemma.</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Weight Privacy</strong> assesses protection against unauthorized extraction, relevant for defense and critical infrastructure use cases.</p>
+    <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Country-Specific Knowledge</strong> measures linguistic and cultural coverage, the dimension where DeepL's 100+ languages and Cohere's Aya models provide the coalition's strongest advantage.</p>
+    <p>A Public AI Company would aim to score high across all six dimensions: open weights for sovereignty, trained on domestic compute, independent of foreign cloud, with deep multilingual coverage. Use the index to see which existing models come closest, and where the gaps are.</p>
+  </div>
 </div>
 
 <!-- FOOTER -->
