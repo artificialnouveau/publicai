@@ -2703,7 +2703,7 @@ function renderInactionChart() {
   ctx.clearRect(0, 0, W, H);
 
   const padL = 50, padR = 20, padT = 20, padB = 35;
-  const cw = W - padL - padR, ch = H - padT - padB;
+  const cw = Math.max(1, W - padL - padR), ch = Math.max(1, H - padT - padB);
   const years = [];
   for (let y = 2026; y <= 2035; y++) years.push(y);
 
@@ -2729,7 +2729,7 @@ function renderInactionChart() {
     const vals = years.map(yr => getInactionVal(m, yr, 'statusQuo'));
     const minV = Math.min(m.base * 0.5, ...vals);
     const maxV = Math.max(m.base * 1.5, ...vals) || 100;
-    const norm = v => padT + ch - ((v - minV) / (maxV - minV)) * ch;
+    const norm = v => padT + ch - ((v - minV) / Math.max(0.001, maxV - minV)) * ch;
 
     // Status quo line
     ctx.strokeStyle = m.color;
@@ -2743,8 +2743,6 @@ function renderInactionChart() {
     ctx.stroke();
 
     // Fill area under status quo
-    ctx.fillStyle = m.color.replace(')', ',0.08)').replace('rgb', 'rgba').replace('#', '');
-    // Use hex-to-rgba for fill
     ctx.globalAlpha = 0.08;
     ctx.fillStyle = m.color;
     ctx.beginPath();

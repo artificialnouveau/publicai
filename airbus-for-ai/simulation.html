@@ -1114,6 +1114,9 @@ function initAnimObservers(){
         if(!e.isIntersecting){
           animActive.arena = false;
           animActive.people = false;
+        } else if(S.gameStarted){
+          animActive.arena = true;
+          animActive.people = true;
         }
       }
     });
