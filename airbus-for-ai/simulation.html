@@ -675,6 +675,29 @@ body{
   .stat-box{min-width:60px;padding:1rem 0.5rem;}
   .risk-meter,.risk-label{display:none !important;}
 }
+@media(max-width:768px){
+  .hero h1{font-size:1.8rem;}
+  .hero-sub{font-size:0.9rem;}
+  .neg-active-clause{padding:1rem;}
+  .text-action-btn{min-height:44px;padding:12px 16px;font-size:0.85rem;}
+  .conv-grid{grid-template-columns:1fr;}
+  .day-row,.split-headers{grid-template-columns:1fr;}
+  .neg-options{grid-template-columns:1fr;}
+  .blueprint{padding:1rem;}
+  .neg-option{min-height:44px;}
+  .start-btn{min-height:44px;}
+}
+@media(max-width:480px){
+  .hero h1{font-size:1.4rem;}
+  .stat-box{padding:0.5rem;font-size:0.75rem;}
+  .stat-box .val{font-size:1.3rem;}
+  .neg-clause-question{font-size:1rem;}
+  .text-action-btn{font-size:0.8rem;padding:10px 12px;}
+  .neg-sh{font-size:0.7rem;width:60px;}
+  .sov-val{font-size:0.65rem;}
+  .neg-stakeholder-bar{gap:8px;}
+  .neg-sh-icon{width:40px;height:40px;font-size:1.1rem;}
+}
 /* === BRIEFING DOCUMENTS === */
 .briefing{padding:14px 18px;margin-bottom:10px;border-radius:6px;font-size:0.95rem;line-height:1.65;color:rgba(255,255,255,0.6);}
 .briefing-header{font-size:0.68rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
@@ -1028,6 +1051,7 @@ body{
 // ============================================================
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(prefersReducedMotion){window.pulseAll=function(){};window.pulseCountry=function(){};}
+function debounce(fn, ms) { let t; return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
 
 // ============================================================
 // SECTION TRANSITIONS
@@ -2465,6 +2489,27 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.body.appendChild(resumeBar);
   }
 });
+
+// Canvas resize handler for mobile responsiveness
+window.addEventListener('resize', debounce(() => {
+  ['arenaCanvas','peopleCanvas'].forEach(id => {
+    const c = document.getElementById(id);
+    if (!c || !c.parentElement) return;
+    const parent = c.parentElement;
+    const pw = parent.offsetWidth;
+    const ph = parent.offsetHeight || c.offsetHeight;
+    if (pw > 0 && ph > 0) {
+      c.width = pw * 2; c.height = ph * 2;
+      c.style.width = pw + 'px'; c.style.height = ph + 'px';
+    }
+  });
+  // Re-init arena dimensions for draw loop
+  const arenaEl = document.getElementById('battleArena');
+  const arenaC = document.getElementById('arenaCanvas');
+  if (arenaEl && arenaC) { arenaW = arenaC.width; arenaH = arenaC.height; }
+  const peopleC = document.getElementById('peopleCanvas');
+  if (peopleC) { peopleW = peopleC.width; peopleH = peopleC.height; }
+}, 250));
 </script>
 
 <!-- Sources & Disclaimer -->

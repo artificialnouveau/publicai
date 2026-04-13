@@ -407,6 +407,16 @@ body::after {
   .topnav { padding: 0 1rem; }
   .topnav-brand { font-size: 0.7rem; }
 }
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.6rem; }
+  .chapter-card { min-width: 200px; max-width: 100%; }
+  .split-section { gap: 0; }
+  .split-data { min-height: auto; }
+  .exodus-item { font-size: 0.7rem; gap: 4px; }
+  .heatmap-table { font-size: 0.6rem; }
+  .heatmap-table td, .heatmap-table th { padding: 4px 3px; }
+  .conclusion h2 { font-size: 1.5rem; }
+}
 
 /* === SPLIT LAYOUT === */
 .split-section {
@@ -2127,7 +2137,7 @@ body::after {
 
       <!-- Real precedents timeline -->
       <div class="reveal">
-        <canvas id="precedentsCanvas" style="width:100%;height:340px;" role="img" aria-label="Timeline of legal precedents affecting data sovereignty"></canvas>
+        <canvas id="precedentsCanvas" style="width:100%;height:clamp(230px, 36vw, 340px);" role="img" aria-label="Timeline of legal precedents affecting data sovereignty"></canvas>
       </div>
 
       <!-- Real-world precedent cards -->
@@ -2204,7 +2214,7 @@ body::after {
         <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Wi-Fi Alliance formed in 1999: six companies united to guarantee interoperability. A rising tide lifts all ships, so long as everyone agrees to open their respective dams. The Airbus precedent took thirteen years from first talks to first breakthrough. Two timelines, side by side.</p>
       </div>
       <div class="reveal">
-        <canvas id="timelineArcsCanvas" style="width:100%;height:200px;margin-bottom:1rem;" role="img" aria-label="Parallel timeline arcs comparing Airbus aviation history with AI coalition"></canvas>
+        <canvas id="timelineArcsCanvas" style="width:100%;height:clamp(150px, 25vw, 200px);margin-bottom:1rem;" role="img" aria-label="Parallel timeline arcs comparing Airbus aviation history with AI coalition"></canvas>
       </div>
       <div class="widget reveal">
         <h3>Timeline: The Airbus Parallel</h3>
@@ -2258,7 +2268,7 @@ body::after {
       </div>
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
 
-      <canvas id="capitalFlowCanvas" style="width:100%;height:320px;" role="img" aria-label="Capital flow visualization showing where EU AI investment ends up"></canvas>
+      <canvas id="capitalFlowCanvas" style="width:100%;height:clamp(220px, 35vw, 320px);" role="img" aria-label="Capital flow visualization showing where EU AI investment ends up"></canvas>
 
       <!-- Stat summary below canvas -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
@@ -2293,7 +2303,7 @@ body::after {
       </div>
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
 
-      <canvas id="talentChordCanvas" style="width:100%;height:400px;" role="img" aria-label="Talent migration chord diagram showing where EU AI researchers end up"></canvas>
+      <canvas id="talentChordCanvas" style="width:100%;height:clamp(260px, 40vw, 400px);" role="img" aria-label="Talent migration chord diagram showing where EU AI researchers end up"></canvas>
 
       <!-- Legend -->
       <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:1rem;justify-content:center;">
@@ -2333,7 +2343,7 @@ body::after {
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
 
       <!-- Map visualization -->
-      <canvas id="computeMapCanvas" style="width:100%;height:380px;" role="img" aria-label="Map of global compute infrastructure and data center locations"></canvas>
+      <canvas id="computeMapCanvas" style="width:100%;height:clamp(250px, 38vw, 380px);" role="img" aria-label="Map of global compute infrastructure and data center locations"></canvas>
 
       <!-- Two-column comparison -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
@@ -2432,7 +2442,7 @@ body::after {
       </div>
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">China accounts for ~75% of generative AI inventions (2014-2023). But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
 
-      <canvas id="patentChart" style="width:100%;height:300px;" role="img" aria-label="Patent landscape chart comparing GenAI inventions by region"></canvas>
+      <canvas id="patentChart" style="width:100%;height:clamp(200px, 32vw, 300px);" role="img" aria-label="Patent landscape chart comparing GenAI inventions by region"></canvas>
 
       <!-- Key metrics row -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
@@ -2495,7 +2505,7 @@ body::after {
       </div>
 
       <!-- Force network canvas -->
-      <canvas id="playersNetworkCanvas" style="width:100%;height:500px;cursor:grab;" role="img" aria-label="Interactive network graph of rising AI players across Europe, Asia, and Africa"></canvas>
+      <canvas id="playersNetworkCanvas" style="width:100%;height:clamp(300px, 45vw, 500px);cursor:grab;" role="img" aria-label="Interactive network graph of rising AI players across Europe, Asia, and Africa"></canvas>
 
       <!-- Tooltip for hover -->
       <div id="playerTooltip" style="display:none;position:fixed;padding:12px 16px;background:rgba(5,9,15,0.95);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;z-index:300;pointer-events:none;max-width:280px;">
@@ -2575,6 +2585,8 @@ body::after {
 </section>
 
 <script>
+function debounce(fn, ms) { let t; return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+
 // ============================================================
 // PROGRESS BAR
 // ============================================================
@@ -4720,11 +4732,16 @@ async function fetchDashboardData() {
     if (hoveredNode) {
       canvas.style.cursor = 'pointer';
       tooltip.style.display = 'block';
-      tooltip.style.left = (e.clientX + 14) + 'px';
-      tooltip.style.top = (e.clientY - 10) + 'px';
+      const txRaw = e.clientX + 14, tyRaw = e.clientY - 10;
+      tooltip.style.left = txRaw + 'px';
+      tooltip.style.top = tyRaw + 'px';
       ptName.textContent = hoveredNode.name;
       ptMeta.textContent = `${hoveredNode.country} · ${hoveredNode.type}`;
       ptDesc.textContent = hoveredNode.desc;
+      const maxX = window.innerWidth - tooltip.offsetWidth - 10;
+      const maxY = window.innerHeight - tooltip.offsetHeight - 10;
+      tooltip.style.left = Math.min(Math.max(10, txRaw), maxX) + 'px';
+      tooltip.style.top = Math.min(Math.max(10, tyRaw), maxY) + 'px';
     } else {
       canvas.style.cursor = 'grab';
       tooltip.style.display = 'none';
@@ -4735,6 +4752,66 @@ async function fetchDashboardData() {
     tooltip.style.display = 'none';
     hoveredNode = null;
   });
+
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const mx = t.clientX - rect.left;
+    const my = t.clientY - rect.top;
+    hoveredNode = null;
+    players.forEach(p => {
+      if (!p.visible) return;
+      const dx = p.x - mx, dy = p.y - my;
+      if (Math.sqrt(dx*dx+dy*dy) < p.r + 12) hoveredNode = p;
+    });
+    if (hoveredNode) {
+      tooltip.style.display = 'block';
+      ptName.textContent = hoveredNode.name;
+      ptMeta.textContent = `${hoveredNode.country} · ${hoveredNode.type}`;
+      ptDesc.textContent = hoveredNode.desc;
+      const txRaw = t.clientX + 14, tyRaw = t.clientY - 10;
+      const maxX = window.innerWidth - tooltip.offsetWidth - 10;
+      const maxY = window.innerHeight - tooltip.offsetHeight - 10;
+      tooltip.style.left = Math.min(Math.max(10, txRaw), maxX) + 'px';
+      tooltip.style.top = Math.min(Math.max(10, tyRaw), maxY) + 'px';
+    } else {
+      tooltip.style.display = 'none';
+    }
+  }, {passive:false});
+
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const mx = t.clientX - rect.left;
+    const my = t.clientY - rect.top;
+    hoveredNode = null;
+    players.forEach(p => {
+      if (!p.visible) return;
+      const dx = p.x - mx, dy = p.y - my;
+      if (Math.sqrt(dx*dx+dy*dy) < p.r + 12) hoveredNode = p;
+    });
+    if (hoveredNode) {
+      tooltip.style.display = 'block';
+      ptName.textContent = hoveredNode.name;
+      ptMeta.textContent = `${hoveredNode.country} · ${hoveredNode.type}`;
+      ptDesc.textContent = hoveredNode.desc;
+      const txRaw = t.clientX + 14, tyRaw = t.clientY - 10;
+      const maxX = window.innerWidth - tooltip.offsetWidth - 10;
+      const maxY = window.innerHeight - tooltip.offsetHeight - 10;
+      tooltip.style.left = Math.min(Math.max(10, txRaw), maxX) + 'px';
+      tooltip.style.top = Math.min(Math.max(10, tyRaw), maxY) + 'px';
+    } else {
+      tooltip.style.display = 'none';
+    }
+  }, {passive:false});
+
+  canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    tooltip.style.display = 'none';
+    hoveredNode = null;
+  }, {passive:false});
 
   function simulate() {
     const W = canvas.width / dpr, H = canvas.height / dpr;

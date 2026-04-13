@@ -522,12 +522,20 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
+/* Touch-friendly sliders */
+.scenario-levers input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: rgba(0,32,91,0.15); border-radius: 3px; outline: none; }
+.scenario-levers input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--sky); cursor: pointer; }
+@media (max-width: 768px) {
+  .scenario-levers input[type=range]::-webkit-slider-thumb { width: 28px; height: 28px; }
+  .scenario-levers input[type=range] { height: 8px; }
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
   .assembly-layout { grid-template-columns: 1fr; }
   .company-dock { flex-direction: row; flex-wrap: wrap; }
   .company-chip { flex: 1; min-width: 250px; }
-  .reactor-ring { width: 280px; height: 280px; }
+  .reactor-ring { width: min(280px, 70vw); height: min(280px, 70vw); }
   .reactor-power-num { font-size: 2.5rem; }
   .live-panel { position: static; }
   .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; }
@@ -542,6 +550,16 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   #dashboard [style*="grid-template-columns:1fr 1fr"],
   #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
   .battle-rounds { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .company-chip { min-width: 100% !important; flex: none; }
+  .reactor-ring { width: min(280px, 75vw); height: min(280px, 75vw); }
+  .reactor-power-num { font-size: 2rem; }
+  .hero h1 { font-size: 1.8rem; }
+  .hero-sub { font-size: 0.85rem; }
+  .scenario-levers label { font-size: 0.7rem; }
+  .tl-card { padding: 1rem; }
+  .battle-section h2 { font-size: 1.3rem; }
 }
 
 /* === PRINT / EXPORT === */
@@ -597,7 +615,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <!-- STORY -->
 <section id="story" class="section">
   <div class="story-grid fade-up">
-    <div class="story-visual"><canvas id="airbusCanvas" width="500" height="375" role="img" aria-label="Airbus market share growth visualization: 0% to 50% from 1970 to 2003"></canvas></div>
+    <div class="story-visual"><canvas id="airbusCanvas" style="width:100%;max-width:500px;height:auto;aspect-ratio:4/3;" role="img" aria-label="Airbus market share growth visualization: 0% to 50% from 1970 to 2003"></canvas></div>
     <div class="story-text">
       <div class="story-tag">1970 &mdash; The Precedent</div>
       <h3>They said it couldn't be done</h3>
@@ -607,7 +625,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
   </div>
   <div class="story-grid reverse fade-up">
-    <div class="story-visual"><canvas id="parallelCanvas" width="500" height="375" role="img" aria-label="AI market concentration: ChatGPT ~80% vs fragmented middle powers"></canvas></div>
+    <div class="story-visual"><canvas id="parallelCanvas" style="width:100%;max-width:500px;height:auto;aspect-ratio:4/3;" role="img" aria-label="AI market concentration: ChatGPT ~80% vs fragmented middle powers"></canvas></div>
     <div class="story-text">
       <div class="story-tag">2026 &mdash; The Middle Powers' Dilemma</div>
       <h3>Four problems, one solution</h3>
@@ -652,7 +670,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
-      <canvas id="dbCapitalFlowCanvas" style="width:100%;height:320px;" role="img" aria-label="Capital flow diagram: EU AI funding flows to US, showing $14B EU vs $109B US"></canvas>
+      <canvas id="dbCapitalFlowCanvas" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="Capital flow diagram: EU AI funding flows to US, showing $14B EU vs $109B US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-cyan);font-variant-numeric:tabular-nums;">$14B</div>
@@ -787,7 +805,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">China files 70% of all AI patents. But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
-      <canvas id="dbPatentChart" style="width:100%;height:300px;" role="img" aria-label="AI patent filings: China leads with 38,000+ inventions, US 6,300, EU 1,200"></canvas>
+      <canvas id="dbPatentChart" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="AI patent filings: China leads with 38,000+ inventions, US 6,300, EU 1,200"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;">38,000+</div>
@@ -825,7 +843,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">These aren't hypothetical startups. The coalition companies are scaling fast, with real enterprise customers and real revenue trajectories.</p>
-      <canvas id="dbGrowthChart" style="width:100%;height:320px;" role="img" aria-label="Coalition revenue growth: Mistral 20x to $400M, Cohere 11x to $240M, DeepL to $185M"></canvas>
+      <canvas id="dbGrowthChart" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="Coalition revenue growth: Mistral 20x to $400M, Cohere 11x to $240M, DeepL to $185M"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#3b82f6;font-variant-numeric:tabular-nums;">20x</div>
@@ -1168,6 +1186,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 <div class="toast" id="toast"></div>
 
 <script>
+function debounce(fn, ms) { let t; return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+
 // ============================================================
 // DATA
 // ============================================================
@@ -1631,7 +1651,12 @@ function drawAirbusStory() {
   const canvas = document.getElementById('airbusCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W=500, H=375;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  canvas._drawFn = drawAirbusStory;
   ctx.clearRect(0,0,W,H);
   const sky = ctx.createLinearGradient(0,0,0,H); sky.addColorStop(0,'#e0f0ff'); sky.addColorStop(1,'#f7f8fa');
   ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
@@ -1657,7 +1682,12 @@ function drawParallelStory() {
   const canvas = document.getElementById('parallelCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W=500, H=375;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  canvas._drawFn = drawParallelStory;
   ctx.clearRect(0,0,W,H);
   const bg = ctx.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#f0f4ff'); bg.addColorStop(1,'#f7f8fa');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
@@ -2484,6 +2514,14 @@ async function fetchHFModels(retries=2){
 // Init dashboard
 buildDbBars();
 fetchHFModels();
+
+window.addEventListener('resize', debounce(() => {
+  // Redraw story canvases on resize
+  const ac = document.getElementById('airbusCanvas');
+  const pc = document.getElementById('parallelCanvas');
+  if (ac) { const fn = ac._drawFn; if (fn) fn(); }
+  if (pc) { const fn = pc._drawFn; if (fn) fn(); }
+}, 250));
 </script>
 </body>
 </html>
