@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Sovereignty Index | Airbus for AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #00205b; --navy-dark: #001338; --sky: #0077c8; --cyan: #00b4d8;
+  --gold: #f0a500; --red: #e63946; --green: #2ec4b6; --purple: #7c3aed;
+  --off-white: #f7f5f0; --white: #ffffff;
+  --text-primary: #1a1a2e; --text-secondary: #555;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--off-white); color: var(--text-primary); }
+
+/* Nav - matches index.html */
+.topnav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 2rem; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,32,91,0.08); }
+.topnav-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.95rem; color: var(--navy); }
+.topnav-brand svg { width: 24px; height: 24px; color: var(--navy); }
+.topnav-links { display: flex; gap: 1.5rem; }
+.topnav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+.topnav-links a:hover { color: var(--navy); }
+.topnav-links a.active { color: var(--purple); font-weight: 700; }
+
+/* Hero */
+.hero { padding: 3rem 2rem 1.5rem; text-align: center; max-width: 800px; margin: 0 auto; }
+.hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--purple); font-weight: 700; margin-bottom: 0.5rem; }
+.hero h1 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 300; color: var(--navy); margin-bottom: 0.75rem; }
+.hero p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; max-width: 640px; margin: 0 auto; }
+
+/* Context bar */
+.context-bar { max-width: 900px; margin: 0 auto 1.5rem; padding: 0 2rem; }
+.context-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.context-card { background: white; border-radius: 10px; padding: 1.25rem; border: 1px solid rgba(0,32,91,0.08); text-align: center; }
+.context-card .val { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 300; color: var(--navy); }
+.context-card .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); margin-top: 0.25rem; }
+
+/* Dashboard embed */
+.dashboard-wrap { max-width: 1200px; margin: 0 auto; padding: 0 1rem 3rem; }
+.dashboard-frame { width: 100%; border: 1px solid rgba(0,32,91,0.08); border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 2px 20px rgba(0,32,91,0.06); }
+.dashboard-frame iframe { width: 100%; height: 800px; border: none; display: block; }
+.dashboard-loading { display: flex; align-items: center; justify-content: center; height: 400px; color: var(--text-secondary); font-size: 0.9rem; }
+
+/* Methodology note */
+.method-note { max-width: 800px; margin: 0 auto; padding: 0 2rem 3rem; }
+.method-note details { border: 1px solid rgba(0,32,91,0.12); border-radius: 10px; background: white; }
+.method-note summary { padding: 1rem 1.25rem; cursor: pointer; font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+.method-note .content { padding: 0 1.25rem 1.25rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+.method-note .content p { margin-bottom: 0.75rem; }
+
+/* Footer */
+.page-footer { text-align: center; padding: 2rem; font-size: 0.75rem; color: var(--text-secondary); border-top: 1px solid rgba(0,32,91,0.08); }
+.page-footer a { color: var(--sky); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .topnav-links { display: none; }
+  .context-cards { grid-template-columns: 1fr; }
+  .dashboard-frame iframe { height: 600px; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.3rem; }
+  .dashboard-frame iframe { height: 500px; }
+}
+
+/* Accessibility */
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <div class="topnav-brand">
+    <svg viewBox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    Model Sovereignty Index
+  </div>
+  <div class="topnav-links">
+    <a href="index.html">Assembly Lab</a>
+    <a href="sovereignty.html" class="active" style="color:var(--purple);">Sovereignty Index</a>
+    <a href="narrative.html" style="color:var(--gold);">The Story</a>
+    <a href="simulation.html" style="color:var(--green);">Situation Room</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Live Dashboard</div>
+  <h1>Model Sovereignty Index</h1>
+  <p>How sovereign are the AI models nations depend on? This index scores open-weight models across six dimensions of sovereignty: training data privacy, local training capability, control of weights, model independence, weight privacy, and country-specific knowledge. The results reveal how much control countries actually have over the AI they use.</p>
+</div>
+
+<!-- CONTEXT -->
+<div class="context-bar">
+  <div class="context-cards">
+    <div class="context-card">
+      <div class="val">6</div>
+      <div class="label">Sovereignty Dimensions</div>
+    </div>
+    <div class="context-card">
+      <div class="val">0-100</div>
+      <div class="label">Score Range per Model</div>
+    </div>
+    <div class="context-card">
+      <div class="val">Live</div>
+      <div class="label">Hugging Face Metadata</div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD EMBED -->
+<div class="dashboard-wrap">
+  <div class="dashboard-frame">
+    <div class="dashboard-loading" id="dashboardLoading">Loading Model Sovereignty Index...</div>
+    <iframe
+      id="sovereigntyFrame"
+      src="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/"
+      title="Model Sovereignty Index Dashboard"
+      loading="lazy"
+      allow="clipboard-read; clipboard-write"
+      style="display:none;"
+      onload="this.style.display='block'; document.getElementById('dashboardLoading').style.display='none';"
+    ></iframe>
+  </div>
+  <div style="text-align:center;margin-top:0.75rem;font-size:0.7rem;color:var(--text-secondary);">
+    <a href="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/" target="_blank" style="color:var(--sky);text-decoration:none;">Open full dashboard in new tab</a>
+    &middot;
+    <a href="https://github.com/AakashGnanavelu/Model-Sovereignty-Index" target="_blank" style="color:var(--sky);text-decoration:none;">View source on GitHub</a>
+  </div>
+</div>
+
+<!-- WHY THIS MATTERS -->
+<div class="method-note">
+  <details>
+    <summary>Why model sovereignty matters for the Public AI Company</summary>
+    <div class="content">
+      <p>The Airbus for AI initiative argues that middle powers need to build, not just buy, frontier AI. But how do you measure whether a country actually controls the AI it depends on? The Model Sovereignty Index provides a concrete, data-driven answer.</p>
+      <p><strong>The six dimensions</strong> map directly to the sovereignty risks identified in the Bennett School policy brief:</p>
+      <p><strong>Training Data Privacy</strong> measures whether a model's training data can be audited and controlled, critical for GDPR compliance and preventing foreign surveillance through training data.</p>
+      <p><strong>Local Training Capability</strong> assesses whether a model can be trained or fine-tuned on domestic infrastructure, the core argument for pooled European compute.</p>
+      <p><strong>Control of Weights</strong> evaluates whether the model's parameters are accessible and modifiable, essential for air-gapped government deployments like Aleph Alpha's PhariaAI.</p>
+      <p><strong>Model Independence</strong> scores how reliant a model is on foreign APIs, cloud services, or proprietary components, the "dependency" risk at the heart of the middle powers' dilemma.</p>
+      <p><strong>Weight Privacy</strong> assesses protection against unauthorized extraction, relevant for defense and critical infrastructure use cases.</p>
+      <p><strong>Country-Specific Knowledge</strong> measures linguistic and cultural coverage, the dimension where DeepL's 100+ languages and Cohere's Aya models provide the coalition's strongest advantage.</p>
+      <p>A Public AI Company would aim to score high across all six dimensions: open weights for sovereignty, trained on domestic compute, independent of foreign cloud, with deep multilingual coverage. Use the index to see which existing models come closest, and where the gaps are.</p>
+    </div>
+  </details>
+</div>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <a href="index.html">Assembly Lab</a> &middot;
+  <a href="narrative.html">The Story</a> &middot;
+  <a href="simulation.html">Situation Room</a> &middot;
+  <a href="https://publicai.co/airbus-for-ai.pdf">Policy Brief (PDF)</a>
+  <br>
+  <span style="opacity:0.5;margin-top:0.5rem;display:inline-block;">Model Sovereignty Index by <a href="https://github.com/AakashGnanavelu/Model-Sovereignty-Index">Aakash Gnanavelu</a>. Integrated into Airbus for AI.</span>
+</div>
+
+</body>
+</html>
