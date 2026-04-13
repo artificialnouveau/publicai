@@ -2068,7 +2068,9 @@ function renderActiveClause(){
 function negGoTo(idx){negState.currentClause=idx;renderNegProgress();renderActiveClause();clearPreviewReactions();}
 
 function previewReactions(field,oi){
-  const clause=NEG_CLAUSES.find(c=>c.field===field);const opt=clause.options[oi];
+  const clause=NEG_CLAUSES.find(c=>c.field===field);
+  if(!clause)return;
+  const opt=clause.options[oi];
   NEG_STAKEHOLDERS.forEach(s=>{
     const icon=document.getElementById(`neg-icon-${s.id}`);const react=document.getElementById(`neg-react-${s.id}`);
     if(!icon||!react)return;icon.classList.remove('preview-approve','preview-object','preview-uncertain');
@@ -2085,7 +2087,9 @@ function clearPreviewReactions(){
 
 function selectClause(field,oi){
   if(negState.ratified.has(field))return;
-  const clause=NEG_CLAUSES.find(c=>c.field===field);const opt=clause.options[oi];
+  const clause=NEG_CLAUSES.find(c=>c.field===field);
+  if(!clause)return;
+  const opt=clause.options[oi];
   document.querySelectorAll('.neg-option').forEach(el=>{el.classList.remove('selected');if(+el.dataset.oi===oi)el.classList.add('selected');});
   let approvals=0;
   NEG_STAKEHOLDERS.forEach((s,si)=>{
@@ -2163,7 +2167,7 @@ function skipToConvergence(){
     S.coalitionTalent=Math.max(0,S.coalitionTalent+opt.talentImpact);
     S.riskLevel=Math.min(100,S.riskLevel+6);
     if(opt.verdict==='hurt')S.hurtCount++;else if(opt.verdict==='helped')S.helpedCount++;else S.mixedCount++;
-    Object.keys(S.rivalMetrics).forEach(k=>{S.rivalMetrics[k].marketCap=Math.round(S.rivalMetrics[k].marketCap*1.03);S.rivalMetrics[k].talent=Math.round(S.rivalMetrics[k].talent*1.01);});
+    Object.keys(S.rivalMetrics).forEach(k=>{S.rivalMetrics[k].marketCap=Math.round(S.rivalMetrics[k].marketCap*1.03);S.rivalMetrics[k].marketShare=Math.round(S.rivalMetrics[k].marketShare*10+Math.random()*2)/10;});
   }
   S.currentDecision=KEY_DECISIONS.length;
   updateRiskMeter();showConvergence();
@@ -2182,7 +2186,7 @@ function playAllIn(){
     S.coalitionTalent=Math.max(0,S.coalitionTalent+opt.talentImpact);
     S.riskLevel=Math.min(100,S.riskLevel+6);
     if(opt.verdict==='hurt')S.hurtCount++;else if(opt.verdict==='helped')S.helpedCount++;else S.mixedCount++;
-    Object.keys(S.rivalMetrics).forEach(k=>{S.rivalMetrics[k].marketCap=Math.round(S.rivalMetrics[k].marketCap*1.03);S.rivalMetrics[k].talent=Math.round(S.rivalMetrics[k].talent*1.01);});
+    Object.keys(S.rivalMetrics).forEach(k=>{S.rivalMetrics[k].marketCap=Math.round(S.rivalMetrics[k].marketCap*1.03);S.rivalMetrics[k].marketShare=Math.round(S.rivalMetrics[k].marketShare*10+Math.random()*2)/10;});
   });
   // Show montage
   const overlay=document.getElementById('montageOverlay');overlay.classList.add('active');

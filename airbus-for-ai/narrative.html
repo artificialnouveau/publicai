@@ -2712,7 +2712,7 @@ window.addEventListener('scroll', ()=>{
           dataCol.scrollTop = 0;
           // Redraw any canvases that were hidden
           setTimeout(() => {
-            if(targetPanelId === 'panel-charts') { drawMarketCapChart(); drawCloudShareChart(); }
+            if(targetPanelId === 'panel-charts') { drawMarketCapChart(); drawCloudChart(); }
           }, 100);
         }
       }
@@ -2764,7 +2764,7 @@ const MC_ALL_DATA = [
   { name: 'ByteDance AI', val: 80, color: '#ff004f', eu: false, region: 'CN', desc: 'TikTok parent. Major AI research lab. Competing in foundation models with Doubao.' },
   { name: 'Meta AI', val: 60, color: '#0668E1', eu: false, region: 'US', desc: 'Meta\'s AI division. Open-sourced LLaMA. Subsidized by social media revenue.' },
   { name: 'Mistral AI', val: 13.8, color: '#ff3333', eu: true, region: 'EU', desc: 'France\'s leading AI lab. $13.8B valuation. ~$400M ARR. 20x growth in 12 months.' },
-  { name: 'Cohere', val: 7, color: '#ef4444', eu: true, region: 'EU', desc: 'Canadian enterprise AI (coalition-aligned). $7B valuation. North platform. 17K+ enterprise customers.' },
+  { name: 'Cohere', val: 7, color: '#ef4444', eu: false, region: 'CA', desc: 'Canadian enterprise AI (coalition-aligned). $7B valuation. North platform. 17K+ enterprise customers.' },
 ];
 
 function filterMarketCap(region, btn){
@@ -2793,7 +2793,7 @@ function drawMarketCapChart(){
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
 
-  const maxVal = 220;
+  const maxVal = Math.max(...data.map(d=>d.val), 1);
   const barH = 28;
   const gap = 10;
   const labelW = 120;

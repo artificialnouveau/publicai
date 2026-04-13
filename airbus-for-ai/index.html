@@ -2376,7 +2376,7 @@ async function fetchHFModels(retries=2){
   const badge=document.getElementById('hfBadge');
   const summary=document.getElementById('hfRegionSummary');
   const table=document.getElementById('hfModelTable');
-  if(!summary||!table)return;
+  if(!badge||!summary||!table)return;
   try{
     let res,lastErr;
     for(let attempt=0;attempt<=retries;attempt++){
