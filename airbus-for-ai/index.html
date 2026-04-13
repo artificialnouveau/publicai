@@ -543,6 +543,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
   #fundGrid { grid-template-columns: repeat(2, 1fr) !important; }
+  #tierGrid { grid-template-columns: 1fr !important; }
+  #coreArgsGrid { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 600px) {
   .hero-stats-row { flex-direction: column; gap: 1rem; }
@@ -554,6 +556,9 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .battle-rounds { grid-template-columns: 1fr !important; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
   #fundGrid { grid-template-columns: 1fr !important; }
+  #tierGrid { grid-template-columns: 1fr !important; }
+  #coreArgsGrid { grid-template-columns: 1fr !important; }
+  #commsGrid { grid-template-columns: 1fr !important; }
   #executive-summary details { font-size: 0.85rem; }
 }
 @media (max-width: 480px) {
@@ -638,6 +643,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <p><strong style="color:var(--navy);">The Precedent.</strong> In 1970, four European governments faced the same problem in aviation. Boeing dominated, and no single European firm could compete. They pooled resources into Airbus, which went from 0% to 50% market share. Today Airbus employs 157,000 people and has an enterprise value of ~$159B.</p>
       <p><strong style="color:var(--navy);">The Proposal.</strong> Merge the most promising middle-power AI companies (Mistral, Cohere, DeepL, Stability AI, Aleph Alpha, Multiverse Computing) into a Public AI Company: a coordinated public-private frontier AI lab with shared compute, R&amp;D, and market strategy. Combined, these six companies represent $24B+ in value, ~3,900 employees, 239,000+ customers, and coverage across 100+ languages. Government investment in compute, procurement, and talent programs could close the remaining gap.</p>
       <p><strong style="color:var(--navy);">The Stakes.</strong> Every year of inaction widens the gap. EU researchers continue migrating to US labs (60%+ of top EU-educated AI talent now works in the US). Cloud dependency deepens (70% of EU cloud infrastructure is US-owned). The capital gap grows ($14B EU AI investment vs. $109B US). The window for building a competitive alternative is closing. The question is not whether middle powers need a coordinated AI strategy, but whether they will act before it is too late.</p>
+      <p style="font-size:0.8rem;line-height:1.6;margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(0,32,91,0.08);"><strong style="color:var(--navy);">Further reading:</strong> The <a href="https://publicai.co/airbus-for-ai.pdf" style="color:var(--sky);">Bennett School policy brief</a> (Tan, Jackson, Berjon &amp; Coyle, 2025) and the companion <em>Oxford Blueprint</em> paper, which adds geopolitical analysis: the US controls ~75% of global AI compute capacity, China ~15%, and the EU ~5%. The Blueprint identifies three structural advantages for "bridge powers": pooled computing infrastructure, concentrated AI talent with ties to allied nations, and domain-specific data assets for expert labeling.</p>
     </div>
   </details>
 </section>
@@ -981,6 +987,20 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </section>
 
+<!-- HISTORICAL AI LAB DATA -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--navy-dark);color:white;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--cyan);">The Growth Gap</div>
+    <h2 class="narrative-heading" style="color:white;font-size:clamp(1.2rem,2.5vw,1.6rem);">How US labs pulled ahead: 2017-2025</h2>
+    <div class="narrative-body" style="color:rgba(255,255,255,0.7);font-size:0.95rem;margin-bottom:2rem;">
+      <p>The gap didn't open overnight. It compounded year after year as US labs attracted capital, talent, and compute at a pace no European company could match.</p>
+    </div>
+    <canvas id="historicalChart" style="width:100%;height:clamp(250px,40vw,400px);display:block;" role="img" aria-label="Historical chart showing AI lab valuation growth from 2017 to 2025"></canvas>
+    <div class="sr-only">Historical chart showing AI lab valuations from 2017-2025. OpenAI grew from $1B (2019) to $300B (2025). Anthropic grew from $1B (2021) to $60B (2025). European labs like Mistral reached $6B and Cohere $5.5B by 2025.</div>
+    <div style="text-align:center;margin-top:1rem;font-size:0.65rem;opacity:0.35;">Sources: PitchBook, Crunchbase, TechCrunch, Bloomberg funding rounds. Valuations as of last priced round in each year.</div>
+  </div>
+</div>
+
 <!-- ASSEMBLY -->
 <section class="assembly-zone" id="assembly">
   <div class="assembly-inner">
@@ -1031,6 +1051,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">How to finance a Public AI Company</h2>
     <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
       <p>Building a frontier AI lab requires patient, strategic capital. The Airbus for AI Fund is a proposed transnational investment vehicle, modeled on the NATO Innovation Fund's multi-sovereign LP structure and EuroHPC's pooled compute logic, designed to acquire, integrate, and finance shared AI infrastructure.</p>
+      <p>The fund's edge is <strong>governance-as-core-technology</strong>: holding-company structures that separate IP, operations, and deployment; contractual veto rights on capex duplication to prevent wasteful parallel spending; pre-agreed deadlock resolution mechanisms; and ring-fenced national interfaces with shared core infrastructure. This governance architecture enables integration without requiring full political merger.</p>
     </div>
     <div id="fundGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
       <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
@@ -1046,7 +1067,35 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
         <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x2696;</div>
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Collective Equity</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance.</p>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance. See <a href="https://collectiveequity.com" target="_blank" style="color:var(--sky);">collectiveequity.com</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THREE-TIER ARCHITECTURE -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:white;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--sky);">How It Works</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">A three-tier architecture for sovereign AI</h2>
+    <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
+      <p>The Public AI Company is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
+    </div>
+    <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 1</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">The Consortium Core</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Shared model building (especially pretraining), shared compute and expertise, shared market strategy and branding. This is the unified lab that competes on the global stage.</p>
+      </div>
+      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--cyan);">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 2</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">National Entities</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each country identifies or organizes at least one participating entity: an existing national champion (Mistral, Cohere), a public lab (Spain's BSC, Japan's RIKEN), or a new public-private partnership. These link the consortium to public compute, local markets, and national populations.</p>
+      </div>
+      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--green);">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 3</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Local Layer</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each national entity handles localization, in-country deployment, and public engagement. This ensures the Public AI Company serves local needs, languages, and regulatory contexts while benefiting from shared frontier capabilities.</p>
       </div>
     </div>
   </div>
@@ -1140,6 +1189,48 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </section>
 
+<!-- FULL POLICY FRAMEWORK -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--off-white);">
+  <div style="max-width:800px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--navy);">The Case for Action</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">Four core arguments</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2.5rem;" id="coreArgsGrid">
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.4rem;font-size:0.9rem;">1. Collective Action</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">The middle powers' dilemma is fundamentally a coordination problem. Government intervention to form a public-private consortium solves the collective action problem for firms while sidestepping zero-sum funding incentives for public labs and nonprofits.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.4rem;font-size:0.9rem;">2. Public Goods Logic</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Foundation models exhibit strong public good characteristics: non-rival, widely reusable, generating broad productivity spillovers. The social returns of investing in these technologies far exceed private returns. Sam Altman himself tried and failed to get the public sector to fund OpenAI before building it on a capped-profit model.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.4rem;font-size:0.9rem;">3. Autonomy &amp; Sovereignty</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">The alternatives are stark: continue investing in sub-scale sovereign AI strategies, import AI from abroad with clear risks to national security and cultural identity, or put faith in pitches like "OpenAI for Countries." None of these preserve genuine technological autonomy.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.4rem;font-size:0.9rem;">4. Scale Without Monopoly</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">A consortium model allows countries to achieve the scale needed for frontier AI without centralizing power into a single nation or entity. This is preferable both for economic efficiency and AI safety, distributing risk and governance across democratic nations.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1rem;color:var(--navy);margin-bottom:1rem;">Keys to Success</h3>
+    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.7;margin-bottom:2rem;">
+      <p><strong style="color:var(--navy);">Market strategy first.</strong> The Public AI Company needs a counter-positioned product and brand pursued with conviction, not another research project.</p>
+      <p><strong style="color:var(--navy);">Bootstrap, don't wait.</strong> Training a $2B frontier model is not the MVP. Focus early on generating local demand for existing open models, bootstrapping data flywheels, and launching in partnership with projects like Swiss AI or OpenEuroLLM.</p>
+      <p><strong style="color:var(--navy);">Start small.</strong> Four labs, not twenty. Select carefully for leadership, operational capacity, and political backing.</p>
+      <p><strong style="color:var(--navy);">Public support mechanisms.</strong> Advance market commitments, direct equity stakes, preferential access to public datasets and compute, and regulatory incentives structured like a public utility concession.</p>
+      <p><strong style="color:var(--navy);">Good governance.</strong> The consortium needs to act with the speed and coherence of a single lab. Governance must balance national entity activities with the international activities of the consortium as a whole.</p>
+    </div>
+
+    <h3 style="font-size:1rem;color:var(--red);margin-bottom:1rem;">Pitfalls to Avoid</h3>
+    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
+      <p><strong style="color:var(--navy);">Political capture</strong> leading to commercially inefficient decisions. Cautionary examples: Northvolt (overpromised, underdelivered on European battery sovereignty) and Gaia-X (governance-heavy, product-light cloud initiative).</p>
+      <p><strong style="color:var(--navy);">Market distortions</strong> from poorly designed subsidies or exclusive public contracting that crowd out private sector innovation rather than complementing it.</p>
+      <p><strong style="color:var(--navy);">Inconsistent political commitment.</strong> Cautionary examples: ITER (decades of delays from multi-state governance friction), Galileo (near-death from funding disputes), and successive AI winters in the US that destroyed nascent research programs.</p>
+    </div>
+  </div>
+</div>
+
 <!-- RISKS -->
 <div class="narrative-block wide fade-up" style="background: var(--off-white); max-width: 100%; padding: 3rem 2rem;">
   <div style="max-width: 720px; margin: 0 auto;">
@@ -1155,16 +1246,87 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </div>
 
-<!-- CTA -->
-<section class="cta-section">
+<!-- WHY NOW -->
+<div class="narrative-block wide fade-up" style="background:white;max-width:100%;padding:3rem 2rem;">
+  <div style="max-width:720px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--green);">Why Now</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The window is closing. But the barrier to entry is lower than you think.</h2>
+    <div class="narrative-body" style="font-size:0.95rem;">
+      <p>Building a Public AI Company does not require coordinating between 20 different bodies. It can start with <strong>a small team and two labs</strong>. A 10-person team working for 3 months, building on existing collaborations and open-source models, supplied with about 100K GPU-hours (~$150K USD), can deliver a minimum viable product and establish first proof points around product, coordination, and market demand.</p>
+      <p>The world does not currently lack good-enough open-source models. Training a $2 billion "leading frontier model" is not the minimum viable product. The Public AI Company should focus early on generating local demand for existing open models, bootstrapping data flywheels, and launching in partnership with upcoming public AI projects like Swiss AI or OpenEuroLLM.</p>
+      <p>But the urgency is real. Frontier AI's pace of development is accelerating, and current frontier training costs remain within the reach of coordinated bridge powers. Latecomers to AI development risk lasting strategic weakness given increasing barriers to entry. Every quarter of delay is a quarter where talent migrates, infrastructure dependency deepens, and the cost of catching up grows.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA + SIGN-ON -->
+<section class="cta-section" id="sign-on">
   <h2>The question isn't whether.<br>It's when.</h2>
   <p>Every month of fragmentation widens the gap. Airbus proved sovereign consolidation works.<sup class="fn"><a href="#fn3">[3]</a></sup> The playbook exists.<sup class="fn"><a href="#fn7">[7]</a></sup> The companies exist. The political will is forming across 11 nations.</p>
-  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem;">
     <a href="#assembly" class="btn btn-primary">Rebuild the Entity</a>
     <button class="btn btn-outline" id="ctaExportBtn">Export Deck</button>
     <button class="btn btn-outline" onclick="window.print();" style="border-color:var(--green);color:var(--green);">Print Page</button>
   </div>
+
+  <!-- Sign-on Form -->
+  <div style="max-width:520px;margin:0 auto;padding:2rem;background:var(--off-white);border-radius:12px;border:1px solid rgba(0,32,91,0.1);">
+    <h3 style="font-size:1.1rem;margin-bottom:0.25rem;color:var(--navy);">Support this initiative</h3>
+    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem;">Join researchers, policymakers, and technologists calling for a coordinated public AI strategy. We will notify you when the formal coalition letter launches.</p>
+    <form id="signOnForm" style="display:flex;gap:0.5rem;flex-wrap:wrap;" onsubmit="event.preventDefault(); document.getElementById('signOnConfirm').style.display='block'; this.style.display='none';">
+      <input type="text" name="name" placeholder="Your name" required style="flex:1;min-width:140px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:white;">
+      <input type="email" name="email" placeholder="Email address" required style="flex:1.5;min-width:180px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:white;">
+      <select name="role" style="flex:1;min-width:140px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:white;color:var(--text-secondary);">
+        <option value="">Your role</option>
+        <option value="researcher">AI Researcher</option>
+        <option value="policy">Policymaker / Government</option>
+        <option value="industry">Industry / Technologist</option>
+        <option value="investor">Investor / Finance</option>
+        <option value="civil-society">Civil Society / NGO</option>
+        <option value="journalist">Journalist / Media</option>
+        <option value="other">Other</option>
+      </select>
+      <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Sign On</button>
+    </form>
+    <div id="signOnConfirm" style="display:none;text-align:center;padding:1rem;">
+      <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x2705;</div>
+      <p style="font-size:0.9rem;color:var(--navy);font-weight:600;">Thank you for your support.</p>
+      <p style="font-size:0.8rem;color:var(--text-secondary);">We will be in touch when the formal coalition letter is ready for signature.</p>
+    </div>
+    <p style="font-size:0.65rem;color:var(--text-secondary);opacity:0.6;margin-top:0.75rem;margin-bottom:0;">Your information will only be used for this initiative. No spam, no sharing.</p>
+  </div>
 </section>
+
+<!-- COMMS KIT -->
+<div style="max-width:800px;margin:0 auto;padding:2rem;text-align:center;">
+  <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:var(--off-white);">
+    <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--navy);">Communications Kit for Partners</summary>
+    <div style="padding:0 1.25rem 1.25rem;text-align:left;">
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;margin-bottom:1rem;">Help spread the word. Use these resources to brief your network, write about the initiative, or share on social media.</p>
+      <div id="commsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;">
+        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+          <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">100-Word Summary</div>
+          <p class="comms-copy" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0 0 0.5rem;">A group of middle-power countries face a choice: consolidate their fragmented AI efforts into a single competitive entity, or accept permanent dependency on US and Chinese frontier labs. Inspired by how Airbus challenged Boeing, the "Airbus for AI" initiative proposes merging companies like Mistral, Cohere, DeepL, and others into a Public AI Company, backed by coordinated government investment in compute, procurement, and talent. Combined, these six companies represent $24B+ in value and 100+ languages. The playbook exists. The companies exist. The question is whether political will forms before the window closes.</p>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:white;cursor:pointer;color:var(--sky);">Copy to clipboard</button>
+        </div>
+        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+          <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">Press Release Template</div>
+          <p class="comms-copy" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0 0 0.5rem;">FOR IMMEDIATE RELEASE: Coalition of [X] nations announces feasibility study for a "Public AI Company," modeled on the Airbus consortium that transformed European aerospace. The initiative, backed by [partner organizations], proposes consolidating middle-power AI investments into a coordinated public-private frontier AI lab. "The question is not whether we need sovereign AI capability, but whether we will act before the window closes," said [spokesperson]. Full details: airbusforai.org</p>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:white;cursor:pointer;color:var(--sky);">Copy to clipboard</button>
+        </div>
+        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+          <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">Social Media Card Text</div>
+          <p class="comms-copy" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0 0 0.5rem;">Airbus went from 0% to 50% of the aircraft market by pooling European resources. What if we did the same for AI? Six companies. Eleven nations. $24B+ combined. Meet the Public AI Company: airbusforai.org</p>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:white;cursor:pointer;color:var(--sky);">Copy to clipboard</button>
+        </div>
+        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+          <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">Partner Organizations</div>
+          <p style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0;">Interested organizations include: Pour Demain, Oxford Martin Programme on AI Governance, LawZero, Ada Lovelace Institute, AI Safety Canada, Trajectory Labs, New America. Contact us to join as a partner.</p>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
 
 <!-- FOOTER -->
 <footer class="site-footer" id="references">
@@ -2639,9 +2801,94 @@ window.addEventListener('resize', debounce(() => {
   const pc = document.getElementById('parallelCanvas');
   if (ac) { const fn = ac._drawFn; if (fn) fn(); }
   if (pc) { const fn = pc._drawFn; if (fn) fn(); }
-  // Redraw inaction chart
+  // Redraw inaction chart and historical chart
   if (typeof renderInaction === 'function') renderInaction();
+  if (typeof renderHistoricalChart === 'function') renderHistoricalChart();
 }, 250));
+
+// ============================================================
+// HISTORICAL AI LAB DATA CHART (2017-2025)
+// ============================================================
+const HISTORICAL_DATA = [
+  { name: 'OpenAI', color: '#10a37f', vals: [
+    {y:2017,v:0},{y:2018,v:0},{y:2019,v:1},{y:2020,v:1},{y:2021,v:14},{y:2022,v:29},{y:2023,v:80},{y:2024,v:157},{y:2025,v:300}
+  ]},
+  { name: 'Anthropic', color: '#D4A574', vals: [
+    {y:2017,v:0},{y:2018,v:0},{y:2019,v:0},{y:2020,v:0},{y:2021,v:1},{y:2022,v:4},{y:2023,v:18},{y:2024,v:18},{y:2025,v:60}
+  ]},
+  { name: 'xAI', color: '#888', vals: [
+    {y:2017,v:0},{y:2018,v:0},{y:2019,v:0},{y:2020,v:0},{y:2021,v:0},{y:2022,v:0},{y:2023,v:0},{y:2024,v:24},{y:2025,v:50}
+  ]},
+  { name: 'Mistral AI', color: '#3b82f6', eu: true, vals: [
+    {y:2017,v:0},{y:2018,v:0},{y:2019,v:0},{y:2020,v:0},{y:2021,v:0},{y:2022,v:0},{y:2023,v:0.3},{y:2024,v:6},{y:2025,v:6}
+  ]},
+  { name: 'Cohere', color: '#ef4444', eu: true, vals: [
+    {y:2017,v:0},{y:2018,v:0},{y:2019,v:0},{y:2020,v:0},{y:2021,v:0.2},{y:2022,v:2},{y:2023,v:2.2},{y:2024,v:5.5},{y:2025,v:5.5}
+  ]},
+  { name: 'Stability AI', color: '#8b5cf6', eu: true, vals: [
+    {y:2017,v:0},{y:2018,v:0},{y:2019,v:0},{y:2020,v:0},{y:2021,v:0},{y:2022,v:1},{y:2023,v:4},{y:2024,v:1},{y:2025,v:1}
+  ]}
+];
+
+function renderHistoricalChart() {
+  const canvas = document.getElementById('historicalChart');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  if (W === 0 || H === 0) return;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 55, padR = 90, padT = 20, padB = 35;
+  const cw = Math.max(1, W - padL - padR), ch = Math.max(1, H - padT - padB);
+  const years = [2017,2018,2019,2020,2021,2022,2023,2024,2025];
+  const maxVal = 300;
+
+  const xPos = i => padL + (i / (years.length - 1)) * cw;
+  const yPos = v => padT + ch - (Math.min(v, maxVal) / maxVal) * ch;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const yy = padT + (ch / 5) * i;
+    ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + cw, yy); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.font = '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('$' + Math.round(maxVal - (maxVal / 5) * i) + 'B', padL - 5, yy + 3);
+  }
+  // X labels
+  ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  years.forEach((yr, i) => ctx.fillText(yr, xPos(i), H - 8));
+
+  // Lines
+  HISTORICAL_DATA.forEach(d => {
+    ctx.strokeStyle = d.color;
+    ctx.lineWidth = d.eu ? 2.5 : 1.5;
+    ctx.setLineDash(d.eu ? [] : [4, 3]);
+    ctx.globalAlpha = d.eu ? 1 : 0.6;
+    ctx.beginPath();
+    d.vals.forEach((pt, i) => { const px = xPos(i), py = yPos(pt.v); i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); });
+    ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    // End label
+    const last = d.vals[d.vals.length - 1];
+    ctx.fillStyle = d.color;
+    ctx.font = (d.eu ? 'bold ' : '') + '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(d.name + ' $' + last.v + 'B', xPos(years.length - 1) + 6, yPos(last.v) + 3);
+  });
+  ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '9px JetBrains Mono, monospace';
+  ctx.textAlign = 'left'; ctx.fillText('Bold = EU/allied companies', padL, padT - 5);
+}
+
+const histObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { renderHistoricalChart(); histObs.disconnect(); } });
+}, { threshold: 0.1 });
+const histEl = document.getElementById('historicalChart');
+if (histEl) histObs.observe(histEl);
 
 // ============================================================
 // COST OF INACTION CALCULATOR
