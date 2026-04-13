@@ -733,8 +733,8 @@ body{
 <div class="hud-corner bl"></div>
 <div class="hud-corner br"></div>
 <div class="glow-layer" id="glowLayer"></div>
-<canvas id="particleCanvas"></canvas>
-<canvas id="europeMap"></canvas>
+<canvas id="particleCanvas" role="presentation" aria-hidden="true"></canvas>
+<canvas id="europeMap" role="img" aria-label="Animated map of European coalition countries"></canvas>
 
 <!-- Risk meter -->
 <div class="risk-meter"><div class="risk-fill" id="riskFill" style="height:0%"></div></div>
@@ -852,8 +852,8 @@ body{
 
   <div class="battle-frame" id="battleFrame">
     <div class="battle-arena" id="battleArena">
-      <canvas id="arenaCanvas"></canvas>
-      <div class="people-field"><canvas class="people-canvas" id="peopleCanvas"></canvas></div>
+      <canvas id="arenaCanvas" role="img" aria-label="AI geopolitics arena visualization"></canvas>
+      <div class="people-field"><canvas class="people-canvas" id="peopleCanvas" role="img" aria-label="Talent migration flow visualization"></canvas></div>
       <div class="rival-sprite-zone" id="rivalSprites"></div>
       <div class="coalition-flags-zone" id="coalitionFlags"></div>
       <div class="your-status-plate" id="yourStatusPlate">
@@ -1336,6 +1336,7 @@ const S = {
 function initMap() {
   if(prefersReducedMotion) return;
   const c = document.getElementById('europeMap');
+  if(!c) return;
   const ctx = c.getContext('2d');
   let w, h;
   function resize() { w = c.width = window.innerWidth; h = c.height = window.innerHeight; }
@@ -1385,6 +1386,7 @@ function initMap() {
 function initParticles() {
   if(prefersReducedMotion) return;
   const c = document.getElementById('particleCanvas');
+  if(!c) return;
   const ctx = c.getContext('2d');
   let w,h;
   function resize() { w=c.width=window.innerWidth; h=c.height=window.innerHeight; }
@@ -1555,9 +1557,15 @@ function showDecision(idx){
 
   // Actions
   const actions=document.getElementById('textActions');
-  actions.innerHTML=d.options.map((opt,i)=>`
-    <div class="text-action-btn" role="button" tabindex="0" aria-label="Option ${i+1}: ${opt.text}" onclick="makeChoice(${idx},${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();makeChoice(${idx},${i});}">${opt.text}</div>
-  `).join('');
+  actions.innerHTML=d.options.map((opt,i)=>{
+    const safeText=opt.text.replace(/"/g,'&quot;');
+    return `<div class="text-action-btn" role="button" tabindex="0" aria-label="Option ${i+1}: ${safeText}" data-decision="${idx}" data-option="${i}">${opt.text}</div>`;
+  }).join('');
+  actions.querySelectorAll('.text-action-btn').forEach(btn=>{
+    const di=+btn.dataset.decision,oi=+btn.dataset.option;
+    btn.addEventListener('click',()=>makeChoice(di,oi));
+    btn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();makeChoice(di,oi);}});
+  });
 
   // Hide result areas
   document.getElementById('narrativeResult').classList.remove('visible');
@@ -1894,7 +1902,7 @@ function startActTwo(){
         <div class="day-tag" style="color:var(--red);">${driftEvent.day}</div>
         <div class="scene-title">${driftEvent.title}</div>
         <p>${driftEvent.body}</p>
-        ${!S.interventions.has(i)?`<button class="apply-intervention-btn" onclick="applyIntervention(${i})">What if: ${INTERVENTIONS[i].label}</button>`:`<div class="intervention-applied">Applied</div>`}
+        ${!S.interventions.has(i)?`<button class="apply-intervention-btn" data-intervention="${i}">What if: ${INTERVENTIONS[i].label}</button>`:`<div class="intervention-applied">Applied</div>`}
         <div class="intervention-result ${S.interventions.has(i)?'visible':''}" id="intv-result-${i}">${INTERVENTIONS[i].result}</div>
       </div>
       <div class="scene alliance-scene" id="alliance-${i}" style="background:rgba(0,180,216,0.02);">
@@ -1904,6 +1912,9 @@ function startActTwo(){
       </div>
     </div>`;
   }).join('');
+  splitDays.querySelectorAll('.apply-intervention-btn[data-intervention]').forEach(btn=>{
+    btn.addEventListener('click',()=>applyIntervention(+btn.dataset.intervention));
+  });
   setTimeout(()=>{
     document.querySelectorAll('.day-row').forEach((row,i)=>{
       setTimeout(()=>row.querySelectorAll('.scene').forEach(s=>s.classList.add('revealed')),i*400);
@@ -2032,7 +2043,8 @@ function renderActiveClause(){
       ${clause.options.map((opt,oi)=>{
         const a=approvalCounts[oi];const lk=a>=4?'LIKELY TO PASS':a>=3?'UNCERTAIN':'UNLIKELY';const lc=a>=4?'var(--green)':a>=3?'var(--gold)':'var(--red)';
         const isSel=isRatified&&selectedIdx===oi;
-        return `<div class="${isSel?'neg-option ratified':'neg-option'}" role="button" tabindex="0" aria-label="${opt.text}" ${!isRatified?`onclick="selectClause('${clause.field}',${oi})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectClause('${clause.field}',${oi});}"`:''} onmouseenter="previewReactions('${clause.field}',${oi})" onfocus="previewReactions('${clause.field}',${oi})" onmouseleave="clearPreviewReactions()" onblur="clearPreviewReactions()">
+        const safeLabel=opt.text.replace(/"/g,'&quot;');
+        return `<div class="${isSel?'neg-option ratified':'neg-option'}" role="button" tabindex="0" aria-label="${safeLabel}" data-field="${clause.field}" data-oi="${oi}" data-ratified="${isRatified?1:0}">
           <div style="font-weight:700;margin-bottom:4px;">${opt.text}</div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
             <span style="font-size:0.72rem;font-family:var(--mono);color:${lc};font-weight:700;">${a}/6 — ${lk}</span>
@@ -2040,6 +2052,17 @@ function renderActiveClause(){
           </div></div>`;
       }).join('')}
     </div>`;
+  el.querySelectorAll('.neg-option[data-field]').forEach(btn=>{
+    const field=btn.dataset.field,oi=+btn.dataset.oi,ratified=btn.dataset.ratified==='1';
+    btn.addEventListener('mouseenter',()=>previewReactions(field,oi));
+    btn.addEventListener('focus',()=>previewReactions(field,oi));
+    btn.addEventListener('mouseleave',()=>clearPreviewReactions());
+    btn.addEventListener('blur',()=>clearPreviewReactions());
+    if(!ratified){
+      btn.addEventListener('click',()=>selectClause(field,oi));
+      btn.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectClause(field,oi);}});
+    }
+  });
 }
 
 function negGoTo(idx){negState.currentClause=idx;renderNegProgress();renderActiveClause();clearPreviewReactions();}
@@ -2063,7 +2086,7 @@ function clearPreviewReactions(){
 function selectClause(field,oi){
   if(negState.ratified.has(field))return;
   const clause=NEG_CLAUSES.find(c=>c.field===field);const opt=clause.options[oi];
-  document.querySelectorAll('.neg-option').forEach((el,i)=>{el.classList.remove('selected');if(i===oi)el.classList.add('selected');});
+  document.querySelectorAll('.neg-option').forEach(el=>{el.classList.remove('selected');if(+el.dataset.oi===oi)el.classList.add('selected');});
   let approvals=0;
   NEG_STAKEHOLDERS.forEach((s,si)=>{
     const reaction=opt.reactions[s.id];
@@ -2140,6 +2163,7 @@ function skipToConvergence(){
     S.coalitionTalent=Math.max(0,S.coalitionTalent+opt.talentImpact);
     S.riskLevel=Math.min(100,S.riskLevel+6);
     if(opt.verdict==='hurt')S.hurtCount++;else if(opt.verdict==='helped')S.helpedCount++;else S.mixedCount++;
+    Object.keys(S.rivalMetrics).forEach(k=>{S.rivalMetrics[k].marketCap=Math.round(S.rivalMetrics[k].marketCap*1.03);S.rivalMetrics[k].talent=Math.round(S.rivalMetrics[k].talent*1.01);});
   }
   S.currentDecision=KEY_DECISIONS.length;
   updateRiskMeter();showConvergence();
@@ -2155,8 +2179,10 @@ function playAllIn(){
     S.decisions.push({id:d.id,optionIdx:0,verdict:opt.verdict,title:d.title,month:d.month});
     S.coalitionMarketShare=Math.max(0,S.coalitionMarketShare+opt.marketShareImpact);
     S.coalitionMarketCap=Math.max(0,S.coalitionMarketCap+opt.marketCapImpact);
+    S.coalitionTalent=Math.max(0,S.coalitionTalent+opt.talentImpact);
     S.riskLevel=Math.min(100,S.riskLevel+6);
     if(opt.verdict==='hurt')S.hurtCount++;else if(opt.verdict==='helped')S.helpedCount++;else S.mixedCount++;
+    Object.keys(S.rivalMetrics).forEach(k=>{S.rivalMetrics[k].marketCap=Math.round(S.rivalMetrics[k].marketCap*1.03);S.rivalMetrics[k].talent=Math.round(S.rivalMetrics[k].talent*1.01);});
   });
   // Show montage
   const overlay=document.getElementById('montageOverlay');overlay.classList.add('active');

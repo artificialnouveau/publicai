@@ -1,0 +1,494 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: transparent; font-family: var(--font-sans, sans-serif); }
+
+.vocab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  background: #02050a;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 3px;
+}
+
+.cell {
+  background: #05090f;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4/3;
+}
+.cell canvas { display: block; width: 100%; height: 100%; }
+
+.cell-meta {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 10px 12px 11px;
+  background: linear-gradient(transparent, rgba(2,5,10,.92) 40%);
+  pointer-events: none;
+}
+.cell-name {
+  font-size: 11px; font-weight: 500;
+  color: rgba(232,224,204,.85);
+  letter-spacing: .01em;
+}
+.cell-desc {
+  font-size: 9px;
+  color: rgba(232,224,204,.35);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+</style>
+
+<div class="vocab-grid">
+  <div class="cell" id="v1"><div class="cell-meta"><div class="cell-name">Radial bar — polar histogram</div><div class="cell-desc">Distribution · frequency · cyclic patterns</div></div></div>
+  <div class="cell" id="v2"><div class="cell-meta"><div class="cell-name">Flowing Sankey</div><div class="cell-desc">Flow · allocation · proportion over path</div></div></div>
+  <div class="cell" id="v3"><div class="cell-meta"><div class="cell-name">Force network</div><div class="cell-desc">Relationships · system topology · clustering</div></div></div>
+  <div class="cell" id="v4"><div class="cell-meta"><div class="cell-name">Beeswarm / dot cloud</div><div class="cell-desc">Individual units · ranking · outliers</div></div></div>
+  <div class="cell" id="v5"><div class="cell-meta"><div class="cell-name">Spiral timeline</div><div class="cell-desc">Temporal · cyclic change · long arc of data</div></div></div>
+  <div class="cell" id="v6"><div class="cell-meta"><div class="cell-name">Stream graph</div><div class="cell-desc">Composition over time · organic volume</div></div></div>
+  <div class="cell" id="v7"><div class="cell-meta"><div class="cell-name">Voronoi map</div><div class="cell-desc">Territory · proximity · coverage zones</div></div></div>
+  <div class="cell" id="v8"><div class="cell-meta"><div class="cell-name">Arc / chord diagram</div><div class="cell-desc">Bidirectional flow · network density</div></div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+const BG   = [5, 9, 15];
+const BLUE = '#1a6cd4';
+const TEAL = '#0fa37a';
+const PURP = '#7b6fd6';
+const AMBR = '#c96a2b';
+const WH   = 'rgba(232,224,204,';
+
+function mkSketch(id, fn) {
+  const parent = document.getElementById(id);
+  if (!parent) return;
+  new p5((p) => {
+    p.setup = () => {
+      let cnv = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+      cnv.parent(parent);
+      p.pixelDensity(1.5);
+      if (fn.setup) fn.setup(p);
+    };
+    p.draw = () => fn.draw(p);
+  });
+}
+
+// 1 — Radial bar
+mkSketch('v1', (() => {
+  let t = 0;
+  const vals = [0.82,0.61,0.74,0.93,0.55,0.68,0.88,0.42,0.77,0.65,0.90,0.58];
+  const cols = [BLUE,TEAL,PURP,AMBR];
+  let grown = vals.map(() => 0);
+  return {
+    setup(p) {},
+    draw(p) {
+      p.background(...BG); t++;
+      let cx = p.width/2, cy = p.height/2;
+      let innerR = Math.min(p.width,p.height)*0.16;
+      let outerR = Math.min(p.width,p.height)*0.42;
+      let n = vals.length;
+      grown = grown.map((g,i) => Math.min(g + 0.016, 1));
+      for(let i=0;i<n;i++){
+        let a0 = (i/n)*p.TWO_PI - p.HALF_PI;
+        let a1 = ((i+0.78)/n)*p.TWO_PI - p.HALF_PI;
+        let r  = innerR + (outerR-innerR)*vals[i]*grown[i];
+        let pulse = 1 + 0.025*Math.sin(t*0.04+i);
+        let rp = r*pulse;
+        p.noFill(); p.stroke(cols[i%4]); p.strokeWeight(0);
+        p.fill(cols[i%4]+'28');
+        p.stroke(cols[i%4]); p.strokeWeight(0.8);
+        p.arc(cx,cy,rp*2,rp*2,a0,a1);
+        // radial line end caps
+        p.strokeWeight(1.5);
+        p.line(cx+Math.cos(a0)*innerR, cy+Math.sin(a0)*innerR, cx+Math.cos(a0)*rp, cy+Math.sin(a0)*rp);
+        // tip dot
+        let amid = (a0+a1)/2;
+        p.noStroke(); p.fill(cols[i%4]);
+        p.ellipse(cx+Math.cos(amid)*rp, cy+Math.sin(amid)*rp, 4);
+      }
+      // inner ring
+      p.noFill(); p.stroke(255,255,255,14); p.strokeWeight(0.5);
+      p.ellipse(cx,cy,innerR*2);
+      p.noStroke(); p.fill(255,255,255,160);
+      p.ellipse(cx,cy,5);
+    }
+  };
+})());
+
+// 2 — Flowing Sankey
+mkSketch('v2', (() => {
+  let t = 0;
+  const nodes = [
+    {x:0.12, ys:[0.25,0.45,0.65], label:'Fuel load', col:BLUE},
+    {x:0.5,  ys:[0.2,0.4,0.6,0.75], label:'Flight phase', col:TEAL},
+    {x:0.88, ys:[0.3,0.55,0.72], label:'Output', col:PURP}
+  ];
+  const links = [
+    [0,0,1,0,0.18],[0,0,1,1,0.09],[0,1,1,1,0.15],[0,1,1,2,0.10],
+    [0,2,1,2,0.12],[0,2,1,3,0.08],[1,0,2,0,0.16],[1,1,2,0,0.10],
+    [1,2,2,1,0.18],[1,3,2,2,0.14]
+  ];
+  let parts = links.map(l => ({...l, prog:Math.random()}));
+  return {
+    setup(p) {},
+    draw(p) {
+      p.background(...BG); t++;
+      let W=p.width, H=p.height;
+      // draw links
+      links.forEach((lk,i) => {
+        let [ni,yi,nj,yj,w] = lk;
+        let x1=nodes[ni].x*W, y1=nodes[ni].ys[yi]*H;
+        let x2=nodes[nj].x*W, y2=nodes[nj].ys[yj]*H;
+        let thickness = w * H * 1.8;
+        p.noFill(); p.stroke(TEAL+'30'); p.strokeWeight(thickness);
+        p.beginShape();
+        p.vertex(x1,y1);
+        p.bezierVertex(x1+(x2-x1)*0.45,y1, x1+(x2-x1)*0.55,y2, x2,y2);
+        p.endShape();
+        // hairline on top
+        p.stroke(TEAL); p.strokeWeight(0.7);
+        p.beginShape();
+        p.vertex(x1,y1);
+        p.bezierVertex(x1+(x2-x1)*0.45,y1, x1+(x2-x1)*0.55,y2, x2,y2);
+        p.endShape();
+        // travelling dot
+        parts[i].prog = (parts[i].prog + 0.005) % 1;
+        let s = parts[i].prog;
+        let bx = p.bezierPoint(x1, x1+(x2-x1)*0.45, x1+(x2-x1)*0.55, x2, s);
+        let by = p.bezierPoint(y1, y1, y2, y2, s);
+        p.noStroke(); p.fill(TEAL); p.ellipse(bx,by,4);
+      });
+      // node dots
+      nodes.forEach(nd => {
+        nd.ys.forEach(y => {
+          p.noStroke(); p.fill(nd.col);
+          p.ellipse(nd.x*W, y*H, 7);
+        });
+      });
+    }
+  };
+})());
+
+// 3 — Force network
+mkSketch('v3', (() => {
+  let t=0, nodes=[], edges=[];
+  const cols = [BLUE,TEAL,PURP,AMBR];
+  return {
+    setup(p) {
+      for(let i=0;i<22;i++) nodes.push({
+        x:p.random(p.width*0.1,p.width*0.9),
+        y:p.random(p.height*0.1,p.height*0.9),
+        vx:0,vy:0,r:p.random(3,8),
+        col:cols[i%4],
+        group:Math.floor(i/5)
+      });
+      for(let i=0;i<32;i++){
+        let a=Math.floor(p.random(nodes.length));
+        let b=Math.floor(p.random(nodes.length));
+        if(a!==b) edges.push([a,b]);
+      }
+    },
+    draw(p) {
+      p.background(...BG); t++;
+      // simple force sim
+      nodes.forEach((n,i) => {
+        nodes.forEach((m,j) => {
+          if(i===j) return;
+          let dx=n.x-m.x, dy=n.y-m.y;
+          let d=Math.sqrt(dx*dx+dy*dy)||1;
+          let sameGroup=n.group===m.group;
+          let force = sameGroup ? -0.6/d : 1.2/(d*d);
+          n.vx+=dx/d*force; n.vy+=dy/d*force;
+        });
+        let cx=p.width/2,cy=p.height/2;
+        n.vx+=(cx-n.x)*0.001; n.vy+=(cy-n.y)*0.001;
+        n.vx*=0.88; n.vy*=0.88;
+        n.x+=n.vx; n.y+=n.vy;
+        n.x=Math.max(20,Math.min(p.width-20,n.x));
+        n.y=Math.max(20,Math.min(p.height-20,n.y));
+      });
+      edges.forEach(([a,b]) => {
+        let na=nodes[a],nb=nodes[b];
+        let sameGroup=na.group===nb.group;
+        p.stroke(sameGroup?na.col:'rgba(255,255,255,0.06)');
+        p.strokeWeight(sameGroup?0.8:0.4);
+        p.line(na.x,na.y,nb.x,nb.y);
+      });
+      nodes.forEach(n => {
+        let pulse=1+0.08*Math.sin(t*0.03+n.r);
+        p.noStroke(); p.fill(n.col+'18');
+        p.ellipse(n.x,n.y,n.r*3*pulse);
+        p.fill(n.col); p.ellipse(n.x,n.y,n.r);
+      });
+    }
+  };
+})());
+
+// 4 — Beeswarm / dot cloud
+mkSketch('v4', (() => {
+  let t=0, dots=[];
+  const cols=[BLUE,TEAL,PURP,AMBR];
+  return {
+    setup(p) {
+      for(let i=0;i<80;i++){
+        let group=Math.floor(i/20);
+        let baseX=p.width*(0.15+group*0.22);
+        dots.push({
+          x:baseX+p.random(-20,20),
+          y:p.random(p.height*0.15,p.height*0.85),
+          targetY:0, r:p.random(2.5,5.5),
+          col:cols[group], val:p.random(1),
+          phase:p.random(p.TWO_PI), settled:0
+        });
+      }
+      dots.sort((a,b)=>a.val-b.val);
+      dots.forEach((d,i)=>{
+        let group=cols.indexOf(d.col);
+        let baseX=p.width*(0.15+group*0.22);
+        d.targetY=p.height*0.1+d.val*(p.height*0.8);
+        d.x=baseX+p.random(-14,14);
+      });
+    },
+    draw(p) {
+      p.background(...BG); t++;
+      // axis lines
+      for(let g=0;g<4;g++){
+        let x=p.width*(0.15+g*0.22);
+        p.stroke(255,255,255,10); p.strokeWeight(0.5);
+        p.line(x,p.height*0.08,x,p.height*0.92);
+      }
+      dots.forEach(d=>{
+        d.settled=Math.min(d.settled+0.02,1);
+        let ease=1-Math.pow(1-d.settled,3);
+        let cy=p.lerp(p.height/2,d.targetY,ease);
+        let drift=Math.sin(t*0.015+d.phase)*1.5;
+        p.noStroke(); p.fill(d.col+'15');
+        p.ellipse(d.x+drift,cy,d.r*3);
+        p.fill(d.col); p.ellipse(d.x+drift,cy,d.r);
+      });
+    }
+  };
+})());
+
+// 5 — Spiral timeline
+mkSketch('v5', (() => {
+  let t=0;
+  const events=[];
+  for(let i=0;i<36;i++) events.push({angle:i*0.55,r:0.2+i*0.018,size:2+Math.random()*3,col:[BLUE,TEAL,PURP,AMBR][i%4]});
+  return {
+    setup(p){},
+    draw(p){
+      p.background(...BG); t++;
+      let cx=p.width/2,cy=p.height/2;
+      let maxR=Math.min(p.width,p.height)*0.43;
+      // spiral path
+      p.noFill(); p.stroke(255,255,255,8); p.strokeWeight(0.5);
+      p.beginShape();
+      for(let a=0;a<20;a+=0.05){
+        let r=(a/20)*maxR;
+        p.vertex(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
+      }
+      p.endShape();
+      // events
+      events.forEach((e,i)=>{
+        let grow=Math.min(t*0.01-i*0.04,1);
+        if(grow<=0)return;
+        grow=1-Math.pow(1-Math.min(grow,1),3);
+        let r=e.r*maxR*grow;
+        let angle=e.angle+t*0.002;
+        let ex=cx+Math.cos(angle)*r;
+        let ey=cy+Math.sin(angle)*r;
+        let pulse=1+0.12*Math.sin(t*0.04+i);
+        p.noStroke(); p.fill(e.col+'18');
+        p.ellipse(ex,ey,e.size*3*pulse);
+        p.fill(e.col); p.ellipse(ex,ey,e.size*grow);
+      });
+      // center dot
+      p.noStroke(); p.fill(255,255,255,160);
+      p.ellipse(cx,cy,4);
+    }
+  };
+})());
+
+// 6 — Stream graph
+mkSketch('v6', (() => {
+  let t=0;
+  const layers=4;
+  const cols=[BLUE,TEAL,PURP,AMBR];
+  const seeds=[];
+  for(let l=0;l<layers;l++){
+    let pts=[];
+    for(let i=0;i<12;i++) pts.push(0.08+Math.random()*0.15);
+    seeds.push(pts);
+  }
+  return {
+    setup(p){},
+    draw(p){
+      p.background(...BG); t++;
+      let W=p.width,H=p.height;
+      let steps=seeds[0].length;
+      // compute stacked values
+      let stacked=seeds.map(layer=>layer.map((v,i)=>v*(0.8+0.2*Math.sin(t*0.01+i*0.5))));
+      // draw from middle outward
+      for(let l=layers-1;l>=0;l--){
+        p.fill(cols[l]+'20'); p.stroke(cols[l]); p.strokeWeight(0.7);
+        p.beginShape();
+        for(let i=0;i<=steps;i++){
+          let x=(i/steps)*W;
+          let totalBelow=0;
+          for(let k=0;k<l;k++) totalBelow+=stacked[k][Math.min(i,steps-1)];
+          let val=stacked[l][Math.min(i,steps-1)];
+          let baseline=H/2-totalBelow*H*0.8;
+          p.curveVertex(x,baseline-val*H*0.8);
+        }
+        for(let i=steps;i>=0;i--){
+          let x=(i/steps)*W;
+          let totalBelow=0;
+          for(let k=0;k<l;k++) totalBelow+=stacked[k][Math.min(i,steps-1)];
+          let baseline=H/2-totalBelow*H*0.8;
+          p.curveVertex(x,baseline);
+        }
+        p.endShape(p.CLOSE);
+      }
+      // travelling dots along top edges
+      for(let l=0;l<layers;l++){
+        let prog=(t*0.003+l*0.25)%1;
+        let idx=prog*steps;
+        let i0=Math.floor(idx),i1=Math.min(i0+1,steps-1);
+        let frac=idx-i0;
+        let x=prog*W;
+        let totalBelow=0;
+        for(let k=0;k<l;k++) totalBelow+=(stacked[k][i0]*(1-frac)+stacked[k][i1]*frac);
+        let val=stacked[l][i0]*(1-frac)+stacked[l][i1]*frac;
+        let y=H/2-totalBelow*H*0.8-val*H*0.8;
+        p.noStroke(); p.fill(cols[l]); p.ellipse(x,y,4);
+      }
+    }
+  };
+})());
+
+// 7 — Voronoi map
+mkSketch('v7', (() => {
+  let t=0, sites=[];
+  const cols=[BLUE,TEAL,PURP,AMBR];
+  return {
+    setup(p){
+      for(let i=0;i<16;i++) sites.push({
+        x:p.random(p.width*0.05,p.width*0.95),
+        y:p.random(p.height*0.05,p.height*0.95),
+        col:cols[i%4], r:p.random(4,8),
+        vx:(p.random()-0.5)*0.15, vy:(p.random()-0.5)*0.15
+      });
+    },
+    draw(p){
+      p.background(...BG); t++;
+      // move sites gently
+      sites.forEach(s=>{
+        s.x+=s.vx; s.y+=s.vy;
+        if(s.x<10||s.x>p.width-10) s.vx*=-1;
+        if(s.y<10||s.y>p.height-10) s.vy*=-1;
+      });
+      // approximate voronoi via per-pixel nearest (sampled grid)
+      let step=8;
+      for(let gx=0;gx<p.width;gx+=step){
+        for(let gy=0;gy<p.height;gy+=step){
+          let minD=Infinity,nearest=0;
+          let secondD=Infinity;
+          for(let i=0;i<sites.length;i++){
+            let dx=gx-sites[i].x,dy=gy-sites[i].y;
+            let d=dx*dx+dy*dy;
+            if(d<minD){secondD=minD;minD=d;nearest=i;}
+            else if(d<secondD){secondD=d;}
+          }
+          let edge=Math.sqrt(secondD)-Math.sqrt(minD);
+          if(edge<6){
+            p.noStroke();
+            let a=Math.max(0,1-edge/6)*0.25;
+            p.fill(sites[nearest].col+Math.round(a*255).toString(16).padStart(2,'0'));
+            p.rect(gx,gy,step,step);
+          }
+        }
+      }
+      // site dots
+      sites.forEach(s=>{
+        let pulse=1+0.1*Math.sin(t*0.04+s.r);
+        p.noStroke(); p.fill(s.col+'20');
+        p.ellipse(s.x,s.y,s.r*2.5*pulse);
+        p.fill(s.col); p.ellipse(s.x,s.y,s.r*0.8);
+      });
+    }
+  };
+})());
+
+// 8 — Arc / chord diagram
+mkSketch('v8', (() => {
+  let t=0;
+  const n=6;
+  const cols=[BLUE,TEAL,PURP,AMBR,BLUE,TEAL];
+  const matrix=[];
+  for(let i=0;i<n;i++){
+    let row=[];
+    for(let j=0;j<n;j++) row.push(i===j?0:Math.random()*0.5+0.1);
+    matrix.push(row);
+  }
+  let dots=[];
+  for(let i=0;i<n;i++) for(let j=0;j<n;j++){
+    if(i!==j&&matrix[i][j]>0.3) dots.push({from:i,to:j,prog:Math.random(),speed:0.003+Math.random()*0.004});
+  }
+  return {
+    setup(p){},
+    draw(p){
+      p.background(...BG); t++;
+      let cx=p.width/2,cy=p.height/2;
+      let R=Math.min(p.width,p.height)*0.38;
+      let arcLen=p.TWO_PI/n;
+      let gap=0.06;
+      // outer arcs (nodes)
+      for(let i=0;i<n;i++){
+        let a0=i*arcLen+gap;
+        let a1=(i+1)*arcLen-gap;
+        p.noFill(); p.stroke(cols[i]); p.strokeWeight(3);
+        p.arc(cx,cy,R*2,R*2,a0-p.HALF_PI,a1-p.HALF_PI);
+      }
+      // chords
+      for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){
+        let val=(matrix[i][j]+matrix[j][i])/2;
+        if(val<0.2) continue;
+        let ai=(i+0.5)*arcLen-p.HALF_PI;
+        let aj=(j+0.5)*arcLen-p.HALF_PI;
+        let x1=cx+Math.cos(ai)*R,y1=cy+Math.sin(ai)*R;
+        let x2=cx+Math.cos(aj)*R,y2=cy+Math.sin(aj)*R;
+        let alpha=Math.round(val*40);
+        p.noFill(); p.stroke(cols[i]+alpha.toString(16).padStart(2,'0'));
+        p.strokeWeight(val*3);
+        p.beginShape();
+        p.vertex(x1,y1);
+        p.quadraticVertex(cx,cy,x2,y2);
+        p.endShape();
+      }
+      // travelling dots along chords
+      dots.forEach(d=>{
+        d.prog=(d.prog+d.speed)%1;
+        let ai=(d.from+0.5)*arcLen-p.HALF_PI;
+        let aj=(d.to+0.5)*arcLen-p.HALF_PI;
+        let x1=cx+Math.cos(ai)*R,y1=cy+Math.sin(ai)*R;
+        let x2=cx+Math.cos(aj)*R,y2=cy+Math.sin(aj)*R;
+        let s=d.prog;
+        let dx=(1-s)*(1-s)*x1+2*(1-s)*s*cx+s*s*x2;
+        let dy=(1-s)*(1-s)*y1+2*(1-s)*s*cy+s*s*y2;
+        p.noStroke(); p.fill(cols[d.from]); p.ellipse(dx,dy,3.5);
+      });
+      // node dots
+      for(let i=0;i<n;i++){
+        let a=(i+0.5)*arcLen-p.HALF_PI;
+        let nx=cx+Math.cos(a)*(R+8),ny=cy+Math.sin(a)*(R+8);
+        p.noStroke(); p.fill(cols[i]); p.ellipse(nx,ny,5);
+      }
+    }
+  };
+})());
+</script>

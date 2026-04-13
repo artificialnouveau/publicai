@@ -1,0 +1,293 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: transparent; font-family: var(--font-sans, sans-serif); color: #fff; }
+
+.board { background: #05090f; border-radius: 14px; padding: 36px 32px; }
+.section-label {
+  font-size: 9px; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.28); margin-bottom: 14px;
+}
+.divider { border: none; border-top: 0.5px solid rgba(255,255,255,.08); margin: 30px 0; }
+
+/* PALETTE */
+.palette-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.swatch {
+  flex: 1; min-width: 64px;
+  border-radius: 8px; padding: 14px 10px 10px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.swatch-bar { height: 3px; border-radius: 2px; margin-bottom: 4px; }
+.swatch-name { font-size: 11px; font-weight: 500; }
+.swatch-hex  { font-size: 9px; opacity: .45; letter-spacing: .04em; font-family: var(--font-mono, monospace); }
+.swatch-role { font-size: 9px; opacity: .4; margin-top: 2px; line-height: 1.4; }
+
+/* TYPE SPECIMENS */
+.type-row { display: flex; flex-direction: column; gap: 18px; }
+.type-specimen { border-left: 0.5px solid rgba(255,255,255,.1); padding-left: 16px; }
+.type-specimen .sample { line-height: 1.1; }
+.type-specimen .meta { font-size: 9px; color: rgba(255,255,255,.3); margin-top: 5px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* TEXTURE SWATCHES */
+.texture-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.texture-card {
+  border-radius: 10px; overflow: hidden;
+  border: 0.5px solid rgba(255,255,255,.08);
+  aspect-ratio: 4/3;
+  position: relative;
+}
+.texture-card canvas { display: block; width: 100%; height: 100%; }
+.texture-card .tx-label {
+  position: absolute; bottom: 8px; left: 10px;
+  font-size: 9px; color: rgba(255,255,255,.4); letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* MOTION TOKENS */
+.motion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.motion-card {
+  background: rgba(255,255,255,.03);
+  border: 0.5px solid rgba(255,255,255,.07);
+  border-radius: 8px; padding: 14px 16px;
+}
+.motion-card .m-name { font-size: 11px; font-weight: 500; color: rgba(255,255,255,.8); margin-bottom: 4px; }
+.motion-card .m-val  { font-size: 9px; color: rgba(255,255,255,.35); font-family: var(--font-mono, monospace); }
+.motion-card .m-desc { font-size: 10px; color: rgba(255,255,255,.4); margin-top: 6px; line-height: 1.5; }
+</style>
+
+<div class="board">
+
+  <!-- PALETTE -->
+  <div class="section-label">01 — Color palette</div>
+  <div class="palette-row">
+
+    <div class="swatch" style="background:#05090f;">
+      <div class="swatch-bar" style="background:#05090f; border: 0.5px solid rgba(255,255,255,.15);"></div>
+      <div class="swatch-name">Void</div>
+      <div class="swatch-hex">#05090F</div>
+      <div class="swatch-role">Page bg. Deeper than black — like space seen from cockpit.</div>
+    </div>
+
+    <div class="swatch" style="background:#0b1628;">
+      <div class="swatch-bar" style="background:#0b1628;"></div>
+      <div class="swatch-name">Deep night</div>
+      <div class="swatch-hex">#0B1628</div>
+      <div class="swatch-role">Card & section bg. Subtle separation.</div>
+    </div>
+
+    <div class="swatch" style="background:#112240;">
+      <div class="swatch-bar" style="background:#112240;"></div>
+      <div class="swatch-name">Stratosphere</div>
+      <div class="swatch-hex">#112240</div>
+      <div class="swatch-role">Raised surfaces, hover states.</div>
+    </div>
+
+    <div class="swatch" style="background:#1a6cd4;">
+      <div class="swatch-bar" style="background:#1a6cd4;"></div>
+      <div class="swatch-name">Cruising blue</div>
+      <div class="swatch-hex">#1A6CD4</div>
+      <div class="swatch-role">Primary data color. Main arcs, key lines.</div>
+    </div>
+
+    <div class="swatch" style="background:#0fa37a;">
+      <div class="swatch-bar" style="background:#0fa37a;"></div>
+      <div class="swatch-name">Altitude green</div>
+      <div class="swatch-hex">#0FA37A</div>
+      <div class="swatch-role">Efficiency, sustainability metrics.</div>
+    </div>
+
+    <div class="swatch" style="background:#c96a2b;">
+      <div class="swatch-bar" style="background:#c96a2b;"></div>
+      <div class="swatch-name">Afterburner</div>
+      <div class="swatch-hex">#C96A2B</div>
+      <div class="swatch-role">Anomalies, alerts, accent moments.</div>
+    </div>
+
+    <div class="swatch" style="background:#7b6fd6;">
+      <div class="swatch-bar" style="background:#7b6fd6;"></div>
+      <div class="swatch-name">Aurora</div>
+      <div class="swatch-hex">#7B6FD6</div>
+      <div class="swatch-role">AI / ML processes. The "intelligent" layer.</div>
+    </div>
+
+    <div class="swatch" style="background:#e8e0cc;">
+      <div class="swatch-bar" style="background:#e8e0cc;"></div>
+      <div class="swatch-name">Cockpit white</div>
+      <div class="swatch-hex">#E8E0CC</div>
+      <div class="swatch-role">Primary type. Slightly warm, never pure white.</div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- TYPOGRAPHY -->
+  <div class="section-label">02 — Type direction</div>
+  <div class="type-row">
+
+    <div class="type-specimen">
+      <div class="sample" style="font-size: 32px; font-weight: 300; color: #e8e0cc; letter-spacing: -.01em;">
+        Fleet intelligence,<br>at altitude.
+      </div>
+      <div class="meta">Hero — Light 300 · 32–56px · tight leading · warm white</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="sample" style="font-size: 13px; font-weight: 400; color: rgba(232,224,204,.5); letter-spacing: .14em; text-transform: uppercase;">
+        Sensor network · predictive analytics · real-time ops
+      </div>
+      <div class="meta">Eyebrow / label — Regular 400 · 10–13px · wide tracking · 50% opacity</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="sample" style="font-size: 36px; font-weight: 300; color: #1a6cd4; letter-spacing: -.02em; font-variant-numeric: tabular-nums;">
+        21,432
+      </div>
+      <div class="meta">Data figure — Light 300 · tabular nums · accent color · no unit clutter</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="sample" style="font-size: 11px; font-weight: 400; color: rgba(232,224,204,.38); letter-spacing: .06em; max-width: 320px; line-height: 1.7;">
+        Each arc represents one AI-optimised flight corridor. Line weight encodes fuel efficiency gain versus the baseline route.
+      </div>
+      <div class="meta">Annotation / legend — 10–11px · 35–40% opacity · generous line height</div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- TEXTURE / MARK STYLE -->
+  <div class="section-label">03 — Mark & texture language</div>
+  <div class="texture-grid">
+
+    <div class="texture-card" id="tx1">
+      <canvas id="tc1" role="img" aria-label="Hairline arcs texture sample"></canvas>
+      <div class="tx-label">Hairline arcs</div>
+    </div>
+    <div class="texture-card" id="tx2">
+      <canvas id="tc2" role="img" aria-label="Dot field texture sample"></canvas>
+      <div class="tx-label">Dot field</div>
+    </div>
+    <div class="texture-card" id="tx3">
+      <canvas id="tc3" role="img" aria-label="Concentric rings texture sample"></canvas>
+      <div class="tx-label">Concentric rings</div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- MOTION TOKENS -->
+  <div class="section-label">04 — Motion principles</div>
+  <div class="motion-grid">
+
+    <div class="motion-card">
+      <div class="m-name">Entrance</div>
+      <div class="m-val">ease-out · 900–1400ms</div>
+      <div class="m-desc">Elements draw in from center outward. Never pop — always grow or travel.</div>
+    </div>
+
+    <div class="motion-card">
+      <div class="m-name">Data pulse</div>
+      <div class="m-val">sine · 3–5s loop · opacity only</div>
+      <div class="m-desc">Resting state. Gentle opacity breath on key nodes. Nothing moves spatially.</div>
+    </div>
+
+    <div class="motion-card">
+      <div class="m-name">Travelling dot</div>
+      <div class="m-val">linear · follows path · 0.8–1.5s</div>
+      <div class="m-desc">The signature move. A lit particle traces a hairline arc to show data in transit.</div>
+    </div>
+
+    <div class="motion-card">
+      <div class="m-name">Reveal on scroll</div>
+      <div class="m-val">IntersectionObserver · stagger 120ms</div>
+      <div class="m-desc">Each infographic wakes when it enters viewport. Never auto-plays off screen.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+function makeTexture(canvasId, drawFn) {
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  const parent = el.parentElement;
+  const s = (p) => {
+    p.setup = () => {
+      let cnv = p.createCanvas(parent.offsetWidth, parent.offsetHeight);
+      cnv.parent(parent);
+      el.remove();
+      p.pixelDensity(1.5);
+      p.background(11, 22, 40);
+    };
+    p.draw = drawFn(p);
+  };
+  new p5(s);
+}
+
+// Hairline arcs
+makeTexture('tc1', (p) => {
+  let t = 0;
+  let arcs = Array.from({length: 12}, (_, i) => ({
+    angle: (i / 12) * p.TWO_PI,
+    r: 20 + i * 8,
+    speed: 0.003 + i * 0.001,
+    col: ['#1a6cd4','#0fa37a','#7b6fd6'][i % 3]
+  }));
+  return () => {
+    p.background(11, 22, 40);
+    t++;
+    let cx = p.width/2, cy = p.height/2;
+    arcs.forEach(a => {
+      p.noFill();
+      p.stroke(a.col); p.strokeWeight(0.6);
+      let start = a.angle + t * a.speed;
+      p.arc(cx, cy, a.r*2, a.r*2, start, start + p.PI * 1.1);
+    });
+  };
+});
+
+// Dot field
+makeTexture('tc2', (p) => {
+  let dots = Array.from({length: 120}, () => ({
+    x: p.random(p.width || 200),
+    y: p.random(p.height || 160),
+    r: p.random(0.8, 2.5),
+    col: ['#1a6cd4','#0fa37a','#7b6fd6','#c96a2b'][Math.floor(p.random(4))],
+    phase: p.random(p.TWO_PI)
+  }));
+  let t = 0;
+  return () => {
+    p.background(11, 22, 40);
+    t++;
+    dots.forEach(d => {
+      let a = 80 + 60 * Math.sin(t * 0.02 + d.phase);
+      p.noStroke(); p.fill(d.col + Math.round(a).toString(16).padStart(2,'0'));
+      p.ellipse(d.x, d.y, d.r * 2);
+    });
+  };
+});
+
+// Concentric rings
+makeTexture('tc3', (p) => {
+  let t = 0;
+  return () => {
+    p.background(11, 22, 40);
+    t++;
+    let cx = p.width/2, cy = p.height/2;
+    let max = Math.min(p.width, p.height) * 0.48;
+    for (let i = 1; i <= 8; i++) {
+      let r = (i / 8) * max;
+      let a = 18 + 14 * Math.sin(t * 0.015 + i * 0.6);
+      p.noFill();
+      p.stroke(26, 108, 212, a); p.strokeWeight(0.5);
+      p.ellipse(cx, cy, r*2);
+    }
+    p.noStroke(); p.fill(26,108,212,180);
+    p.ellipse(cx, cy, 5);
+  };
+});
+</script>

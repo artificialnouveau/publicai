@@ -1343,7 +1343,7 @@ body::after {
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="hero">
-  <div class="hero-particles"><canvas id="heroCanvas"></canvas></div>
+  <div class="hero-particles"><canvas id="heroCanvas" role="presentation" aria-hidden="true"></canvas></div>
   <div class="hero-content">
     <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:1.5rem;"></div>
     <h1 class="glow">The Slow Boil</h1>
@@ -1377,7 +1377,7 @@ body::after {
 </section>
 <section class="chapter-grid">
   <div class="chapter-card" onclick="openChapter(0)" data-chapter="0" role="button" tabindex="0" aria-label="Read Dublin chapter, April 2026" onkeydown="if(event.key==='Enter')openChapter(0)">
-    <canvas class="chip-bg" id="chipBg0"></canvas>
+    <canvas class="chip-bg" id="chipBg0" role="presentation" aria-hidden="true"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
     <div class="chapter-card-number">01</div>
     <div class="chapter-card-content">
@@ -1387,7 +1387,7 @@ body::after {
     </div>
   </div>
   <div class="chapter-card" onclick="openChapter(1)" data-chapter="1" role="button" tabindex="0" aria-label="Read Brussels chapter, June 2026" onkeydown="if(event.key==='Enter')openChapter(1)">
-    <canvas class="chip-bg" id="chipBg1"></canvas>
+    <canvas class="chip-bg" id="chipBg1" role="presentation" aria-hidden="true"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
     <div class="chapter-card-number">02</div>
     <div class="chapter-card-content">
@@ -1397,7 +1397,7 @@ body::after {
     </div>
   </div>
   <div class="chapter-card" onclick="openChapter(2)" data-chapter="2" role="button" tabindex="0" aria-label="Read Tokyo chapter, February 2027" onkeydown="if(event.key==='Enter')openChapter(2)">
-    <canvas class="chip-bg" id="chipBg2"></canvas>
+    <canvas class="chip-bg" id="chipBg2" role="presentation" aria-hidden="true"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
     <div class="chapter-card-number">03</div>
     <div class="chapter-card-content">
@@ -1407,7 +1407,7 @@ body::after {
     </div>
   </div>
   <div class="chapter-card" onclick="openChapter(3)" data-chapter="3" role="button" tabindex="0" aria-label="Read Berlin chapter, April 2027" onkeydown="if(event.key==='Enter')openChapter(3)">
-    <canvas class="chip-bg" id="chipBg3"></canvas>
+    <canvas class="chip-bg" id="chipBg3" role="presentation" aria-hidden="true"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
     <div class="chapter-card-number">04</div>
     <div class="chapter-card-content">
@@ -1650,7 +1650,7 @@ body::after {
           <button class="filter-btn" data-filter="EU" onclick="filterMarketCap('EU',this)">EU</button>
           <button class="filter-btn" data-filter="CN" onclick="filterMarketCap('CN',this)">China</button>
         </div>
-        <canvas id="marketCapChart" height="320"></canvas>
+        <canvas id="marketCapChart" height="320" role="img" aria-label="Market capitalization chart comparing US and EU AI companies"></canvas>
         <div class="market-cap-info" id="mcInfo"></div>
         <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
           <a class="source-link" href="https://www.cnbc.com/2026/03/31/openai-funding-round-ipo.html" target="_blank">OpenAI $852B valuation: CNBC, Mar 2026</a>
@@ -1661,7 +1661,7 @@ body::after {
 
       <div class="chart-container reveal">
         <h3>Global Cloud Infrastructure Market Share</h3>
-        <canvas id="cloudShareChart" height="320"></canvas>
+        <canvas id="cloudShareChart" height="320" role="img" aria-label="Global cloud infrastructure market share chart"></canvas>
         <a class="source-link" href="https://www.srgresearch.com/articles/european-cloud-providers-local-market-share-now-holds-steady-at-15" target="_blank" style="margin-top:8px;display:inline-block;">Source: Synergy Research Group Q4 2024</a>
       </div>
 
@@ -2126,7 +2126,7 @@ body::after {
 
       <!-- Real precedents timeline -->
       <div class="reveal">
-        <canvas id="precedentsCanvas" style="width:100%;height:340px;"></canvas>
+        <canvas id="precedentsCanvas" style="width:100%;height:340px;" role="img" aria-label="Timeline of legal precedents affecting data sovereignty"></canvas>
       </div>
 
       <!-- Real-world precedent cards -->
@@ -2203,7 +2203,7 @@ body::after {
         <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.75rem;line-height:1.6;border-left:2px solid var(--cyan);padding-left:12px;">The Wi-Fi Alliance formed in 1999: six companies united to guarantee interoperability. A rising tide lifts all ships, so long as everyone agrees to open their respective dams. The Airbus precedent took thirteen years from first talks to first breakthrough. Two timelines, side by side.</p>
       </div>
       <div class="reveal">
-        <canvas id="timelineArcsCanvas" style="width:100%;height:200px;margin-bottom:1rem;"></canvas>
+        <canvas id="timelineArcsCanvas" style="width:100%;height:200px;margin-bottom:1rem;" role="img" aria-label="Parallel timeline arcs comparing Airbus aviation history with AI coalition"></canvas>
       </div>
       <div class="widget reveal">
         <h3>Timeline: The Airbus Parallel</h3>
@@ -2257,7 +2257,7 @@ body::after {
       </div>
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
 
-      <canvas id="capitalFlowCanvas" style="width:100%;height:320px;"></canvas>
+      <canvas id="capitalFlowCanvas" style="width:100%;height:320px;" role="img" aria-label="Capital flow visualization showing where EU AI investment ends up"></canvas>
 
       <!-- Stat summary below canvas -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
@@ -2292,7 +2292,7 @@ body::after {
       </div>
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
 
-      <canvas id="talentChordCanvas" style="width:100%;height:400px;"></canvas>
+      <canvas id="talentChordCanvas" style="width:100%;height:400px;" role="img" aria-label="Talent migration chord diagram showing where EU AI researchers end up"></canvas>
 
       <!-- Legend -->
       <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:1rem;justify-content:center;">
@@ -2332,7 +2332,7 @@ body::after {
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
 
       <!-- Map visualization -->
-      <canvas id="computeMapCanvas" style="width:100%;height:380px;"></canvas>
+      <canvas id="computeMapCanvas" style="width:100%;height:380px;" role="img" aria-label="Map of global compute infrastructure and data center locations"></canvas>
 
       <!-- Two-column comparison -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
@@ -2431,7 +2431,7 @@ body::after {
       </div>
       <p style="font-size:0.95rem;color:var(--text-dim);margin-bottom:1.5rem;">China accounts for ~75% of generative AI inventions (2014-2023). But US patents are cited 7x more. Europe produced only 3 notable AI models in 2024 vs 40 from the US.</p>
 
-      <canvas id="patentChart" style="width:100%;height:300px;"></canvas>
+      <canvas id="patentChart" style="width:100%;height:300px;" role="img" aria-label="Patent landscape chart comparing GenAI inventions by region"></canvas>
 
       <!-- Key metrics row -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
@@ -2494,7 +2494,7 @@ body::after {
       </div>
 
       <!-- Force network canvas -->
-      <canvas id="playersNetworkCanvas" style="width:100%;height:500px;cursor:grab;"></canvas>
+      <canvas id="playersNetworkCanvas" style="width:100%;height:500px;cursor:grab;" role="img" aria-label="Interactive network graph of rising AI players across Europe, Asia, and Africa"></canvas>
 
       <!-- Tooltip for hover -->
       <div id="playerTooltip" style="display:none;position:fixed;padding:12px 16px;background:rgba(5,9,15,0.95);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;z-index:300;pointer-events:none;max-width:280px;">
@@ -2653,6 +2653,7 @@ const revealObs = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
     }
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
@@ -3255,7 +3256,7 @@ function animateExodus(){
   const items = document.querySelectorAll('.exodus-item');
   const obs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
-      if(e.isIntersecting) e.target.classList.add('visible');
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
     });
   }, { threshold: 0.1 });
   items.forEach(el => obs.observe(el));

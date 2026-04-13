@@ -1423,6 +1423,7 @@ function exportDeck() {
   const sel = getSelected();
   if (sel.length === 0) { showToast('Select at least one company first'); return; }
   const h = HYPERSCALERS.find(x => x.id === S.challenger);
+  if (!h) return;
   const { compute, contracts, capital, talent } = S.sliders;
   const projVal = c ? c.valuation + capital * 2 + contracts * 10 + compute * 0.5 : 0;
   const projArr = c ? c.arr + contracts * 1000 + capital * 30 + compute * 5 : 0;
@@ -1577,6 +1578,7 @@ function resetToDefaults() {
 // ============================================================
 function initParticles() {
   const canvas = document.getElementById('particleCanvas');
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H;
   const particles = [];
@@ -1607,6 +1609,7 @@ function initParticles() {
 // ============================================================
 function drawAirbusStory() {
   const canvas = document.getElementById('airbusCanvas');
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const W=500, H=375;
   ctx.clearRect(0,0,W,H);
@@ -1632,6 +1635,7 @@ function drawAirbusStory() {
 
 function drawParallelStory() {
   const canvas = document.getElementById('parallelCanvas');
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const W=500, H=375;
   ctx.clearRect(0,0,W,H);
@@ -1752,7 +1756,7 @@ function buildRoundTooltip(axis, hId) {
   return `<div class="round-tooltip">
     <div class="tt-header"><span class="tt-axis">${AXIS_LABELS[axis]}</span><span class="tt-what">${AXIS_HINTS[axis]}</span></div>
     <div class="tt-side"><div class="tt-side-label ours">Public AI Co. — why this score</div>${ourFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
-    <div class="tt-side"><div class="tt-side-label theirs">${HYPERSCALERS.find(x=>x.id===hId).name} — why this score</div>${hFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
+    <div class="tt-side"><div class="tt-side-label theirs">${(HYPERSCALERS.find(x=>x.id===hId)||{name:'Challenger'}).name} — why this score</div>${hFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
   </div>`;
 }
 
@@ -1761,6 +1765,7 @@ function updateBattle(animate) {
   const roundsEl = document.getElementById('battleRounds');
   const verdict = document.getElementById('battleVerdict');
   const c = getCombined(), h = HYPERSCALERS.find(x => x.id === S.challenger);
+  if (!h) return;
 
   if (!c) {
     scoreboard.innerHTML = '';
@@ -1935,7 +1940,7 @@ function renderTimeline() {
       <div class="tl-card-metrics">
         <div class="tl-metric"><div class="tl-metric-val">$${t.valuation}B</div><div class="tl-metric-label">Valuation</div></div>
         <div class="tl-metric"><div class="tl-metric-val">${t.competitive}%</div><div class="tl-metric-label">Competitive Index</div></div>
-        <div class="tl-metric"><div class="tl-metric-val">${Math.round(t.valuation / 300 * 100)}%</div><div class="tl-metric-label">vs OpenAI</div></div>
+        <div class="tl-metric"><div class="tl-metric-val">${Math.round(t.valuation / HYPERSCALERS.find(x=>x.id==='openai').valuation * 100)}%</div><div class="tl-metric-label">vs OpenAI</div></div>
       </div>
     </div>
   `).join('');
@@ -1947,6 +1952,7 @@ function renderTimeline() {
         e.target.classList.add('visible');
         const bar = e.target.querySelector('.tl-growth-bar-fill');
         if (bar) setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
+        observer.unobserve(e.target);
       }
     });
   }, { threshold: 0.2 });
@@ -1980,7 +1986,7 @@ function setupMergeAll() {
 function setupScroll() {
   const nav = document.getElementById('topnav');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   window.addEventListener('scroll', () => {
@@ -2366,14 +2372,22 @@ function hfFormatDl(n){
   if(n>=1e3)return(n/1e3).toFixed(1)+'K';
   return String(n);
 }
-async function fetchHFModels(){
+async function fetchHFModels(retries=2){
   const badge=document.getElementById('hfBadge');
   const summary=document.getElementById('hfRegionSummary');
   const table=document.getElementById('hfModelTable');
   if(!summary||!table)return;
   try{
-    const res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false');
-    if(!res.ok)throw new Error('HF API error');
+    let res,lastErr;
+    for(let attempt=0;attempt<=retries;attempt++){
+      try{
+        res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false');
+        if(res.ok)break;
+        lastErr=new Error('HF API error '+res.status);
+      }catch(e){lastErr=e;}
+      if(attempt<retries)await new Promise(r=>setTimeout(r,1500*(attempt+1)));
+    }
+    if(!res||!res.ok)throw lastErr||new Error('HF API error');
     const models=await res.json();
     const countryCounts={};
     const rows=[];
