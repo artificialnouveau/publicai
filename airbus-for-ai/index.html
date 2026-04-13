@@ -588,8 +588,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <div class="hero-stats-row">
       <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Companies</div></div>
       <div class="hero-stat"><div class="hero-stat-val">11</div><div class="hero-stat-label">Candidate Nations</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">$24B+</div><div class="hero-stat-label">Combined Value</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">~80%</div><div class="hero-stat-label">ChatGPT Referral Share</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">$24B+</div><div class="hero-stat-label">Combined Value<sup class="fn"><a href="#references" style="color:var(--sky);font-size:0.6em;text-decoration:none;">src</a></sup></div></div>
+      <div class="hero-stat"><div class="hero-stat-val">~80%</div><div class="hero-stat-label">ChatGPT Referral Share<sup class="fn"><a href="#fn1" style="color:var(--sky);font-size:0.6em;text-decoration:none;">[1]</a></sup></div></div>
     </div>
   </div>
 </section>
@@ -1077,6 +1077,26 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <li id="fn17"><strong>[17]</strong> BSC MareNostrum 5: 314 PFlops peak, 4,480 H100 GPUs. Salamandra open-source LLMs trained from scratch in 35 European languages. <a href="https://www.bsc.es/marenostrum/marenostrum-5" target="_blank">BSC</a>, <a href="https://huggingface.co/BSC-LT/salamandra-7b" target="_blank">HuggingFace</a></li>
     </ol>
 
+    <details style="margin:1.5rem 0;border:1px solid rgba(0,32,91,0.15);border-radius:8px;padding:0;">
+      <summary style="padding:0.75rem 1rem;cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--navy);">Scoring Methodology &amp; Data Freshness</summary>
+      <div style="padding:0.75rem 1rem 1rem;">
+        <p style="font-size:0.85rem;line-height:1.6;margin-bottom:0.75rem;">
+          <strong>Competitive scores</strong> (0-99 scale across compute, models, enterprise, sovereignty, research, revenue) are editorial estimates informed by the Bennett School analysis, public reporting, and the sources listed below. They are designed for relative comparison, not absolute measurement.
+        </p>
+        <p style="font-size:0.85rem;line-height:1.6;margin-bottom:0.75rem;">
+          <strong>Merged entity scoring formula:</strong><br>
+          <code style="background:rgba(0,32,91,0.06);padding:2px 6px;border-radius:3px;font-size:0.8rem;">merged_score = 70% x max(component_scores) + 30% x avg(component_scores) + synergy_bonus</code><br>
+          Synergy bonus = 3 points per merged company, capped at 15. Final score capped at 99.
+        </p>
+        <p style="font-size:0.85rem;line-height:1.6;margin-bottom:0.75rem;">
+          <strong>Scenario lever boosts</strong> model the effect of government investment along four axes (compute buildout, procurement contracts, capital injection, talent programs). Maximum boost per axis: ~25 points. Boost formulas are weighted by policy relevance to each competitive dimension.
+        </p>
+        <p style="font-size:0.85rem;line-height:1.6;margin-bottom:0;">
+          <strong>Data sources:</strong> Valuations from PitchBook, Crunchbase, TechCrunch, Bloomberg, CNBC. Revenue/ARR from Sacra, SaaStr, company announcements. Employee counts from Tracxn, company disclosures. Market share from StatCounter. All figures as of April 2026 unless noted. Use the <a href="#" onclick="document.getElementById('importDataLink').click();return false;" style="color:var(--sky);">custom data import</a> to substitute your own figures.
+        </p>
+      </div>
+    </details>
+
     <strong>Core Framework</strong><br>
     Based on "<a href="https://publicai.co/airbus-for-ai.pdf">Airbus for AI: A global strategy for public value creation</a>" by Joshua Tan, Brandon Jackson, Robin Berjon &amp; Diane Coyle (Bennett School of Public Policy, Sept 2025).
     <br><br>
@@ -1192,44 +1212,44 @@ const AXIS_HINTS = {
 // Detailed rationale for each hyperscaler's axis scores
 const HYPER_RATIONALE = {
   openai: {
-    compute: { score: 95, facts: ['$500B Stargate project with SoftBank/Oracle', 'Partnership with Microsoft Azure', 'Custom GPU clusters at scale'] },
-    models: { score: 96, facts: ['GPT-4o, o1, o3 frontier models', '#1 on LMSYS Arena (2025)', 'Multimodal: text, image, voice, video'] },
-    enterprise: { score: 85, facts: ['ChatGPT Enterprise: 1M+ business users', 'API serves 92% of Fortune 500', '$200/mo Pro tier launched'] },
-    sovereignty: { score: 20, facts: ['US-only headquarters', 'Subject to CLOUD Act', 'No EU data residency option'] },
-    research: { score: 95, facts: ['500+ research staff', 'Pioneered RLHF and scaling laws', 'InstructGPT, DALL-E, Whisper'] },
-    revenue: { score: 95, facts: ['~$24B annualized revenue (Apr 2026, CNBC)', '400M+ weekly active users', '~80% chatbot referral traffic (StatCounter, May 2025)'] }
+    compute: { score: 95, facts: [{text:'$500B Stargate project with SoftBank/Oracle', source:'https://www.cnbc.com/2025/01/21/trump-openai-softbank-oracle-stargate-ai-project.html'}, {text:'Partnership with Microsoft Azure', source:'https://www.cnbc.com/2025/01/21/trump-openai-softbank-oracle-stargate-ai-project.html'}, {text:'Custom GPU clusters at scale', source:''}] },
+    models: { score: 96, facts: [{text:'GPT-4o, o1, o3 frontier models', source:'https://openai.com/index/hello-gpt-4o/'}, {text:'#1 on LMSYS Arena (2025)', source:'https://lmarena.ai/'}, {text:'Multimodal: text, image, voice, video', source:''}] },
+    enterprise: { score: 85, facts: [{text:'ChatGPT Enterprise: 1M+ business users', source:'https://openai.com/enterprise/'}, {text:'API serves 92% of Fortune 500', source:'https://openai.com/enterprise/'}, {text:'$200/mo Pro tier launched', source:''}] },
+    sovereignty: { score: 20, facts: [{text:'US-only headquarters', source:''}, {text:'Subject to CLOUD Act', source:'https://en.wikipedia.org/wiki/CLOUD_Act'}, {text:'No EU data residency option', source:''}] },
+    research: { score: 95, facts: [{text:'500+ research staff', source:''}, {text:'Pioneered RLHF and scaling laws', source:'https://arxiv.org/abs/2203.02155'}, {text:'InstructGPT, DALL-E, Whisper', source:''}] },
+    revenue: { score: 95, facts: [{text:'~$24B annualized revenue (Apr 2026)', source:'https://www.cnbc.com/2025/11/06/sam-altman-says-openai-will-top-20-billion-annual-revenue-this-year.html'}, {text:'400M+ weekly active users', source:''}, {text:'~80% chatbot referral traffic', source:'https://gs.statcounter.com/press/new-statcounter-ai-data-finds-chatgpt-sends-79-perc-of-all-chatbot-referrals-to-websites'}] }
   },
   gemini: {
-    compute: { score: 99, facts: ['World\'s largest AI compute fleet', '1M+ TPU v5p pods', '7 hyperscale data centers for AI'] },
-    models: { score: 97, facts: ['Gemini 2.0 Ultra: top benchmarks', '2M token context window', 'Native multimodal (text, code, image, video)'] },
-    enterprise: { score: 90, facts: ['Google Cloud: $43B/yr revenue', 'Vertex AI platform', 'Duet AI in Workspace (3B+ users)'] },
-    sovereignty: { score: 15, facts: ['US-headquartered (Alphabet)', 'Subject to FISA & CLOUD Act', 'Limited sovereign deployment options'] },
-    research: { score: 99, facts: ['DeepMind: 2,500+ researchers', 'AlphaFold, AlphaGo, Gemma open models', '2,000+ papers/year, top venue publications'] },
-    revenue: { score: 99, facts: ['Alphabet: $350B/yr total revenue', 'Cloud AI growing 35% YoY', 'Dominant in search + ads AI stack'] }
+    compute: { score: 99, facts: [{text:'World\'s largest AI compute fleet', source:''}, {text:'1M+ TPU v5p pods', source:'https://cloud.google.com/blog/products/ai-machine-learning/introducing-cloud-tpu-v5p-and-ai-hypercomputer'}, {text:'7 hyperscale data centers for AI', source:''}] },
+    models: { score: 97, facts: [{text:'Gemini 2.0 Ultra: top benchmarks', source:'https://deepmind.google/technologies/gemini/'}, {text:'2M token context window', source:''}, {text:'Native multimodal (text, code, image, video)', source:''}] },
+    enterprise: { score: 90, facts: [{text:'Google Cloud: $43B/yr revenue', source:'https://abc.xyz/investor/'}, {text:'Vertex AI platform', source:'https://cloud.google.com/vertex-ai'}, {text:'Duet AI in Workspace (3B+ users)', source:''}] },
+    sovereignty: { score: 15, facts: [{text:'US-headquartered (Alphabet)', source:''}, {text:'Subject to FISA & CLOUD Act', source:''}, {text:'Limited sovereign deployment options', source:''}] },
+    research: { score: 99, facts: [{text:'DeepMind: 2,500+ researchers', source:'https://deepmind.google/about/'}, {text:'AlphaFold, AlphaGo, Gemma open models', source:''}, {text:'2,000+ papers/year, top venue publications', source:''}] },
+    revenue: { score: 99, facts: [{text:'Alphabet: $350B/yr total revenue', source:'https://abc.xyz/investor/'}, {text:'Cloud AI growing 35% YoY', source:''}, {text:'Dominant in search + ads AI stack', source:''}] }
   },
   anthropic: {
-    compute: { score: 80, facts: ['$8B from Amazon (AWS partnership)', 'Custom Trainium chip access via AWS', 'Smaller than OpenAI/Google infra'] },
-    models: { score: 93, facts: ['Claude 3.5/4 Opus: top safety benchmarks', '#2 on LMSYS Arena coding tasks', '200K context window, strong reasoning'] },
-    enterprise: { score: 75, facts: ['$14B ARR (Feb 2026, SaaStr)', 'Amazon Bedrock integration', 'Growing enterprise API adoption'] },
-    sovereignty: { score: 25, facts: ['US-headquartered, San Francisco', 'Dependent on AWS infrastructure', 'Strong safety/alignment focus'] },
-    research: { score: 93, facts: ['Founded by ex-OpenAI researchers', 'Constitutional AI, RLHF advances', '~3,000+ employees, research-heavy'] },
-    revenue: { score: 88, facts: ['$14B ARR (Feb 2026)', 'Up from $1B just 14 months prior', '$380B valuation (Series G, Feb 2026)'] }
+    compute: { score: 80, facts: [{text:'$8B from Amazon (AWS partnership)', source:'https://www.aboutamazon.com/news/company-news/amazon-anthropic-ai-investment'}, {text:'Custom Trainium chip access via AWS', source:''}, {text:'Smaller than OpenAI/Google infra', source:''}] },
+    models: { score: 93, facts: [{text:'Claude 3.5/4 Opus: top safety benchmarks', source:'https://www.anthropic.com/'}, {text:'#2 on LMSYS Arena coding tasks', source:'https://lmarena.ai/'}, {text:'200K context window, strong reasoning', source:''}] },
+    enterprise: { score: 75, facts: [{text:'$14B ARR (Feb 2026)', source:'https://www.saastr.com/anthropic-just-hit-14-billion-in-arr-up-from-1-billion-just-14-months-ago/'}, {text:'Amazon Bedrock integration', source:''}, {text:'Growing enterprise API adoption', source:''}] },
+    sovereignty: { score: 25, facts: [{text:'US-headquartered, San Francisco', source:''}, {text:'Dependent on AWS infrastructure', source:''}, {text:'Strong safety/alignment focus', source:''}] },
+    research: { score: 93, facts: [{text:'Founded by ex-OpenAI researchers', source:''}, {text:'Constitutional AI, RLHF advances', source:'https://arxiv.org/abs/2212.08073'}, {text:'~3,000+ employees, research-heavy', source:''}] },
+    revenue: { score: 88, facts: [{text:'$14B ARR (Feb 2026)', source:'https://www.saastr.com/anthropic-just-hit-14-billion-in-arr-up-from-1-billion-just-14-months-ago/'}, {text:'Up from $1B just 14 months prior', source:''}, {text:'$380B valuation (Series G, Feb 2026)', source:'https://www.cnbc.com/2026/02/12/anthropic-closes-30-billion-funding-round-at-380-billion-valuation.html'}] }
   },
   meta: {
-    compute: { score: 95, facts: ['350K+ H100 GPUs (largest private fleet)', '$37B+ capex planned for AI (2025)', 'Custom MTIA inference chips'] },
-    models: { score: 92, facts: ['LLaMA 3.1 405B: top open model', 'Open-source leader (10M+ downloads)', 'Multimodal: text, image, video gen'] },
-    enterprise: { score: 50, facts: ['No enterprise API product (yet)', 'AI primarily powers Meta apps', 'LLaMA used widely but not sold as service'] },
-    sovereignty: { score: 10, facts: ['US-headquartered (Meta Platforms)', 'History of EU regulatory conflicts', 'GDPR fines exceeding €1.3B'] },
-    research: { score: 92, facts: ['FAIR lab: 700+ researchers', 'LLaMA, Segment Anything, DINO', 'Major open-source AI contributor'] },
-    revenue: { score: 70, facts: ['Meta: $160B/yr total revenue', 'AI drives ads (98% of revenue)', 'No standalone AI product revenue yet'] }
+    compute: { score: 95, facts: [{text:'350K+ H100 GPUs (largest private fleet)', source:'https://about.fb.com/news/2024/01/mark-zuckerberg-update-on-meta-ai/'}, {text:'$37B+ capex planned for AI (2025)', source:'https://investor.fb.com/investor-events/'}, {text:'Custom MTIA inference chips', source:''}] },
+    models: { score: 92, facts: [{text:'LLaMA 3.1 405B: top open model', source:'https://ai.meta.com/blog/meta-llama-3-1/'}, {text:'Open-source leader (10M+ downloads)', source:''}, {text:'Multimodal: text, image, video gen', source:''}] },
+    enterprise: { score: 50, facts: [{text:'No enterprise API product (yet)', source:''}, {text:'AI primarily powers Meta apps', source:''}, {text:'LLaMA used widely but not sold as service', source:''}] },
+    sovereignty: { score: 10, facts: [{text:'US-headquartered (Meta Platforms)', source:''}, {text:'History of EU regulatory conflicts', source:''}, {text:'GDPR fines exceeding EUR 1.3B', source:'https://www.reuters.com/technology/meta-platforms-fined-13-bln-euros-by-irish-regulator-over-data-transfers-2023-05-22/'}] },
+    research: { score: 92, facts: [{text:'FAIR lab: 700+ researchers', source:'https://ai.meta.com/research/'}, {text:'LLaMA, Segment Anything, DINO', source:''}, {text:'Major open-source AI contributor', source:''}] },
+    revenue: { score: 70, facts: [{text:'Meta: $160B/yr total revenue', source:'https://investor.fb.com/investor-events/'}, {text:'AI drives ads (98% of revenue)', source:''}, {text:'No standalone AI product revenue yet', source:''}] }
   },
   grok: {
-    compute: { score: 90, facts: ['100K H100 "Colossus" cluster (Memphis)', 'Largest single GPU cluster in world (2024)', 'SpaceX merger adds satellite infra'] },
-    models: { score: 88, facts: ['Grok-2: competitive on benchmarks', 'Real-time X/Twitter data access', 'Image generation (Aurora)'] },
-    enterprise: { score: 40, facts: ['Limited enterprise offering', 'Primarily consumer (X Premium)', '$500M ARR est. (Sacra)'] },
-    sovereignty: { score: 15, facts: ['US-headquartered', 'Tied to X/SpaceX ecosystem', 'Subject to US jurisdiction'] },
-    research: { score: 85, facts: ['~3,000 employees, rapid hiring', 'Built Colossus in 122 days', 'Focus on speed over publication'] },
-    revenue: { score: 45, facts: ['~$500M standalone ARR (Sacra est.)', '$230B valuation (Series E, Jan 2026)', 'Revenue mostly from X Premium subs'] }
+    compute: { score: 90, facts: [{text:'100K H100 "Colossus" cluster (Memphis)', source:'https://techcrunch.com/2024/09/03/elon-musks-xai-launches-100000-nvidia-gpu-training-cluster/'}, {text:'Largest single GPU cluster in world (2024)', source:''}, {text:'SpaceX merger adds satellite infra', source:''}] },
+    models: { score: 88, facts: [{text:'Grok-2: competitive on benchmarks', source:'https://x.ai/blog/grok-2'}, {text:'Real-time X/Twitter data access', source:''}, {text:'Image generation (Aurora)', source:''}] },
+    enterprise: { score: 40, facts: [{text:'Limited enterprise offering', source:''}, {text:'Primarily consumer (X Premium)', source:''}, {text:'$500M ARR est.', source:'https://sacra.com/c/xai/'}] },
+    sovereignty: { score: 15, facts: [{text:'US-headquartered', source:''}, {text:'Tied to X/SpaceX ecosystem', source:''}, {text:'Subject to US jurisdiction', source:''}] },
+    research: { score: 85, facts: [{text:'~3,000 employees, rapid hiring', source:'https://www.tesery.com/blogs/news/xai-memphis-workforce-swells-to-nearly-3-000-as-supercomputing-ambitions-grow'}, {text:'Built Colossus in 122 days', source:''}, {text:'Focus on speed over publication', source:''}] },
+    revenue: { score: 45, facts: [{text:'~$500M standalone ARR (Sacra est.)', source:'https://sacra.com/c/xai/'}, {text:'$230B valuation (Series E, Jan 2026)', source:'https://techcrunch.com/2026/01/06/xai-says-it-raised-20b-in-series-e-funding/'}, {text:'Revenue mostly from X Premium subs', source:''}] }
   }
 };
 
@@ -1666,7 +1686,7 @@ function renderDock() {
   dock.innerHTML = COMPANIES.map(c => `
     <div class="company-chip ${S.merged.has(c.id)?'merged':''}" data-id="${c.id}">
       <div class="chip-flag">${c.flag}</div>
-      <div class="chip-info"><div class="chip-name">${c.name}</div><div class="chip-power">${c.superpower}</div></div>
+      <div class="chip-info"><div class="chip-name">${c.name}</div><div class="chip-power">${c.superpower}</div><a href="#references" class="chip-source" style="font-size:0.6rem;color:var(--sky);opacity:0.5;text-decoration:none;">View sources</a></div>
       <button class="chip-add" data-id="${c.id}">${S.merged.has(c.id)?'\u2713':'+'}</button>
     </div>
   `).join('');
@@ -1751,12 +1771,12 @@ function buildRoundTooltip(axis, hId) {
   const sel = getSelected();
   const hr = HYPER_RATIONALE[hId];
   const hFacts = hr && hr[axis] ? hr[axis].facts : [];
-  // Gather facts from merged companies
   const ourFacts = sel.map(c => COMPANY_AXIS_FACTS[c.id] ? COMPANY_AXIS_FACTS[c.id][axis] : null).filter(Boolean);
+  const fmtFact = f => typeof f === 'object' ? `<div class="tt-fact">${f.text}${f.source ? ' <a href="'+f.source+'" target="_blank" style="color:var(--cyan);font-size:0.75em;text-decoration:none;opacity:0.7;">src</a>' : ''}</div>` : `<div class="tt-fact">${f}</div>`;
   return `<div class="round-tooltip">
     <div class="tt-header"><span class="tt-axis">${AXIS_LABELS[axis]}</span><span class="tt-what">${AXIS_HINTS[axis]}</span></div>
     <div class="tt-side"><div class="tt-side-label ours">Public AI Co. — why this score</div>${ourFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
-    <div class="tt-side"><div class="tt-side-label theirs">${(HYPERSCALERS.find(x=>x.id===hId)||{name:'Challenger'}).name} — why this score</div>${hFacts.map(f => `<div class="tt-fact">${f}</div>`).join('')}</div>
+    <div class="tt-side"><div class="tt-side-label theirs">${(HYPERSCALERS.find(x=>x.id===hId)||{name:'Challenger'}).name} — why this score</div>${hFacts.map(fmtFact).join('')}</div>
   </div>`;
 }
 
