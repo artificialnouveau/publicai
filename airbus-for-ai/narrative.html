@@ -1271,6 +1271,9 @@ body::after {
     --border: rgba(255,255,255,0.2);
   }
 }
+/* Accessibility */
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -1333,7 +1336,7 @@ body::after {
 </div>
 
 <!-- Global tooltip for interactive visualizations -->
-<div class="viz-tooltip" id="vizTooltip">
+<div class="viz-tooltip" id="vizTooltip" role="tooltip" aria-live="polite">
   <div class="tt-title" id="ttTitle"></div>
   <div class="tt-val" id="ttVal"></div>
   <div class="tt-desc" id="ttDesc"></div>
@@ -1662,6 +1665,7 @@ body::after {
           <button class="filter-btn" data-filter="CN" onclick="filterMarketCap('CN',this)">China</button>
         </div>
         <canvas id="marketCapChart" height="320" role="img" aria-label="Market capitalization chart comparing US and EU AI companies"></canvas>
+        <div class="sr-only">Market capitalization chart showing AI company valuations. OpenAI leads at $852B, followed by Anthropic at $380B. European companies are significantly smaller, with Mistral at $13.8B.</div>
         <div class="market-cap-info" id="mcInfo"></div>
         <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
           <a class="source-link" href="https://www.cnbc.com/2026/03/31/openai-funding-round-ipo.html" target="_blank">OpenAI $852B valuation: CNBC, Mar 2026</a>
@@ -1673,6 +1677,7 @@ body::after {
       <div class="chart-container reveal">
         <h3>Global Cloud Infrastructure Market Share</h3>
         <canvas id="cloudShareChart" height="320" role="img" aria-label="Global cloud infrastructure market share chart"></canvas>
+        <div class="sr-only">Cloud infrastructure market share. US providers (AWS, Azure, Google Cloud) control 75% of the global market. European providers hold approximately 12%.</div>
         <a class="source-link" href="https://www.srgresearch.com/articles/european-cloud-providers-local-market-share-now-holds-steady-at-15" target="_blank" style="margin-top:8px;display:inline-block;">Source: Synergy Research Group Q4 2024</a>
       </div>
 
@@ -2599,12 +2604,14 @@ window.addEventListener('scroll', () => {
 // ============================================================
 // HERO PARTICLE CANVAS
 // ============================================================
+const IS_LOW_END = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
 (function(){
   const canvas = document.getElementById('heroCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, particles = [];
-  const PARTICLE_COUNT = 80;
+  const PARTICLE_COUNT = IS_LOW_END ? 30 : 80;
+  let heroParticleVisible = true;
 
   function resize(){
     w = canvas.width = canvas.parentElement.clientWidth;
@@ -2624,6 +2631,7 @@ window.addEventListener('scroll', () => {
   }
 
   function draw(){
+    if (!heroParticleVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,w,h);
     // connections
     for(let i=0;i<particles.length;i++){
@@ -2657,6 +2665,9 @@ window.addEventListener('scroll', () => {
   init();
   draw();
   window.addEventListener('resize', resize);
+
+  const heroObs = new IntersectionObserver(entries => { heroParticleVisible = entries[0].isIntersecting; }, { threshold: 0 });
+  heroObs.observe(canvas);
 })();
 
 // ============================================================
@@ -3577,9 +3588,23 @@ function setupHeatmapInteractivity(){
     });
     row.addEventListener('mouseleave', hideTooltip);
 
+    // Keyboard accessibility
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('role', 'button');
+    row.setAttribute('aria-expanded', 'false');
+
     // Click to expand
     row.addEventListener('click', function(){
       expandRow.classList.toggle('visible');
+      row.setAttribute('aria-expanded', expandRow.classList.contains('visible'));
+    });
+
+    // Keyboard support
+    row.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        row.click();
+      }
     });
   });
 }
@@ -4008,6 +4033,7 @@ async function fetchDashboardData() {
   const canvas = document.getElementById('capitalFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let capitalFlowVisible = false;
 
   function resize() {
     canvas.width = canvas.parentElement.clientWidth;
@@ -4061,6 +4087,7 @@ async function fetchDashboardData() {
   let particles = flows.map(() => Math.random());
 
   function draw() {
+    if (!capitalFlowVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W = canvas.width, H = canvas.height;
 
@@ -4134,10 +4161,11 @@ async function fetchDashboardData() {
     return t2*t2*t2*a + 3*t2*t2*t*b + 3*t2*t*t*c + t*t*t*d;
   }
 
-  // Start only when visible
+  // Start when visible, pause when off-screen
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
-  });
+    capitalFlowVisible = entries[0].isIntersecting;
+    if (capitalFlowVisible && !obs._started) { obs._started = true; draw(); }
+  }, { threshold: 0 });
   obs.observe(canvas);
 })();
 
@@ -4147,6 +4175,7 @@ async function fetchDashboardData() {
   const canvas = document.getElementById('talentChordCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let talentFlowVisible = false;
 
   function resize() {
     canvas.width = canvas.parentElement.clientWidth;
@@ -4212,6 +4241,7 @@ async function fetchDashboardData() {
   }
 
   function draw() {
+    if (!talentFlowVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W = canvas.width, H = canvas.height;
     t++;
@@ -4306,8 +4336,9 @@ async function fetchDashboardData() {
   }
 
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
-  });
+    talentFlowVisible = entries[0].isIntersecting;
+    if (talentFlowVisible && !obs._started) { obs._started = true; draw(); }
+  }, { threshold: 0 });
   obs.observe(canvas);
 })();
 
@@ -4317,6 +4348,7 @@ async function fetchDashboardData() {
   const canvas = document.getElementById('computeMapCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let computeMapVisible = false;
 
   function resize() {
     canvas.width = canvas.parentElement.clientWidth;
@@ -4360,6 +4392,7 @@ async function fetchDashboardData() {
   let t = 0;
 
   function draw() {
+    if (!computeMapVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W = canvas.width, H = canvas.height;
     t++;
@@ -4463,8 +4496,9 @@ async function fetchDashboardData() {
   }
 
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
-  });
+    computeMapVisible = entries[0].isIntersecting;
+    if (computeMapVisible && !obs._started) { obs._started = true; draw(); }
+  }, { threshold: 0 });
   obs.observe(canvas);
 })();
 
@@ -5158,6 +5192,7 @@ async function fetchDashboardData() {
   const canvas = document.getElementById('stackFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let stackFlowVisible = false;
   function resize() { canvas.width = canvas.parentElement.clientWidth; canvas.height = 240; }
   resize(); window.addEventListener('resize', resize);
 
@@ -5174,6 +5209,7 @@ async function fetchDashboardData() {
   let grown = layers.map(() => 0);
 
   function draw() {
+    if (!stackFlowVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W = canvas.width, H = canvas.height;
     t++;
@@ -5249,8 +5285,9 @@ async function fetchDashboardData() {
   }
 
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
-  });
+    stackFlowVisible = entries[0].isIntersecting;
+    if (stackFlowVisible && !obs._started) { obs._started = true; draw(); }
+  }, { threshold: 0 });
   obs.observe(canvas);
 })();
 
@@ -5469,6 +5506,7 @@ async function fetchDashboardData() {
   const canvas = document.getElementById('timelineArcsCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  let timelineArcsVisible = false;
   function resize() { canvas.width = canvas.parentElement.clientWidth; canvas.height = 200; }
   resize(); window.addEventListener('resize', resize);
 
@@ -5490,6 +5528,7 @@ async function fetchDashboardData() {
   let t = 0;
 
   function draw() {
+    if (!timelineArcsVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W = canvas.width, H = canvas.height;
     t++;
@@ -5578,8 +5617,9 @@ async function fetchDashboardData() {
   }
 
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { draw(); obs.disconnect(); }
-  });
+    timelineArcsVisible = entries[0].isIntersecting;
+    if (timelineArcsVisible && !obs._started) { obs._started = true; draw(); }
+  }, { threshold: 0 });
   obs.observe(canvas);
 })();
 

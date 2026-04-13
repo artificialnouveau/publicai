@@ -542,6 +542,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .scenario-levers { gap: 0.5rem; }
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
+  #fundGrid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 600px) {
   .hero-stats-row { flex-direction: column; gap: 1rem; }
@@ -552,6 +553,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
   .battle-rounds { grid-template-columns: 1fr !important; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
+  #fundGrid { grid-template-columns: 1fr !important; }
+  #executive-summary details { font-size: 0.85rem; }
 }
 @media (max-width: 480px) {
   #inactionCards { grid-template-columns: 1fr !important; }
@@ -574,6 +577,13 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .battle-verdict .win, .battle-verdict .close { color: #006600; }
   .battle-verdict .lose { color: #cc0000; }
   .tl-card { box-shadow: none; border: 1px solid #ccc; opacity: 1; transform: none; }
+}
+/* Accessibility */
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  #particleCanvas { display: none; }
 }
 </style>
 </head>
@@ -614,6 +624,22 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <div class="hero-stat"><div class="hero-stat-val">~80%</div><div class="hero-stat-label">ChatGPT Referral Share<sup class="fn"><a href="#fn1" style="color:var(--sky);font-size:0.6em;text-decoration:none;">[1]</a></sup></div></div>
     </div>
   </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive-summary" style="max-width:800px;margin:0 auto;padding:2rem 2rem 0;">
+  <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:var(--off-white);">
+    <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;align-items:center;gap:0.5rem;">
+      <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;background:var(--sky);color:white;padding:2px 8px;border-radius:100px;">Policy Brief</span>
+      Executive Summary (2-minute read)
+    </summary>
+    <div style="padding:0 1.25rem 1.25rem;font-size:0.9rem;line-height:1.7;color:var(--text-secondary);">
+      <p><strong style="color:var(--navy);">The Problem.</strong> ChatGPT drives ~80% of global chatbot referral traffic. The EU's largest AI lab, Mistral, holds ~2% market share, even in France. Middle-power countries (Canada, France, Germany, Japan, South Korea, UK, and others) each invest in national AI champions, but none can individually compete with the scale advantages of US and Chinese frontier labs. The result: fragmented efforts, duplicated costs, and accelerating dependency on foreign AI infrastructure.</p>
+      <p><strong style="color:var(--navy);">The Precedent.</strong> In 1970, four European governments faced the same problem in aviation. Boeing dominated, and no single European firm could compete. They pooled resources into Airbus, which went from 0% to 50% market share. Today Airbus employs 157,000 people and has an enterprise value of ~$159B.</p>
+      <p><strong style="color:var(--navy);">The Proposal.</strong> Merge the most promising middle-power AI companies (Mistral, Cohere, DeepL, Stability AI, Aleph Alpha, Multiverse Computing) into a Public AI Company: a coordinated public-private frontier AI lab with shared compute, R&amp;D, and market strategy. Combined, these six companies represent $24B+ in value, ~3,900 employees, 239,000+ customers, and coverage across 100+ languages. Government investment in compute, procurement, and talent programs could close the remaining gap.</p>
+      <p><strong style="color:var(--navy);">The Stakes.</strong> Every year of inaction widens the gap. EU researchers continue migrating to US labs (60%+ of top EU-educated AI talent now works in the US). Cloud dependency deepens (70% of EU cloud infrastructure is US-owned). The capital gap grows ($14B EU AI investment vs. $109B US). The window for building a competitive alternative is closing. The question is not whether middle powers need a coordinated AI strategy, but whether they will act before it is too late.</p>
+    </div>
+  </details>
 </section>
 
 <!-- STORY -->
@@ -981,7 +1007,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       </div>
       <div class="live-panel" id="livePanel">
         <div class="live-panel-title"><span class="live-dot"></span> Live Merger Stats</div>
-        <div id="liveStats"></div>
+        <div id="liveStats" aria-live="polite"></div>
         <div class="achievements">
           <div class="achieve-label">Achievements</div>
           <div class="achieve-row" id="achievements"></div>
@@ -997,6 +1023,34 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
 <!-- MERGE CONTEXT (appears when companies are added) -->
 <div class="merge-context hidden" id="mergeContext"></div>
+
+<!-- FUND EXPLAINER -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--off-white);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--purple);">The Airbus for AI Fund</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">How to finance a Public AI Company</h2>
+    <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
+      <p>Building a frontier AI lab requires patient, strategic capital. The Airbus for AI Fund is a proposed transnational investment vehicle, modeled on the NATO Innovation Fund's multi-sovereign LP structure and EuroHPC's pooled compute logic, designed to acquire, integrate, and finance shared AI infrastructure.</p>
+    </div>
+    <div id="fundGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x1F3DB;</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Anchor Investment</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Government takes a cornerstone equity stake and provides compute infrastructure + procurement contracts. Model: Franco-German Compute JV, ~EUR 35M cornerstone equity consolidating two national GPU programs.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x1F91D;</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Strategic Merger</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Two or more publicly funded model teams merge into a shared IP holding company with single compliance infrastructure under the AI Act. Model: Northern Europe Foundation Model Roll-Up, ~EUR 25M minority stake.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x2696;</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Collective Equity</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- NARRATIVE: THE CONFRONTATION -->
 <div class="narrative-block wide fade-up" style="background: var(--navy-dark); color: white; max-width: 100%; padding: 5rem 2rem;">
@@ -1018,13 +1072,13 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <p>Pick a US hyperscaler to challenge. See where the merged entity wins and loses. Then invest government resources to close the gap.</p>
     </div>
     <div class="challenger-row" id="challengerRow"></div>
-    <div class="battle-scoreboard" id="battleScoreboard"></div>
+    <div class="battle-scoreboard" id="battleScoreboard" aria-live="polite"></div>
     <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Hover any round</strong> to see the evidence. <a href="#" onclick="document.getElementById('importDataLink').click();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
     <div class="battle-rounds" id="battleRounds"></div>
     <div class="scenario-levers" id="scenarioLevers">
       <div class="scenario-levers-label">Government Investment in Public AI Co. &mdash; pull levers to boost the merged entity</div>
     </div>
-    <div class="battle-verdict" id="battleVerdict"></div>
+    <div class="battle-verdict" id="battleVerdict" aria-live="polite"></div>
   </div>
 </section>
 
@@ -1108,6 +1162,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
     <a href="#assembly" class="btn btn-primary">Rebuild the Entity</a>
     <button class="btn btn-outline" id="ctaExportBtn">Export Deck</button>
+    <button class="btn btn-outline" onclick="window.print();" style="border-color:var(--green);color:var(--green);">Print Page</button>
   </div>
 </section>
 
@@ -1228,6 +1283,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
 <script>
 function debounce(fn, ms) { let t; return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+const IS_LOW_END = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
 
 // ============================================================
 // DATA
@@ -1663,13 +1719,20 @@ function initParticles() {
   const ctx = canvas.getContext('2d');
   let W, H;
   const particles = [];
+  let particleVisible = true;
+  const particleObs = new IntersectionObserver(entries => {
+    particleVisible = entries[0].isIntersecting;
+  }, { threshold: 0 });
+  particleObs.observe(canvas);
   function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
   resize();
   window.addEventListener('resize', resize);
-  for (let i = 0; i < 60; i++) {
+  const particleCount = IS_LOW_END ? 20 : 60;
+  for (let i = 0; i < particleCount; i++) {
     particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*2+1, a: Math.random()*0.3+0.1 });
   }
   function draw() {
+    if (!particleVisible) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
     particles.forEach(p => {
       p.x += p.vx; p.y += p.vy;
@@ -1755,14 +1818,17 @@ function drawParallelStory() {
 function renderDock() {
   const dock = document.getElementById('companyDock');
   dock.innerHTML = COMPANIES.map(c => `
-    <div class="company-chip ${S.merged.has(c.id)?'merged':''}" data-id="${c.id}">
+    <div class="company-chip ${S.merged.has(c.id)?'merged':''}" data-id="${c.id}" tabindex="0" role="button">
       <div class="chip-flag">${c.flag}</div>
       <div class="chip-info"><div class="chip-name">${c.name}</div><div class="chip-power">${c.superpower}</div><a href="#references" class="chip-source" style="font-size:0.6rem;color:var(--sky);opacity:0.5;text-decoration:none;">View sources</a></div>
       <button class="chip-add" data-id="${c.id}">${S.merged.has(c.id)?'\u2713':'+'}</button>
     </div>
   `).join('');
   dock.querySelectorAll('.chip-add').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleCompany(btn.dataset.id); }));
-  dock.querySelectorAll('.company-chip').forEach(chip => chip.addEventListener('click', () => toggleCompany(chip.dataset.id)));
+  dock.querySelectorAll('.company-chip').forEach(chip => {
+    chip.addEventListener('click', () => toggleCompany(chip.dataset.id));
+    chip.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCompany(chip.dataset.id); } });
+  });
 }
 
 function toggleCompany(id) {
@@ -2469,17 +2535,28 @@ async function fetchHFModels(retries=2){
   const table=document.getElementById('hfModelTable');
   if(!badge||!summary||!table)return;
   try{
-    let res,lastErr;
-    for(let attempt=0;attempt<=retries;attempt++){
-      try{
-        res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false');
-        if(res.ok)break;
-        lastErr=new Error('HF API error '+res.status);
-      }catch(e){lastErr=e;}
-      if(attempt<retries)await new Promise(r=>setTimeout(r,1500*(attempt+1)));
+    let models;
+    const cached=sessionStorage.getItem('hf_models_cache');
+    if(cached){
+      try{models=JSON.parse(cached);}catch(e){sessionStorage.removeItem('hf_models_cache');}
     }
-    if(!res||!res.ok)throw lastErr||new Error('HF API error');
-    const models=await res.json();
+    if(!models){
+      let res,lastErr;
+      const controller=new AbortController();
+      const timeoutId=setTimeout(()=>controller.abort(),10000);
+      for(let attempt=0;attempt<=retries;attempt++){
+        try{
+          res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false',{signal:controller.signal});
+          if(res.ok)break;
+          lastErr=new Error('HF API error '+res.status);
+        }catch(e){lastErr=e;if(e.name==='AbortError')break;}
+        if(attempt<retries)await new Promise(r=>setTimeout(r,1500*(attempt+1)));
+      }
+      clearTimeout(timeoutId);
+      if(!res||!res.ok)throw lastErr||new Error('HF API error');
+      models=await res.json();
+      try{sessionStorage.setItem('hf_models_cache',JSON.stringify(models));}catch(e){}
+    }
     const countryCounts={};
     const rows=[];
     models.forEach((m,i)=>{
