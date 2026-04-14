@@ -571,12 +571,16 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
   #dashboard [style*="grid-template-columns:repeat(auto-fit"] { grid-template-columns: repeat(2, 1fr) !important; }
   #dashboard [style*="display:flex;justify-content:space-between"] { flex-direction: column; gap: 0.25rem; }
-  #dashboard [style*="font-size:0.85rem"][style*="text-transform:uppercase"] { font-size: 0.7rem !important; word-break: break-word; }
+  #dashboard [style*="font-size:0.85rem"][style*="text-transform:uppercase"] { font-size: 0.7rem !important; word-break: break-word; color: rgba(232,224,204,0.7) !important; }
+  #dashboard [style*="font-size:0.95rem"][style*="color:var(--db-dim)"] { color: rgba(232,224,204,0.6) !important; }
+  #dashboard [style*="font-size:0.65rem"][style*="font-family:var(--mono)"] { font-size: 0.6rem !important; color: rgba(232,224,204,0.55) !important; overflow-wrap: break-word; word-break: break-word; }
   #dashboard [style*="font-size:2rem"] { font-size: 1.4rem !important; }
   #dashboard [style*="font-size:1.7rem"] { font-size: 1.2rem !important; }
   #dashboard [style*="font-size:1.6rem"] { font-size: 1.2rem !important; }
   #dashboard canvas { height: clamp(180px, 55vw, 300px) !important; }
   #dashboard [style*="padding:2rem"] { padding: 1rem !important; }
+  #dashboard [style*="display:flex;flex-wrap:wrap;gap:6px"] { flex-direction: column; gap: 4px; }
+  #dashboard [style*="margin-top:12px"] a { display: block; text-align: left; }
   .battle-rounds { grid-template-columns: 1fr !important; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
   #fundGrid { grid-template-columns: 1fr !important; }
@@ -2233,7 +2237,7 @@ function updateBattle(animate) {
 
   if (!c) {
     scoreboard.innerHTML = '';
-    roundsEl.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center;padding:3rem;">Merge companies above to begin the stress test.</div>';
+    roundsEl.innerHTML = '<div style="color:rgba(255,255,255,0.4);text-align:center;padding:3rem;">No companies merged yet. <button onclick="COMPANIES.forEach(c=>S.merged.add(c.id));renderDock();updateReactor();updateBattle(true);saveToURL();" style="display:inline-block;margin-top:0.75rem;padding:0.5rem 1.25rem;border-radius:100px;background:rgba(0,180,216,0.15);border:2px solid var(--cyan);color:var(--cyan);font-family:var(--font);font-size:0.85rem;font-weight:700;cursor:pointer;">Merge All Companies &amp; Start</button></div>';
     verdict.innerHTML = '';
     return;
   }
