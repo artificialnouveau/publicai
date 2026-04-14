@@ -541,7 +541,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; }
   .scenario-levers { gap: 0.5rem; }
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
-  .story-visual { aspect-ratio: auto; overflow: visible; }
+  .story-visual { aspect-ratio: auto; overflow: visible; max-width: 100%; }
+  .story-visual canvas { max-width: 100% !important; width: 100% !important; height: auto !important; aspect-ratio: 4/3 !important; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
   #fundGrid { grid-template-columns: repeat(2, 1fr) !important; }
   #tierGrid { grid-template-columns: 1fr !important; }
@@ -554,11 +555,18 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .tl-card::before { left: -28px; }
   #dashboard [style*="grid-template-columns:1fr 1fr"],
   #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
+  #dashboard [style*="grid-template-columns:repeat(auto-fit"] { grid-template-columns: repeat(2, 1fr) !important; }
+  #dashboard [style*="display:flex;justify-content:space-between"] { flex-direction: column; gap: 0.25rem; }
+  #dashboard [style*="font-size:0.85rem"][style*="text-transform:uppercase"] { font-size: 0.7rem !important; word-break: break-word; }
+  #dashboard [style*="font-size:2rem"] { font-size: 1.4rem !important; }
+  #dashboard [style*="font-size:1.7rem"] { font-size: 1.2rem !important; }
+  #dashboard [style*="font-size:1.6rem"] { font-size: 1.2rem !important; }
+  #dashboard canvas { height: clamp(180px, 55vw, 300px) !important; }
+  #dashboard [style*="padding:2rem"] { padding: 1rem !important; }
   .battle-rounds { grid-template-columns: 1fr !important; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
   #fundGrid { grid-template-columns: 1fr !important; }
   #tierGrid { grid-template-columns: 1fr !important; }
-  #coreArgsGrid { grid-template-columns: 1fr !important; }
   #commsGrid { grid-template-columns: 1fr !important; }
   #executive-summary details { font-size: 0.85rem; }
   #sovereignty [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
@@ -745,7 +753,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
-      <canvas id="dbTalentChordCanvas" style="width:100%;height:400px;" role="img" aria-label="Talent migration flow: EU-educated AI researchers predominantly work in the US"></canvas>
+      <canvas id="dbTalentChordCanvas" style="width:100%;height:clamp(250px, 50vw, 400px);" role="img" aria-label="Talent migration flow: EU-educated AI researchers predominantly work in the US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
           <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-cyan);">~60%</div>
@@ -773,7 +781,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
       <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
-      <canvas id="dbComputeMapCanvas" style="width:100%;height:380px;" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
+      <canvas id="dbComputeMapCanvas" style="width:100%;height:clamp(250px, 50vw, 380px);" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
         <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.05);">
           <div style="font-size:0.75rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-cyan);margin-bottom:0.75rem;">EuroHPC Supercomputers</div>
@@ -2034,22 +2042,28 @@ function drawAirbusStory() {
   ctx.clearRect(0,0,W,H);
   const sky = ctx.createLinearGradient(0,0,0,H); sky.addColorStop(0,'#e0f0ff'); sky.addColorStop(1,'#f7f8fa');
   ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+  const s = W / 500;
   const colors=['#3b82f6','#10b981','#8b5cf6','#f59e0b'];
-  const positions=[{x:80,y:80},{x:80,y:280},{x:200,y:50},{x:200,y:310}];
+  const positions=[{x:80*s,y:H*0.21},{x:80*s,y:H*0.74},{x:200*s,y:H*0.13},{x:200*s,y:H*0.82}];
+  const planeScale = Math.max(0.6, s);
   positions.forEach((p,i) => {
     ctx.save(); ctx.translate(p.x,p.y); ctx.fillStyle=colors[i];
-    ctx.beginPath(); ctx.moveTo(0,-6); ctx.lineTo(25,0); ctx.lineTo(0,6); ctx.lineTo(5,0); ctx.closePath(); ctx.fill();
-    ctx.fillRect(5,-15,8,30); ctx.restore();
+    ctx.beginPath(); ctx.moveTo(0,-6*planeScale); ctx.lineTo(25*planeScale,0); ctx.lineTo(0,6*planeScale); ctx.lineTo(5*planeScale,0); ctx.closePath(); ctx.fill();
+    ctx.fillRect(5*planeScale,-15*planeScale,8*planeScale,30*planeScale); ctx.restore();
   });
+  const mergeX = 0.6*W, cpX = 0.55*W;
   ctx.strokeStyle='#c8cdd6'; ctx.lineWidth=2; ctx.setLineDash([4,4]);
-  positions.forEach(p => { ctx.beginPath(); ctx.moveTo(p.x+30,p.y); ctx.quadraticCurveTo(300,H/2,350,H/2); ctx.stroke(); });
+  positions.forEach(p => { ctx.beginPath(); ctx.moveTo(p.x+30*planeScale,p.y); ctx.quadraticCurveTo(cpX,H/2,mergeX-20*s,H/2); ctx.stroke(); });
   ctx.setLineDash([]);
-  ctx.save(); ctx.translate(370,H/2); ctx.fillStyle='#00205b';
-  ctx.beginPath(); ctx.moveTo(0,-14); ctx.lineTo(70,0); ctx.lineTo(0,14); ctx.lineTo(10,0); ctx.closePath(); ctx.fill();
-  ctx.fillRect(15,-35,16,70); ctx.fillRect(-5,-20,10,40); ctx.restore();
-  ctx.font='bold 14px Inter,sans-serif'; ctx.fillStyle='#00205b'; ctx.textAlign='center'; ctx.fillText('AIRBUS',400,H/2+50);
-  ctx.font='11px Inter,sans-serif'; ctx.fillStyle='#6b7280';
-  ['Sud Aviation','Deutsche Airbus','Hawker Siddeley','CASA'].forEach((n,i) => ctx.fillText(n,positions[i].x+10,positions[i].y+25));
+  const bigScale = Math.max(0.6, s);
+  ctx.save(); ctx.translate(mergeX,H/2); ctx.fillStyle='#00205b';
+  ctx.beginPath(); ctx.moveTo(0,-14*bigScale); ctx.lineTo(70*bigScale,0); ctx.lineTo(0,14*bigScale); ctx.lineTo(10*bigScale,0); ctx.closePath(); ctx.fill();
+  ctx.fillRect(15*bigScale,-35*bigScale,16*bigScale,70*bigScale); ctx.fillRect(-5*bigScale,-20*bigScale,10*bigScale,40*bigScale); ctx.restore();
+  const fontSize = Math.max(10, 14*s);
+  ctx.font='bold '+fontSize+'px Inter,sans-serif'; ctx.fillStyle='#00205b'; ctx.textAlign='center'; ctx.fillText('AIRBUS',mergeX+30*s,H/2+50*s);
+  const labelSize = Math.max(8, 11*s);
+  ctx.font=labelSize+'px Inter,sans-serif'; ctx.fillStyle='#6b7280';
+  ['Sud Aviation','Deutsche Airbus','Hawker Siddeley','CASA'].forEach((n,i) => ctx.fillText(n,positions[i].x+10*s,positions[i].y+25*s));
 }
 
 function drawParallelStory() {
@@ -2067,7 +2081,7 @@ function drawParallelStory() {
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
   const companies = COMPANIES.slice(0,6);
   const angleStep = (Math.PI*2)/companies.length;
-  const cx=W/2, cy=H/2, radius=130;
+  const cx=W/2, cy=H/2, radius=Math.min(130, W*0.28, H*0.35);
   companies.forEach((c,i) => {
     const angle=angleStep*i-Math.PI/2;
     const x=cx+Math.cos(angle)*radius, y=cy+Math.sin(angle)*radius;
@@ -2577,7 +2591,7 @@ function buildDbBars() {
   const canvas = document.getElementById('dbCapitalFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=320;}
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(320, Math.max(200, canvas.parentElement.clientWidth*0.6));}
   resize(); window.addEventListener('resize',resize);
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
@@ -2590,7 +2604,9 @@ function buildDbBars() {
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W=canvas.width,H=canvas.height;
-    ctx.font='9px Inter, sans-serif';ctx.textAlign='center';
+    const fs=Math.max(7, Math.min(9, W*0.025));
+    const lfs=Math.max(8, Math.min(11, W*0.03));
+    ctx.font=fs+'px Inter, sans-serif';ctx.textAlign='center';
     colHeaders.forEach(ch=>{ctx.fillStyle='rgba(232,224,204,0.25)';ctx.fillText(ch.label,ch.x*W,12);});
     flows.forEach((f,fi)=>{
       const n1=allNodes[f.from[0]][f.from[1]],n2=allNodes[f.to[0]][f.to[1]];
@@ -2602,8 +2618,8 @@ function buildDbBars() {
       ctx.beginPath();ctx.arc(bx,by,2.5,0,Math.PI*2);ctx.fillStyle=n2.col;ctx.fill();
     });
     allNodes.forEach((col,ci)=>{col.forEach(n=>{
-      ctx.beginPath();ctx.arc(n.x*W,n.y*H,5,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
-      ctx.fillStyle='rgba(232,224,204,0.65)';ctx.font='11px Inter, sans-serif';
+      ctx.beginPath();ctx.arc(n.x*W,n.y*H,Math.max(3,5*W/500),0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
+      ctx.fillStyle='rgba(232,224,204,0.65)';ctx.font=lfs+'px Inter, sans-serif';
       ctx.textAlign=ci===0?'left':ci===2?'right':'center';
       const labelX=ci===0?n.x*W+12:ci===2?n.x*W-12:n.x*W;
       ctx.fillText(n.label,labelX,n.y*H-10);
@@ -2619,7 +2635,7 @@ function buildDbBars() {
   const canvas=document.getElementById('dbTalentChordCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=400;}
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(400, Math.max(250, canvas.parentElement.clientWidth*0.7));}
   resize();window.addEventListener('resize',resize);
   const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
   const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(232,224,204,0.4)',pct:'~5%'}];
@@ -2629,7 +2645,11 @@ function buildDbBars() {
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;
-    ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(232,224,204,0.25)';
+    const tfs=Math.max(7, Math.min(9, W*0.022));
+    const lfs=Math.max(8, Math.min(11, W*0.028));
+    const pfs=Math.max(7, Math.min(10, W*0.025));
+    const dotR=Math.max(3, Math.min(5, W*0.012));
+    ctx.font=tfs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(232,224,204,0.25)';
     ctx.fillText('EDUCATED IN',LX*W,14);ctx.fillText('NOW WORKING IN',RX*W,14);
     ctx.fillStyle='rgba(232,224,204,0.08)';ctx.font='28px Inter, sans-serif';ctx.fillText('\u2192',0.5*W,0.5*H);
     flows.forEach((f,fi)=>{
@@ -2640,8 +2660,8 @@ function buildDbBars() {
       const bx=bezPt(x1,x1+(x2-x1)*0.35,x1+(x2-x1)*0.65,x2,s),by=bezPt(y1,y1,y2,y2,s);
       ctx.beginPath();ctx.arc(bx,by,2,0,Math.PI*2);ctx.fillStyle=dst.col;ctx.fill();
     });
-    educated.forEach(n=>{ctx.beginPath();ctx.arc(LX*W,n.y*H,5,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='right';ctx.font='11px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,LX*W-14,n.y*H+4);ctx.font='10px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);});
-    working.forEach(n=>{ctx.beginPath();ctx.arc(RX*W,n.y*H,5,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='left';ctx.font='11px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,RX*W+14,n.y*H+4);ctx.font='10px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);});
+    educated.forEach(n=>{ctx.beginPath();ctx.arc(LX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='right';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,LX*W-14,n.y*H+4);ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);});
+    working.forEach(n=>{ctx.beginPath();ctx.arc(RX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='left';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,RX*W+14,n.y*H+4);ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);});
     requestAnimationFrame(draw);
   }
   const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
@@ -2653,7 +2673,7 @@ function buildDbBars() {
   const canvas=document.getElementById('dbComputeMapCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=380;}
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(380, Math.max(250, canvas.parentElement.clientWidth*0.65));}
   resize();window.addEventListener('resize',resize);
   const euroHPC=[{name:'JUPITER',x:0.46,y:0.40},{name:'LUMI',x:0.55,y:0.15},{name:'Leonardo',x:0.50,y:0.55},{name:'MareNostrum 5',x:0.33,y:0.62},{name:'Deucalion',x:0.25,y:0.58},{name:'Vega',x:0.53,y:0.50},{name:'Karolina',x:0.53,y:0.42},{name:'MeluXina',x:0.44,y:0.43},{name:'Discoverer',x:0.60,y:0.55},{name:'Daedalus',x:0.58,y:0.65},{name:'EHPCPL',x:0.54,y:0.38}];
   const hyperDC=[{name:'Dublin (AWS, Azure, Google)',x:0.30,y:0.32,size:4},{name:'Amsterdam (AWS, Azure)',x:0.43,y:0.35,size:3.5},{name:'Frankfurt (AWS, Azure, Google)',x:0.47,y:0.40,size:4},{name:'Paris (AWS, Azure)',x:0.38,y:0.45,size:3},{name:'Stockholm (AWS)',x:0.52,y:0.20,size:2.5},{name:'London (AWS, Azure, Google)',x:0.35,y:0.36,size:4},{name:'Milan (AWS)',x:0.48,y:0.52,size:2},{name:'Zurich (AWS, Google)',x:0.46,y:0.48,size:2.5}];
@@ -2661,11 +2681,16 @@ function buildDbBars() {
   let t=0;
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;t++;
-    ctx.fillStyle='rgba(232,224,204,0.06)';ctx.font='600 14px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE',W/2,24);
+    const titleFs=Math.max(9, Math.min(14, W*0.03));
+    const dcFs=Math.max(6, Math.min(8, W*0.02));
+    const nodeFs=Math.max(7, Math.min(9, W*0.022));
+    const legFs=Math.max(7, Math.min(10, W*0.025));
+    const nodeR=Math.max(2.5, Math.min(4, W*0.01));
+    ctx.fillStyle='rgba(232,224,204,0.06)';ctx.font='600 '+titleFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE',W/2,24);
     connections.forEach(([i,j])=>{const a=euroHPC[i],b=euroHPC[j];ctx.beginPath();ctx.moveTo(a.x*W,a.y*H);ctx.lineTo(b.x*W,b.y*H);ctx.strokeStyle='rgba(26,108,212,0.12)';ctx.lineWidth=0.5;ctx.stroke();const prog=((t*0.005+i*0.2)%1);ctx.beginPath();ctx.arc(a.x*W+(b.x*W-a.x*W)*prog,a.y*H+(b.y*H-a.y*H)*prog,1.2,0,Math.PI*2);ctx.fillStyle='rgba(26,108,212,0.3)';ctx.fill();});
-    hyperDC.forEach((n,i)=>{const pulse=1+0.15*Math.sin(t*0.02+i+3);ctx.beginPath();ctx.arc(n.x*W,n.y*H,(n.size+8)*pulse,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.04)';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,n.size,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(255,51,51,0.3)';ctx.font='8px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H+n.size+12);});
-    euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,4,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,1.5,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.55)';ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
-    const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,4,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font='10px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,4,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
+    hyperDC.forEach((n,i)=>{const pulse=1+0.15*Math.sin(t*0.02+i+3);const sz=n.size*W/500;ctx.beginPath();ctx.arc(n.x*W,n.y*H,(sz+8)*pulse,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.04)';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,sz,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(255,51,51,0.3)';ctx.font=dcFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H+sz+12);});
+    euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR*W/500,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR*0.4,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.55)';ctx.font=nodeFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
+    const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font=legFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,nodeR,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
     requestAnimationFrame(draw);
   }
   const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
@@ -2677,21 +2702,23 @@ function buildDbBars() {
   const canvas=document.getElementById('dbPatentChart');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=300;}
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(300, Math.max(200, canvas.parentElement.clientWidth*0.55));}
   resize();window.addEventListener('resize',resize);
   const data=[{label:'China',patents:38000,col:'#c96a2b'},{label:'United States',patents:6300,col:'#1a6cd4'},{label:'South Korea',patents:2800,col:'#7b6fd6'},{label:'Japan',patents:1500,col:'#4a8ce4'},{label:'EU Total',patents:1200,col:'#0fa37a'},{label:'India',patents:800,col:'rgba(232,224,204,0.4)'}];
   let grown=data.map(()=>0);
   function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;const maxVal=38000,barH=28,gap=14,labelW=90,startY=30;
-    ctx.fillStyle='rgba(232,224,204,0.3)';ctx.font='9px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('GENERATIVE AI INVENTIONS (2014-2023)',labelW,18);
+    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;const maxVal=38000;
+    const sc=W/500;const barH=Math.max(18,28*sc),gap=Math.max(8,14*sc),labelW=Math.max(55,90*sc),startY=30;
+    const titleFs=Math.max(7,9*sc),labelFs=Math.max(8,11*sc),valFs=Math.max(7,10*sc);
+    ctx.fillStyle='rgba(232,224,204,0.3)';ctx.font=titleFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('GENERATIVE AI INVENTIONS (2014-2023)',labelW,18);
     grown=grown.map(g=>Math.min(g+0.02,1));const allDone=grown.every(g=>g>=1);
     data.forEach((d,i)=>{
-      const y=startY+i*(barH+gap),barW=((W-labelW-80)*(d.patents/maxVal))*grown[i];
-      ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font='11px Inter, sans-serif';ctx.textAlign='right';ctx.fillText(d.label,labelW-10,y+barH/2+4);
-      ctx.fillStyle='rgba(255,255,255,0.03)';ctx.beginPath();ctx.roundRect(labelW,y,W-labelW-80,barH,4);ctx.fill();
+      const y=startY+i*(barH+gap),barW=((W-labelW-80*sc)*(d.patents/maxVal))*grown[i];
+      ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font=labelFs+'px Inter, sans-serif';ctx.textAlign='right';ctx.fillText(d.label,labelW-10,y+barH/2+4);
+      ctx.fillStyle='rgba(255,255,255,0.03)';ctx.beginPath();ctx.roundRect(labelW,y,W-labelW-80*sc,barH,4);ctx.fill();
       ctx.fillStyle=d.col+'40';ctx.beginPath();ctx.roundRect(labelW,y,barW,barH,4);ctx.fill();
       ctx.strokeStyle=d.col+'80';ctx.lineWidth=0.5;ctx.beginPath();ctx.roundRect(labelW,y,barW,barH,4);ctx.stroke();
-      ctx.fillStyle=d.col;ctx.font='10px JetBrains Mono, monospace';ctx.textAlign='left';ctx.fillText(d.patents.toLocaleString(),labelW+barW+8,y+barH/2+4);
+      ctx.fillStyle=d.col;ctx.font=valFs+'px JetBrains Mono, monospace';ctx.textAlign='left';ctx.fillText(d.patents.toLocaleString(),labelW+barW+8,y+barH/2+4);
     });
     if(!allDone) requestAnimationFrame(draw);
   }
@@ -2704,7 +2731,7 @@ function buildDbBars() {
   const canvas=document.getElementById('dbGrowthChart');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=320;}
+  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(320, Math.max(200, canvas.parentElement.clientWidth*0.6));}
   resize();window.addEventListener('resize',resize);
 
   const series=[
