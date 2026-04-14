@@ -5404,60 +5404,62 @@ async function fetchDashboardData() {
     const W = canvas.width / dpr, H = canvas.height / dpr;
     ctx.clearRect(0, 0, W, H);
 
-    const leftPad = 50, rightPad = 20, topPad = 30, bottomPad = 40;
+    const leftPad = 70, rightPad = 20, topPad = 20, bottomPad = 45;
     const chartW = W - leftPad - rightPad;
     const chartH = H - topPad - bottomPad;
+    const sc = W / 500;
+    const labelFs = Math.max(8, Math.min(11, 11 * sc));
+    const descFs = Math.max(7, Math.min(9, 9 * sc));
+    const axisFs = Math.max(8, Math.min(11, 11 * sc));
+    const catFs = Math.max(7, Math.min(9, 9 * sc));
 
-    // Y-axis: years (2018 at top, 2025 at bottom — chronological downward)
+    // X-axis: years
     const minYear = 2017, maxYear = 2026;
-    function yForYear(y) { return topPad + ((y - minYear) / (maxYear - minYear)) * chartH; }
+    function xForYear(y) { return leftPad + ((y - minYear) / (maxYear - minYear)) * chartW; }
 
-    // Y-axis labels and gridlines
+    // X-axis labels and gridlines
     for (let yr = 2018; yr <= 2025; yr++) {
-      const y = yForYear(yr);
-      // Gridline
+      const x = xForYear(yr);
       ctx.beginPath();
-      ctx.moveTo(leftPad, y);
-      ctx.lineTo(W - rightPad, y);
+      ctx.moveTo(x, topPad);
+      ctx.lineTo(x, topPad + chartH);
       ctx.strokeStyle = 'rgba(255,255,255,0.04)';
       ctx.lineWidth = 0.5;
       ctx.stroke();
-      // Year label
       ctx.fillStyle = 'rgba(232,224,204,0.4)';
-      ctx.font = '11px JetBrains Mono, monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(yr, leftPad - 10, y);
-    }
-
-    // X-axis: type categories
-    const types = ['Legal', 'Export', 'Corporate'];
-    const typeX = {};
-    types.forEach((t, i) => {
-      const x = leftPad + ((i + 0.5) / types.length) * chartW;
-      typeX[t] = x;
-      // Column label
-      ctx.fillStyle = 'rgba(232,224,204,0.25)';
-      ctx.font = '600 9px Inter, sans-serif';
+      ctx.font = axisFs + 'px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText(t.toUpperCase(), x, H - bottomPad + 12);
+      ctx.fillText(yr, x, topPad + chartH + 8);
+    }
+
+    // Y-axis: type categories
+    const types = ['Legal', 'Export', 'Corporate'];
+    const typeY = {};
+    types.forEach((t, i) => {
+      const y = topPad + ((i + 0.5) / types.length) * chartH;
+      typeY[t] = y;
+      ctx.fillStyle = 'rgba(232,224,204,0.25)';
+      ctx.font = '600 ' + catFs + 'px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(t.toUpperCase(), leftPad - 10, y);
     });
 
-    // Vertical column separators
+    // Horizontal row separators
     ctx.strokeStyle = 'rgba(255,255,255,0.03)';
     ctx.lineWidth = 0.5;
     types.forEach((t, i) => {
       if (i === 0) return;
-      const x = leftPad + (i / types.length) * chartW;
-      ctx.beginPath(); ctx.moveTo(x, topPad); ctx.lineTo(x, H - bottomPad); ctx.stroke();
+      const y = topPad + (i / types.length) * chartH;
+      ctx.beginPath(); ctx.moveTo(leftPad, y); ctx.lineTo(W - rightPad, y); ctx.stroke();
     });
 
     // Connecting line through events chronologically
     ctx.beginPath();
     events.forEach((e, i) => {
-      const x = typeX[e.type];
-      const y = yForYear(e.year);
+      const x = xForYear(e.year);
+      const y = typeY[e.type];
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     });
@@ -5467,32 +5469,33 @@ async function fetchDashboardData() {
 
     // Scatter points + labels
     events.forEach((e) => {
-      const x = typeX[e.type];
-      const y = yForYear(e.year);
+      const x = xForYear(e.year);
+      const y = typeY[e.type];
 
       // Outer glow
       ctx.beginPath();
-      ctx.arc(x, y, 14, 0, Math.PI * 2);
+      ctx.arc(x, y, 14 * sc, 0, Math.PI * 2);
       ctx.fillStyle = e.col + '10';
       ctx.fill();
 
       // Dot
       ctx.beginPath();
-      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.arc(x, y, Math.max(4, 6 * sc), 0, Math.PI * 2);
       ctx.fillStyle = e.col;
       ctx.fill();
 
-      // Event label (to the right of dot)
+      // Event label (above dot)
       ctx.fillStyle = '#e0d8c4';
-      ctx.font = '11px Inter, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(e.label, x + 14, y - 6);
+      ctx.font = labelFs + 'px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(e.label, x, y - 12 * sc);
 
-      // Description
+      // Description (below dot)
       ctx.fillStyle = 'rgba(232,224,204,0.45)';
-      ctx.font = '9px Inter, sans-serif';
-      ctx.fillText(e.desc, x + 14, y + 8);
+      ctx.font = descFs + 'px Inter, sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.fillText(e.desc, x, y + 12 * sc);
     });
   }
 
