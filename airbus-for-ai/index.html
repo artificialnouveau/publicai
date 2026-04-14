@@ -402,7 +402,8 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
   box-shadow: 0 8px 30px rgba(0,0,0,0.5); backdrop-filter: blur(12px);
   pointer-events: none;
 }
-.battle-round:hover .round-tooltip { display: block; }
+.battle-round:hover .round-tooltip,
+.battle-round.touch-active .round-tooltip { display: block; }
 .round-tooltip .tt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
 .round-tooltip .tt-axis { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.6); }
 .round-tooltip .tt-what { font-size: 0.6rem; color: rgba(255,255,255,0.35); font-style: italic; }
@@ -538,8 +539,21 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .reactor-ring { width: min(280px, 70vw); height: min(280px, 70vw); }
   .reactor-power-num { font-size: 2.5rem; }
   .live-panel { position: static; }
-  .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; }
-  .scenario-levers { gap: 0.5rem; }
+  .battle-section { padding: 3rem 1rem; }
+  .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; padding: 1rem; }
+  .battle-score-center { font-size: 1.8rem; min-width: 80px; }
+  .challenger-row { gap: 0.4rem; }
+  .challenger-btn { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
+  .battle-round { grid-template-columns: 1fr 70px 1fr; padding: 0.75rem 0.75rem; }
+  .battle-round .round-val { font-size: 0.75rem; min-width: 22px; }
+  .battle-round .round-label { font-size: 0.6rem; }
+  .battle-round .round-left, .battle-round .round-right { gap: 0.4rem; }
+  .scenario-levers { gap: 0.4rem; padding: 0.75rem; }
+  .lever-btn { min-width: 70px; padding: 0.4rem 0.5rem; font-size: 0.6rem; }
+  .lever-btn .lever-icon { font-size: 0.9rem; }
+  .lever-btn .lever-label { font-size: 0.5rem; }
+  .lever-btn input[type="range"] { width: 50px; }
+  .battle-verdict { font-size: 0.9rem; padding: 1rem; }
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
   .story-visual { aspect-ratio: auto; overflow: visible; max-width: 100%; }
   .story-visual canvas { max-width: 100% !important; width: 100% !important; height: auto !important; aspect-ratio: 4/3 !important; }
@@ -583,6 +597,15 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .scenario-levers label { font-size: 0.7rem; }
   .tl-card { padding: 1rem; }
   .battle-section h2 { font-size: 1.3rem; }
+  .battle-round { grid-template-columns: 1fr 55px 1fr; padding: 0.6rem 0.5rem; }
+  .battle-round .round-val { font-size: 0.7rem; min-width: 20px; }
+  .battle-round .round-label { font-size: 0.55rem; letter-spacing: 0.03em; }
+  .challenger-row { gap: 0.3rem; }
+  .challenger-btn { padding: 0.35rem 0.6rem; font-size: 0.65rem; }
+  .lever-btn { min-width: 60px; padding: 0.35rem 0.4rem; }
+  .lever-btn .lever-label { font-size: 0.45rem; }
+  .lever-btn input[type="range"] { width: 42px; }
+  .battle-score-center { font-size: 1.5rem; }
 }
 
 /* === PRINT / EXPORT === */
@@ -1408,7 +1431,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
     <div class="challenger-row" id="challengerRow"></div>
     <div class="battle-scoreboard" id="battleScoreboard" aria-live="polite"></div>
-    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Hover any round</strong> to see the evidence. <a href="#" onclick="openImportModal();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
+    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Tap or hover any round</strong> to see the evidence. <a href="#" onclick="openImportModal();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
     <div class="battle-rounds" id="battleRounds"></div>
     <div class="scenario-levers" id="scenarioLevers">
       <div class="scenario-levers-label">Government Investment in Public AI Co. &mdash; pull levers to boost the merged entity</div>
@@ -2263,6 +2286,15 @@ function updateBattle(animate) {
       ${buildRoundTooltip(r.axis, S.challenger)}
     </div>
   `).join('');
+
+  // Touch support for tooltips on mobile
+  roundsEl.querySelectorAll('.battle-round').forEach(row => {
+    row.addEventListener('click', function(e) {
+      const wasActive = this.classList.contains('touch-active');
+      roundsEl.querySelectorAll('.battle-round.touch-active').forEach(r => r.classList.remove('touch-active'));
+      if (!wasActive) this.classList.add('touch-active');
+    });
+  });
 
   // Animate rounds sequentially
   if (animate) {
