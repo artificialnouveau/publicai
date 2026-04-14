@@ -119,11 +119,12 @@ body{
 /* === CLOCK === */
 .clock{
   position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;
-  display:flex;align-items:center;gap:12px;
+  display:none;align-items:center;gap:12px;
   padding:8px 20px;border-radius:100px;
   background:rgba(7,11,20,0.9);border:1px solid rgba(255,255,255,0.08);
   backdrop-filter:blur(12px);
 }
+.clock.visible{display:flex;}
 .clock-ring{width:32px;height:32px;position:relative;}
 .clock-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
 .clock-ring circle{fill:none;stroke-width:3;stroke-linecap:round;}
@@ -674,29 +675,75 @@ body{
   .stat-row{gap:6px;}
   .stat-box{min-width:60px;padding:1rem 0.5rem;}
   .risk-meter,.risk-label{display:none !important;}
+  .topnav{padding:10px 12px;flex-direction:row;align-items:center;}
+  .topnav a{font-size:0.7rem;}
 }
 @media(max-width:768px){
   .hero h1{font-size:1.8rem;}
-  .hero-sub{font-size:0.9rem;}
+  .hero-sub{font-size:0.9rem;color:rgba(255,255,255,0.6);}
   .neg-active-clause{padding:1rem;}
-  .text-action-btn{min-height:44px;padding:12px 16px;font-size:0.85rem;}
+  .text-action-btn{min-height:44px;padding:12px 16px;font-size:0.85rem;color:rgba(255,255,255,0.7);}
   .conv-grid{grid-template-columns:1fr;}
   .day-row,.split-headers{grid-template-columns:1fr;}
   .neg-options{grid-template-columns:1fr;}
   .blueprint{padding:1rem;}
   .neg-option{min-height:44px;}
   .start-btn{min-height:44px;}
+
+  /* Battle frame: remove border squeeze, use full width */
+  .battle-frame{border-width:2px;margin:0 -12px;border-radius:0;max-width:none;}
+  .game-area{padding:60px 0 100px;}
+  .battle-arena{height:240px;}
+  .rival-sprite-zone{gap:6px;right:8px;top:8px;}
+  .rival-sprite canvas{width:48px;height:48px;}
+  .rival-sprite .rs-name{font-size:0.55rem;}
+  .coalition-flags-zone{max-width:55%;bottom:44px;left:8px;gap:4px;}
+  .coalition-flag{padding:3px 5px;font-size:0.9rem;}
+  .coalition-flag .cf-name{font-size:0.45rem;}
+  .your-status-plate{min-width:auto;padding:6px 10px;right:8px;bottom:44px;}
+  .your-status-plate .ysp-name{font-size:0.72rem;}
+  .your-status-plate .ysp-row{font-size:0.6rem;}
+
+  /* Text area readability */
+  .text-narration{padding:14px 16px;font-size:0.95rem;color:rgba(255,255,255,0.8);}
+  .text-narration .tn-body{color:rgba(255,255,255,0.65);font-size:0.9rem;}
+  .text-narration .tn-subject{font-size:1rem;}
+  .text-actions{padding:10px 16px 14px;}
+  .briefing-body{color:rgba(255,255,255,0.6);}
+  .briefing-subject{font-size:0.95rem;}
+  .narrative-result{padding:12px 16px;color:rgba(255,255,255,0.65);}
+
+  /* Prologue readability */
+  .prologue p{color:rgba(255,255,255,0.65);font-size:1.05rem;}
+  .prologue{padding:4rem 1.5rem;}
+
+  /* Clock smaller on mobile */
+  .clock{padding:6px 14px;gap:8px;}
+  .clock-ring{width:24px;height:24px;}
+  .clock-text{font-size:0.75rem;}
+
+  /* Help toggle */
+  .help-toggle{right:16px;padding:5px 10px;font-size:0.75rem;}
+  .help-dropdown{right:16px;width:280px;}
 }
 @media(max-width:480px){
   .hero h1{font-size:1.4rem;}
+  .hero-sub{font-size:0.85rem;color:rgba(255,255,255,0.6);}
   .stat-box{padding:0.5rem;font-size:0.75rem;}
   .stat-box .val{font-size:1.3rem;}
   .neg-clause-question{font-size:1rem;}
-  .text-action-btn{font-size:0.8rem;padding:10px 12px;}
+  .text-action-btn{font-size:0.8rem;padding:10px 12px;color:rgba(255,255,255,0.7);}
   .neg-sh{font-size:0.7rem;width:60px;}
   .sov-val{font-size:0.65rem;}
   .neg-stakeholder-bar{gap:8px;}
   .neg-sh-icon{width:40px;height:40px;font-size:1.1rem;}
+  .battle-arena{height:200px;}
+  .rival-sprite canvas{width:36px;height:36px;}
+  .your-status-plate{display:none;}
+  .text-narration{padding:12px;font-size:0.85rem;}
+  .text-narration .tn-body{font-size:0.85rem;}
+  .prologue p{font-size:0.95rem;}
+  .prologue{padding:3rem 1.25rem;}
 }
 /* === BRIEFING DOCUMENTS === */
 .briefing{padding:14px 18px;margin-bottom:10px;border-radius:6px;font-size:0.95rem;line-height:1.65;color:rgba(255,255,255,0.6);}
@@ -780,7 +827,7 @@ body{
   <span class="clock-text" id="clockText">DECISION 1 / 8</span>
 </div>
 
-<nav class="topnav" id="topnav"><a href="index.html">&larr; The Assembly Lab</a><span style="display:flex;gap:1.5rem;"><a href="sovereignty.html" style="color:var(--purple);font-family:var(--mono);font-size:0.75rem;font-weight:600;text-decoration:none;letter-spacing:0.1em;">SOVEREIGNTY INDEX</a><a href="narrative.html" style="color:var(--gold);font-family:var(--mono);font-size:0.75rem;font-weight:600;text-decoration:none;letter-spacing:0.1em;">THE STORY</a></span></nav>
+<nav class="topnav" id="topnav"><a href="index.html">&larr; The Assembly Lab</a><span style="display:flex;gap:1.5rem;"><a href="index.html#sovereignty" style="color:var(--purple);font-family:var(--mono);font-size:0.75rem;font-weight:600;text-decoration:none;letter-spacing:0.1em;">SOVEREIGNTY INDEX</a><a href="narrative.html" style="color:var(--gold);font-family:var(--mono);font-size:0.75rem;font-weight:600;text-decoration:none;letter-spacing:0.1em;">THE STORY</a></span></nav>
 
 <!-- Side Outline -->
 <nav class="side-outline" id="sideOutline">
@@ -835,7 +882,7 @@ body{
   </div>
   <p><strong>Ronald Coase</strong> explained why firms exist: when it is cheaper to organize inside a hierarchy than through constant market bargaining. AI requires an unusually high degree of coordination amongst tightly complementary pieces. The US solves this with gigantic capital pools. China has giant firms with coordinated state control. <strong>The EU has 27 countries, 24 languages, diluted capital, and zero sense of centralized execution.</strong></p>
   <div class="airbus-note" role="button" tabindex="0" aria-expanded="false" onclick="this.classList.toggle('open');this.setAttribute('aria-expanded',this.classList.contains('open'))" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-    <div class="tag">&#9992; THE AIRBUS PARALLEL</div>
+    <div class="tag">THE AIRBUS PARALLEL</div>
     <div class="summary">In the late 1960s, Boeing owned commercial aviation. Individual European manufacturers were all too small to compete alone. Each had capability, but none had the full stack.</div>
     <div class="expand"><p>France, Germany, the UK, and Spain didn't <em>want</em> to merge their aerospace industries. They did it because the alternative was worse. The first decade was full of fights over workshare, headquarters, whose engine gets used. It worked <em>despite</em> the friction. Today Airbus holds 50% of the global commercial aviation market.</p></div>
   </div>
@@ -947,7 +994,7 @@ body{
   <div class="conv-grid" id="convGrid" aria-live="polite"></div>
 
   <div class="airbus-note" onclick="this.classList.toggle('open')" style="max-width:600px;margin:0 auto 2rem;">
-    <div class="tag">&#9992; THE AIRBUS PARALLEL</div>
+    <div class="tag">THE AIRBUS PARALLEL</div>
     <div class="summary">Airbus didn't start with vision. It started with everyone running out of alternatives at the same time. Sound familiar?</div>
     <div class="expand"><p>By 1967, each European aircraft manufacturer had independently concluded it couldn't afford the next generation of wide-body jets. The coalition was born from synchronized desperation, not synchronized ambition. Merz calling Macron at 5am. Virkkunen throwing out her prepared remarks. Takaichi reaching out through backchannels. The pattern is the same.</p></div>
   </div>
@@ -978,7 +1025,7 @@ body{
   </div>
   <div class="sov-score" id="sovScore"><h3>Sovereignty Score Comparison</h3><div id="sovBars"></div></div>
   <div class="airbus-note" onclick="this.classList.toggle('open')" style="max-width:600px;margin:2rem auto;">
-    <div class="tag">&#9992; THE AIRBUS PARALLEL</div>
+    <div class="tag">THE AIRBUS PARALLEL</div>
     <div class="summary">By 1975 Airbus had sold 38 planes. Boeing sold over 1,500 that decade. The early years were humiliating. But the structure held.</div>
     <div class="expand"><p>The A300 was a commercial disappointment for its first five years. Airlines wouldn't buy European. But the consortium kept iterating, and by the 1980s had real customers. Today Airbus holds ~50% of the global commercial aviation market.</p></div>
   </div>
@@ -1131,7 +1178,7 @@ document.addEventListener('DOMContentLoaded', initAnimObservers);
 const KEY_DECISIONS = [
   {
     id: 1, month: 'Apr 2026', title: 'The Dublin Layoffs',
-    briefing: {type:'email',icon:'\u{1F4E7}',label:'INTERNAL EMAIL',from:'management@openai.com \u2014 To: All EU Staff',subject:'Organizational Update: European Operations'},
+    briefing: {type:'email',icon:'',label:'INTERNAL EMAIL',from:'management@openai.com \u2014 To: All EU Staff',subject:'Organizational Update: European Operations'},
     situation: 'OpenAI announces "consolidation towards revenue-generating operations in the US." The Dublin, Munich, Paris, and Brussels offices are decimated. Your colleague Aaron hands you a hard drive on his way out the door. "Not on your work computer," he says. Hundreds of European policy, safety, and evaluation staff are gone in a week. The multilingual benchmarks, the compliance tools, the evaluation pipeline: all moved to San Francisco.',
     options: [
       { text: 'Keep your head down \u2014 you survived the cuts, don\'t make waves',
@@ -1142,13 +1189,13 @@ const KEY_DECISIONS = [
       { text: 'Look at what\'s on Aaron\'s hard drive \u2014 and start asking questions',
         marketShareImpact: 0, marketCapImpact: 0, talentImpact: +1, coalitionImpact: 1,
         narrative: 'The drive contains internal projections showing OpenAI plans to reduce European operations to a compliance shell within 18 months. You leak the findings to a journalist at Sifted. The story goes viral. Mistral\'s Arthur Mensch publicly calls for a European compute sovereignty initiative. France signals interest in a coalition.',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1EB}\u{1F1F7}', name:'France'},
+        verdict: 'helped', joinCountry: {flag:'FR', name:'France'},
         reaction: {name:'Arthur Mensch',initials:'AM',color:'rgba(240,165,0,0.15)',textColor:'var(--gold)',quote:'I read the Sifted piece three times. Then I called the Elys\u00e9e. They were already reading it.'} }
     ]
   },
   {
     id: 2, month: 'Jun 2026', title: 'Virkkunen\'s Gambit',
-    briefing: {type:'news',icon:'\u{1F4F0}',label:'BREAKING \u2014 SIFTED.EU',from:'Brussels Bureau',subject:'EU Tech Chief Abandons Prepared Remarks, Delivers Blistering Indictment of European AI Strategy'},
+    briefing: {type:'news',icon:'',label:'BREAKING \u2014 SIFTED.EU',from:'Brussels Bureau',subject:'EU Tech Chief Abandons Prepared Remarks, Delivers Blistering Indictment of European AI Strategy'},
     situation: 'Henna Virkkunen tosses her prepared speech and delivers an invective at the European Commission summit. "We sleepwalked through two entire decades of infrastructure planning. We are toothless regulators over technology that doesn\'t even belong to us." She calls for collaborative advantage. Some of the crowd walks out. Others stay, rapt. Her assistant says it was fantastic. Virkkunen replies: "I gave the same speech six months ago. Nothing happened." Will anything change this time?',
     options: [
       { text: 'Applaud but do nothing \u2014 wait for the bureaucracy to catch up',
@@ -1159,13 +1206,13 @@ const KEY_DECISIONS = [
       { text: 'Rally behind Virkkunen \u2014 push for an emergency infrastructure summit',
         marketShareImpact: +1, marketCapImpact: +1, talentImpact: +1, coalitionImpact: 1,
         narrative: 'You organize a backchannel coalition of delegates who were moved by the speech. Within two weeks, Daniel Ek pledges \u20AC200M in seed capital for a European AI talent retention fund. Victor Englesson at EQT opens his Rolodex. Stockholm\'s ecosystem rallies. Sweden joins the coalition.',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1F8}\u{1F1EA}', name:'Sweden'},
+        verdict: 'helped', joinCountry: {flag:'SE', name:'Sweden'},
         reaction: {name:'Daniel Ek',initials:'DE',color:'rgba(30,215,96,0.15)',textColor:'#1ed760',quote:'I\'ve been waiting for someone in Brussels to say what she said. Here\'s the money. Now build something.'} }
     ]
   },
   {
     id: 3, month: 'Sep 2026', title: 'The Hospital Lock-in',
-    briefing: {type:'classified',icon:'\u{1F3E5}',label:'CONFIDENTIAL \u2014 FEDERAL CHANCELLERY',from:'Pieter van Hoorn, Senior Technology Advisor',subject:'RE: Healthcare AI Vendor Contract \u2014 URGENT'},
+    briefing: {type:'classified',icon:'',label:'CONFIDENTIAL \u2014 FEDERAL CHANCELLERY',from:'Pieter van Hoorn, Senior Technology Advisor',subject:'RE: Healthcare AI Vendor Contract \u2014 URGENT'},
     situation: '340 German hospitals depend on a US AI diagnostic model. The vendor just deprecated the version they\'re running and the new contract requires telemetry data sharing with the US parent company, a 5-year lock-in, and a 40% price increase. Pieter, Merz\'s advisor, puts it bluntly: "Even the things we advertise as sovereign are built on top of Microsoft or Google\'s technology." There is no European alternative at the same capability level.',
     options: [
       { text: 'Sign the new contract \u2014 patients can\'t wait for sovereignty',
@@ -1176,13 +1223,13 @@ const KEY_DECISIONS = [
       { text: 'Fast-track a European diagnostic AI \u2014 imperfect but sovereign',
         marketShareImpact: +2, marketCapImpact: +3, talentImpact: +1, coalitionImpact: 1,
         narrative: 'Aleph Alpha and university hospitals in Milan and Munich collaborate on a sovereign diagnostic tool. Dr. Isabella Rossi leads the medical AI team. It\'s less capable initially, but 280 of 340 hospitals adopt it. Merz commits Germany to the coalition with \u20AC4B in procurement guarantees. "We cannot leave our hospitals on infrastructure we do not govern."',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1E9}\u{1F1EA}', name:'Germany'},
+        verdict: 'helped', joinCountry: {flag:'DE', name:'Germany'},
         reaction: {name:'Dr. Isabella Rossi',initials:'IR',color:'rgba(0,140,69,0.15)',textColor:'#2ec4b6',quote:'It\'s not as good. I won\'t pretend it is. But it\'s ours, it\'s improving every week, and no one in Washington can turn it off.'} }
     ]
   },
   {
     id: 4, month: 'Dec 2026', title: 'The Swedish Exodus',
-    briefing: {type:'news',icon:'\u{1F4B0}',label:'FINANCIAL TIMES',from:'Nordic Tech Correspondent',subject:'Google in $4.2bn Talks to Acquire Sweden\'s Legora, Sources Say'},
+    briefing: {type:'news',icon:'',label:'FINANCIAL TIMES',from:'Nordic Tech Correspondent',subject:'Google in $4.2bn Talks to Acquire Sweden\'s Legora, Sources Say'},
     situation: 'Google offers $4.2B to acquire Legora, Stockholm\'s most valuable AI company \u2014 potentially valued at \u20AC4B. The founder says: "If there\'s a coalition, I\'ll stay. If not, we\'re taking the money." It\'s the same pattern Keith Fearon described at 11x: "The requirement from almost all of our investors was actually to relocate to the Bay Area. We needed to move here." Over 30% of Sweden\'s startups have already left.',
     options: [
       { text: 'Let the market decide \u2014 "we can\'t block private transactions"',
@@ -1193,13 +1240,13 @@ const KEY_DECISIONS = [
       { text: 'Activate strategic industry provisions + offer coalition membership',
         marketShareImpact: +1, marketCapImpact: +4, talentImpact: +2, coalitionImpact: 1,
         narrative: 'Strategic industry designation blocks the acquisition. Legora joins the coalition with its \u20AC4B valuation intact. The Netherlands, seeing ASML\'s leverage as Europe\'s sole advanced lithography supplier recognized in the framework, also joins. First real proof the coalition can retain value on the continent.',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1F3}\u{1F1F1}', name:'Netherlands'},
+        verdict: 'helped', joinCountry: {flag:'NL', name:'Netherlands'},
         reaction: {name:'Daniel Ek',initials:'DE',color:'rgba(30,215,96,0.15)',textColor:'#1ed760',quote:'This is the first time a European startup didn\'t have to choose between staying home and scaling up. That\'s the whole point.'} }
     ]
   },
   {
     id: 5, month: 'Feb 2027', title: 'Takaichi\'s Offer',
-    briefing: {type:'signal',icon:'\u{1F510}',label:'ENCRYPTED \u2014 DIPLOMATIC CHANNEL',from:'Office of PM Takaichi \u2192 Coalition Secretariat',subject:'Proposal: Indo-Pacific AI Infrastructure Partnership'},
+    briefing: {type:'signal',icon:'',label:'ENCRYPTED \u2014 DIPLOMATIC CHANNEL',from:'Office of PM Takaichi \u2192 Coalition Secretariat',subject:'Proposal: Indo-Pacific AI Infrastructure Partnership'},
     situation: 'Prime Minister Sanae Takaichi of Japan reaches out through backchannels. Japan faces the same squeeze: dependent on American AI infrastructure, pressured to align against China, watching its own talent drain to Silicon Valley. She proposes an Indo-Pacific partnership with the European coalition. But Macron wants France to lead. Merz wants German industry centered. Ek wants openness. Brussels wants legitimacy. The structure will determine everything.',
     options: [
       { text: 'Tight merger \u2014 single entity, like Airbus. France and Germany at the core.',
@@ -1210,18 +1257,18 @@ const KEY_DECISIONS = [
       { text: 'Accept Takaichi\'s offer \u2014 broad alliance, shared standards, independent members.',
         marketShareImpact: +1, marketCapImpact: +2, talentImpact: +2, coalitionImpact: +2,
         narrative: 'A looser structure with shared compute infrastructure and interoperability standards. Japan and South Korea join as associate members. RIKEN\'s Dr. Yuki Tanaka transfers her efficient training research to the coalition. But coordination costs are higher and decision-making is slower. 27 countries plus Asian partners means every meeting is a negotiation.',
-        verdict: 'mixed', joinCountry: {flag:'\u{1F1EF}\u{1F1F5}', name:'Japan'},
+        verdict: 'mixed', joinCountry: {flag:'JP', name:'Japan'},
         reaction: {name:'Sanae Takaichi',initials:'ST',color:'rgba(188,0,45,0.12)',textColor:'#ff6b8a',quote:'We are not Europeans. But we face the same dependency. If the structure is open, Japan will bring its full weight.'} },
       { text: 'Hybrid \u2014 merged core for compute + models, open alliance layer for everyone else.',
         marketShareImpact: +3, marketCapImpact: +6, talentImpact: +3, coalitionImpact: +1,
         narrative: 'A merged European core handles compute and frontier models \u2014 the capital-intensive, scale-dependent pieces that Coase\'s theory says demand a firm, not a market. An open alliance layer handles enterprise deployment, research, and policy \u2014 where Japan, Korea, and others can participate. Best of both: the Airbus model, adapted for AI.',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1EA}\u{1F1FA}', name:'EU'},
+        verdict: 'helped', joinCountry: {flag:'EU', name:'EU'},
         reaction: {name:'Arthur Mensch',initials:'AM',color:'rgba(240,165,0,0.15)',textColor:'var(--gold)',quote:'This is Coase. You build the firm where scale matters. You keep the market where diversity matters. It\'s obvious once you see it.'} }
     ]
   },
   {
     id: 6, month: 'Mar 2027', title: 'The Defense Question',
-    briefing: {type:'classified',icon:'\u{1F6E1}',label:'NATO INTELLIGENCE BRIEFING',from:'European Defence Agency, Brussels',subject:'Assessment: AI Defense Contractor Dependencies in European NATO'},
+    briefing: {type:'classified',icon:'',label:'NATO INTELLIGENCE BRIEFING',from:'European Defence Agency, Brussels',subject:'Assessment: AI Defense Contractor Dependencies in European NATO'},
     situation: 'Virkkunen warned about it in Brussels: "These American AI companies are not just stumbling into American warfare, they\'re actively courting it." Now OpenAI signs a $2.4B Pentagon contract. NATO selects Palantir\'s Maven AI for battlefield operations. European NATO allies were not consulted. AI algorithms created 37,000 bombing targets in Gaza. The technology is built by companies Europe relies on for civilian AI. Your defense ministries are asking: do we depend on a company that\'s now a US defense contractor?',
     options: [
       { text: 'Continue using OpenAI for non-defense applications \u2014 "it\'s just business"',
@@ -1232,13 +1279,13 @@ const KEY_DECISIONS = [
       { text: 'Accelerate sovereign defense AI \u2014 redirect procurement to Helsing and the coalition',
         marketShareImpact: +3, marketCapImpact: +5, talentImpact: +1, coalitionImpact: +1,
         narrative: 'Defense procurement pivots to the coalition. Helsing\'s HX-2 drone program and Saab\'s Eurofighter radar integration become anchor contracts. \u20AC8B in guaranteed government contracts over 5 years. This is the coalition\'s A300 \u2014 the product nobody asked for but everybody needed. The UK, seeing defense industrial logic, joins.',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1EC}\u{1F1E7}', name:'UK'},
+        verdict: 'helped', joinCountry: {flag:'GB', name:'UK'},
         reaction: {name:'Kaja Kallas',initials:'KK',color:'rgba(0,114,206,0.15)',textColor:'#4da6e8',quote:'For the first time, European defense spending builds European capability. That is what sovereignty looks like in practice.'} }
     ]
   },
   {
     id: 7, month: 'Apr 2027', title: 'The Digital Liberty Act',
-    briefing: {type:'classified',icon:'\u{1F4DC}',label:'CLASSIFIED \u2014 MIDNIGHT FRIDAY',from:'US Department of Commerce \u2192 Allied Governments',subject:'The Digital Liberty Act \u2014 Jurisdictional Access Framework'},
+    briefing: {type:'classified',icon:'',label:'CLASSIFIED \u2014 MIDNIGHT FRIDAY',from:'US Department of Commerce \u2192 Allied Governments',subject:'The Digital Liberty Act \u2014 Jurisdictional Access Framework'},
     situation: 'It arrives at midnight on a Friday. Merz reads the President\'s statement for the tenth time. The Digital Liberty Act: access to American frontier AI is now conditional on accepting US security terms, cutting ties with China, and submitting to annual compliance audits. Germany is downgraded to "Managed Access" because of its China trade relationships. Merz turns to Pieter: "This would be signing off our death warrant. China gives us our motor parts, our chemicals, our industrial equipment. I\'m calling the bluff. I\'m not signing off on anything." He needs coffee and Macron on the phone in 15 minutes.',
     options: [
       { text: 'Comply \u2014 restructure China trade to maintain US AI access',
@@ -1249,13 +1296,13 @@ const KEY_DECISIONS = [
       { text: 'Reject and accelerate \u2014 Merz calls Macron. This is why the coalition exists.',
         marketShareImpact: +2, marketCapImpact: +3, talentImpact: +2, coalitionImpact: +2,
         narrative: 'The Digital Liberty Act becomes the coalition\'s founding crisis \u2014 the moment everyone realized fragmentation was no longer an option. Merz and Macron agree within the hour. Kaja Kallas convenes the coalition security committee. Spain, seeing the writing on the wall for its own American AI dependencies, joins in 72 hours. The compute buildout timeline accelerates from 5 years to 3.',
-        verdict: 'helped', joinCountry: {flag:'\u{1F1EA}\u{1F1F8}', name:'Spain'},
+        verdict: 'helped', joinCountry: {flag:'ES', name:'Spain'},
         reaction: {name:'Friedrich Merz',initials:'FM',color:'rgba(221,0,0,0.12)',textColor:'#ff4444',quote:'Pieter brought the coffee. Macron picked up on the first ring. For once, we didn\'t argue about who leads. We argued about how fast.'} }
     ]
   },
   {
     id: 8, month: 'Jun 2027', title: 'The First Product',
-    briefing: {type:'memo',icon:'\u{1F680}',label:'COALITION BOARD MEMO',from:'Joint Steering Committee',subject:'Product Decision: What Does the Coalition Ship First?'},
+    briefing: {type:'memo',icon:'',label:'COALITION BOARD MEMO',from:'Joint Steering Committee',subject:'Product Decision: What Does the Coalition Ship First?'},
     situation: 'The coalition exists. But Virkkunen\'s question still echoes: "How can I stand in front of you and talk about sovereignty when this is the case?" Sovereignty without a product is just a word. The coalition must ship something \u2014 something that proves the model works. Mensch has a frontier model roadmap. Ek has capital for a platform play. Helsing has defense contracts ready to sign. The choice defines the coalition\'s identity for the next decade. Airbus built the A300 \u2014 a wide-body jet nobody asked for but everybody needed. What is the AI equivalent?',
     options: [
       { text: 'Sovereign foundation model \u2014 the multilingual model the US will never build',
@@ -1562,6 +1609,7 @@ function startSlowBoil(){
 
 function startGame(){
   document.getElementById('gameArea').classList.add('active');
+  document.getElementById('clock').classList.add('visible');
   document.getElementById('helpToggle').style.display='flex';
   document.querySelector('.risk-meter').classList.add('visible');
   document.querySelector('.risk-label').style.display='block';
@@ -1899,7 +1947,7 @@ function updateDecisionLog(){
 function showConvergence(){
   document.getElementById('gameArea').classList.remove('active');
   animActive.arena=false;animActive.people=false;
-  document.getElementById('clock').style.display='none';
+  document.getElementById('clock').classList.remove('visible');
   document.querySelector('.risk-meter').classList.remove('visible');
   document.querySelector('.risk-label').style.display='none';
   document.getElementById('helpToggle').style.display='none';
@@ -1909,10 +1957,10 @@ function showConvergence(){
 
   // Build convergence summary based on player's actual decisions
   const convItems=[];
-  convItems.push({flag:S.coalitionMembers.length>=3?'\u{1F1EA}\u{1F1FA}':'\u26A0\uFE0F',title:'Coalition: '+S.coalitionMembers.length+' members',body:S.coalitionMembers.length>=3?'A viable coalition has formed.':'The coalition is too small to compete.'});
-  convItems.push({flag:'\u{1F4B0}',title:'Market Cap: $'+S.coalitionMarketCap+'B',body:S.coalitionMarketCap>=20?'Growing, but still a fraction of US rivals.':'Dangerously underfunded.'});
-  convItems.push({flag:'\u{1F9D1}\u200D\u{1F52C}',title:'Talent: '+S.coalitionTalent+' researchers',body:S.coalitionTalent>=10?'A critical mass of talent is forming.':'The brain drain continues.'});
-  convItems.push({flag:'\u{1F4C9}',title:'Market Share: '+S.coalitionMarketShare+'%',body:S.coalitionMarketShare>=5?'Gaining traction.':'Still marginal.'});
+  convItems.push({flag:S.coalitionMembers.length>=3?'EU':'--',title:'Coalition: '+S.coalitionMembers.length+' members',body:S.coalitionMembers.length>=3?'A viable coalition has formed.':'The coalition is too small to compete.'});
+  convItems.push({flag:'$',title:'Market Cap: $'+S.coalitionMarketCap+'B',body:S.coalitionMarketCap>=20?'Growing, but still a fraction of US rivals.':'Dangerously underfunded.'});
+  convItems.push({flag:'R&D',title:'Talent: '+S.coalitionTalent+' researchers',body:S.coalitionTalent>=10?'A critical mass of talent is forming.':'The brain drain continues.'});
+  convItems.push({flag:'%',title:'Market Share: '+S.coalitionMarketShare+'%',body:S.coalitionMarketShare>=5?'Gaining traction.':'Still marginal.'});
   document.getElementById('convGrid').innerHTML=convItems.map(c=>`
     <div class="conv-card"><div class="cc-flag">${c.flag}</div><div class="cc-title">${c.title}</div><div class="cc-body">${c.body}</div></div>
   `).join('');
@@ -2008,10 +2056,10 @@ function renderSovScore(){
 // NEGOTIATION (simplified — governance is decision #5)
 // ============================================================
 const NEG_STAKEHOLDERS=[
-  {id:'france',icon:'\u{1F1EB}\u{1F1F7}',label:'France',role:'Research'},
-  {id:'germany',icon:'\u{1F1E9}\u{1F1EA}',label:'Germany',role:'Industry'},
-  {id:'nordic',icon:'\u{1F1F8}\u{1F1EA}',label:'Nordics',role:'Talent'},
-  {id:'brussels',icon:'\u{1F1EA}\u{1F1FA}',label:'Brussels',role:'Policy'},
+  {id:'france',icon:'FR',label:'France',role:'Research'},
+  {id:'germany',icon:'DE',label:'Germany',role:'Industry'},
+  {id:'nordic',icon:'SE',label:'Nordics',role:'Talent'},
+  {id:'brussels',icon:'EU',label:'Brussels',role:'Policy'},
   {id:'capital',icon:'$',label:'Capital',role:'Investors'},
   {id:'tech',icon:'T',label:'Tech Lead',role:'CTO'}
 ];

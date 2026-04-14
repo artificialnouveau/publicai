@@ -541,6 +541,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   .battle-scoreboard { flex-direction: column; gap: 1rem; text-align: center; }
   .scenario-levers { gap: 0.5rem; }
   .story-grid, .story-grid.reverse { grid-template-columns: 1fr; gap: 2rem; direction: ltr; }
+  .story-visual { aspect-ratio: auto; overflow: visible; }
   #inactionCards { grid-template-columns: repeat(2, 1fr) !important; }
   #fundGrid { grid-template-columns: repeat(2, 1fr) !important; }
   #tierGrid { grid-template-columns: 1fr !important; }
@@ -560,8 +561,11 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   #coreArgsGrid { grid-template-columns: 1fr !important; }
   #commsGrid { grid-template-columns: 1fr !important; }
   #executive-summary details { font-size: 0.85rem; }
+  #sovereignty [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
+  #sovereigntyFrame { height: 600px !important; }
 }
 @media (max-width: 480px) {
+  #sovereigntyFrame { height: 500px !important; }
   #inactionCards { grid-template-columns: 1fr !important; }
   .company-chip { min-width: 100% !important; flex: none; }
   .reactor-ring { width: min(280px, 75vw); height: min(280px, 75vw); }
@@ -590,6 +594,44 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   #particleCanvas { display: none; }
 }
+
+/* === SIDE OUTLINE === */
+.page-outline {
+  position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 80;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 6px; border-radius: 8px;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,32,91,0.08);
+  width: 28px; overflow: hidden;
+  transition: width 0.3s cubic-bezier(0.16,1,0.3,1), padding 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.page-outline:hover {
+  width: 200px; padding: 10px 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.page-outline a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 6px; border-radius: 4px;
+  text-decoration: none; transition: all 0.2s; cursor: pointer;
+}
+.page-outline a:hover { background: rgba(0,32,91,0.04); }
+.page-outline a.active { background: rgba(0,32,91,0.06); }
+.outline-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(0,32,91,0.15); transition: all 0.3s;
+}
+.page-outline a.active .outline-dot { background: var(--sky); box-shadow: 0 0 6px rgba(0,119,200,0.4); }
+.outline-text {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em;
+  color: rgba(0,32,91,0.35); white-space: nowrap;
+  opacity: 0; transition: opacity 0.2s, color 0.2s;
+}
+.page-outline:hover .outline-text { opacity: 1; }
+.page-outline a.active .outline-text { color: var(--navy); }
+.page-outline a:hover .outline-text { color: rgba(0,32,91,0.6); }
+@media (max-width: 900px) { .page-outline { display: none; } }
+@media print { .page-outline { display: none; } }
 </style>
 </head>
 <body>
@@ -603,31 +645,35 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="topnav-links">
     <a href="#dashboard" style="color:var(--cyan);">Dashboard</a>
     <a href="#inaction" style="color:var(--red);">Cost of Inaction</a>
-    <a href="sovereignty.html" style="color:var(--purple);">Sovereignty Index</a>
-    <a href="narrative.html" style="color:var(--gold);">&#9655; The Story</a>
-    <a href="simulation.html" style="color:var(--green);">&#9655; Situation Room</a>
+    <a href="#sovereignty" style="color:var(--purple);">Sovereignty Index</a>
+    <a href="narrative.html" style="color:var(--gold);">The Story</a>
+    <a href="simulation.html" style="color:var(--green);">Situation Room</a>
   </div>
 </nav>
 
-
+<!-- SIDE OUTLINE -->
+<nav class="page-outline" id="pageOutline" aria-label="Page sections">
+  <a href="#story" data-section="story"><span class="outline-dot"></span><span class="outline-text">The Precedent</span></a>
+  <a href="#dashboard" data-section="dashboard"><span class="outline-dot"></span><span class="outline-text">Dashboard</span></a>
+  <a href="#assembly" data-section="assembly"><span class="outline-dot"></span><span class="outline-text">Assembly Lab</span></a>
+  <a href="#battle" data-section="battle"><span class="outline-dot"></span><span class="outline-text">Stress Test</span></a>
+  <a href="#timeline" data-section="timeline"><span class="outline-dot"></span><span class="outline-text">Roadmap</span></a>
+  <a href="#inaction" data-section="inaction"><span class="outline-dot"></span><span class="outline-text">Cost of Inaction</span></a>
+  <a href="#sovereignty" data-section="sovereignty"><span class="outline-dot"></span><span class="outline-text">Sovereignty Index</span></a>
+  <a href="#sign-on" data-section="sign-on"><span class="outline-dot"></span><span class="outline-text">Sign On</span></a>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-particles"><canvas id="particleCanvas" role="presentation" aria-hidden="true"></canvas></div>
   <div class="hero-content">
     <div class="hero-eyebrow"><span class="dot"></span> The Assembly Lab</div>
-    <h1>What if they<br>merged into one?</h1>
-    <p class="hero-sub">ChatGPT drives ~80% of all chatbot referral traffic globally.<sup class="fn"><a href="#fn1">[1]</a></sup> Mistral's Le Chat doesn't even register on tracking in France.<sup class="fn"><a href="#fn2">[2]</a></sup> Middle powers face a choice: consolidate or be captured. What happens when you build a Public AI Company?</p>
+    <h1>Can middle powers<br>build their own AI?</h1>
+    <p class="hero-sub">US hyperscalers dominate global AI infrastructure. No single European or allied company can compete alone. This interactive tool lets you explore the case for a "Public AI Company," a coalition of existing AI firms merged into a sovereign alternative. Assemble the entity, stress-test it against the hyperscalers, and see what it would take to close the gap.</p>
     <div class="hero-cta-row">
       <a href="#assembly" class="btn btn-primary">Assemble the Entity</a>
       <a href="narrative.html" class="btn btn-outline">Read the Story</a>
       <a href="simulation.html" class="btn btn-outline" style="border-color: var(--green); color: var(--green);">Enter the Situation Room</a>
-    </div>
-    <div class="hero-stats-row">
-      <div class="hero-stat"><div class="hero-stat-val">6</div><div class="hero-stat-label">Companies</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">11</div><div class="hero-stat-label">Candidate Nations</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">$24B+</div><div class="hero-stat-label">Combined Value<sup class="fn"><a href="#references" style="color:var(--sky);font-size:0.6em;text-decoration:none;">src</a></sup></div></div>
-      <div class="hero-stat"><div class="hero-stat-val">~80%</div><div class="hero-stat-label">ChatGPT Referral Share<sup class="fn"><a href="#fn1" style="color:var(--sky);font-size:0.6em;text-decoration:none;">[1]</a></sup></div></div>
     </div>
   </div>
 </section>
@@ -1035,7 +1081,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
         </div>
         <div class="data-source" id="dataSource">
           Data: public estimates (2025-2026)<br>
-          <a id="importDataLink">Load custom data (JSON)</a>
+          <a id="importDataLink" href="#">Load custom data (JSON)</a>
         </div>
       </div>
     </div>
@@ -1056,17 +1102,14 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
     <div id="fundGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
       <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x1F3DB;</div>
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Anchor Investment</div>
         <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Government takes a cornerstone equity stake and provides compute infrastructure + procurement contracts. Model: Franco-German Compute JV, ~EUR 35M cornerstone equity consolidating two national GPU programs.</p>
       </div>
       <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x1F91D;</div>
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Strategic Merger</div>
         <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Two or more publicly funded model teams merge into a shared IP holding company with single compliance infrastructure under the AI Act. Model: Northern Europe Foundation Model Roll-Up, ~EUR 25M minority stake.</p>
       </div>
       <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
-        <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x2696;</div>
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Collective Equity</div>
         <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance. See <a href="https://collectiveequity.com" target="_blank" style="color:var(--sky);">collectiveequity.com</a>.</p>
       </div>
@@ -1123,7 +1166,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
     <div class="challenger-row" id="challengerRow"></div>
     <div class="battle-scoreboard" id="battleScoreboard" aria-live="polite"></div>
-    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Hover any round</strong> to see the evidence. <a href="#" onclick="document.getElementById('importDataLink').click();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
+    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Hover any round</strong> to see the evidence. <a href="#" onclick="openImportModal();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
     <div class="battle-rounds" id="battleRounds"></div>
     <div class="scenario-levers" id="scenarioLevers">
       <div class="scenario-levers-label">Government Investment in Public AI Co. &mdash; pull levers to boost the merged entity</div>
@@ -1179,13 +1222,69 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
     <!-- Chart -->
     <div style="position:relative;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.2);padding:1rem;">
-      <canvas id="inactionChart" style="width:100%;height:clamp(220px,35vw,360px);display:block;"></canvas>
+      <canvas id="inactionChart" style="width:100%;height:clamp(220px,35vw,360px);display:block;" role="img" aria-label="Cost of inaction chart: projected divergence between fragmented and coalition AI development trajectories"></canvas>
       <div id="inactionLegend" style="display:flex;gap:1.5rem;justify-content:center;margin-top:0.75rem;font-size:0.7rem;opacity:0.5;"></div>
     </div>
 
     <!-- Sources -->
     <div style="text-align:center;margin-top:1.5rem;font-size:0.65rem;opacity:0.35;max-width:600px;margin-left:auto;margin-right:auto;">
       Sources: MacroPolo Global AI Talent Tracker, Synergy Research Group, Stanford HAI AI Index 2025, EuroHPC Joint Undertaking, Atomico State of European Tech 2025. Projections are editorial estimates for illustrative purposes.
+    </div>
+  </div>
+</section>
+
+<!-- MODEL SOVEREIGNTY INDEX -->
+<section id="sovereignty" style="padding:4rem 2rem;background:var(--off-white);">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:0.5rem;font-weight:700;">Live Dashboard</div>
+    <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;color:var(--navy);margin-bottom:0.75rem;">Model Sovereignty Index</h2>
+    <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;max-width:640px;margin:0 auto 2rem;">How sovereign are the AI models nations depend on? This index scores open-weight models across six dimensions: training data privacy, local training capability, control of weights, model independence, weight privacy, and country-specific knowledge.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;">
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--navy);">6</div>
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-top:0.25rem;">Sovereignty Dimensions</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--navy);">0-100</div>
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-top:0.25rem;">Score Range per Model</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--navy);">Live</div>
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-top:0.25rem;">Hugging Face Metadata</div>
+      </div>
+    </div>
+
+    <div style="width:100%;border:1px solid rgba(0,32,91,0.08);border-radius:12px;overflow:hidden;background:white;box-shadow:0 2px 20px rgba(0,32,91,0.06);">
+      <div id="sovereigntyLoading" style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--text-secondary);font-size:0.9rem;">Loading Model Sovereignty Index...</div>
+      <iframe
+        id="sovereigntyFrame"
+        src="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/"
+        title="Model Sovereignty Index Dashboard"
+        allow="clipboard-read; clipboard-write"
+        style="width:100%;height:800px;border:none;display:none;"
+      ></iframe>
+      <noscript><p style="padding:2rem;color:var(--text-secondary);">JavaScript is required to load the Model Sovereignty Index dashboard. <a href="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/" target="_blank">Open it directly</a>.</p></noscript>
+    </div>
+    <div style="text-align:center;margin-top:0.75rem;font-size:0.7rem;color:var(--text-secondary);">
+      <a href="https://aakashgnanavelu.github.io/Model-Sovereignty-Index/" target="_blank" rel="noopener" style="color:var(--sky);text-decoration:none;">Open full dashboard in new tab</a>
+      &middot;
+      <a href="https://github.com/AakashGnanavelu/Model-Sovereignty-Index" target="_blank" rel="noopener" style="color:var(--sky);text-decoration:none;">View source on GitHub</a>
+    </div>
+
+    <div style="max-width:800px;margin:2rem auto 0;text-align:left;">
+      <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:white;">
+        <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--navy);">Why model sovereignty matters for the Public AI Company</summary>
+        <div style="padding:0 1.25rem 1.25rem;font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
+          <p style="margin-bottom:0.75rem;">The Airbus for AI initiative argues that middle powers need to build, not just buy, frontier AI. But how do you measure whether a country actually controls the AI it depends on? The Model Sovereignty Index provides a concrete, data-driven answer.</p>
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Training Data Privacy</strong> measures whether a model's training data can be audited and controlled, critical for GDPR compliance and preventing foreign surveillance through training data.</p>
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Local Training Capability</strong> assesses whether a model can be trained or fine-tuned on domestic infrastructure, the core argument for pooled European compute.</p>
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Control of Weights</strong> evaluates whether the model's parameters are accessible and modifiable, essential for air-gapped government deployments like Aleph Alpha's PhariaAI.</p>
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Model Independence</strong> scores how reliant a model is on foreign APIs, cloud services, or proprietary components.</p>
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Weight Privacy</strong> assesses protection against unauthorized extraction, relevant for defense and critical infrastructure use cases.</p>
+          <p><strong style="color:var(--navy);">Country-Specific Knowledge</strong> measures linguistic and cultural coverage, the dimension where DeepL's 100+ languages and Cohere's Aya models provide the coalition's strongest advantage.</p>
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -1242,7 +1341,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <p><strong>Governance across 11 nations is extraordinarily difficult.</strong> Airbus nearly failed multiple times due to Franco-German management conflicts. Adding Japan, Canada, South Korea, Singapore, and seven more countries multiplies the coordination challenge.</p>
       <p><strong>The revenue gap is vast.</strong> The coalition's combined ARR (~$900M) is 27x smaller than OpenAI alone (~$24B annualized). Incumbents are also accelerating; the gap may widen faster than a coalition can close it.</p>
       <p><strong>Talent may not follow.</strong> Top AI researchers leave Europe for US labs because of compute, publication culture, and resources. A government-backed merged entity could worsen this dynamic if it prioritizes sovereignty over research freedom.</p>
-      <p><strong>Competitive scores in this simulator use a synergy model</strong> that assumes merging creates coordination benefits. These are editorial estimates, not engineering assessments. Use the <a href="#" onclick="document.getElementById('importDataLink').click();return false;" style="color:var(--sky);">custom data import</a> to substitute your own figures.</p>
+      <p><strong>Competitive scores in this simulator use a synergy model</strong> that assumes merging creates coordination benefits. These are editorial estimates, not engineering assessments. Use the <a href="#" onclick="openImportModal();return false;" style="color:var(--sky);">custom data import</a> to substitute your own figures.</p>
     </div>
   </div>
 </div>
@@ -1290,7 +1389,6 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
       <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Sign On</button>
     </form>
     <div id="signOnConfirm" style="display:none;text-align:center;padding:1rem;">
-      <div style="font-size:1.5rem;margin-bottom:0.5rem;">&#x2705;</div>
       <p style="font-size:0.9rem;color:var(--navy);font-weight:600;">Thank you for your support.</p>
       <p style="font-size:0.8rem;color:var(--text-secondary);">We will be in touch when the formal coalition letter is ready for signature.</p>
     </div>
@@ -1369,7 +1467,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
           <strong>Scenario lever boosts</strong> model the effect of government investment along four axes (compute buildout, procurement contracts, capital injection, talent programs). Maximum boost per axis: ~25 points. Boost formulas are weighted by policy relevance to each competitive dimension.
         </p>
         <p style="font-size:0.85rem;line-height:1.6;margin-bottom:0;">
-          <strong>Data sources:</strong> Valuations from PitchBook, Crunchbase, TechCrunch, Bloomberg, CNBC. Revenue/ARR from Sacra, SaaStr, company announcements. Employee counts from Tracxn, company disclosures. Market share from StatCounter. All figures as of April 2026 unless noted. Use the <a href="#" onclick="document.getElementById('importDataLink').click();return false;" style="color:var(--sky);">custom data import</a> to substitute your own figures.
+          <strong>Data sources:</strong> Valuations from PitchBook, Crunchbase, TechCrunch, Bloomberg, CNBC. Revenue/ARR from Sacra, SaaStr, company announcements. Employee counts from Tracxn, company disclosures. Market share from StatCounter. All figures as of April 2026 unless noted. Use the <a href="#" onclick="openImportModal();return false;" style="color:var(--sky);">custom data import</a> to substitute your own figures.
         </p>
       </div>
     </details>
@@ -1399,7 +1497,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     xAI/Grok: $230B valuation (Series E, Jan 2026), ~$500M standalone ARR, ~3,000 employees &mdash; <a href="https://techcrunch.com/2026/01/06/xai-says-it-raised-20b-in-series-e-funding/">TechCrunch</a>, <a href="https://sacra.com/c/xai/">Sacra</a>, <a href="https://www.tesery.com/blogs/news/xai-memphis-workforce-swells-to-nearly-3-000-as-supercomputing-ambitions-grow">Tesery</a><br>
     Google Gemini &amp; Meta AI: Alphabet &amp; Meta public earnings filings.
     <br><br>
-    <strong>Competitive scores</strong> (compute, models, enterprise, sovereignty, research, revenue) are editorial estimates informed by the Bennett School analysis and public reporting. They are designed for relative comparison, not absolute measurement. Use the <a href="#" onclick="document.getElementById('importDataLink').click();return false;">custom data import</a> to substitute your own figures.
+    <strong>Competitive scores</strong> (compute, models, enterprise, sovereignty, research, revenue) are editorial estimates informed by the Bennett School analysis and public reporting. They are designed for relative comparison, not absolute measurement. Use the <a href="#" onclick="openImportModal();return false;">custom data import</a> to substitute your own figures.
     <br><br>
     <em>Last updated: April 2026. All figures are public estimates and may not reflect the latest private valuations.</em>
   </div>
@@ -1458,12 +1556,12 @@ const IS_LOW_END = navigator.hardwareConcurrency && navigator.hardwareConcurrenc
 // Market share: StatCounter AI Chatbot Market Share (Dec 2025).
 // All figures as of April 2026 unless noted. See references section for full citations.
 const DEFAULT_COMPANIES = [
-  { id: 'mistral', name: 'Mistral AI', country: 'France', flag: '\u{1F1EB}\u{1F1F7}', color: '#3b82f6', superpower: 'Frontier Models + Own Compute', desc: '20x ARR growth ($20M to $400M in 12 months). 13,800 Nvidia GB300 GPUs, 44MW data center near Paris (targeting 200MW by 2027). CMA CGM \u20AC100M partnership. French nuclear grid (~70% of electricity).', valuation: 13.8, arr: 400, employees: 800, customers: 5000, patents: 30, scores: { compute: 82, models: 90, enterprise: 60, sovereignty: 85, research: 88, revenue: 72 } },
-  { id: 'cohere', name: 'Cohere', country: 'Canada', flag: '\u{1F1E8}\u{1F1E6}', color: '#ef4444', superpower: 'Enterprise AI + Agentic Platform', desc: 'North agentic platform (on-prem, air-gapped). 17K+ enterprise customers incl. RBC, Dell, SAP, Fujitsu, LG. Aya multilingual models: 70+ languages. $240M ARR (Feb 2026), $240M Canadian federal AI compute investment.', valuation: 7, arr: 240, employees: 800, customers: 17000, patents: 45, scores: { compute: 50, models: 72, enterprise: 95, sovereignty: 70, research: 75, revenue: 68 } },
-  { id: 'multiverse', name: 'Multiverse Computing', country: 'Spain', flag: '\u{1F1EA}\u{1F1F8}', color: '#f59e0b', superpower: '95% Quantum LLM Compression', desc: 'CompactifAI: Llama 3.3-70B compressed 80% with near-zero precision loss. Llama 3.1-8B Slim uses 300x fewer training tokens than Meta. 160+ patents. Customers incl. Iberdrola, Bosch, Bank of Canada.', valuation: 0.5, arr: 15, employees: 240, customers: 100, patents: 160, scores: { compute: 30, models: 40, enterprise: 45, sovereignty: 65, research: 92, revenue: 25 } },
-  { id: 'aleph', name: 'Aleph Alpha', country: 'Germany', flag: '\u{1F1E9}\u{1F1EA}', color: '#10b981', superpower: 'Sovereign Gov/Defense AI', desc: 'PhariaAI sovereign AI OS deployed to 80,000 German government users (company-reported). Contracts with Federal Employment Agency and BWI (German Armed Forces IT). Runs on German infrastructure via STACKIT. Revenue not publicly disclosed.', valuation: 0.5, arr: 0, employees: 350, customers: 50, patents: 20, scores: { compute: 25, models: 55, enterprise: 50, sovereignty: 98, research: 65, revenue: 10 } },
-  { id: 'deepl', name: 'DeepL', country: 'Germany', flag: '\u{1F1E9}\u{1F1EA}', color: '#06b6d4', superpower: 'Multilingual AI Dominance', desc: '100+ languages. Preferred 1.3x more often than Google Translate in blind tests. 200K+ business customers. DeepL Voice preferred by 96% of professional linguists. $185M revenue (2024), exploring $5B IPO.', valuation: 2, arr: 185, employees: 1570, customers: 200000, patents: 35, scores: { compute: 35, models: 60, enterprise: 80, sovereignty: 75, research: 70, revenue: 55 } },
-  { id: 'stability', name: 'Stability AI', country: 'United Kingdom', flag: '\u{1F1EC}\u{1F1E7}', color: '#8b5cf6', superpower: 'Open-Source Multimodal', desc: 'Stable Diffusion: est. 12.59B images generated (~80% of all AI imagery). 214M Civitai community downloads. Image, video, audio, 3D generation.', valuation: 1, arr: 60, employees: 190, customers: 10000, patents: 15, scores: { compute: 40, models: 70, enterprise: 35, sovereignty: 55, research: 80, revenue: 30 } }
+  { id: 'mistral', name: 'Mistral AI', country: 'France', flag: 'FR', color: '#3b82f6', superpower: 'Frontier Models + Own Compute', desc: '20x ARR growth ($20M to $400M in 12 months). 13,800 Nvidia GB300 GPUs, 44MW data center near Paris (targeting 200MW by 2027). CMA CGM \u20AC100M partnership. French nuclear grid (~70% of electricity).', valuation: 13.8, arr: 400, employees: 800, customers: 5000, patents: 30, scores: { compute: 82, models: 90, enterprise: 60, sovereignty: 85, research: 88, revenue: 72 } },
+  { id: 'cohere', name: 'Cohere', country: 'Canada', flag: 'CA', color: '#ef4444', superpower: 'Enterprise AI + Agentic Platform', desc: 'North agentic platform (on-prem, air-gapped). 17K+ enterprise customers incl. RBC, Dell, SAP, Fujitsu, LG. Aya multilingual models: 70+ languages. $240M ARR (Feb 2026), $240M Canadian federal AI compute investment.', valuation: 7, arr: 240, employees: 800, customers: 17000, patents: 45, scores: { compute: 50, models: 72, enterprise: 95, sovereignty: 70, research: 75, revenue: 68 } },
+  { id: 'multiverse', name: 'Multiverse Computing', country: 'Spain', flag: 'ES', color: '#f59e0b', superpower: '95% Quantum LLM Compression', desc: 'CompactifAI: Llama 3.3-70B compressed 80% with near-zero precision loss. Llama 3.1-8B Slim uses 300x fewer training tokens than Meta. 160+ patents. Customers incl. Iberdrola, Bosch, Bank of Canada.', valuation: 0.5, arr: 15, employees: 240, customers: 100, patents: 160, scores: { compute: 30, models: 40, enterprise: 45, sovereignty: 65, research: 92, revenue: 25 } },
+  { id: 'aleph', name: 'Aleph Alpha', country: 'Germany', flag: 'DE', color: '#10b981', superpower: 'Sovereign Gov/Defense AI', desc: 'PhariaAI sovereign AI OS deployed to 80,000 German government users (company-reported). Contracts with Federal Employment Agency and BWI (German Armed Forces IT). Runs on German infrastructure via STACKIT. Revenue not publicly disclosed.', valuation: 0.5, arr: 0, employees: 350, customers: 50, patents: 20, scores: { compute: 25, models: 55, enterprise: 50, sovereignty: 98, research: 65, revenue: 10 } },
+  { id: 'deepl', name: 'DeepL', country: 'Germany', flag: 'DE', color: '#06b6d4', superpower: 'Multilingual AI Dominance', desc: '100+ languages. Preferred 1.3x more often than Google Translate in blind tests. 200K+ business customers. DeepL Voice preferred by 96% of professional linguists. $185M revenue (2024), exploring $5B IPO.', valuation: 2, arr: 185, employees: 1570, customers: 200000, patents: 35, scores: { compute: 35, models: 60, enterprise: 80, sovereignty: 75, research: 70, revenue: 55 } },
+  { id: 'stability', name: 'Stability AI', country: 'United Kingdom', flag: 'GB', color: '#8b5cf6', superpower: 'Open-Source Multimodal', desc: 'Stable Diffusion: est. 12.59B images generated (~80% of all AI imagery). 214M Civitai community downloads. Image, video, audio, 3D generation.', valuation: 1, arr: 60, employees: 190, customers: 10000, patents: 15, scores: { compute: 40, models: 70, enterprise: 35, sovereignty: 55, research: 80, revenue: 30 } }
 ];
 
 let COMPANIES = JSON.parse(JSON.stringify(DEFAULT_COMPANIES));
@@ -1841,16 +1939,24 @@ function applyImportData() {
   try {
     const data = JSON.parse(raw);
     if (!Array.isArray(data) || data.length === 0) throw new Error('Must be a non-empty array');
-    // Validate each company has required fields
+    // Validate each company has required fields and sane values
+    const seenIds = new Set();
     data.forEach((c, i) => {
       if (!c.id || !c.name || !c.scores) throw new Error(`Company ${i} missing id, name, or scores`);
-      AXES.forEach(a => { if (typeof c.scores[a] !== 'number') throw new Error(`Company ${c.id} missing score: ${a}`); });
+      if (seenIds.has(c.id)) throw new Error(`Duplicate company id: ${c.id}`);
+      seenIds.add(c.id);
+      AXES.forEach(a => {
+        if (typeof c.scores[a] !== 'number') throw new Error(`Company ${c.id} missing score: ${a}`);
+        if (c.scores[a] < 0 || c.scores[a] > 99) throw new Error(`Company ${c.id} score ${a} must be 0-99`);
+      });
+      if (c.valuation != null && (typeof c.valuation !== 'number' || c.valuation < 0)) throw new Error(`Company ${c.id} has invalid valuation`);
+      if (c.arr != null && (typeof c.arr !== 'number' || c.arr < 0)) throw new Error(`Company ${c.id} has invalid ARR`);
     });
     COMPANIES = data;
     S.merged.clear();
     S.customData = true;
-    document.getElementById('dataSource').innerHTML = 'Data: <strong>custom (imported)</strong><br><a id="importDataLink">Edit data</a>';
-    document.getElementById('importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
+    document.getElementById('dataSource').innerHTML = 'Data: <strong>custom (imported)</strong><br><a id="importDataLink" href="#">Edit data</a>';
+    document.getElementById('dataSource').querySelector('#importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
     closeImportModal();
     updateEverything();
     renderDock();
@@ -1864,8 +1970,8 @@ function resetToDefaults() {
   COMPANIES = JSON.parse(JSON.stringify(DEFAULT_COMPANIES));
   S.merged.clear();
   S.customData = false;
-  document.getElementById('dataSource').innerHTML = 'Data: public estimates (2025-2026)<br><a id="importDataLink">Load custom data (JSON)</a>';
-  document.getElementById('importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
+  document.getElementById('dataSource').innerHTML = 'Data: public estimates (2025-2026)<br><a id="importDataLink" href="#">Load custom data (JSON)</a>';
+  document.getElementById('dataSource').querySelector('#importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
   closeImportModal();
   updateEverything();
   renderDock();
@@ -2175,10 +2281,10 @@ function updateBattle(animate) {
 // SCENARIO (integrated into Battle as lever buttons)
 // ============================================================
 const LEVERS = [
-  { key:'compute', icon:'\u{1F5A5}', label:'Compute', min:0, max:100, step:25, fmt:v=>`${v} EFLOPS` },
-  { key:'contracts', icon:'\u{1F4DC}', label:'Contracts', min:0, max:50, step:10, fmt:v=>`$${v}B/yr` },
-  { key:'capital', icon:'\u{1F4B0}', label:'Capital', min:0, max:100, step:25, fmt:v=>`$${v}B` },
-  { key:'talent', icon:'\u{1F9D1}\u{200D}\u{1F4BB}', label:'Talent', min:0, max:2000, step:500, fmt:v=>v>=1000?`${(v/1000).toFixed(1)}K`:`${v}` }
+  { key:'compute', icon:'', label:'Compute', min:0, max:100, step:25, fmt:v=>`${v} EFLOPS` },
+  { key:'contracts', icon:'', label:'Contracts', min:0, max:50, step:10, fmt:v=>`$${v}B/yr` },
+  { key:'capital', icon:'', label:'Capital', min:0, max:100, step:25, fmt:v=>`$${v}B` },
+  { key:'talent', icon:'', label:'Talent', min:0, max:2000, step:500, fmt:v=>v>=1000?`${(v/1000).toFixed(1)}K`:`${v}` }
 ];
 
 function renderScenarioLevers() {
@@ -2355,6 +2461,32 @@ function init() {
   document.getElementById('importApply').addEventListener('click', applyImportData);
   document.getElementById('importReset').addEventListener('click', resetToDefaults);
   document.getElementById('importModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeImportModal(); });
+
+  // Sovereignty iframe load handling
+  const sovFrame = document.getElementById('sovereigntyFrame');
+  const sovLoading = document.getElementById('sovereigntyLoading');
+  if (sovFrame && sovLoading) {
+    function showSovFrame() { sovFrame.style.display = 'block'; sovLoading.style.display = 'none'; }
+    sovFrame.addEventListener('load', showSovFrame);
+    setTimeout(function() { if (sovFrame.style.display === 'none') showSovFrame(); }, 8000);
+  }
+
+  // Side outline scroll tracking
+  const outlineLinks = document.querySelectorAll('#pageOutline a[data-section]');
+  const sectionIds = Array.from(outlineLinks).map(a => a.dataset.section);
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        outlineLinks.forEach(a => a.classList.remove('active'));
+        const match = document.querySelector(`#pageOutline a[data-section="${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) sectionObserver.observe(el);
+  });
 
 }
 
@@ -2895,16 +3027,16 @@ if (histEl) histObs.observe(histEl);
 // COST OF INACTION CALCULATOR
 // ============================================================
 const INACTION_METRICS = [
-  { id: 'talent', label: 'EU Researchers in US', unit: '%', icon: '\u{1F9D1}\u{200D}\u{1F52C}',
+  { id: 'talent', label: 'EU Researchers in US', unit: '%', icon: '',
     base: 60, statusQuo: 2.5, coalition: -3, color: '#e63946',
     source: 'MacroPolo Global AI Talent Tracker' },
-  { id: 'cloud', label: 'EU Cloud US-Owned', unit: '%', icon: '\u2601\uFE0F',
+  { id: 'cloud', label: 'EU Cloud US-Owned', unit: '%', icon: '',
     base: 70, statusQuo: 1.5, coalition: -2, color: '#f0a500',
     source: 'Synergy Research Group' },
-  { id: 'capital', label: 'US:EU AI Investment Ratio', unit: ':1', icon: '\u{1F4B0}',
+  { id: 'capital', label: 'US:EU AI Investment Ratio', unit: ':1', icon: '',
     base: 8, statusQuo: 0.5, coalition: -1, color: '#7c3aed',
     source: 'Stanford HAI AI Index 2025, Atomico' },
-  { id: 'compute', label: 'EU Share Global AI Compute', unit: '%', icon: '\u{1F5A5}\uFE0F',
+  { id: 'compute', label: 'EU Share Global AI Compute', unit: '%', icon: '',
     base: 2, statusQuo: -0.15, coalition: 0.5, color: '#2ec4b6',
     source: 'EuroHPC Joint Undertaking', invert: true }
 ];
