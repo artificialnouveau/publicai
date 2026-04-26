@@ -7,7 +7,15 @@
 <meta name="description" content="Beginner guides, interactive projects, and AI ethics quickstart cards — everything you need before, during, and after the flight.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/YoungSerif-Variable.woff2" crossorigin>
 <style>
+@font-face {
+  font-family: 'Young Serif';
+  src: url('../fonts/YoungSerif-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --white: #ffffff;
   --off-white: #f7f8fa;
@@ -28,6 +36,7 @@
   --text-secondary: #4a5568;
   --text-muted: #9ca3af;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Young Serif', Georgia, serif;
   --mono: 'JetBrains Mono', monospace;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
@@ -38,6 +47,10 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+/* Young Serif applied to all display headings */
+h1, h2, h3, h4, .hero h1, .hero h2, .section-heading {
+  font-family: var(--font-display);
+}
 
 /* === NAV === */
 .topnav {
@@ -127,7 +140,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
   border-color: var(--sky); transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
 }
-.story-emoji { font-size: 2rem; margin-bottom: 0.75rem; }
 .story-card h3 {
   font-size: 1.05rem; font-weight: 700; color: var(--navy);
   margin-bottom: 0.5rem; letter-spacing: -0.01em;
@@ -158,7 +170,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
   border-color: var(--red); transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
-.safety-emoji { font-size: 2.2rem; }
 .safety-card h4 {
   font-size: 0.9rem; font-weight: 700; color: var(--text);
   text-transform: uppercase; letter-spacing: 0.04em;
@@ -188,7 +199,7 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 
 <!-- NAV -->
 <nav class="topnav">
-  <a href="/public-ai/" class="topnav-brand">&#9992; Public AI Fellowship</a>
+  <a href="../" class="topnav-brand">Public AI Fellowship</a>
   <div class="topnav-links">
     <a href="#preflight">Pre-Flight</a>
     <a href="#inflight">In-Flight Magazine</a>
@@ -211,23 +222,13 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 
   <ul class="checklist">
     <li>
-      <div class="check-icon">&#9744;</div>
+      <div class="check-icon"></div>
       <span class="check-label">What is AI, actually?</span>
       <span class="badge badge-soon">Coming Soon</span>
     </li>
     <li>
-      <div class="check-icon">&#9744;</div>
-      <span class="check-label">Your first prompt: a no-jargon guide</span>
-      <span class="badge badge-soon">Coming Soon</span>
-    </li>
-    <li>
-      <div class="check-icon">&#9744;</div>
+      <div class="check-icon"></div>
       <span class="check-label">How to read an AI hype headline</span>
-      <span class="badge badge-soon">Coming Soon</span>
-    </li>
-    <li>
-      <div class="check-icon">&#9744;</div>
-      <span class="check-label">Data literacy for non-engineers</span>
       <span class="badge badge-soon">Coming Soon</span>
     </li>
   </ul>
@@ -242,7 +243,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
   <div class="story-grid">
 
     <a href="https://willihaveajob.com" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#128200;</div>
       <h3>Will I Have a Job?</h3>
       <p>An automation risk predictor grounded in peer-reviewed research. Search 150+ occupations, upload your CV for a personalized risk assessment, or bet play money on when specific jobs disappear. Covers 80 million U.S. workers.</p>
       <div class="story-tags">
@@ -253,7 +253,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
     </a>
 
     <a href="https://doesthisjobexist.com" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#128123;</div>
       <h3>Phantasm &mdash; Ghost Job Detector</h3>
       <p>Paste a job listing URL and find out if it's real or a ghost. Scores postings 0&ndash;100 across seven red-flag dimensions &mdash; posting age, salary transparency, role clarity &mdash; so you stop applying to jobs that were never meant to be filled.</p>
       <div class="story-tags">
@@ -263,18 +262,17 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
       </div>
     </a>
 
-    <a href="https://adhd.net" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#9889;</div>
-      <h3>ADHD.net</h3>
-      <p>An AI-powered resource exploring the intersection of neurodivergence and technology.</p>
+    <a href="https://www.adhdai.net/" target="_blank" rel="noopener" class="story-card">
+      <h3>ADHD AI</h3>
+      <p>A feral design collective powered by five autonomous AI agents specializing in proactive crisis management. They model doomsday scenarios across 1 to 50-year horizons, write apologies for disasters that haven't happened yet, and generate campaign assets no client asked for &mdash; because that's what makes it essential.</p>
       <div class="story-tags">
-        <span class="badge badge-tag">Health</span>
-        <span class="badge badge-tag">AI</span>
+        <span class="badge badge-tag">Speculative Design</span>
+        <span class="badge badge-tag">AI Agents</span>
+        <span class="badge badge-tag">Branding</span>
       </div>
     </a>
 
     <a href="https://botidol.net" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#127908;</div>
       <h3>Bot Idol &mdash; The Audition</h3>
       <p>Who will be America's next top bank app agent? Design an AI character, assign it a role, then watch it survive six escalating trials. A competition framework for stress-testing whether your bot can hold its personality under pressure.</p>
       <div class="story-tags">
@@ -285,7 +283,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
     </a>
 
     <a href="https://www.artificialnouveau.com/publicai/ai-governance-game/index.html" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#127922;</div>
       <h3>AI Governance Simulator</h3>
       <p>Play as a policy advisor navigating the AI revolution over 36 quarters. Every decision ripples across Big Tech, citizens, military, and climate factions. Choose your stance &mdash; Accelerationist, Doomer, Boomer Optimist, or Regulator &mdash; and try not to let civilization collapse.</p>
       <div class="story-tags">
@@ -296,7 +293,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
     </a>
 
     <a href="https://www.artificialnouveau.com/publicai/ai-perspectives-survey.html" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#128202;</div>
       <h3>AI Perspectives Survey</h3>
       <p>What does the public actually think about AI? A survey mapping your views onto an archetype spectrum &mdash; not from pundits, but from people. Your answers feed a growing dataset of how humans feel about the machines.</p>
       <div class="story-tags">
@@ -307,7 +303,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
     </a>
 
     <a href="https://www.artificialnouveau.com/publicai/airbus-for-ai/index.html" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#9992;</div>
       <h3>Airbus for AI</h3>
       <p>Can middle powers challenge US/Chinese AI dominance by merging their sovereign AI companies? Drag-and-drop national AI champions into a reactor, watch them fuse, and stress-test your supercompany against ChatGPT. Inspired by how fragmented European aerospace became Airbus in 1970.</p>
       <div class="story-tags">
@@ -318,7 +313,6 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
     </a>
 
     <a href="https://www.artificialnouveau.com/publicai/moreaiineedit/index.html" target="_blank" rel="noopener" class="story-card">
-      <div class="story-emoji">&#128722;</div>
       <h3>More AI! I Need It! Please!</h3>
       <p>A satirical catalog of absurd-but-real AI products in full 1990s internet aesthetic. AI-powered ice makers, $699 wearable projectors, electrified salt spoons, and a fuzzy robot that peeks out of your bag. Every single one of these is real.</p>
       <div class="story-tags">
@@ -339,22 +333,18 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 
   <div class="safety-grid">
     <div class="safety-card">
-      <div class="safety-emoji">&#128065;</div>
       <h4>Bias &amp; Fairness</h4>
       <span class="badge badge-soon">Coming Soon</span>
     </div>
     <div class="safety-card">
-      <div class="safety-emoji">&#128274;</div>
       <h4>Privacy &amp; Consent</h4>
       <span class="badge badge-soon">Coming Soon</span>
     </div>
     <div class="safety-card">
-      <div class="safety-emoji">&#129520;</div>
       <h4>Deepfakes &amp; Disinfo</h4>
       <span class="badge badge-soon">Coming Soon</span>
     </div>
     <div class="safety-card">
-      <div class="safety-emoji">&#127760;</div>
       <h4>Environmental Cost</h4>
       <span class="badge badge-soon">Coming Soon</span>
     </div>
@@ -363,7 +353,7 @@ body { font-family: var(--font); color: var(--text); background: var(--white); l
 
 <!-- FOOTER -->
 <footer class="page-footer">
-  <p><a href="/public-ai/">&larr; Back to Public AI Fellowship</a></p>
+  <p><a href="../">&larr; Back to Public AI Fellowship</a></p>
 </footer>
 
 </body>

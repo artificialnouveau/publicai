@@ -7,7 +7,15 @@
 <meta name="description" content="A scrollytelling narrative about European AI sovereignty. Fictional chapters, real data, and interactive simulations exploring what happens when a continent loses control of its digital infrastructure.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/YoungSerif-Variable.woff2" crossorigin>
 <style>
+@font-face {
+  font-family: 'Young Serif';
+  src: url('../fonts/YoungSerif-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --bg: #05090f;
   --bg-raised: #0b1628;
@@ -35,7 +43,17 @@
   --gold: #c96a2b;
   --aurora: #7b6fd6;
   --font: 'Inter', sans-serif;
+  --font-display: 'Young Serif', Georgia, serif;
   --mono: 'JetBrains Mono', monospace;
+}
+/* Young Serif applied to all display headings */
+h1, h2, h3, h4,
+.hero h1, .hero h2,
+.split-narrative h2, .split-narrative h3, .split-narrative .dateline,
+.data-panel h2, .data-break h2, .chart-container h3, .widget h3,
+.chapter h2, .chapter h3, .sim-decision h3, .timeline-col h3,
+.conclusion h2, .references h3, .dateline {
+  font-family: var(--font-display);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }

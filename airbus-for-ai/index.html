@@ -13,7 +13,15 @@
 <meta name="twitter:description" content="ChatGPT drives ~80% of chatbot traffic. What if middle powers merged their AI companies into one?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/YoungSerif-Variable.woff2" crossorigin>
 <style>
+@font-face {
+  font-family: 'Young Serif';
+  src: url('../fonts/YoungSerif-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --white: #ffffff;
   --off-white: #f7f8fa;
@@ -34,6 +42,7 @@
   --text-secondary: #4a5568;
   --text-muted: #9ca3af;
   --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Young Serif', Georgia, serif;
   --mono: 'JetBrains Mono', monospace;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
@@ -50,6 +59,12 @@ sup.fn a:hover { text-decoration: underline; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { font-family: var(--font); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+/* Young Serif applied to all display headings */
+h1, h2, h3, h4,
+.hero h1, .hero h2, .narrative-heading, .section-heading,
+.dateline {
+  font-family: var(--font-display);
+}
 
 /* === NAV === */
 .topnav {

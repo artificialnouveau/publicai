@@ -6,15 +6,28 @@
 <title>Model Sovereignty Index | Airbus for AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/YoungSerif-Variable.woff2" crossorigin>
 <style>
+@font-face {
+  font-family: 'Young Serif';
+  src: url('../fonts/YoungSerif-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --navy: #00205b; --navy-dark: #001338; --sky: #0077c8; --cyan: #00b4d8;
   --gold: #f0a500; --red: #e63946; --green: #2ec4b6; --purple: #7c3aed;
   --off-white: #f7f5f0; --white: #ffffff;
   --text-primary: #1a1a2e; --text-secondary: #555;
+  --font-display: 'Young Serif', Georgia, serif;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Inter', -apple-system, sans-serif; background: var(--off-white); color: var(--text-primary); }
+/* Young Serif applied to all display headings */
+h1, h2, h3, h4, .hero h1, .section-heading {
+  font-family: var(--font-display);
+}
 
 /* Nav - matches index.html */
 .topnav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 2rem; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,32,91,0.08); }
