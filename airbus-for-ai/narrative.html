@@ -356,8 +356,9 @@ body::after {
 /* Jitter for timeline arrangement */
 .chapter-card:nth-child(1) { transform: rotate(-0.8deg) translateY(8px); }
 .chapter-card:nth-child(2) { transform: rotate(0.5deg) translateY(-4px); }
-.chapter-card:nth-child(3) { transform: rotate(-0.3deg) translateY(12px); }
-.chapter-card:nth-child(4) { transform: rotate(0.6deg) translateY(-8px); }
+.chapter-card:nth-child(3) { transform: rotate(-0.4deg) translateY(6px); }
+.chapter-card:nth-child(4) { transform: rotate(-0.3deg) translateY(12px); }
+.chapter-card:nth-child(5) { transform: rotate(0.6deg) translateY(-8px); }
 .chapter-card:hover { transform: translateY(-4px) rotate(0deg) !important; }
 
 /* Hidden split-sections (shown inside overlay) */
@@ -1291,6 +1292,9 @@ body::after {
     <a class="tl-node" href="#chapterGrid" style="top:14%;" data-date="JUN 2026" onclick="event.preventDefault();openChapter(1)">
       <span class="tl-node-label">Brussels<br>Jun 2026</span>
     </a>
+    <a class="tl-node" href="#chapterGrid" style="top:48%;" data-date="DEC 2026" onclick="event.preventDefault();openChapter(4)">
+      <span class="tl-node-label">Stockholm<br>Dec 2026</span>
+    </a>
     <a class="tl-node" href="#chapterGrid" style="top:67%;" data-date="FEB 2027" onclick="event.preventDefault();openChapter(2)">
       <span class="tl-node-label">Tokyo<br>Feb 2027</span>
     </a>
@@ -1412,20 +1416,30 @@ body::after {
       <div class="chapter-card-teaser">Tech bureaucrats talking about tech bureaucracy while America is using AI models to start wars.</div>
     </div>
   </div>
-  <div class="chapter-card" onclick="openChapter(2)" data-chapter="2" role="button" tabindex="0" aria-label="Read Tokyo chapter, February 2027" onkeydown="if(event.key==='Enter')openChapter(2)">
-    <canvas class="chip-bg" id="chipBg2" role="presentation" aria-hidden="true"></canvas>
+  <div class="chapter-card" onclick="openChapter(4)" data-chapter="4" role="button" tabindex="0" aria-label="Read Stockholm chapter, December 2026" onkeydown="if(event.key==='Enter')openChapter(4)">
+    <canvas class="chip-bg" id="chipBg4" role="presentation" aria-hidden="true"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
     <div class="chapter-card-number">03</div>
     <div class="chapter-card-content">
+      <div class="chapter-card-date">December 7, 2026</div>
+      <div class="chapter-card-city">Stockholm</div>
+      <div class="chapter-card-teaser">Daniel Ek convenes a coalition of European founders to build a defense AI bulwark against the coming compute shutoff.</div>
+    </div>
+  </div>
+  <div class="chapter-card" onclick="openChapter(2)" data-chapter="2" role="button" tabindex="0" aria-label="Read Tokyo chapter, February 2027" onkeydown="if(event.key==='Enter')openChapter(2)">
+    <canvas class="chip-bg" id="chipBg2" role="presentation" aria-hidden="true"></canvas>
+    <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
+    <div class="chapter-card-number">04</div>
+    <div class="chapter-card-content">
       <div class="chapter-card-date">February 19, 2027</div>
       <div class="chapter-card-city">Tokyo</div>
-      <div class="chapter-card-teaser">Her Excellency Sanae Takaichi. The Indo-Pacific counterpart.</div>
+      <div class="chapter-card-teaser">&ldquo;Our model hallucinated.&rdquo;</div>
     </div>
   </div>
   <div class="chapter-card" onclick="openChapter(3)" data-chapter="3" role="button" tabindex="0" aria-label="Read Berlin chapter, April 2027" onkeydown="if(event.key==='Enter')openChapter(3)">
     <canvas class="chip-bg" id="chipBg3" role="presentation" aria-hidden="true"></canvas>
     <div class="chip-pins-bottom"></div><div class="chip-pins-left"></div><div class="chip-pins-right"></div>
-    <div class="chapter-card-number">04</div>
+    <div class="chapter-card-number">05</div>
     <div class="chapter-card-content">
       <div class="chapter-card-date">April 16, 2027</div>
       <div class="chapter-card-city">Berlin</div>
@@ -2197,14 +2211,104 @@ body::after {
 
     <div class="narrative-section" id="ch-tokyo" data-panel="panel-timeline">
       <div class="reveal">
-        <span class="dateline">2.19.2027 &mdash; Tokyo, Japan &mdash; Office of the Prime Minister</span>
+        <span class="dateline">2.19.2027 &mdash; Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda, Tokyo &mdash; Office of the Prime Minister, Her Excellency Sanae Takaichi</span>
         <h2>Tokyo</h2>
       </div>
+
       <div class="reveal">
-        <p><em>Her Excellency Sanae Takaichi</em></p>
+        <p>China is the thorn in my side. For godssake it&rsquo;s the burden we&rsquo;ve all inherited. If people still think I&rsquo;m smarting from Xi&rsquo;s childish election gambit, they are blind to the fact that ruthlessness isn&rsquo;t a scarce resource. I can play the game, too. The &ldquo;dirty neck that lunges?&rdquo; Obscene. Utterly obscene.</p>
       </div>
+
       <div class="reveal">
-        <p style="color:var(--text-dim);font-style:italic;">This chapter is forthcoming.</p>
+        <p>Thirty researchers filed into the conference room. No cameras were allowed. Status updates, the numbers: give me something I can give to the public. I have a year and a half and no one seems to understand that this is a snap of your fingers in politics. A blink of an eye.</p>
+      </div>
+
+      <div class="reveal">
+        <p>They were afraid to make eye contact. &ldquo;Someone explain this to me like I&rsquo;m in elementary school, like I&rsquo;m in Sh&#333;gakk&#333;. Can you do that?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Nervous shuffling. It was the kind of silence you could see if you squinted hard enough. A quicksilver haze choking them all to passionately avoid being the one to admit that a $6.7bn investment shattered into a market sell-off and geopolitical tensions of which none of the frontier model researchers quite understood.</p>
+      </div>
+
+      <div class="reveal">
+        <p>After Prime Minister Takaichi indicated that she wouldn&rsquo;t say a word until someone else did, the head of the sovereign model project stepped forward, eyes glued to his shoes.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Our model hallucinated.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Prime Minister Takaichi was unimpressed. &ldquo;Say more.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Well, the way an AI system like ours works is that it trains on large sets of data. Without getting too deep into the details, what happens is that the model generates words based on what is likely to come next. Again, given the given context before it.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Stern and impassive, Prime Minister Takaichi nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Yes, Takaichi Shush&#333;. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasn&rsquo;t good enough?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>The head of the program started to mumble something before Prime Minister Takaichi cut him off. &ldquo;This model, the one I promised all of our citizens would be imbued with traditional Japanese values. Technology they could trust. And you&rsquo;re telling me I lied to them? That I broke their trust?&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;No&hellip; no&rdquo; stammered the program head.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Why would no one tell me this before we integrated into all of our ministries? Or push it out to our major industries? Are we naive? Are we blind? Are we over-confident?&rdquo; A pause hung in the air before she continued with a different tenor in her voice, one that was slower and more poisonous. &ldquo;I just want to know what I&rsquo;m missing because I have to go on television in twenty minutes and explain why we can&rsquo;t make cars because China won&rsquo;t trade with us anymore.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Realizing that he and the rest of his team would, in all likelihood, be fired in a few minutes, he decided to lay bare the real reason that an executive briefing falsely concluded that, from a shipping-risk assessment, China looked to squeeze export restrictions on the trade of rare earth minerals.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Takaichi Shush&#333;: the model hallucinated, yes, because its training data might not have been robust. But it simply wasn&rsquo;t ready to analyze something as complicated as global trade. The timeline was too aggressive. It works fine for administrative work, but when we were asked to integrate it into larger, more complex systems we did send a warning that it wasn&rsquo;t ready.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Prime Minister Takaichi snapped her fingers to summon one of her aides. &ldquo;Find me that request.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>She gestured around the room to the research team: &ldquo;get comfortable, you&rsquo;re in this now, too.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Surveying the damage, Prime Minister Takaichi made a mental list of how to allocate blame. This was part of politics; any of those clich&eacute;s about being the first through the breach had come from people who never won elections.</p>
+      </div>
+
+      <div class="reveal">
+        <p>One of her aides appeared by her side, handing over the dossier the program head mentioned, in addition to a few other, more recent summaries of the state of the market. She skimmed the first document. It confirmed what the program head had told her. Fine. Somehow it didn&rsquo;t make it to her. She turned back toward her aide, &ldquo;get me an answer as to why this never made it to my desk.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>She had long ago put her phone on silent after the incident. It was too much for one person to handle. The sovereign model they had poured money into building lied and said China was planning to tighten controls on exports. This was shocking news, all of this time they had spent in a fragile peace being undermined so Japanese firms could make less cars? It didn&rsquo;t make much sense, but a response needed to follow. Even before they could launch an official statement, the trading houses and banks hedged violently. Soon, the story leaked and everything was in a freefall. They had to strengthen their position and talk tough. They wouldn&rsquo;t be bullied.</p>
+      </div>
+
+      <div class="reveal">
+        <p>China was unhappy, especially at what they saw as a broken tacit agreement about shipping lanes through the East China Sea. Restrictions followed, angrier words were exchanged, and now we were in a market sell-off and a possible trade war.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Everyone treated this as information that was acted on because it was true. Soon, she&rsquo;d have to face a nation and admit that this project they&rsquo;d invested so much money in, this dream of technological freedom and parity, had caused a major national crisis by simply being wrong. Nothing malicious, no hacking, no interference. Just misplaced confidence in a few misfiring words.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The problem, apparently, was that it drew conclusions it had no right to draw. But the entire ministerial system was reconfigured to run on this model. Prime Minister Takaichi shuddered to think of all of the other times it might have hallucinated. How many potential crises lay waiting in a model that wasn&rsquo;t fit for purpose, that was modeled to match the confidence the politicians that built it displayed. Confidence that, now, had vanished from Prime Minister Takaichi as she tried to come to grips with the consequences of a technology few seemed to understand, but upon which they all relied. Would she blame the hallucination and try to temper the blowback? Or double down and use this as an opportunity to hammer China? The path ahead was unclear and full of pitfalls. She needed to tread carefully. Don&rsquo;t lie, but don&rsquo;t tell the truth. Hallucinate. She allowed herself a laugh. The TV crew would be there any minute. Time to address a reeling nation. Time to play politics.</p>
       </div>
     </div>
 
@@ -2250,6 +2354,213 @@ body::after {
           <a class="source-link" href="https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds316_e.htm" target="_blank">WTO: DS316 Boeing-Airbus dispute</a>
           <a class="source-link" href="https://ecfr.eu/publication/get-over-your-x-a-european-plan-to-escape-american-technology/" target="_blank">ECFR: The EuroStack</a>
         </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: Stockholm + Private Capital Coalition ==================== -->
+<div class="split-section" data-chapter-idx="4">
+
+  <!-- LEFT: Narrative -->
+  <div class="split-narrative">
+
+    <!-- Chapter 6: Stockholm -->
+    <div class="narrative-section" id="ch-stockholm" data-panel="panel-stockholm">
+      <div class="reveal">
+        <span class="dateline">12.07.2026 &mdash; Stockholm, Sweden &mdash; Prima Materia Office</span>
+        <h2>Stockholm</h2>
+      </div>
+
+      <div class="reveal">
+        <p>Daniel Ek has long been accustomed to &ldquo;founder speak.&rdquo; The practiced staccato of a personality that fits between the beginning and end of a slide deck, the nervous changes in vocal registers when any sort of dissonant question is asked, the silent rumination that mimics thinking on an answer long decided.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The truth is, no matter how much money he might give to any one of these founders looking to accelerate their path to market, the first thing they&rsquo;d need to do to have any chance of success would be to move to Silicon Valley. Ek had done it himself. The same pitching rounds, rejections, failures, practicing in the mirror to hit the right notes at the right time &ndash; all that comes from being an entrepreneur. Although he liked to remember with a bit of a smirk that raising money in 2008 was a much different proposition than in 2026.</p>
+      </div>
+
+      <div class="reveal">
+        <p>He wasn&rsquo;t hearing any pitches today. Ek&rsquo;s worries had grown as his own company and fortune amassed. It wasn&rsquo;t from an especially philanthropic part of his heart that this urge originated, but moreso from a matter of Scandinavian common sense: how likely is it that Stockholm will remain the type of place Ek wants to continue to live in if all the founders and the builders and the technologists need to move to California? It was in this firmament of state-sanctioned computer access and ideological alignment that his own aspirations were built. He wasn&rsquo;t so narrow minded as to think his was a unique case. In a dark room in his soul he harbored that same feeling that we all have, though none of us particularly like to admit to its existence, even as it provides a sustenance we can&rsquo;t live without, that he was special, that circumstances could have never blocked his path. In Silicon Valley or in Stockholm.</p>
+      </div>
+
+      <div class="reveal">
+        <p>But this was not a feeling he was proud of (none of us are), so he&rsquo;d called an assembly of minds to plan through an approach to combat the magnetic pull of Silicon Valley capital and talent.</p>
+      </div>
+
+      <div class="reveal">
+        <p>He had Shakil, his Prima Materia cofounder and confidante, Pia Michel, his Head of Science Translation, Niklas Zennstr&ouml;m, former founder of Skype and now a VC, and Taavet Hinrikus, the co-founder of Wise, one of the first Estonian billionaires, and now also a VC who backs European startups.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The office was sleek and sanitary, overlooking the Baltic Sea which was a dark maelstrom of frozen ice caps frothing around in the violent windswept waves framed only by the Christmas lights of the city&rsquo;s downtown that hung above it, the sun having set long ago.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;The U.S. firms are leaving. I&rsquo;m sure you all saw what happened with OpenAI&rsquo;s European offices, but there are rumors of something bigger happening,&rdquo; Ek began.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Is this the time to make the regulatory push? I&rsquo;m hearing from founders every single day that it&rsquo;s impossible for them to scale if they stay in Europe. Maybe we double down. Jobs are at risk. The atmosphere is too heavy. It suffocates anything that tries to grow,&rdquo; Hinrikus responded.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Zennstr&ouml;m, the oldest in the group, was more blunt with one of his earliest employees. &ldquo;You know what Daniel is talking about, Taavet. The Americans are leaving because they are about to drop a bomb on us. Actually: a bomb would be preferable to what they&rsquo;re going to do.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;What? You don&rsquo;t seriously think they&rsquo;d shut off access like that? We&rsquo;re a huge market&hellip;&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Not as big as the U.S. government,&rdquo; Shakil interrupted. &ldquo;Why are we kidding ourselves here? OpenAI, Anthropic, Gemini&hellip; they&rsquo;re just strategic assets for the US to turn on and off when the time is right. You want to know the best way to make money in America? Get a defense contract. All of a sudden those annoying questions about profitability&hellip; vanish,&rdquo; and Shakil wove his hands outwards to punctuate his point.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;What I&rsquo;m saying,&rdquo; Ek continued, &ldquo;is that we haven&rsquo;t been very good citizens of Europe. Of course, we all did what we had to do to make money so we could enjoy views like this. But we have aided and abetted the gutting of Europe&rsquo;s technology ecosystem by letting Silicon Valley do whatever they want. And now, it looks like we&rsquo;re all going to reap the consequences.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>Pia passed around a piece of paper to each of the four men.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;What is this?&rdquo; Zennstr&ouml;m asked, looking down through his thickly framed glasses.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;A liferaft,&rdquo; Pia responded.</p>
+      </div>
+
+      <div class="reveal">
+        <p>Ek stood up: &ldquo;We cannot be caught flat-footed when the shoe finally drops and the Americans force us to choose between them or the Chinese. It&rsquo;s a farce that it&rsquo;s even come to this. What I&rsquo;m proposing here is that we pool our collective capital and accelerate the development of Helsing into a multilateral defense company for the entire EU.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;Your pet drone venture you mean?&rdquo; Hinrikus said.</p>
+      </div>
+
+      <div class="reveal">
+        <p>&ldquo;If we demonstrate a broad coalition of AI-first defense capabilities, it shows that we&rsquo;re not relying on Department of War technology that we don&rsquo;t even own. It&rsquo;s proof of concept that with private capital we at least have the capabilities to build companies that matter. Not just consumer tech.&rdquo;</p>
+      </div>
+
+      <div class="reveal">
+        <p>There was a long drawn out discussion about the structure of the company: who would pay for what, which markets they&rsquo;d target, how they&rsquo;d market themselves to nations with their own standing armies. But a broad consensus was reached. They would try it.</p>
+      </div>
+
+      <div class="reveal">
+        <p>They would raise money and then take Helsing public, stay in Europe, and make sure no one is hiding behind the walls of their own borders. When the day would finally come for an American blockade on technical infrastructure, Helsing would be there as evidence that key strategic capabilities could be built in house. It would soften the blow. But to Ek, who had been bemoaning the regulatory atmosphere of the EU for decades, it would still need to hurt. He wanted to make his point. They will need to back us because they won&rsquo;t have any other option. A transnational AI-first defense company. This buys them time. No one likes to look weak. And when the compute shutoff happens, everyone is going to look very weak. But Helsing could prove that the EU could bite back right where the Americans invest the most.</p>
+      </div>
+
+      <div class="reveal">
+        <p>The room cleared and Ek was left with Michels and Khan. They had thirty minutes before they courted their next round of suitors. Outside, the sea continued to rage while underneath it the data communication cables sat ferrying pulses back and forth between continents. You cut one of those cables and it&rsquo;s an act of war. Such a thin, fragile thing. It&rsquo;s easy to forget that the world exists perpetually on an axis between aggression and cooperation. That at some point the symbolism of words like &ldquo;sovereignty&rdquo; or &ldquo;independence&rdquo; meet their real world referent under a freezing sea where lasers propel data down fiber optic cables at the speed of light. Someone surely is trying to control the subsea infrastructure. But, looking at the undulating frozen wildness of the Baltic, one must assume a limit to what can be bought, controlled, and coerced without a response in kind.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Data -->
+  <div class="split-data">
+
+    <!-- Data Panel: Private Capital + Subsea Cables -->
+    <div class="data-panel active" id="panel-stockholm" data-panel-id="panel-stockholm">
+      <div class="reveal">
+        <h2>The Liferaft</h2>
+        <p class="section-sub">When public capital fragments across 27 countries, private money becomes the only coordination mechanism left.</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">Daniel Ek&rsquo;s bet is that defense is the one sector where Europe can still build at scale, because nation-states cannot afford to lose it. Helsing is already the largest test case: &euro;600M raised in June 2025, valued at $12B, working with Saab on Eurofighter radar and developing the HX-2 strike drone for the German army.</p>
+      </div>
+
+      <div class="reveal" style="display:flex;flex-direction:column;gap:12px;margin-top:0.5rem;">
+        <div style="padding:1rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:8px;background:rgba(26,108,212,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--cyan);">Helsing</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">$12B VALUATION</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">Europe&rsquo;s largest defense AI company. Raised &euro;600M in June 2025, backed by Daniel Ek&rsquo;s Prima Materia. Builds the AI layer for the HX-2 strike drone, integrates with Saab&rsquo;s Eurofighter radar.</div>
+          <a class="source-link" href="https://www.bloomberg.com/features/2025-euro-defense-startups/" target="_blank" style="margin-top:6px;display:inline-block;">Bloomberg: European Defense Tech Startups</a>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(15,163,122,0.3);border-radius:8px;background:rgba(15,163,122,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--green);">Prima Materia</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">VEHICLE</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">Daniel Ek and Shakil Khan&rsquo;s Stockholm-based investment vehicle. Lead investor in Helsing&rsquo;s 2021 Series A and follow-on rounds. Thesis: European deep-tech that solves nation-state-scale problems.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(123,111,214,0.3);border-radius:8px;background:rgba(123,111,214,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:#9d8fef;">The Stockholm Network</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">FOUNDERS-AS-VCS</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">Niklas Zennstr&ouml;m (Skype &rarr; Atomico). Taavet Hinrikus (Wise &rarr; Plural). Daniel Ek (Spotify &rarr; Prima Materia). The first generation of European tech exits is now the funding layer for the second.</div>
+        </div>
+      </div>
+
+      <div class="reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:1rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(26,108,212,0.2);border-radius:8px;background:rgba(26,108,212,0.03);">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--cyan);">&euro;600M</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Helsing Series D, June 2025</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">30%+</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Stockholm startups that relocate to the US</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(201,106,43,0.2);border-radius:8px;background:rgba(201,106,43,0.03);">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--gold);">75%</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Swedish homes with computers by 2005</div>
+        </div>
+      </div>
+
+      <!-- Subsea cables -->
+      <div class="reveal" style="margin-top:2rem;">
+        <h2>Under the Baltic</h2>
+        <p class="section-sub">&ldquo;You cut one of those cables and it&rsquo;s an act of war. Such a thin, fragile thing.&rdquo;</p>
+      </div>
+      <div class="reveal">
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;">More than 95% of intercontinental data traffic, including the API calls between European cloud customers and US foundation models, runs through subsea fiber optic cables. The Baltic Sea cables connecting Sweden, Finland, Estonia, and Lithuania have been cut multiple times since 2023. Each incident triggers a NATO investigation; none have produced a public attribution.</p>
+      </div>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--red);">Balticconnector + EE-S1</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">OCT 2023</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">Estonia-Finland gas pipeline and a parallel telecom cable severed in the same incident. Finnish authorities recovered a Chinese-flagged vessel&rsquo;s anchor at the site. No prosecution.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--red);">C-Lion1 + BCS East-West</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">NOV 2024</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">Two Baltic cables severed within 24 hours. German and Finnish defense ministers issued a joint statement calling the incident &ldquo;hybrid warfare.&rdquo; Russian and Chinese involvement suspected; no formal attribution.</div>
+        </div>
+        <div style="padding:1rem;border:0.5px solid rgba(255,51,51,0.3);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:0.85rem;font-weight:600;color:var(--red);">EstLink 2</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);">DEC 2024</div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-top:4px;">Estonia-Finland power cable cut. Finnish authorities boarded and detained the Eagle S, a tanker linked to Russia&rsquo;s shadow fleet. NATO launched the Baltic Sentry mission in response.</div>
+        </div>
+      </div>
+
+      <div class="reveal" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:1rem;">
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">95%+</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Intercontinental data on subsea cables</div>
+        </div>
+        <div style="text-align:center;padding:0.75rem;border:0.5px solid rgba(255,51,51,0.2);border-radius:8px;background:rgba(255,51,51,0.03);">
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--red);">~150</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Cable incidents per year worldwide</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <a class="source-link" href="https://www.nato.int/cps/en/natohq/news_232122.htm" target="_blank">NATO: Baltic Sentry mission</a>
+        <a class="source-link" href="https://www.iscpc.org/" target="_blank">International Cable Protection Committee</a>
+        <a class="source-link" href="https://www.bloomberg.com/features/2025-euro-defense-startups/" target="_blank">Bloomberg: European Defense Tech</a>
+        <a class="source-link" href="https://sifted.eu/articles/state-european-tech-report-2025" target="_blank">Atomico State of European Tech 2025</a>
       </div>
     </div>
 
@@ -5695,7 +6006,7 @@ document.getElementById('chapterOverlay').addEventListener('click', (e) => {
 
 // --- Pixelated Silicon Chip Backgrounds ---
 (function(){
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     const canvas = document.getElementById('chipBg' + i);
     if (!canvas) continue;
     const ctx = canvas.getContext('2d');
@@ -5703,13 +6014,13 @@ document.getElementById('chapterOverlay').addEventListener('click', (e) => {
     canvas.width = w; canvas.height = h;
 
     // Each chip has a unique seed
-    const seed = [7919, 1301, 4229, 8641][i];
+    const seed = [7919, 1301, 4229, 8641, 5471][i];
     function seededRandom(s) {
       let x = Math.sin(s) * 10000;
       return x - Math.floor(x);
     }
 
-    const cols = ['#1a6cd4', '#0fa37a', '#c96a2b', '#7b6fd6'];
+    const cols = ['#1a6cd4', '#0fa37a', '#c96a2b', '#7b6fd6', '#d4af1a'];
     const chipCol = cols[i];
 
     const px = 4;
