@@ -749,6 +749,33 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
   details.chapter-details > summary.chapter-summary { padding: 1.1rem 1.25rem; gap: 0.75rem; }
   .chapter-summary-affordance { font-size: 0.65rem; }
 }
+
+/* Chapter color stripes (left border on each summary) */
+details#dashboard.chapter-details > summary.chapter-summary { border-left: 4px solid var(--red); }
+details#story.chapter-details > summary.chapter-summary { border-left: 4px solid var(--sky); }
+details#assembly.chapter-details > summary.chapter-summary { border-left: 4px solid var(--gold); }
+details#battle.chapter-details > summary.chapter-summary { border-left: 4px solid var(--green); }
+details#fund.chapter-details > summary.chapter-summary { border-left: 4px solid var(--purple); }
+details#timeline.chapter-details > summary.chapter-summary { border-left: 4px solid var(--gold); }
+details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px solid var(--purple); }
+
+/* Side rail dot colors mirror chapter kicker colors */
+.page-outline a[href="#dashboard"] .outline-dot { background: var(--red); }
+.page-outline a[href="narrative.html"] .outline-dot { background: var(--sky); }
+.page-outline a[href="#assembly"] .outline-dot { background: var(--gold); }
+.page-outline a[href="#battle"] .outline-dot { background: var(--green); }
+.page-outline a.active .outline-dot { box-shadow: 0 0 8px currentColor; }
+
+/* Reading-time badge inside chapter affordance */
+.chapter-summary-time { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-right: 0.5rem; padding-right: 0.5rem; border-right: 1px solid rgba(0,32,91,0.12); }
+
+/* Print styling: assume JS has force-opened all details */
+@media print {
+  details.chapter-details > summary.chapter-summary { background: white !important; border-bottom: 1px solid #ddd !important; }
+  details.chapter-details > summary.chapter-summary .chapter-summary-affordance,
+  details.chapter-details > summary.chapter-summary .chapter-summary-arrow { display: none !important; }
+  .topnav, .page-outline, .hero-cta-row, #ctaExportBtn, .btn { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -786,6 +813,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
       <a href="#assembly" class="btn btn-outline">Assemble the Entity</a>
       <a href="#battle" class="btn btn-outline" style="border-color: var(--green); color: var(--green);">Run the Stress Test</a>
     </div>
+    <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:1.25rem;font-family:var(--mono);letter-spacing:0.04em;">Each chapter expands &middot; read top-to-bottom, or jump to a tool.</p>
   </div>
 </section>
 
@@ -797,7 +825,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">Who controls the AI today &mdash; and what it costs</div>
     <div class="chapter-summary-desc">Dashboard, growth gap, cost of inaction, the risks of fixing it, and Convince Me: the strongest objections steelmanned with the strongest replies.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~6 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 <section style="padding:5rem 2rem;background:linear-gradient(170deg,#001540 0%,#00205b 40%,#0a1a3a 100%);color:white;--db-text:rgba(232,224,204,0.65);--db-dim:rgba(232,224,204,0.4);--db-border:rgba(255,255,255,0.08);--db-raised:#0b1628;--db-cyan:#1a6cd4;--db-green:#0fa37a;--db-red:#ff3333;--db-gold:#c96a2b;--db-aurora:#7b6fd6;">
   <div style="max-width:1100px;margin:0 auto;">
@@ -1157,8 +1185,8 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
 <!-- RISKS (inside Problem chapter) -->
 <div class="narrative-block wide fade-up" style="background: var(--off-white); max-width: 100%; padding: 3rem 2rem;">
   <div style="max-width: 720px; margin: 0 auto;">
-    <div class="narrative-kicker" style="color: var(--red);">Risks &amp; Limitations</div>
-    <h2 class="narrative-heading" style="font-size: clamp(1.2rem,2.5vw,1.6rem);">What could go wrong</h2>
+    <div class="narrative-kicker" style="color: var(--red);">Caveats on the proposal</div>
+    <h2 class="narrative-heading" style="font-size: clamp(1.2rem,2.5vw,1.6rem);">Where this could fail, and what limits the analogy</h2>
     <div class="narrative-body" style="font-size: 0.95rem;">
       <p><strong>The Airbus analogy has limits.</strong> Airbus consolidated companies that all built the same product (aircraft) in a two-player market, and it still took an estimated $22B in government subsidies<sup class="fn"><a href="#fn24">[24]</a></sup> and 33 years. AI companies build very different products (models, translation, compression, defense AI, open-source tools). Integrating them is harder, not easier, than merging aircraft manufacturers.</p>
       <p><strong>Governance across 11 nations is extraordinarily difficult.</strong> Airbus nearly failed multiple times due to Franco-German management conflicts. Adding Japan, Canada, South Korea, Singapore, and seven more countries multiplies the coordination challenge.</p>
@@ -1228,6 +1256,16 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
         </div>
       </details>
 
+      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
+        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
+          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q6.</span><span>What if the US retaliates with chip export controls or NVIDIA cuts you off? The coalition collapses the moment Washington frowns.</span></span>
+          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
+        </summary>
+        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
+          <p style="margin-top:1rem;"><strong style="color:var(--navy);">This is the strongest objection, and the proposal is partly a response to it.</strong> The CHIPS-Act-style export-control regime already exists; the coalition's job is to reduce single-point exposure to it, not pretend it can't happen. Three planks. <strong style="color:var(--navy);">First, ASML.</strong> The Netherlands is in the candidate list; ASML holds a 100% monopoly on EUV lithography. Every advanced chip that TSMC, Samsung, and Intel make depends on machines no US firm produces. Coercion runs both ways. <strong style="color:var(--navy);">Second, an open-weight strategy.</strong> Salamandra (35 European languages, BSC), DeepL's models, and Mistral's open releases mean the coalition's deployment is not gated by a single US API. <strong style="color:var(--navy);">Third, redundant compute.</strong> Mistral Compute (13.8K GB300s, scaling to 200MW), MareNostrum 5 (4,480 H100s), JUPITER, LUMI, and the EuroHPC AI Factory programme give the coalition a frontier-class footprint that does not depend on AWS or Azure being available. The risk is real; it's also the core reason this initiative exists rather than something to wave it away. The brief argues middle powers are already exposed to retaliation under <em>status quo dependency</em>; building gives leverage, buying gives none.</p>
+        </div>
+      </details>
+
     </div>
   </div>
 </div>
@@ -1241,7 +1279,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">The Slow Boil</div>
     <div class="chapter-summary-desc">A near-future scenario in five cities. Dublin to Tokyo, April 2026 to 2027, as middle powers feel the heat and grope toward a coalition.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~12 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 <section class="section">
   <div class="narrative-block wide fade-up" style="max-width:780px;margin:0 auto;text-align:center;">
@@ -1265,7 +1303,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">Assemble the Public AI Company</div>
     <div class="chapter-summary-desc">Why the window is open, the interactive Assembly Lab to merge real labs, and the three-tier architecture that holds the merger together.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">Interactive</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 
 <!-- WHY NOW (inside Build It) -->
@@ -1301,7 +1339,6 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
         <div class="merge-btn-wrap">
           <button class="btn btn-action" id="mergeAllBtn">Merge All Companies</button>
           <button class="btn btn-ghost btn-sm" id="shareBtn" title="Copy shareable link">Share Link</button>
-          <button class="btn btn-ghost btn-sm" id="exportBtn" title="Export as PDF deck">Export Deck</button>
         </div>
       </div>
       <div class="live-panel" id="livePanel">
@@ -1364,7 +1401,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">Stress Test the Merged Entity</div>
     <div class="chapter-summary-desc">The narrative bridge to the test, then five fights against a US hyperscaler with policy levers you can pull.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">Interactive</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 
 <!-- NARRATIVE: THE CONFRONTATION (inside Test It) -->
@@ -1405,7 +1442,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">The Airbus for AI Fund</div>
     <div class="chapter-summary-desc">Three vehicles for transnational AI investment, modeled on the NATO Innovation Fund and EuroHPC.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~2 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 <div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--off-white);">
   <div style="max-width:900px;margin:0 auto;">
@@ -1441,7 +1478,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">The Airbus Parallel + 10-Year Roadmap</div>
     <div class="chapter-summary-desc">Airbus's actual market-share trajectory plotted against a Public AI Co projection on the same axis. Then milestone by milestone, what coordinated AI sovereignty would actually require.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~3 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 <section class="timeline-section">
   <div class="timeline-inner">
@@ -1475,7 +1512,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     <div class="chapter-summary-title">Model Sovereignty Index</div>
     <div class="chapter-summary-desc">How sovereign are the AI models your country depends on? Scores open-weight models on six dimensions, live from Hugging Face.</div>
   </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
+  <div class="chapter-summary-affordance"><span class="chapter-summary-time">Live tool</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 <section style="padding:4rem 2rem;background:var(--off-white);">
   <div style="max-width:900px;margin:0 auto;text-align:center;">
@@ -2658,8 +2695,7 @@ function init() {
 
   // Wire up buttons
   document.getElementById('shareBtn').addEventListener('click', copyShareLink);
-  document.getElementById('exportBtn').addEventListener('click', exportDeck);
-  document.getElementById('ctaExportBtn').addEventListener('click', exportDeck);
+  document.getElementById('ctaExportBtn')?.addEventListener('click', exportDeck);
   document.getElementById('importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
   document.getElementById('importCancel').addEventListener('click', closeImportModal);
   document.getElementById('importApply').addEventListener('click', applyImportData);
@@ -3527,6 +3563,20 @@ function openTargetedDetails() {
 }
 window.addEventListener('hashchange', openTargetedDetails);
 openTargetedDetails();
+
+// Print: open every details before print, restore prior state after.
+let _detailsPriorOpenState = new Map();
+window.addEventListener('beforeprint', () => {
+  _detailsPriorOpenState = new Map();
+  document.querySelectorAll('details').forEach(d => {
+    _detailsPriorOpenState.set(d, d.open);
+    d.open = true;
+  });
+});
+window.addEventListener('afterprint', () => {
+  _detailsPriorOpenState.forEach((wasOpen, d) => { d.open = wasOpen; });
+  _detailsPriorOpenState = new Map();
+});
 
 document.querySelectorAll('details.chapter-details').forEach(d => {
   d.addEventListener('toggle', () => {
