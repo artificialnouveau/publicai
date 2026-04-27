@@ -728,15 +728,10 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 
 <!-- SIDE OUTLINE -->
 <nav class="page-outline" id="pageOutline" aria-label="Page sections">
-  <a href="#dashboard" data-section="dashboard"><span class="outline-dot"></span><span class="outline-text">Dashboard</span></a>
-  <a href="#inaction" data-section="inaction"><span class="outline-dot"></span><span class="outline-text">Cost of Inaction</span></a>
-  <a href="#story" data-section="story"><span class="outline-dot"></span><span class="outline-text">The Precedent</span></a>
-  <a href="#timeline" data-section="timeline"><span class="outline-dot"></span><span class="outline-text">Roadmap</span></a>
-  <a href="#sovereignty" data-section="sovereignty"><span class="outline-dot"></span><span class="outline-text">Sovereignty Index</span></a>
-  <a href="#assembly" data-section="assembly"><span class="outline-dot"></span><span class="outline-text">Assembly Lab</span></a>
-  <a href="#battle" data-section="battle"><span class="outline-dot"></span><span class="outline-text">Stress Test</span></a>
-  <a href="#fund" data-section="fund"><span class="outline-dot"></span><span class="outline-text">Fund Explainer</span></a>
-  <a href="#sign-on" data-section="sign-on"><span class="outline-dot"></span><span class="outline-text">Sign On</span></a>
+  <a href="#dashboard" data-section="dashboard"><span class="outline-dot"></span><span class="outline-text">1. The Problem</span></a>
+  <a href="narrative.html" data-section="story"><span class="outline-dot"></span><span class="outline-text">2. The Story</span></a>
+  <a href="#assembly" data-section="assembly"><span class="outline-dot"></span><span class="outline-text">3. Build It</span></a>
+  <a href="#battle" data-section="battle"><span class="outline-dot"></span><span class="outline-text">4. Test It</span></a>
 </nav>
 
 <!-- HERO -->
@@ -744,7 +739,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   <div class="hero-particles"><canvas id="particleCanvas" role="presentation" aria-hidden="true"></canvas></div>
   <div class="hero-content">
     <h1>Who controls the AI<br>your country depends on?</h1>
-    <p class="hero-sub">Today, a handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. The CLOUD Act means your citizens' data is one subpoena away from a foreign court. Export controls shift overnight. API access gets revoked without warning. This is not a market problem. It is a sovereignty crisis. This tool explores what happens when middle powers stop buying AI and start building it together.</p>
+    <p class="hero-sub">Today, a handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. Export controls shift overnight. API access gets revoked without warning. The CLOUD Act means your citizens' data is one subpoena away from a foreign court.</p>
+    <p class="hero-sub">This is not a market problem. It is a sovereignty crisis. This tool explores what happens when middle powers stop buying AI and start building it together.</p>
     <div class="hero-cta-row">
       <a href="#dashboard" class="btn btn-primary">See the Evidence</a>
       <a href="#assembly" class="btn btn-outline">Assemble the Entity</a>
@@ -1126,47 +1122,27 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </section>
 
-<!-- STORY -->
+<!-- STORY TEASER (full version lives in narrative.html) -->
 <section id="story" class="section">
-  <div class="story-grid fade-up">
-    <div class="story-visual"><canvas id="airbusCanvas" style="width:100%;max-width:500px;height:auto;aspect-ratio:4/3;" role="img" aria-label="Airbus market share growth visualization: 0% to 50% from 1970 to 2003"></canvas></div>
-    <div class="story-text">
-      <div class="story-tag">1970 &mdash; The Precedent</div>
-      <h3>They said it couldn't be done</h3>
-      <p>In the late 1960s, European aerospace was fragmented. France, Germany, the UK, Spain &mdash; each had their own companies, each too small to challenge Boeing's dominance. This is the "<strong>middle powers' dilemma</strong>" &mdash; too small to compete alone, too proud to surrender.</p>
-      <p>So they did something radical: they <strong>merged everything</strong>. Not a loose consortium. A real company with shared R&D, shared manufacturing, one mission. A coordinated public-private partnership that bootstrapped a product and focused relentlessly on market strategy.</p>
-      <p><strong>The result?</strong> Airbus went from 0% to roughly 50% of the global commercial aircraft market.<sup class="fn"><a href="#fn3">[3]</a></sup> Over 150,000 employees.<sup class="fn"><a href="#fn4">[4]</a></sup> Deliveries and profitability far exceeding Boeing's.<sup class="fn"><a href="#fn5">[5]</a></sup> A ~$160B enterprise.<sup class="fn"><a href="#fn6">[6]</a></sup> As Tan, Jackson, Berjon &amp; Coyle argue: the playbook exists.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
+  <div class="narrative-block wide fade-up" style="max-width:780px;margin:0 auto;text-align:center;">
+    <div class="narrative-kicker">The Story</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.4rem,3vw,2rem);">There is a precedent for this. It is called Airbus.</h2>
+    <div class="narrative-body" style="font-size:1rem;">
+      <p>In 1970, European aerospace looked the way middle-power AI looks now: fragmented, outclassed, and one country at a time too small to challenge Boeing. They merged everything into one company. Three decades later, Airbus held roughly half the global aircraft market.<sup class="fn"><a href="#fn3">[3]</a></sup> The pieces for a Public AI Company already exist across eleven candidate nations, with a combined ~$24B in valuation and 232K+ customers.<sup class="fn"><a href="#fn23">[23]</a></sup> Nobody has put them together yet.</p>
     </div>
-  </div>
-  <div class="story-grid reverse fade-up">
-    <div class="story-visual"><canvas id="parallelCanvas" style="width:100%;max-width:500px;height:auto;aspect-ratio:4/3;" role="img" aria-label="AI market concentration: ChatGPT ~80% vs fragmented middle powers"></canvas></div>
-    <div class="story-text">
-      <div class="story-tag">2026 &mdash; The Middle Powers' Dilemma</div>
-      <h3>Four problems, one solution</h3>
-      <p>Middle powers face four interlocking failures: <strong>scale</strong> (no single nation can match US compute), <strong>limited domestic markets</strong> (too small to sustain a frontier lab), <strong>foreign capture</strong> (ChatGPT drives ~80% of chatbot referral traffic globally;<sup class="fn"><a href="#fn1">[1]</a></sup> Mistral's Le Chat doesn't register on tracking even in France<sup class="fn"><a href="#fn2">[2]</a></sup>), and <strong>fragmented sovereignty</strong> (dozens of national AI strategies pulling in different directions).</p>
-      <p>But across Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK are <strong>extraordinary AI companies</strong> &mdash; private champions like Mistral and Cohere, public labs like BSC and RIKEN, and coalitions like New Nordics AI. Each world-class in a specific domain. (Note: ASML, a publicly traded global company, is an upstream dependency for all AI chip production, not a company that could be directly merged.)</p>
-      <p><strong>What if they formed a Public AI Company?</strong> Not a loose consortium, but a real entity &mdash; with shared compute, shared R&D, and a market strategy. Assemble the entity below and find out.</p>
+    <div style="margin-top:1.5rem;">
+      <a href="narrative.html" class="btn btn-primary">Read the full story &rarr;</a>
+    </div>
+    <div class="narrative-stats-row" style="margin-top:2rem;">
+      <div class="narrative-stat-item"><div class="val">11</div><div class="label">Candidate Nations</div></div>
+      <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);" title="Sum of last-priced valuations: Mistral $13.8B + Cohere $7B + DeepL $2B + Stability AI $1B + Aleph Alpha ~$0.5B + Multiverse ~$0.5B. See references for individual sources.">$24B+</a></div><div class="label">Combined Value<sup class="fn"><a href="#fn23" style="color:inherit;">[23]</a></sup></div></div>
+      <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);" title="Sum of reported customers: DeepL 200K+ + Cohere 17K+ + Stability AI ~10K + Mistral ~5K. See references for individual sources.">232K+</a></div><div class="label">Combined Customers<sup class="fn"><a href="#fn23" style="color:inherit;">[23]</a></sup></div></div>
+      <div class="narrative-stat-item"><div class="val">100+</div><div class="label">Languages (DeepL)</div></div>
+      <div class="narrative-stat-item"><div class="val">12.6B</div><div class="label">Images Generated (SD)</div></div>
+      <div class="narrative-stat-item"><div class="val">&euro;32.7B</div><div class="label">ASML Revenue</div></div>
     </div>
   </div>
 </section>
-
-<!-- NARRATIVE: THE PIECES -->
-<div class="narrative-block wide fade-up">
-  <div class="narrative-kicker">The Components</div>
-  <h2 class="narrative-heading">The pieces already exist. Nobody has put them together.</h2>
-  <div class="narrative-body">
-    <p>Across eleven candidate nations &mdash; Canada, France, Germany, Japan, the Netherlands, Singapore, South Korea, Spain, Sweden, Switzerland, and the UK &mdash; are <strong>extraordinary AI companies</strong>. Mistral grew revenue 20x in 12 months.<sup class="fn"><a href="#fn12">[12]</a></sup> DeepL translates 100+ languages, preferred 1.3x more often than Google Translate in blind tests.<sup class="fn"><a href="#fn13">[13]</a></sup> Stable Diffusion has generated an estimated 12.59 billion images.<sup class="fn"><a href="#fn14">[14]</a></sup> And in the Netherlands, ASML (&euro;32.7B revenue, &euro;38.8B backlog<sup class="fn"><a href="#fn15">[15]</a></sup>) holds a 100% monopoly on EUV lithography &mdash; every advanced AI chip requires their machines.<sup class="fn"><a href="#fn8">[8]</a></sup></p>
-    <p>In defense, Helsing ($12B valuation<sup class="fn"><a href="#fn16">[16]</a></sup>) has integrated AI into the Eurofighter Typhoon and delivered thousands of strike drones to Ukraine. In compute, Barcelona's MareNostrum 5 runs 4,480 H100 GPUs training Salamandra, open-source LLMs in 35 European languages.<sup class="fn"><a href="#fn17">[17]</a></sup> None can challenge ChatGPT's ~80% referral traffic share<sup class="fn"><a href="#fn1">[1]</a></sup> alone. But together, they cover the full stack.</p>
-  </div>
-  <div class="narrative-stats-row">
-    <div class="narrative-stat-item"><div class="val">11</div><div class="label">Candidate Nations</div></div>
-    <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);" title="Sum of last-priced valuations: Mistral $13.8B + Cohere $7B + DeepL $2B + Stability AI $1B + Aleph Alpha ~$0.5B + Multiverse ~$0.5B. See references for individual sources.">$24B+</a></div><div class="label">Combined Value<sup class="fn"><a href="#fn23" style="color:inherit;">[23]</a></sup></div></div>
-    <div class="narrative-stat-item"><div class="val"><a href="#references" style="color:inherit;text-decoration:none;border-bottom:1px dashed rgba(0,119,200,0.4);" title="Sum of reported customers: DeepL 200K+ + Cohere 17K+ + Stability AI ~10K + Mistral ~5K. See references for individual sources.">232K+</a></div><div class="label">Combined Customers<sup class="fn"><a href="#fn23" style="color:inherit;">[23]</a></sup></div></div>
-    <div class="narrative-stat-item"><div class="val">100+</div><div class="label">Languages (DeepL)</div></div>
-    <div class="narrative-stat-item"><div class="val">12.6B</div><div class="label">Images Generated (SD)</div></div>
-    <div class="narrative-stat-item"><div class="val">&euro;32.7B</div><div class="label">ASML Revenue</div></div>
-  </div>
-</div>
 
 <!-- INTERACTIVE TOOLS CALLOUT -->
 <div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);text-align:center;">
@@ -1287,6 +1263,133 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   </div>
 </div>
 
+<!-- ASSEMBLY -->
+<section class="assembly-zone" id="assembly">
+  <div class="assembly-inner">
+    <div class="section-header center">
+      <h2>Assemble the Entity</h2>
+      <p>Click companies to merge them into the reactor. Watch the power grow.</p>
+    </div>
+    <div class="assembly-layout">
+      <div>
+        <div class="dock-label">Available Companies</div>
+        <div class="company-dock" id="companyDock"></div>
+      </div>
+      <div class="fusion-reactor" id="reactor">
+        <div class="reactor-ring" id="reactorRing">
+          <div class="reactor-center" id="reactorCenter">
+            <div class="reactor-empty-msg">Click a company to begin the merger</div>
+          </div>
+        </div>
+        <div class="merge-btn-wrap">
+          <button class="btn btn-action" id="mergeAllBtn">Merge All Companies</button>
+          <button class="btn btn-ghost btn-sm" id="shareBtn" title="Copy shareable link">Share Link</button>
+          <button class="btn btn-ghost btn-sm" id="exportBtn" title="Export as PDF deck">Export Deck</button>
+        </div>
+      </div>
+      <div class="live-panel" id="livePanel">
+        <div class="live-panel-title"><span class="live-dot"></span> Live Merger Stats</div>
+        <div id="liveStats" aria-live="polite"></div>
+        <div class="achievements">
+          <div class="achieve-label">Achievements</div>
+          <div class="achieve-row" id="achievements"></div>
+        </div>
+        <div class="data-source" id="dataSource">
+          Data: public estimates (2025-2026)<br>
+          <a id="importDataLink" href="#">Load custom data (JSON)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MERGE CONTEXT (appears when companies are added) -->
+<div class="merge-context hidden" id="mergeContext"></div>
+
+<!-- NARRATIVE: THE CONFRONTATION -->
+<div class="narrative-block wide fade-up" style="background: var(--navy-dark); color: white; max-width: 100%; padding: 5rem 2rem;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <div class="narrative-kicker" style="color: var(--cyan);">The Stress Test</div>
+    <h2 class="narrative-heading">Now test it against the incumbents.</h2>
+    <div class="narrative-body" style="color: rgba(255,255,255,0.75);">
+      <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI hit ~$20B in revenue in 2025<sup class="fn"><a href="#fn9">[9]</a></sup> and now runs at ~$24B annualized. Anthropic hit $14B ARR in February 2026, up from $1B just 14 months earlier.<sup class="fn"><a href="#fn10">[10]</a></sup> Google Gemini sits atop the world's largest compute infrastructure. xAI reached a $230B valuation in January 2026.<sup class="fn"><a href="#fn11">[11]</a></sup></p>
+      <p>The gap is real. But it's not permanent. Use the <strong style="color:white;">scenario levers</strong> below to model what happens when governments invest: compute buildouts, procurement contracts, capital injections, talent programs. <strong style="color:white;">Every lever you pull changes the outcome.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- THE STRESS TEST -->
+<section class="battle-section" id="battle">
+  <div class="battle-inner">
+    <div class="battle-header">
+      <h2>The Stress Test</h2>
+      <p>Pick a US hyperscaler to challenge. See where the merged entity wins and loses. Then invest government resources to close the gap.</p>
+    </div>
+    <div class="challenger-row" id="challengerRow"></div>
+    <div class="battle-scoreboard" id="battleScoreboard" aria-live="polite"></div>
+    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Tap or hover any round</strong> to see the evidence. <a href="#" onclick="openImportModal();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
+    <div class="battle-rounds" id="battleRounds"></div>
+    <div class="scenario-levers" id="scenarioLevers">
+      <div class="scenario-levers-label">Government Investment in Public AI Co. &mdash; pull levers to boost the merged entity</div>
+    </div>
+    <div class="battle-verdict" id="battleVerdict" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- THREE-TIER ARCHITECTURE -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:white;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--sky);">How It Works</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">A three-tier architecture for sovereign AI</h2>
+    <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
+      <p>The Public AI Company is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
+    </div>
+    <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 1</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">The Consortium Core</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Shared model building (especially pretraining), shared compute and expertise, shared market strategy and branding. This is the unified lab that competes on the global stage.</p>
+      </div>
+      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--cyan);">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 2</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">National Entities</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each country identifies or organizes at least one participating entity: an existing national champion (Mistral, Cohere), a public lab (Spain's BSC, Japan's RIKEN), or a new public-private partnership. These link the consortium to public compute, local markets, and national populations.</p>
+      </div>
+      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--green);">
+        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 3</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Local Layer</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each national entity handles localization, in-country deployment, and public engagement. This ensures the Public AI Company serves local needs, languages, and regulatory contexts while benefiting from shared frontier capabilities.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FUND EXPLAINER -->
+<div class="narrative-block wide fade-up" id="fund" style="max-width:100%;padding:3rem 2rem;background:var(--off-white);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--purple);">The Airbus for AI Fund</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">How to finance a Public AI Company</h2>
+    <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
+      <p>Building a frontier AI lab requires patient, strategic capital. The Airbus for AI Fund is a proposed transnational investment vehicle, modeled on the NATO Innovation Fund's multi-sovereign LP structure and EuroHPC's pooled compute logic, designed to acquire, integrate, and finance shared AI infrastructure.</p>
+      <p>The fund's edge is <strong>governance-as-core-technology</strong>: holding-company structures that separate IP, operations, and deployment; contractual veto rights on capex duplication to prevent wasteful parallel spending; pre-agreed deadlock resolution mechanisms; and ring-fenced national interfaces with shared core infrastructure. This governance architecture enables integration without requiring full political merger.</p>
+    </div>
+    <div id="fundGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Anchor Investment</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Government takes a cornerstone equity stake and provides compute infrastructure + procurement contracts. Model: Franco-German Compute JV, ~EUR 35M cornerstone equity consolidating two national GPU programs.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Strategic Merger</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Two or more publicly funded model teams merge into a shared IP holding company with single compliance infrastructure under the AI Act. Model: Northern Europe Foundation Model Roll-Up, ~EUR 25M minority stake.</p>
+      </div>
+      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Collective Equity</div>
+        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance. See <a href="https://collectiveequity.com" target="_blank" style="color:var(--sky);">collectiveequity.com</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CTA + SIGN-ON -->
 <section class="cta-section" id="sign-on">
   <h2>The question isn't whether.<br>It's when.</h2>
@@ -1354,133 +1457,6 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     </div>
   </details>
 </div>
-
-<!-- ASSEMBLY -->
-<section class="assembly-zone" id="assembly">
-  <div class="assembly-inner">
-    <div class="section-header center">
-      <h2>Assemble the Entity</h2>
-      <p>Click companies to merge them into the reactor. Watch the power grow.</p>
-    </div>
-    <div class="assembly-layout">
-      <div>
-        <div class="dock-label">Available Companies</div>
-        <div class="company-dock" id="companyDock"></div>
-      </div>
-      <div class="fusion-reactor" id="reactor">
-        <div class="reactor-ring" id="reactorRing">
-          <div class="reactor-center" id="reactorCenter">
-            <div class="reactor-empty-msg">Click a company to begin the merger</div>
-          </div>
-        </div>
-        <div class="merge-btn-wrap">
-          <button class="btn btn-action" id="mergeAllBtn">Merge All Companies</button>
-          <button class="btn btn-ghost btn-sm" id="shareBtn" title="Copy shareable link">Share Link</button>
-          <button class="btn btn-ghost btn-sm" id="exportBtn" title="Export as PDF deck">Export Deck</button>
-        </div>
-      </div>
-      <div class="live-panel" id="livePanel">
-        <div class="live-panel-title"><span class="live-dot"></span> Live Merger Stats</div>
-        <div id="liveStats" aria-live="polite"></div>
-        <div class="achievements">
-          <div class="achieve-label">Achievements</div>
-          <div class="achieve-row" id="achievements"></div>
-        </div>
-        <div class="data-source" id="dataSource">
-          Data: public estimates (2025-2026)<br>
-          <a id="importDataLink" href="#">Load custom data (JSON)</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MERGE CONTEXT (appears when companies are added) -->
-<div class="merge-context hidden" id="mergeContext"></div>
-
-<!-- FUND EXPLAINER -->
-<div class="narrative-block wide fade-up" id="fund" style="max-width:100%;padding:3rem 2rem;background:var(--off-white);">
-  <div style="max-width:900px;margin:0 auto;">
-    <div class="narrative-kicker" style="color:var(--purple);">The Airbus for AI Fund</div>
-    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">How to finance a Public AI Company</h2>
-    <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
-      <p>Building a frontier AI lab requires patient, strategic capital. The Airbus for AI Fund is a proposed transnational investment vehicle, modeled on the NATO Innovation Fund's multi-sovereign LP structure and EuroHPC's pooled compute logic, designed to acquire, integrate, and finance shared AI infrastructure.</p>
-      <p>The fund's edge is <strong>governance-as-core-technology</strong>: holding-company structures that separate IP, operations, and deployment; contractual veto rights on capex duplication to prevent wasteful parallel spending; pre-agreed deadlock resolution mechanisms; and ring-fenced national interfaces with shared core infrastructure. This governance architecture enables integration without requiring full political merger.</p>
-    </div>
-    <div id="fundGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
-      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
-        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Anchor Investment</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Government takes a cornerstone equity stake and provides compute infrastructure + procurement contracts. Model: Franco-German Compute JV, ~EUR 35M cornerstone equity consolidating two national GPU programs.</p>
-      </div>
-      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
-        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Strategic Merger</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Two or more publicly funded model teams merge into a shared IP holding company with single compliance infrastructure under the AI Act. Model: Northern Europe Foundation Model Roll-Up, ~EUR 25M minority stake.</p>
-      </div>
-      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
-        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Collective Equity</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance. See <a href="https://collectiveequity.com" target="_blank" style="color:var(--sky);">collectiveequity.com</a>.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- THREE-TIER ARCHITECTURE -->
-<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:white;">
-  <div style="max-width:900px;margin:0 auto;">
-    <div class="narrative-kicker" style="color:var(--sky);">How It Works</div>
-    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">A three-tier architecture for sovereign AI</h2>
-    <div class="narrative-body" style="font-size:0.95rem;margin-bottom:2rem;">
-      <p>The Public AI Company is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
-    </div>
-    <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
-      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
-        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 1</div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">The Consortium Core</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Shared model building (especially pretraining), shared compute and expertise, shared market strategy and branding. This is the unified lab that competes on the global stage.</p>
-      </div>
-      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--cyan);">
-        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 2</div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">National Entities</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each country identifies or organizes at least one participating entity: an existing national champion (Mistral, Cohere), a public lab (Spain's BSC, Japan's RIKEN), or a new public-private partnership. These link the consortium to public compute, local markets, and national populations.</p>
-      </div>
-      <div style="background:var(--off-white);border-radius:10px;padding:1.5rem;border-left:4px solid var(--green);">
-        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 3</div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Local Layer</div>
-        <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each national entity handles localization, in-country deployment, and public engagement. This ensures the Public AI Company serves local needs, languages, and regulatory contexts while benefiting from shared frontier capabilities.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- NARRATIVE: THE CONFRONTATION -->
-<div class="narrative-block wide fade-up" style="background: var(--navy-dark); color: white; max-width: 100%; padding: 5rem 2rem;">
-  <div style="max-width: 720px; margin: 0 auto;">
-    <div class="narrative-kicker" style="color: var(--cyan);">The Stress Test</div>
-    <h2 class="narrative-heading">Now test it against the incumbents.</h2>
-    <div class="narrative-body" style="color: rgba(255,255,255,0.75);">
-      <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI hit ~$20B in revenue in 2025<sup class="fn"><a href="#fn9">[9]</a></sup> and now runs at ~$24B annualized. Anthropic hit $14B ARR in February 2026, up from $1B just 14 months earlier.<sup class="fn"><a href="#fn10">[10]</a></sup> Google Gemini sits atop the world's largest compute infrastructure. xAI reached a $230B valuation in January 2026.<sup class="fn"><a href="#fn11">[11]</a></sup></p>
-      <p>The gap is real. But it's not permanent. Use the <strong style="color:white;">scenario levers</strong> below to model what happens when governments invest: compute buildouts, procurement contracts, capital injections, talent programs. <strong style="color:white;">Every lever you pull changes the outcome.</strong></p>
-    </div>
-  </div>
-</div>
-
-<!-- THE STRESS TEST -->
-<section class="battle-section" id="battle">
-  <div class="battle-inner">
-    <div class="battle-header">
-      <h2>The Stress Test</h2>
-      <p>Pick a US hyperscaler to challenge. See where the merged entity wins and loses. Then invest government resources to close the gap.</p>
-    </div>
-    <div class="challenger-row" id="challengerRow"></div>
-    <div class="battle-scoreboard" id="battleScoreboard" aria-live="polite"></div>
-    <div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">Scores out of 99 &mdash; editorial estimates based on public data. Merged scores include a synergy bonus that assumes coordination benefits. These are illustrative, not predictive. <strong style="color:rgba(255,255,255,0.55);">Tap or hover any round</strong> to see the evidence. <a href="#" onclick="openImportModal();return false;" style="color:rgba(255,255,255,0.4);">Import your own data</a>.</div>
-    <div class="battle-rounds" id="battleRounds"></div>
-    <div class="scenario-levers" id="scenarioLevers">
-      <div class="scenario-levers-label">Government Investment in Public AI Co. &mdash; pull levers to boost the merged entity</div>
-    </div>
-    <div class="battle-verdict" id="battleVerdict" aria-live="polite"></div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer class="site-footer" id="references">
