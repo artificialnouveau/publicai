@@ -1796,8 +1796,12 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
 <footer class="site-footer" id="references">
   <div style="max-width:900px; margin:0 auto; text-align:left; padding:2rem;">
 
-    <strong>Footnotes</strong>
-    <ol class="fn-list" style="margin-bottom:2rem;">
+    <details id="footnotes-details" style="margin:0 0 1.5rem;border:1px solid rgba(0,32,91,0.15);border-radius:8px;padding:0;">
+    <summary style="padding:0.75rem 1rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);list-style:none;">
+      Footnotes <span style="font-family:var(--mono);font-size:0.7rem;font-weight:500;color:var(--text-muted);letter-spacing:0.05em;">(24 sources)</span>
+    </summary>
+    <div style="padding:0 1rem 1rem;">
+    <ol class="fn-list" style="margin-bottom:0;">
       <li id="fn1"><strong>[1]</strong> StatCounter, "ChatGPT sends 79% of all chatbot referrals to websites" (May 2025). Measures chatbot-driven referral traffic to websites globally. <a href="https://gs.statcounter.com/press/new-statcounter-ai-data-finds-chatgpt-sends-79-perc-of-all-chatbot-referrals-to-websites" target="_blank">gs.statcounter.com</a></li>
       <li id="fn2"><strong>[2]</strong> StatCounter AI Chatbot Market Share, France (March 2026). Top 5: ChatGPT 76.4%, Gemini 7.5%, Perplexity 7.4%, Copilot 4.9%, Claude 3.9%. Mistral/Le Chat does not appear. <a href="https://gs.statcounter.com/ai-chatbot-market-share/all/france" target="_blank">gs.statcounter.com</a></li>
       <li id="fn3"><strong>[3]</strong> Airbus was incorporated in 1970 with 0% market share and first surpassed Boeing in deliveries in 2003. Today holds roughly 50-60% of the large commercial aircraft duopoly. <a href="https://en.wikipedia.org/wiki/Competition_between_Airbus_and_Boeing" target="_blank">Wikipedia: Competition between Airbus and Boeing</a></li>
@@ -1823,6 +1827,8 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
       <li id="fn23"><strong>[23]</strong> Aggregate coalition figures are sums of individual company data: Combined value ($24B+) = Mistral $13.8B + Cohere $7B + DeepL $2B + Stability AI $1B + Aleph Alpha ~$0.5B + Multiverse ~$0.5B. Combined customers (232K+) = DeepL 200K+ + Cohere 17K+ + Stability AI ~10K + Mistral ~5K. Individual sources listed under Company Data above.</li>
       <li id="fn24"><strong>[24]</strong> The US alleged $22B in launch aid and other subsidies to Airbus in its WTO dispute (DS316). The EU disputed the figure but acknowledged substantial government support. <a href="https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds316_e.htm" target="_blank">WTO DS316: EC and Certain Member States &mdash; Large Civil Aircraft</a></li>
     </ol>
+    </div>
+    </details>
 
     <details style="margin:1.5rem 0;border:1px solid rgba(0,32,91,0.15);border-radius:8px;padding:0;">
       <summary style="padding:0.75rem 1rem;cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--navy);">Scoring Methodology &amp; Data Freshness</summary>
@@ -2243,7 +2249,7 @@ p { font-size: 12px; color: #4a5568; line-height: 1.6; margin-bottom: 6px; }
 .infra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
 .infra { padding: 8px 10px; background: #f7f8fa; border-radius: 6px; font-size: 11px; }
 .infra .val { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #0077c8; }
-.section-divider { border: none; border-top: 1px solid #eef0f4; margin: 16px 0; }
+.section-divider { border: none; border-top: 1px solid #eef0f4; margin: 32px 0 20px; }
 .eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #0077c8; margin-bottom: 4px; }
 .footer-note { font-size: 9px; color: #9ca3af; margin-top: 16px; line-height: 1.5; }
 .page-break { page-break-before: always; }
@@ -3719,13 +3725,43 @@ function openTargetedDetails() {
   if (!hash || hash.length < 2) return;
   let el;
   try { el = document.querySelector(hash); } catch { return; }
-  if (el && el.tagName === 'DETAILS' && !el.open) {
-    el.open = true;
-    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  if (!el) return;
+  // If the target itself is a details, open it. Also walk up and open any
+  // ancestor details (e.g. clicking a footnote ref [3] should open the
+  // Footnotes details so the user can see fn3 inside it).
+  let opened = null;
+  let cur = el;
+  while (cur && cur !== document.body) {
+    if (cur.tagName === 'DETAILS' && !cur.open) {
+      cur.open = true;
+      opened = opened || cur;
+    }
+    cur = cur.parentElement;
+  }
+  if (opened) {
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
   }
 }
 window.addEventListener('hashchange', openTargetedDetails);
 openTargetedDetails();
+
+// Clicking a same-hash link doesn't fire hashchange, but the browser still
+// scrolls to the target. If the target sits inside a closed details, ensure
+// we open the ancestors anyway.
+document.addEventListener('click', e => {
+  const link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  if (href.length < 2) return;
+  let target;
+  try { target = document.querySelector(href); } catch { return; }
+  if (!target) return;
+  let cur = target;
+  while (cur && cur !== document.body) {
+    if (cur.tagName === 'DETAILS' && !cur.open) cur.open = true;
+    cur = cur.parentElement;
+  }
+});
 
 // Side-rail scroll-spy: highlight the chapter whose top has crossed a 30%-from-top
 // trigger line, so the rail acts as a "you are here" indicator while scrolling.
