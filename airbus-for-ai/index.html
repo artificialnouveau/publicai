@@ -726,12 +726,12 @@ details.skeptic-q:hover > summary { background: var(--white); }
 /* === COLLAPSIBLE CHAPTER DETAILS === */
 details.chapter-details {
   scroll-margin-top: 80px;
-  margin: 0.5rem auto;
-  max-width: 1200px;
+  margin: 0;
   background: transparent;
-  border-radius: 12px;
-  overflow: hidden;
 }
+/* Wrapper around each summary so we can have rounded card corners
+   inside a max-width box without clipping the full-width content
+   that follows when the details opens. */
 details.chapter-details > summary.chapter-summary {
   list-style: none;
   cursor: pointer;
@@ -740,6 +740,8 @@ details.chapter-details > summary.chapter-summary {
   background: var(--off-white);
   border: 1px solid var(--light-gray);
   border-radius: 12px;
+  margin: 0.5rem auto;
+  max-width: 1200px;
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 details.chapter-details:hover > summary.chapter-summary {
@@ -747,6 +749,7 @@ details.chapter-details:hover > summary.chapter-summary {
   transform: translateY(-1px);
 }
 details.chapter-details[open] > summary.chapter-summary {
+  margin-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
