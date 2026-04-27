@@ -710,6 +710,13 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 @media (max-width: 900px) { .page-outline { display: none; } }
 @media print { .page-outline { display: none; } }
 
+/* === SKEPTIC Q&A === */
+details.skeptic-q > summary { list-style: none; }
+details.skeptic-q > summary::-webkit-details-marker { display: none; }
+details.skeptic-q > summary::marker { content: ''; }
+details.skeptic-q[open] > summary { color: var(--sky); }
+details.skeptic-q:hover > summary { background: var(--white); }
+
 /* === COLLAPSIBLE CHAPTER DETAILS === */
 details.chapter-details {
   scroll-margin-top: 80px;
@@ -788,7 +795,7 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
   <div class="chapter-summary-text">
     <div class="chapter-summary-kicker" style="color:var(--red);">1. The Problem</div>
     <div class="chapter-summary-title">Who controls the AI today &mdash; and what it costs</div>
-    <div class="chapter-summary-desc">Dashboard, growth gap, cost of inaction, and the risks of trying to fix it. The full case for why middle powers can't afford to keep buying.</div>
+    <div class="chapter-summary-desc">Dashboard, growth gap, cost of inaction, the risks of fixing it, and Convince Me: the strongest objections steelmanned with the strongest replies.</div>
   </div>
   <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
@@ -1161,6 +1168,69 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
     </div>
   </div>
 </div>
+
+<!-- CONVINCE ME / SKEPTIC PATH (inside Problem chapter) -->
+<div class="narrative-block wide fade-up" style="background:white;max-width:100%;padding:3rem 2rem;">
+  <div style="max-width:780px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--red);">Convince Me</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The strongest objections, and the strongest replies.</h2>
+    <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1.5rem;line-height:1.65;">If a Public AI Company is the right answer, why hasn't it happened? Five real objections, steelmanned, with the strongest reply to each. Click any question.</p>
+
+    <div style="display:flex;flex-direction:column;gap:0.6rem;">
+
+      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
+        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
+          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q1.</span><span>Won't 11-nation governance be a coordination nightmare?</span></span>
+          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
+        </summary>
+        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
+          <p style="margin-top:1rem;"><strong style="color:var(--navy);">It is hard.</strong> Airbus nearly collapsed under Franco-German management conflict more than once. Three things make AI different. <strong style="color:var(--navy);">First,</strong> templates already work: EuroHPC coordinates 33 countries on shared compute today; ESA runs 22 nations; CERN runs 24. <strong style="color:var(--navy);">Second,</strong> day one is 2&ndash;3 anchor countries, not 11. The Bennett brief proposes starting with France/Germany plus one of UK/Japan/Canada and expanding from there. <strong style="color:var(--navy);">Third,</strong> the holding-company governance pattern (separated IP, operations, and deployment, with veto rights against duplicated capex) is built specifically to neutralize the Airbus failure modes.</p>
+        </div>
+      </details>
+
+      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
+        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
+          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q2.</span><span>AI isn't aircraft. You can't merge a translator, a defense lab, and a chip monopoly into one company.</span></span>
+          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
+        </summary>
+        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
+          <p style="margin-top:1rem;"><strong style="color:var(--navy);">Right &mdash; and the merger doesn't pretend to.</strong> The proposal isn't a single product company. The merger is at the holding, compute, and commercial-strategy layer. Mistral keeps building Mistral models. DeepL keeps building translation. Helsing keeps building defense AI. ASML stays a public listed company entirely. What's <em>shared</em> is procurement leverage, GPU access, regulatory compliance work, and a coordinated commercial strategy against US hyperscalers. Think Airbus's structure (one holding, multiple national subsidiaries with their own R&amp;D), not a forced product merger.</p>
+        </div>
+      </details>
+
+      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
+        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
+          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q3.</span><span>Top researchers will keep leaving for US labs. Money plus compute plus GPU access wins.</span></span>
+          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
+        </summary>
+        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
+          <p style="margin-top:1rem;"><strong style="color:var(--navy);">Compute is the bigger reason than salary.</strong> The Public AI Company's anchor purpose is pooled compute access at frontier scale, which most national labs cannot offer alone. BSC's MareNostrum 5 already trains Salamandra in 35 European languages on 4,480 H100s. Mistral's 13.8K-GPU Paris data center already exists, with a 200MW target by 2027. Pooling those plus EuroHPC AI Factory sites gets you to a compute envelope a researcher can build a career on. Salaries still matter, but compute is the threshold; below it, no salary helps.</p>
+        </div>
+      </details>
+
+      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
+        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
+          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q4.</span><span>$24B coalition can't catch $852B OpenAI. The gap is too wide.</span></span>
+          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
+        </summary>
+        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
+          <p style="margin-top:1rem;"><strong style="color:var(--navy);">You don't need to catch them in their market. You need to win yours.</strong> Airbus didn't beat Boeing; it captured roughly half of a market that wasn't winner-take-all. The Public AI Company's addressable market is sovereign deployment, language coverage, regulated industries (banking, health, defense, government), latency-sensitive workloads, and citizens whose data legally cannot sit on US servers under the CLOUD Act. US labs structurally can't compete in that wedge &mdash; not because they're worse, but because their compliance posture and ownership structure rule them out. The gap that matters isn't $24B vs $852B; it's "can the merged entity reach good-enough capability for that wedge?"</p>
+        </div>
+      </details>
+
+      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
+        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
+          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q5.</span><span>By the time you build it, frontier AI will have moved on. You'll always be one cycle behind.</span></span>
+          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
+        </summary>
+        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
+          <p style="margin-top:1rem;"><strong style="color:var(--navy);">True for frontier-only metrics. False for the actual demand.</strong> Most of what middle-power governments, citizens, and regulated sectors need (multilingual support, on-device or sovereign-cloud inference, regulatory compliance, defense applications, government workloads) doesn't require being at the absolute frontier. Reaching GPT-4o or Claude 3.5 class capability sovereignly is enough for 90% of the addressable wedge, and that target is moving more slowly than headline frontier benchmarks. Frontier obsession is a US-narrative trap; sovereignty buyers are price-sensitive on capability, not capability-obsessed.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</div>
 </details>
 
 <!-- 2. THE STORY -->
@@ -1368,13 +1438,30 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
 <summary class="chapter-summary">
   <div class="chapter-summary-text">
     <div class="chapter-summary-kicker" style="color:var(--gold);">Appendix &middot; Timeline</div>
-    <div class="chapter-summary-title">The 10-Year Roadmap</div>
-    <div class="chapter-summary-desc">From first handshake to competitive parity. Each milestone builds on the last.</div>
+    <div class="chapter-summary-title">The Airbus Parallel + 10-Year Roadmap</div>
+    <div class="chapter-summary-desc">Airbus's actual market-share trajectory plotted against a Public AI Co projection on the same axis. Then milestone by milestone, what coordinated AI sovereignty would actually require.</div>
   </div>
   <div class="chapter-summary-affordance"><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
 <section class="timeline-section">
   <div class="timeline-inner">
+
+    <!-- AIRBUS PARALLEL CHART -->
+    <div style="background:white;border:1px solid rgba(0,32,91,0.08);border-radius:12px;padding:1.5rem 1.75rem 1.25rem;margin-bottom:2.5rem;box-shadow:0 2px 12px rgba(0,32,91,0.04);">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.4rem;">
+        <div style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);font-family:var(--mono);font-weight:700;">The Airbus Parallel</div>
+        <div style="font-size:0.65rem;color:var(--text-muted);font-family:var(--mono);">x-axis: years since founding</div>
+      </div>
+      <h3 style="font-size:clamp(1rem,2vw,1.25rem);font-weight:800;color:var(--navy);margin-bottom:0.4rem;letter-spacing:-0.01em;">Airbus reached half the global market in 33 years. AI moves faster.</h3>
+      <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.55;margin-bottom:1.25rem;">Airbus's actual market-share trajectory plotted against an illustrative Public AI Company projection on the same years-since-founding axis. The aerospace coalition needed three decades of subsidies and slow penetration. AI's faster cadence, plus existing labs and open-source models, makes a 10-year parity target plausible &mdash; not guaranteed.</p>
+      <canvas id="airbusParallelCanvas" style="width:100%;height:clamp(220px,38vw,360px);display:block;" role="img" aria-label="Two-line chart: Airbus market share grew from 0% in 1970 to 50% in 2003 over 33 years; projected Public AI Co market share grows from 0% in 2026 to 50% in 2036 over 10 years."></canvas>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:0.75rem;font-size:0.7rem;color:var(--text-secondary);font-family:var(--mono);">
+        <span><span style="display:inline-block;width:18px;height:2px;background:var(--navy);vertical-align:middle;margin-right:6px;"></span>Airbus actual (1970&ndash;2003)<sup class="fn"><a href="#fn3" style="color:inherit;">[3]</a></sup></span>
+        <span><span style="display:inline-block;width:18px;height:0;border-top:2px dashed var(--gold);vertical-align:middle;margin-right:6px;"></span>Public AI Co projected (2026&ndash;2036)</span>
+      </div>
+      <div style="margin-top:0.5rem;font-size:0.65rem;color:var(--text-muted);">Sources: Airbus deliveries vs Boeing (Wikipedia, Fortune); Public AI Co projection is illustrative, not predictive.</div>
+    </div>
+
     <div class="timeline-vertical" id="timelineVertical"></div>
   </div>
 </section>
@@ -3067,7 +3154,107 @@ window.addEventListener('resize', debounce(() => {
   // Redraw inaction chart and historical chart
   if (typeof renderInaction === 'function') renderInaction();
   if (typeof renderHistoricalChart === 'function') renderHistoricalChart();
+  if (typeof renderAirbusParallel === 'function') renderAirbusParallel();
 }, 250));
+
+// ============================================================
+// AIRBUS PARALLEL CHART (inside Roadmap appendix)
+// ============================================================
+const AIRBUS_PARALLEL_DATA = {
+  airbus: {
+    name: 'Airbus actual',
+    color: '#00205b',
+    dashed: false,
+    points: [
+      {y:0, v:0}, {y:5, v:0}, {y:10, v:5}, {y:15, v:10},
+      {y:20, v:25}, {y:25, v:30}, {y:30, v:40}, {y:33, v:50}
+    ]
+  },
+  publicAi: {
+    name: 'Public AI Co projected',
+    color: '#f0a500',
+    dashed: true,
+    points: [
+      {y:0, v:0}, {y:2, v:1}, {y:5, v:8}, {y:7, v:20}, {y:10, v:50}
+    ]
+  }
+};
+
+function renderAirbusParallel() {
+  const canvas = document.getElementById('airbusParallelCanvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  if (W === 0 || H === 0) return;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 42, padR = 50, padT = 22, padB = 32;
+  const cw = Math.max(1, W - padL - padR), ch = Math.max(1, H - padT - padB);
+  const maxYears = 35, maxPct = 60;
+  const xPos = y => padL + (y / maxYears) * cw;
+  const yPos = v => padT + ch - (v / maxPct) * ch;
+
+  // Grid + Y labels
+  ctx.strokeStyle = 'rgba(0,32,91,0.07)'; ctx.lineWidth = 1;
+  ctx.font = '9px JetBrains Mono, monospace';
+  for (let i = 0; i <= 6; i++) {
+    const yy = padT + (ch / 6) * i;
+    ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(padL + cw, yy); ctx.stroke();
+    ctx.fillStyle = 'rgba(0,32,91,0.45)'; ctx.textAlign = 'right';
+    ctx.fillText(Math.round(maxPct - (maxPct / 6) * i) + '%', padL - 5, yy + 3);
+  }
+
+  // X-axis labels (every 5 years)
+  ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(0,32,91,0.45)';
+  for (let yr = 0; yr <= maxYears; yr += 5) {
+    ctx.fillText(yr, xPos(yr), H - 8);
+  }
+
+  // Axis label
+  ctx.fillStyle = 'rgba(0,32,91,0.5)'; ctx.textAlign = 'left';
+  ctx.fillText('Market share', padL, padT - 6);
+
+  // 50% parity line
+  ctx.strokeStyle = 'rgba(0,32,91,0.18)';
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath(); ctx.moveTo(padL, yPos(50)); ctx.lineTo(padL + cw, yPos(50)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(0,32,91,0.45)'; ctx.textAlign = 'right';
+  ctx.fillText('parity (~50%)', padL + cw - 4, yPos(50) - 5);
+
+  // Plot lines
+  Object.values(AIRBUS_PARALLEL_DATA).forEach(d => {
+    ctx.strokeStyle = d.color;
+    ctx.lineWidth = 2.5;
+    if (d.dashed) ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    d.points.forEach((pt, i) => {
+      const px = xPos(pt.y), py = yPos(pt.v);
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Endpoint dot + end label
+    const last = d.points[d.points.length - 1];
+    ctx.fillStyle = d.color;
+    ctx.beginPath();
+    ctx.arc(xPos(last.y), yPos(last.v), 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = 'bold 10px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(`yr ${last.y} · ${last.v}%`, xPos(last.y) + 7, yPos(last.v) + 3);
+  });
+}
+
+const airbusParallelObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { renderAirbusParallel(); airbusParallelObs.disconnect(); } });
+}, { threshold: 0.1 });
+const apEl = document.getElementById('airbusParallelCanvas');
+if (apEl) airbusParallelObs.observe(apEl);
 
 // ============================================================
 // HISTORICAL AI LAB DATA CHART (2017-2025)
