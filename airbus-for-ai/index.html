@@ -82,8 +82,35 @@ h1, h2, h3, h4,
 }
 .topnav-brand svg { width: 28px; height: 28px; }
 .topnav-links { display: flex; gap: 1.5rem; }
-.topnav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+.topnav-links a { position: relative; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
 .topnav-links a:hover { color: var(--navy); }
+.topnav-links a[data-desc]::after {
+  content: attr(data-desc);
+  position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(-4px);
+  width: max-content; max-width: 260px;
+  background: var(--navy); color: rgba(255,255,255,0.92);
+  font-size: 0.75rem; font-weight: 400; line-height: 1.45; letter-spacing: 0;
+  padding: 0.6rem 0.8rem; border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 200;
+  white-space: normal;
+}
+.topnav-links a[data-desc]::before {
+  content: ''; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  border: 6px solid transparent; border-bottom-color: var(--navy);
+  opacity: 0; transition: opacity 0.18s ease;
+  z-index: 201;
+}
+.topnav-links a[data-desc]:hover::after,
+.topnav-links a[data-desc]:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+.topnav-links a[data-desc]:hover::before,
+.topnav-links a[data-desc]:focus-visible::before { opacity: 1; }
+@media (max-width: 768px) {
+  .topnav-links a[data-desc]::after,
+  .topnav-links a[data-desc]::before { display: none; }
+}
 
 
 /* === HERO === */
@@ -692,10 +719,10 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
     <svg viewBox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   </div>
   <div class="topnav-links">
-    <a href="#dashboard" style="color:var(--red);">1. The Problem</a>
-    <a href="narrative.html" style="color:var(--sky);">2. The Story</a>
-    <a href="#assembly" style="color:var(--gold);">3. Build It</a>
-    <a href="#battle" style="color:var(--green);">4. Test It</a>
+    <a href="#dashboard" style="color:var(--red);" data-desc="Who controls frontier AI today, and what your country loses by buying access instead of building it.">1. The Problem</a>
+    <a href="narrative.html" style="color:var(--sky);" data-desc="How Europe built Airbus when no single country could rival Boeing alone, and why the same logic applies to AI.">2. The Story</a>
+    <a href="#assembly" style="color:var(--gold);" data-desc="Drag middle-power AI labs together and watch the merged entity's compute, talent, and market power add up.">3. Build It</a>
+    <a href="#battle" style="color:var(--green);" data-desc="Stress-test your assembled entity against Big Tech across five fights: compute, talent, capital, distribution, and policy.">4. Test It</a>
   </div>
 </nav>
 
