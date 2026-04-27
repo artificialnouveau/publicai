@@ -476,7 +476,8 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 }
 .timeline-vertical::before {
   content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
-  width: 3px; background: linear-gradient(180deg, var(--sky), var(--cyan), var(--green));
+  width: 3px;
+  background: linear-gradient(180deg, transparent 0%, var(--sky) 6%, var(--cyan) 50%, var(--green) 94%, transparent 100%);
   border-radius: 2px;
 }
 .tl-card {
@@ -941,7 +942,7 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
 <summary class="chapter-summary">
   <div class="chapter-summary-text">
     <div class="chapter-summary-kicker" style="color:var(--red);">1. The Problem</div>
-    <div class="chapter-summary-title">Who controls the AI today &mdash; and what it costs</div>
+    <div class="chapter-summary-title">Who controls the AI today and what it costs</div>
     <div class="chapter-summary-desc">Dashboard, growth gap, cost of inaction, the risks of fixing it, and Convince Me: the strongest objections steelmanned with the strongest replies.</div>
   </div>
   <div class="chapter-summary-affordance"><span class="chapter-summary-time">~6 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
@@ -1457,6 +1458,7 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
         </div>
         <div class="merge-btn-wrap">
           <button class="btn btn-action" id="mergeAllBtn">Merge All Companies</button>
+          <button class="btn btn-ghost btn-sm" id="clearMergeBtn" title="Remove all companies from the merger">Clear Selection</button>
           <button class="btn btn-ghost btn-sm" id="shareBtn" title="Copy shareable link">Share Link</button>
         </div>
       </div>
@@ -1616,6 +1618,13 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
         <span><span style="display:inline-block;width:18px;height:0;border-top:2px dashed var(--gold);vertical-align:middle;margin-right:6px;"></span>Public AI Co projected (2026&ndash;2036)</span>
       </div>
       <div style="margin-top:0.5rem;font-size:0.65rem;color:var(--text-muted);">Sources: Airbus deliveries vs Boeing (Wikipedia, Fortune); Public AI Co projection is illustrative, not predictive.</div>
+    </div>
+
+    <!-- ROADMAP HEADER -->
+    <div style="text-align:center;margin:3rem auto 1.5rem;max-width:680px;">
+      <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-family:var(--mono);font-weight:700;margin-bottom:0.6rem;">The 10-Year Roadmap</div>
+      <h3 style="font-size:clamp(1.3rem,2.6vw,1.8rem);font-weight:800;color:var(--navy);margin-bottom:0.6rem;letter-spacing:-0.02em;line-height:1.2;">From first handshake to competitive parity</h3>
+      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.65;">Each milestone below is a checkpoint along the trajectory shown in the chart above. Hover or tap any year for the underlying numbers. Illustrative, not predictive.</p>
     </div>
 
     <div class="timeline-vertical" id="timelineVertical"></div>
@@ -2844,6 +2853,11 @@ function init() {
 
   // Wire up buttons
   document.getElementById('shareBtn').addEventListener('click', copyShareLink);
+  document.getElementById('clearMergeBtn')?.addEventListener('click', () => {
+    if (S.merged.size === 0) return;
+    S.merged.clear();
+    updateEverything();
+  });
   document.getElementById('ctaExportBtn')?.addEventListener('click', exportDeck);
   document.getElementById('importDataLink').addEventListener('click', e => { e.preventDefault(); openImportModal(); });
   document.getElementById('importCancel').addEventListener('click', closeImportModal);
