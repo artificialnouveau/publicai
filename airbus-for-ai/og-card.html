@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OG Card preview - Airbus for AI</title>
+<style>
+  /* This page exists to render og-card.svg at exact 1200x630 for screenshot
+     conversion to og-card.png (some embeds, notably Twitter and Facebook,
+     prefer raster). Open this in a browser, set viewport to >=1200px wide,
+     screenshot the .frame element, and save as og-card.png next to og-card.svg.
+     Then update the og:image and twitter:image meta tags in index.html to
+     point to og-card.png instead of og-card.svg.
+
+     Quick conversion options:
+       - macOS Chrome DevTools > capture node screenshot of .frame
+       - rsvg-convert -w 1200 og-card.svg > og-card.png
+       - https://cloudconvert.com/svg-to-png (1200px width) */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+    color: #fff;
+  }
+  .frame {
+    width: 1200px;
+    height: 630px;
+    display: block;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .frame img { width: 100%; height: 100%; display: block; }
+  .note {
+    max-width: 720px;
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.6);
+  }
+  .note code {
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <img src="og-card.svg" alt="OG card: Airbus for AI" width="1200" height="630">
+  </div>
+  <p class="note">
+    Preview of the 1200x630 social card for screenshot conversion to PNG.<br>
+    Save as <code>og-card.png</code> alongside <code>og-card.svg</code>, then point the
+    <code>og:image</code> and <code>twitter:image</code> meta tags at the PNG for
+    maximum compatibility (Facebook and X/Twitter prefer raster).
+  </p>
+</body>
+</html>

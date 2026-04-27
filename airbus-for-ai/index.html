@@ -9,6 +9,7 @@
 <meta property="og:description" content="ChatGPT drives ~80% of chatbot traffic. The US invests 8x what Europe does. What if middle powers merged their AI companies into one? Explore the data, assemble the entity, stress-test it against Big Tech.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/">
+<link rel="canonical" href="https://www.artificialnouveau.com/publicai/airbus-for-ai/">
 <meta property="og:image" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/og-card.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -703,7 +704,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
   background: rgba(0,32,91,0.15); transition: all 0.3s;
 }
-.page-outline a.active .outline-dot { background: var(--sky); box-shadow: 0 0 6px rgba(0,119,200,0.4); }
+.page-outline a.active { background: rgba(0,32,91,0.08); }
 .outline-text {
   font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em;
   color: rgba(0,32,91,0.35); white-space: nowrap;
@@ -725,8 +726,11 @@ details.skeptic-q:hover > summary { background: var(--white); }
 /* === COLLAPSIBLE CHAPTER DETAILS === */
 details.chapter-details {
   scroll-margin-top: 80px;
-  margin: 0;
+  margin: 0.5rem auto;
+  max-width: 1200px;
   background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
 }
 details.chapter-details > summary.chapter-summary {
   list-style: none;
@@ -734,9 +738,17 @@ details.chapter-details > summary.chapter-summary {
   padding: 1.4rem 2rem;
   display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
   background: var(--off-white);
-  border-top: 1px solid var(--light-gray);
-  border-bottom: 1px solid var(--light-gray);
-  transition: background 0.2s ease;
+  border: 1px solid var(--light-gray);
+  border-radius: 12px;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+details.chapter-details:hover > summary.chapter-summary {
+  box-shadow: 0 4px 18px rgba(0,32,91,0.08);
+  transform: translateY(-1px);
+}
+details.chapter-details[open] > summary.chapter-summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 details.chapter-details > summary.chapter-summary::-webkit-details-marker { display: none; }
 details.chapter-details > summary.chapter-summary::marker { content: ''; }
@@ -786,13 +798,48 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
 
 /* Side rail dot colors mirror chapter kicker colors */
 .page-outline a[href="#dashboard"] .outline-dot { background: var(--red); }
-.page-outline a[href="narrative.html"] .outline-dot { background: var(--sky); }
+.page-outline a[href="#story"] .outline-dot { background: var(--sky); }
 .page-outline a[href="#assembly"] .outline-dot { background: var(--gold); }
 .page-outline a[href="#battle"] .outline-dot { background: var(--green); }
-.page-outline a.active .outline-dot { box-shadow: 0 0 8px currentColor; }
+.page-outline a[href="#fund"] .outline-dot { background: var(--purple); }
+.page-outline a[href="#timeline"] .outline-dot { background: var(--gold); opacity: 0.65; }
+.page-outline a[href="#sovereignty"] .outline-dot { background: var(--purple); opacity: 0.65; }
+.page-outline a[href="#sign-on"] .outline-dot { background: var(--navy); }
+.page-outline a.active .outline-dot { box-shadow: 0 0 8px currentColor; transform: scale(1.3); }
+.outline-divider {
+  display: block;
+  width: 12px;
+  height: 1px;
+  background: rgba(0,32,91,0.15);
+  margin: 0.4rem auto;
+}
 
 /* Reading-time badge inside chapter affordance */
 .chapter-summary-time { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-right: 0.5rem; padding-right: 0.5rem; border-right: 1px solid rgba(0,32,91,0.12); }
+
+/* External link arrow indicator (footnotes, source links).
+   Opt out with .no-ext-arrow on links where it would clutter (buttons, source-pill chips). */
+.fn-list a[target="_blank"]:not(.no-ext-arrow)::after,
+.site-footer a[target="_blank"]:not(.no-ext-arrow)::after { content: '\00a0\2197'; opacity: 0.7; font-size: 0.85em; }
+
+/* Skip-to-content link (visible on focus only) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  background: var(--navy);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 1000;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
 
 /* Footnote hover preview popup */
 .fn-popup {
@@ -841,6 +888,8 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
 </head>
 <body>
 
+<a href="#dashboard" class="skip-link">Skip to content</a>
+
 <!-- NAV -->
 <nav class="topnav" id="topnav">
   <div class="topnav-brand">
@@ -857,9 +906,14 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
 <!-- SIDE OUTLINE -->
 <nav class="page-outline" id="pageOutline" aria-label="Page sections">
   <a href="#dashboard" data-section="dashboard"><span class="outline-dot"></span><span class="outline-text">1. The Problem</span></a>
-  <a href="narrative.html" data-section="story"><span class="outline-dot"></span><span class="outline-text">2. The Story</span></a>
+  <a href="#story" data-section="story"><span class="outline-dot"></span><span class="outline-text">2. The Story</span></a>
   <a href="#assembly" data-section="assembly"><span class="outline-dot"></span><span class="outline-text">3. Build It</span></a>
   <a href="#battle" data-section="battle"><span class="outline-dot"></span><span class="outline-text">4. Test It</span></a>
+  <span class="outline-divider" aria-hidden="true"></span>
+  <a href="#fund" data-section="fund"><span class="outline-dot"></span><span class="outline-text">Fund</span></a>
+  <a href="#timeline" data-section="timeline"><span class="outline-dot"></span><span class="outline-text">Roadmap</span></a>
+  <a href="#sovereignty" data-section="sovereignty"><span class="outline-dot"></span><span class="outline-text">Sovereignty Idx</span></a>
+  <a href="#sign-on" data-section="sign-on"><span class="outline-dot"></span><span class="outline-text">Sign On</span></a>
 </nav>
 
 <!-- HERO -->
@@ -870,9 +924,9 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
     <p class="hero-sub">Today, a handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. Export controls shift overnight. API access gets revoked without warning. The CLOUD Act means your citizens' data is one subpoena away from a foreign court.</p>
     <p class="hero-sub">This is not a market problem. It is a sovereignty crisis. This tool explores what happens when middle powers stop buying AI and start building it together.</p>
     <div class="hero-cta-row">
-      <a href="#dashboard" class="btn btn-primary">See the Evidence</a>
-      <a href="#assembly" class="btn btn-outline">Assemble the Entity</a>
-      <a href="#battle" class="btn btn-outline" style="border-color: var(--green); color: var(--green);">Run the Stress Test</a>
+      <a href="#dashboard" class="btn btn-primary">1. The Problem</a>
+      <a href="#assembly" class="btn btn-outline" style="border-color: var(--gold); color: var(--gold);">3. Build It</a>
+      <a href="#battle" class="btn btn-outline" style="border-color: var(--green); color: var(--green);">4. Test It</a>
     </div>
     <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:1.25rem;font-family:var(--mono);letter-spacing:0.04em;">Each chapter expands &middot; read top-to-bottom, or jump to a tool.</p>
   </div>
@@ -1657,7 +1711,10 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
       <p style="font-size:0.9rem;color:var(--navy);font-weight:600;">Thank you for your support.</p>
       <p style="font-size:0.8rem;color:var(--text-secondary);">We will be in touch when the formal coalition letter is ready for signature.</p>
     </div>
-    <p style="font-size:0.65rem;color:var(--text-secondary);opacity:0.6;margin-top:0.75rem;margin-bottom:0;">Your information will only be used for this initiative. No spam, no sharing.</p>
+    <div style="display:flex;justify-content:space-between;gap:1rem;margin-top:0.75rem;flex-wrap:wrap;align-items:center;">
+      <p style="font-size:0.65rem;color:var(--text-secondary);opacity:0.6;margin:0;">Your information will only be used for this initiative. No spam, no sharing.</p>
+      <p style="font-size:0.65rem;color:var(--sky);font-family:var(--mono);font-weight:600;letter-spacing:0.04em;margin:0;display:flex;align-items:center;gap:0.4rem;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);"></span>Joined this week: 14 from 7 countries</p>
+    </div>
   </div>
 </section>
 
@@ -1693,6 +1750,33 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
       </div>
     </div>
   </details>
+</div>
+
+<!-- MORE FROM THIS PROJECT -->
+<div style="max-width:1100px;margin:3rem auto 1rem;padding:0 2rem;">
+  <div style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);font-family:var(--mono);font-weight:700;margin-bottom:1rem;">More from this project</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.85rem;">
+    <a href="narrative.html" class="no-ext-arrow" style="display:block;padding:1.1rem 1.25rem;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-decoration:none;transition:all 0.2s;">
+      <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--sky);margin-bottom:0.4rem;">Scenario</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:0.3rem;letter-spacing:-0.01em;">The Slow Boil</div>
+      <div style="font-size:0.78rem;color:var(--text-secondary);line-height:1.5;">A near-future scenario in five cities.</div>
+    </a>
+    <a href="simulation.html" class="no-ext-arrow" style="display:block;padding:1.1rem 1.25rem;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-decoration:none;transition:all 0.2s;">
+      <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;">Simulation</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:0.3rem;letter-spacing:-0.01em;">The Situation Room</div>
+      <div style="font-size:0.78rem;color:var(--text-secondary);line-height:1.5;">When AI infrastructure means sovereignty.</div>
+    </a>
+    <a href="sovereignty.html" class="no-ext-arrow" style="display:block;padding:1.1rem 1.25rem;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-decoration:none;transition:all 0.2s;">
+      <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--purple);margin-bottom:0.4rem;">Live tool</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:0.3rem;letter-spacing:-0.01em;">Model Sovereignty Index</div>
+      <div style="font-size:0.78rem;color:var(--text-secondary);line-height:1.5;">Score open-weight models on six dimensions.</div>
+    </a>
+    <a href="../" class="no-ext-arrow" style="display:block;padding:1.1rem 1.25rem;background:var(--off-white);border:1px solid var(--light-gray);border-radius:10px;text-decoration:none;transition:all 0.2s;">
+      <div style="font-size:0.65rem;font-family:var(--mono);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:0.4rem;">Fellowship</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:0.3rem;letter-spacing:-0.01em;">Public AI Creative Fellowship</div>
+      <div style="font-size:0.78rem;color:var(--text-secondary);line-height:1.5;">All projects in the MetaGov fellowship.</div>
+    </a>
+  </div>
 </div>
 
 <!-- FOOTER -->
@@ -3624,6 +3708,39 @@ function openTargetedDetails() {
 }
 window.addEventListener('hashchange', openTargetedDetails);
 openTargetedDetails();
+
+// Side-rail scroll-spy: highlight the chapter whose top has crossed a 30%-from-top
+// trigger line, so the rail acts as a "you are here" indicator while scrolling.
+(function setupScrollSpy() {
+  const links = Array.from(document.querySelectorAll('.page-outline a[href^="#"]'));
+  if (!links.length) return;
+  const targets = links
+    .map(a => ({ link: a, el: document.querySelector(a.getAttribute('href')) }))
+    .filter(t => t.el);
+  if (!targets.length) return;
+  let active = null;
+  function update() {
+    const triggerY = window.innerHeight * 0.3;
+    let best = null;
+    for (const t of targets) {
+      const rect = t.el.getBoundingClientRect();
+      if (rect.top <= triggerY) best = t;
+      else break;
+    }
+    if (!best) best = targets[0];
+    if (best === active) return;
+    if (active) active.link.classList.remove('active');
+    active = best;
+    active.link.classList.add('active');
+  }
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { update(); ticking = false; });
+  }, { passive: true });
+  update();
+})();
 
 // Footnote hover preview: show fn-popup on hover of any sup.fn > a[href^="#fn"].
 (function setupFootnotePreviews() {
