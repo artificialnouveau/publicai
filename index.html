@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public AI Creative Fellowship — Ahnjili ZhuParris</title>
+<meta name="description" content="Interactive digital experiences exploring AI as public infrastructure — by Ahnjili ZhuParris, Creative Technologist Fellow at MetaGov.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/logo.jpg">
+
+<meta property="og:title" content="Public AI Creative Fellowship" />
+<meta property="og:description" content="Interactive digital experiences exploring AI as public infrastructure — by Ahnjili ZhuParris, Creative Technologist Fellow at MetaGov." />
+<meta property="og:url" content="https://www.artificialnouveau.com/publicai/" />
+<meta property="og:site_name" content="Ahnjili ZhuParris" />
+<meta property="og:type" content="website" />
+
+<style>
+:root {
+  --white: #ffffff;
+  --off-white: #f7f8fa;
+  --light-gray: #eef0f4;
+  --mid-gray: #c8cdd6;
+  --dark-gray: #6b7280;
+  --navy: #00205b;
+  --navy-light: #1a3a7a;
+  --navy-dark: #001540;
+  --sky: #0077c8;
+  --sky-light: #4da6e8;
+  --cyan: #00b4d8;
+  --gold: #f0a500;
+  --red: #e63946;
+  --green: #2ec4b6;
+  --purple: #7c3aed;
+  --text: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #9ca3af;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+
+/* === NAV === */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--light-gray);
+  padding: 0 2rem; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topnav-brand {
+  font-weight: 800; font-size: 1.1rem; color: var(--navy);
+  letter-spacing: -0.02em; text-decoration: none;
+}
+.topnav-links { display: flex; gap: 1.5rem; }
+.topnav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+.topnav-links a:hover { color: var(--navy); }
+
+/* === HERO === */
+.hero {
+  min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; padding: 8rem 2rem 4rem;
+  background: linear-gradient(170deg, var(--navy-dark) 0%, var(--navy) 40%, var(--sky) 100%);
+  color: white;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 5vw, 4.5rem); font-weight: 900;
+  line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1rem;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,0.75);
+  max-width: 640px; margin: 0 auto 2rem; line-height: 1.7;
+}
+.hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 2rem; border-radius: 8px;
+  font-family: var(--font); font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; border: none; text-decoration: none; transition: all 0.25s;
+}
+.btn-primary { background: var(--white); color: var(--navy); }
+.btn-primary:hover { background: var(--off-white); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
+.btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+/* === SECTIONS === */
+.section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section + .section { border-top: 1px solid var(--light-gray); }
+
+.section-eyebrow {
+  font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--sky);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 0.75rem; color: var(--navy);
+}
+.section-desc {
+  font-size: 1.1rem; color: var(--text-secondary); line-height: 1.8;
+  max-width: 700px; margin-bottom: 2.5rem;
+}
+.section-desc a { color: var(--sky); }
+
+/* === PROJECT GRID === */
+.project-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+.project-card {
+  display: block; padding: 2rem; background: var(--white);
+  border: 1px solid var(--light-gray); border-radius: var(--radius);
+  text-decoration: none; color: var(--text); transition: all 0.25s;
+}
+.project-card:hover {
+  border-color: var(--sky); transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.project-card h3 {
+  font-size: 1.1rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 0.6rem; letter-spacing: -0.01em;
+}
+.project-card p {
+  font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.tag {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
+  letter-spacing: 0.05em; background: #e0f2fe; color: var(--sky);
+}
+
+/* === FOOTER === */
+.page-footer {
+  text-align: center; padding: 3rem 2rem;
+  border-top: 1px solid var(--light-gray);
+  color: var(--text-muted); font-size: 0.85rem;
+}
+.page-footer a { color: var(--sky); text-decoration: none; font-weight: 500; }
+.page-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .project-grid { grid-template-columns: 1fr; }
+  .project-card { padding: 1.5rem; }
+  .section { padding: 3rem 1.25rem; }
+  .topnav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <div class="topnav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">MetaGov &mdash; Creative Technologist Fellow &mdash; 2025&ndash;2026</div>
+  <h1>Public AI Creative Fellowship</h1>
+  <p class="hero-sub">Interactive digital experiences exploring AI as public infrastructure &mdash; games, simulators, satirical websites, and surveys that ask who should control AI and for whose benefit.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="/publicai/educational-resources/" class="btn btn-outline">Educational Resources</a>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-eyebrow">About the Fellowship</div>
+  <h2 class="section-title">Making the Case for AI as Public Infrastructure</h2>
+  <p class="section-desc">The <a href="https://metagov.org/join/jobs/public-ai-creative-fellowship" target="_blank" rel="noopener">Public AI Creative Fellowship</a> is a six-month initiative by <a href="https://metagov.org" target="_blank" rel="noopener">MetaGov</a> that brings together creative professionals to develop cultural narratives around public AI &mdash; systems that are open, democratically governed, and accountable to the communities they affect.</p>
+  <p class="section-desc">The fellowship recruited three fellows &mdash; a Video Creator, a Creative Technologist, and a Writer &mdash; to produce work that makes the case for AI as public infrastructure. The first phase focused on experimentation with formats and collaborative exploration of narratives. The second phase refined these explorations into interactive, public-facing experiences for broader engagement.</p>
+  <p class="section-desc">As the Creative Technologist fellow, I developed interactive digital experiences &mdash; games, simulators, satirical websites, and surveys &mdash; that explore what it means for AI to be publicly owned, governed, and accountable. Each project below takes a different angle on the question of who should control AI and for whose benefit.</p>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects">
+  <div class="section-eyebrow">Fellowship Projects</div>
+  <h2 class="section-title">Projects</h2>
+  <p class="section-desc">Interactive experiences built during the fellowship, each exploring a different facet of public AI.</p>
+
+  <div class="project-grid">
+
+    <a href="/publicai/moreaiineedit/index.html" class="project-card">
+      <h3>MORE AI! I NEED IT! PLEASE!</h3>
+      <p>A satirical catalog of the most absurd, questionable, and bewilderingly real AI products flooding the market. Part consumer guide, part cultural critique &mdash; featuring tiered pricing models, a usefulness-vs-desirability rating chart, and a mystery box that randomly assigns you an AI service.</p>
+      <div class="tag-row">
+        <span class="tag">Satire</span>
+        <span class="tag">Interactive</span>
+      </div>
+    </a>
+
+    <a href="/publicai/airbus-for-ai/index.html" class="project-card">
+      <h3>Airbus for AI</h3>
+      <p>What if middle powers merged their sovereign AI companies into a Public AI Company? An interactive simulator based on the Bennett School analysis that lets you assemble national AI champions, run battle scenarios, and explore a 10-year roadmap for a publicly governed AI mega-corporation.</p>
+      <div class="tag-row">
+        <span class="tag">Simulator</span>
+        <span class="tag">Policy</span>
+      </div>
+    </a>
+
+    <a href="/publicai/ai-perspectives-survey.html" class="project-card">
+      <h3>AI Perspectives Survey</h3>
+      <p>An interactive survey that maps your views on AI onto an archetype spectrum &mdash; from AI accelerationists who want to hit the gas pedal, to cautious optimists tapping the brakes, to those who see AI as an existential threat. See how your perspective compares to others.</p>
+      <div class="tag-row">
+        <span class="tag">Survey</span>
+        <span class="tag">Interactive</span>
+      </div>
+    </a>
+
+    <a href="/publicai/ai-governance-game/index.html" class="project-card">
+      <h3>AI Governance Simulator</h3>
+      <p>A retro-styled strategy game where you navigate the complexities of AI governance. Make policy decisions, balance competing interests, and see how your choices shape the future of AI regulation and public accountability.</p>
+      <div class="tag-row">
+        <span class="tag">Game</span>
+        <span class="tag">Governance</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <p><a href="https://github.com/artificialnouveau/publicai" target="_blank" rel="noopener">View source on GitHub</a> &middot; <a href="/">Back to Home</a></p>
+</footer>
+
+</body>
+</html>
