@@ -3,14 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Assembly Lab — Public AI Company</title>
-<meta name="description" content="What if middle powers merged their sovereign AI companies into a Public AI Company? Interactive simulator based on the Bennett School analysis by Tan, Jackson, Berjon &amp; Coyle.">
-<meta property="og:title" content="The Assembly Lab — Public AI Company">
-<meta property="og:description" content="ChatGPT drives ~80% of chatbot traffic. What if middle powers merged their AI companies into one? Explore the data, assemble the entity, stress-test it against Big Tech.">
+<title>Airbus for AI — Who controls the AI your country depends on?</title>
+<meta name="description" content="Interactive case for a Public AI Company. Assemble the merged entity, stress-test it against Big Tech, and finance it. Based on the Bennett School analysis by Tan, Jackson, Berjon &amp; Coyle.">
+<meta property="og:title" content="Airbus for AI — Who controls the AI your country depends on?">
+<meta property="og:description" content="ChatGPT drives ~80% of chatbot traffic. The US invests 8x what Europe does. What if middle powers merged their AI companies into one? Explore the data, assemble the entity, stress-test it against Big Tech.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/">
+<meta property="og:image" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/og-card.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Assembly Lab — Public AI Company">
-<meta name="twitter:description" content="ChatGPT drives ~80% of chatbot traffic. What if middle powers merged their AI companies into one?">
+<meta name="twitter:title" content="Airbus for AI — Who controls the AI your country depends on?">
+<meta name="twitter:description" content="Interactive case for a Public AI Company. Assemble the merged entity, stress-test it against Big Tech, finance it.">
+<meta name="twitter:image" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/og-card.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="font" type="font/woff2" href="../fonts/YoungSerif-Variable.woff2" crossorigin>
@@ -746,8 +751,28 @@ details.chapter-details[open] > summary.chapter-summary .chapter-summary-arrow {
 details.chapter-details[open] > summary.chapter-summary .chapter-summary-affordance::before { content: 'Close '; }
 details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-affordance::before { content: 'Open '; }
 @media (max-width: 600px) {
-  details.chapter-details > summary.chapter-summary { padding: 1.1rem 1.25rem; gap: 0.75rem; }
-  .chapter-summary-affordance { font-size: 0.65rem; }
+  details.chapter-details > summary.chapter-summary { padding: 1.1rem 1.15rem 1.1rem 1rem; gap: 0.6rem; }
+  details.chapter-details > summary.chapter-summary { border-left-width: 3px !important; }
+  .chapter-summary-affordance { font-size: 0.6rem; gap: 0.25rem; }
+  .chapter-summary-time { padding-right: 0.35rem; margin-right: 0.35rem; font-size: 0.6rem; }
+  .chapter-summary-title { font-size: 1rem !important; line-height: 1.3 !important; }
+  .chapter-summary-desc { font-size: 0.78rem !important; }
+  .chapter-summary-kicker { font-size: 0.6rem !important; letter-spacing: 0.08em !important; }
+  /* Hide the 'Open '/'Close ' word prefix on small screens; keep arrow + time. */
+  details.chapter-details[open] > summary.chapter-summary .chapter-summary-affordance::before,
+  details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-affordance::before { content: ''; }
+
+  /* Convince Me Q&A: stack reply pill below question on narrow screens. */
+  details.skeptic-q > summary { flex-wrap: wrap !important; padding: 0.85rem 1rem !important; }
+  details.skeptic-q > summary > span:last-child { font-size: 0.6rem !important; }
+
+  /* Airbus Parallel card padding tightens. */
+  #timeline canvas#airbusParallelCanvas { height: clamp(220px, 60vw, 320px) !important; }
+}
+@media (max-width: 380px) {
+  /* Very narrow: hide reading-time badge entirely so the chapter title stays readable. */
+  .chapter-summary-time { display: none; }
+  .chapter-summary-affordance { gap: 0.15rem; }
 }
 
 /* Chapter color stripes (left border on each summary) */
@@ -768,6 +793,42 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
 
 /* Reading-time badge inside chapter affordance */
 .chapter-summary-time { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-right: 0.5rem; padding-right: 0.5rem; border-right: 1px solid rgba(0,32,91,0.12); }
+
+/* Footnote hover preview popup */
+.fn-popup {
+  position: fixed;
+  max-width: 360px;
+  background: var(--navy);
+  color: rgba(255,255,255,0.92);
+  font-family: var(--font);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  z-index: 500;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.fn-popup.visible { opacity: 1; transform: translateY(0); }
+.fn-popup a { color: var(--cyan); text-decoration: underline; }
+.fn-popup-num {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  margin-right: 0.4rem;
+}
+@media (max-width: 600px) {
+  .fn-popup { display: none; }
+}
 
 /* Print styling: assume JS has force-opened all details */
 @media print {
@@ -3563,6 +3624,60 @@ function openTargetedDetails() {
 }
 window.addEventListener('hashchange', openTargetedDetails);
 openTargetedDetails();
+
+// Footnote hover preview: show fn-popup on hover of any sup.fn > a[href^="#fn"].
+(function setupFootnotePreviews() {
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  if (isTouch) return; // Skip on touch devices; click still navigates.
+  let popup = null;
+  function getPopup() {
+    if (popup) return popup;
+    popup = document.createElement('div');
+    popup.className = 'fn-popup';
+    popup.setAttribute('role', 'tooltip');
+    document.body.appendChild(popup);
+    return popup;
+  }
+  function showFor(link) {
+    const href = link.getAttribute('href') || '';
+    if (!href.startsWith('#fn')) return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    // Pull the footnote's text but skip the leading [N] strong tag and trailing trailing-link clutter.
+    const text = target.textContent.trim();
+    const num = href.replace('#fn', '');
+    const p = getPopup();
+    // Strip the leading "[N] " prefix from the footnote body if present.
+    const body = text.replace(/^\[\s*\d+\s*\]\s*/, '');
+    p.innerHTML = '<span class="fn-popup-num">[' + num + ']</span>' + body.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    // Position near the link, prefer above; fall back below if no room.
+    const rect = link.getBoundingClientRect();
+    p.style.visibility = 'hidden';
+    p.classList.add('visible');
+    const ph = p.offsetHeight;
+    const pw = p.offsetWidth;
+    let top = rect.top - ph - 8;
+    if (top < 8) top = rect.bottom + 8;
+    let left = rect.left + rect.width / 2 - pw / 2;
+    if (left < 8) left = 8;
+    if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+    p.style.top = top + 'px';
+    p.style.left = left + 'px';
+    p.style.visibility = 'visible';
+  }
+  function hide() {
+    if (popup) popup.classList.remove('visible');
+  }
+  document.addEventListener('mouseover', e => {
+    const link = e.target.closest('sup.fn a, .fn-list a[href^="#fn"]');
+    if (link && link.matches('sup.fn a')) showFor(link);
+  });
+  document.addEventListener('mouseout', e => {
+    const link = e.target.closest('sup.fn a');
+    if (link) hide();
+  });
+  document.addEventListener('scroll', hide, { passive: true });
+})();
 
 // Print: open every details before print, restore prior state after.
 let _detailsPriorOpenState = new Map();
