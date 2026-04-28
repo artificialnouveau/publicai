@@ -724,35 +724,42 @@ details.skeptic-q > summary::marker { content: ''; }
 details.skeptic-q[open] > summary { color: var(--sky); }
 details.skeptic-q:hover > summary { background: var(--white); }
 
-/* === COLLAPSIBLE CHAPTER DETAILS === */
+/* === COLLAPSIBLE CHAPTER DETAILS ===
+   When closed, each chapter is a rounded card. When open, the card extends:
+   the inner content sits inside the same outlined box and the chapter color
+   stripe runs down the full open card, so the body reads as a continuation
+   of the header. Border + radius live on the details wrapper; summary is the
+   click target inside it. */
 details.chapter-details {
   scroll-margin-top: 80px;
-  margin: 0;
-  background: transparent;
+  margin: 0.5rem auto;
+  max-width: 1200px;
+  background: var(--off-white);
+  border: 1px solid var(--light-gray);
+  border-left-width: 4px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
-/* Wrapper around each summary so we can have rounded card corners
-   inside a max-width box without clipping the full-width content
-   that follows when the details opens. */
+details.chapter-details:hover {
+  box-shadow: 0 4px 18px rgba(0,32,91,0.08);
+  transform: translateY(-1px);
+}
+details.chapter-details[open] { background: white; box-shadow: 0 4px 18px rgba(0,32,91,0.06); transform: none; }
 details.chapter-details > summary.chapter-summary {
   list-style: none;
   cursor: pointer;
   padding: 1.4rem 2rem;
   display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
   background: var(--off-white);
-  border: 1px solid var(--light-gray);
-  border-radius: 12px;
-  margin: 0.5rem auto;
-  max-width: 1200px;
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  border: 0;
+  margin: 0;
+  transition: background 0.2s ease;
 }
-details.chapter-details:hover > summary.chapter-summary {
-  box-shadow: 0 4px 18px rgba(0,32,91,0.08);
-  transform: translateY(-1px);
-}
+details.chapter-details:hover > summary.chapter-summary { background: var(--white); }
 details.chapter-details[open] > summary.chapter-summary {
-  margin-bottom: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  background: var(--off-white);
+  border-bottom: 1px solid var(--light-gray);
 }
 details.chapter-details > summary.chapter-summary::-webkit-details-marker { display: none; }
 details.chapter-details > summary.chapter-summary::marker { content: ''; }
@@ -768,7 +775,7 @@ details.chapter-details[open] > summary.chapter-summary .chapter-summary-afforda
 details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-affordance::before { content: 'Open '; }
 @media (max-width: 600px) {
   details.chapter-details > summary.chapter-summary { padding: 1.1rem 1.15rem 1.1rem 1rem; gap: 0.6rem; }
-  details.chapter-details > summary.chapter-summary { border-left-width: 3px !important; }
+  details.chapter-details { border-left-width: 3px !important; }
   .chapter-summary-affordance { font-size: 0.6rem; gap: 0.25rem; }
   .chapter-summary-time { padding-right: 0.35rem; margin-right: 0.35rem; font-size: 0.6rem; }
   .chapter-summary-title { font-size: 1rem !important; line-height: 1.3 !important; }
@@ -792,13 +799,15 @@ details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-a
 }
 
 /* Chapter color stripes (left border on each summary) */
-details#dashboard.chapter-details > summary.chapter-summary { border-left: 4px solid var(--red); }
-details#story.chapter-details > summary.chapter-summary { border-left: 4px solid var(--sky); }
-details#assembly.chapter-details > summary.chapter-summary { border-left: 4px solid var(--gold); }
-details#battle.chapter-details > summary.chapter-summary { border-left: 4px solid var(--green); }
-details#fund.chapter-details > summary.chapter-summary { border-left: 4px solid var(--purple); }
-details#timeline.chapter-details > summary.chapter-summary { border-left: 4px solid var(--gold); }
-details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px solid var(--purple); }
+/* Chapter color stripe: applied to the wrapper so it runs through the full
+   open card, not just the summary. */
+details#dashboard.chapter-details { border-left-color: var(--red); }
+details#story.chapter-details { border-left-color: var(--sky); }
+details#assembly.chapter-details { border-left-color: var(--gold); }
+details#battle.chapter-details { border-left-color: var(--green); }
+details#fund.chapter-details { border-left-color: var(--purple); }
+details#timeline.chapter-details { border-left-color: var(--gold); }
+details#sovereignty.chapter-details { border-left-color: var(--purple); }
 
 /* Side rail dot colors mirror chapter kicker colors */
 .page-outline a[href="#dashboard"] .outline-dot { background: var(--red); }
@@ -825,6 +834,21 @@ details#sovereignty.chapter-details > summary.chapter-summary { border-left: 4px
    Opt out with .no-ext-arrow on links where it would clutter (buttons, source-pill chips). */
 .fn-list a[target="_blank"]:not(.no-ext-arrow)::after,
 .site-footer a[target="_blank"]:not(.no-ext-arrow)::after { content: '\00a0\2197'; opacity: 0.7; font-size: 0.85em; }
+
+/* Dashboard chart explainer layout (Problem chapter) */
+.db-chart { display: grid; grid-template-columns: minmax(220px, 280px) 1fr; gap: 1.25rem 2rem; align-items: start; }
+.db-explainer { font-size: 0.85rem; color: rgba(232,224,204,0.78); line-height: 1.55; min-width: 0; }
+.db-explainer h4 {
+  font-size: 0.65rem; font-family: var(--mono); font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--db-cyan); margin: 0 0 0.35rem;
+}
+.db-explainer h4:not(:first-of-type) { margin-top: 1rem; }
+.db-explainer p { margin: 0; font-size: 0.85rem; line-height: 1.55; }
+.db-visual { min-width: 0; }
+@media (max-width: 860px) {
+  .db-chart { grid-template-columns: 1fr; gap: 1rem; }
+}
 
 /* Skip-to-content link (visible on focus only) */
 .skip-link {
