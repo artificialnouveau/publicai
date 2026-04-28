@@ -605,8 +605,45 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 .site-footer a { color: var(--sky); text-decoration: none; }
 
 /* === ANIMATIONS === */
-.fade-up { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+/* Phase 3 animations */
+.fade-up {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* Underline-expand for body content links (not buttons / cards / source pills).
+   Single accent underline that scales from 0 to full width on hover. */
+.narrative-body a:not(.btn):not(.no-underline-expand),
+.chapter-summary-desc a:not(.btn),
+.db-explainer a:not(.btn),
+.skeptic-q a:not(.btn) {
+  position: relative; color: var(--accent); text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.narrative-body a:not(.btn):not(.no-underline-expand):hover,
+.chapter-summary-desc a:not(.btn):hover,
+.db-explainer a:not(.btn):hover,
+.skeptic-q a:not(.btn):hover { background-size: 100% 1px; }
+
+/* Section line-wipe reveal for chapter summary cards.
+   The 1px top border draws from left to right when the card scrolls in. */
+details.chapter-details > summary.chapter-summary {
+  position: relative;
+}
+details.chapter-details > summary.chapter-summary::before {
+  content: ''; position: absolute; left: 0; top: 0; height: 1px;
+  width: 0; background: var(--accent);
+  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.1s;
+}
+details.chapter-details.line-wiped > summary.chapter-summary::before { width: 100%; }
+
+/* Count-up stat: nothing extra needed, JS animates textContent in place */
 
 /* Touch-friendly sliders */
 .scenario-levers input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: rgba(0,32,91,0.15); border-radius: 3px; outline: none; }
@@ -1052,15 +1089,15 @@ select option { background: var(--charcoal); color: var(--slate-100); }
       <canvas id="dbCapitalFlowCanvas" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="Capital flow diagram: EU AI funding flows to US, showing $14B EU vs $109B US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-cyan);font-variant-numeric:tabular-nums;">$14B</div>
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-cyan);font-variant-numeric:tabular-nums;" data-count-up>$14B</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">EU AI Funding (Atomico, 2024)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-red);font-variant-numeric:tabular-nums;">$109B</div>
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-red);font-variant-numeric:tabular-nums;" data-count-up>$109B</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US AI Investment (Stanford HAI, 2024)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;">57%</div>
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;" data-count-up>57%</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">EU Founders Relocate to US</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1135,7 +1172,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
             <div style="display:flex;justify-content:space-between;"><span>Deucalion</span><span style="color:var(--db-cyan);">Minho, PT</span></div>
           </div>
           <div style="margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid var(--db-border);">
-            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-cyan);">11</div>
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-cyan);" data-count-up>11</div>
             <div style="font-size:0.75rem;color:var(--db-dim);">Supercomputers + 12 AI Factory sites planned</div>
           </div>
         </div>
@@ -1156,7 +1193,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
             </div>
           </div>
           <div style="margin-top:1rem;padding-top:0.75rem;border-top:0.5px solid var(--db-border);">
-            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-red);">1,136+</div>
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:300;color:var(--db-red);" data-count-up>1,136+</div>
             <div style="font-size:0.75rem;color:var(--db-dim);">Global hyperscale DCs (US owns majority)</div>
           </div>
         </div>
@@ -1219,7 +1256,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
       <canvas id="dbPatentChart" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="AI patent filings: China leads with 38,000+ inventions, US 6,300, EU 1,200"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;">38,000+</div>
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-gold);font-variant-numeric:tabular-nums;" data-count-up>38,000+</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">China GenAI inventions (2014-23)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1227,7 +1264,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US GenAI inventions (2014-23)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-green);font-variant-numeric:tabular-nums;">7x</div>
+          <div style="font-family:var(--mono);font-size:1.7rem;font-weight:300;color:var(--db-green);font-variant-numeric:tabular-nums;" data-count-up>7x</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">US patents cited more than CN</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1275,7 +1312,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
       <canvas id="dbGrowthChart" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="Coalition revenue growth: Mistral 20x to $400M, Cohere 11x to $240M, DeepL to $185M"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#3b82f6;font-variant-numeric:tabular-nums;">20x</div>
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#3b82f6;font-variant-numeric:tabular-nums;" data-count-up>20x</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">Mistral ARR Growth (12 mo.)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1283,11 +1320,11 @@ select option { background: var(--charcoal); color: var(--slate-100); }
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">Cohere ARR Growth (24 mo.)</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#06b6d4;font-variant-numeric:tabular-nums;">100+</div>
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#06b6d4;font-variant-numeric:tabular-nums;" data-count-up>100+</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">DeepL Languages</div>
         </div>
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
-          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#8b5cf6;font-variant-numeric:tabular-nums;">12.6B</div>
+          <div style="font-family:var(--mono);font-size:2rem;font-weight:300;color:#8b5cf6;font-variant-numeric:tabular-nums;" data-count-up>12.6B</div>
           <div style="font-size:0.75rem;color:var(--db-dim);margin-top:4px;">Stable Diffusion Images</div>
         </div>
       </div>
@@ -2916,13 +2953,92 @@ function setupMergeAll() {
 // ============================================================
 function setupScroll() {
   const nav = document.getElementById('topnav');
+
+  // Staggered fade-up: when a batch of fade-up elements enters together,
+  // delay each by ~80ms so they reveal in sequence rather than all at once.
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.1 });
+    const intersecting = entries.filter(e => e.isIntersecting);
+    intersecting.forEach((entry, i) => {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Line-wipe reveal: chapter summary's 1px top accent line draws across
+  // when the chapter scrolls into view.
+  const wipeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('line-wiped');
+        wipeObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('details.chapter-details').forEach(el => wipeObserver.observe(el));
+
+  // Count-up stats: any element with [data-count-up] animates from 0 to its
+  // numeric textContent on first scroll-into-view. Preserves any prefix
+  // (~, $, +) and suffix (B, M, K, %, x, +) around the number.
+  // Match "$14B", "57%", "8:1", "20x", "100+", "$109B", "12.6B", "38,000+".
+  // Captures: prefix (non-digit chars), the digit run with optional comma-grouping
+  // and decimals, and a trailing suffix.
+  const NUMERIC_RE = /^(\D*?)([\-]?\d{1,3}(?:,\d{3})*(?:\.\d+)?)([^\d]*)$/;
+  function animateCount(el) {
+    const raw = el.textContent.trim();
+    const m = raw.match(NUMERIC_RE);
+    if (!m) return;
+    const prefix = m[1] || '';
+    const numStr = m[2].replace(/,/g, '');
+    const target = parseFloat(numStr);
+    const suffix = m[3] || '';
+    if (!isFinite(target)) return;
+    const isFloat = numStr.includes('.');
+    const useThousandsComma = m[2].includes(',');
+    const duration = 1200;
+    const startTime = performance.now();
+    function format(v) {
+      const n = isFloat ? v.toFixed(1) : String(Math.round(v));
+      if (!useThousandsComma) return n;
+      return parseInt(n, 10).toLocaleString('en-US');
+    }
+    function tick(now) {
+      const progress = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + format(target * eased) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCount(e.target);
+        countObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('[data-count-up]').forEach(el => countObs.observe(el));
+
+  // Hero background subtle parallax: particle canvas drifts up at ~30%
+  // of scroll speed while the hero is still in view.
+  const heroParticles = document.querySelector('.hero-particles');
+  let parallaxTicking = false;
+  function applyParallax() {
+    if (!heroParticles) return;
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      heroParticles.style.transform = `translate3d(0, ${y * 0.3}px, 0)`;
+      heroParticles.style.opacity = String(Math.max(0, 1 - y / window.innerHeight * 1.4));
+    }
+  }
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
-  });
+    if (!parallaxTicking) {
+      parallaxTicking = true;
+      requestAnimationFrame(() => { applyParallax(); parallaxTicking = false; });
+    }
+  }, { passive: true });
 }
 
 
