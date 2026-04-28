@@ -170,8 +170,8 @@ h1, h2, h3, h4,
    gradient with the floating-particle canvas, intentional editorial pop
    before the page transitions into the refined off-white reading area. */
 .hero {
-  min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-  text-align: center; padding: 8rem 2rem 6rem;
+  min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; padding: 6rem 2rem 4rem;
   background: linear-gradient(170deg, #001540 0%, #00205b 40%, #0057FF 100%);
   color: #ffffff; position: relative; overflow: hidden;
   border-bottom: 1px solid var(--slate-700);
@@ -187,8 +187,8 @@ h1, h2, h3, h4,
 }
 .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #00b4d8; animation: blink 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-.hero h1 { font-size: clamp(2.6rem, 6vw, 5.25rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 2rem; color: #ffffff; }
-.hero-sub { font-size: clamp(1rem, 1.5vw, 1.2rem); color: rgba(255,255,255,0.78); max-width: 620px; margin: 0 auto 2.75rem; line-height: 1.65; font-weight: 400; }
+.hero h1 { font-size: clamp(2.2rem, 5vw, 4.25rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 1.5rem; color: #ffffff; }
+.hero-sub { font-size: clamp(0.95rem, 1.4vw, 1.1rem); color: rgba(255,255,255,0.78); max-width: 580px; margin: 0 auto; line-height: 1.65; font-weight: 400; }
 .hero-cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
@@ -1069,9 +1069,6 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     <div class="hero-eyebrow"><span class="dot"></span> Airbus for AI &middot; Public AI Company</div>
     <h1>Who controls the AI<br>your country depends on?</h1>
     <p class="hero-sub">A sovereignty crisis, mapped. Then a working model for what middle powers could build instead.</p>
-    <div class="hero-cta-row">
-      <a href="#dashboard" class="btn btn-primary">Begin the case</a>
-    </div>
   </div>
 </section>
 
