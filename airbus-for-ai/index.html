@@ -29,32 +29,56 @@
   font-display: swap;
 }
 :root {
-  --white: #ffffff;
-  --off-white: #f7f8fa;
-  --light-gray: #eef0f4;
-  --mid-gray: #c8cdd6;
-  --dark-gray: #6b7280;
-  --navy: #00205b;
-  --navy-light: #1a3a7a;
-  --navy-dark: #001540;
-  --sky: #0077c8;
-  --sky-light: #4da6e8;
-  --cyan: #00b4d8;
-  --gold: #f0a500;
-  --red: #e63946;
-  --green: #2ec4b6;
-  --purple: #7c3aed;
-  --text: #1a1a2e;
-  --text-secondary: #4a5568;
-  --text-muted: #9ca3af;
+  /* Aerospace-engineering palette: charcoal base, crisp white text, single
+     electric-blue accent. Per-chapter colors collapsed to the single accent;
+     chapters differentiate by number, not hue. */
+  --ink: #050811;          /* deepest, used for body and bleed-through */
+  --charcoal: #0a0e1a;     /* primary surface */
+  --slate-900: #11161f;    /* card surface (one step up from charcoal) */
+  --slate-800: #1a1f2c;    /* secondary card / hover surface */
+  --slate-700: #232a39;    /* dividing border at low contrast */
+  --slate-600: #38414f;    /* mid border / muted accent */
+  --slate-500: #5b6372;    /* muted text and icons */
+  --slate-400: #8b919e;    /* secondary text */
+  --slate-300: #b5b9c2;    /* primary secondary text */
+  --slate-100: #e9ebef;    /* near-white body text */
+  --white: #ffffff;        /* pure white for emphasis */
+  --accent: #0057FF;       /* electric blue, single accent */
+  --accent-bright: #2a72ff;/* hover-brighter variant */
+  --accent-dim: rgba(0,87,255,0.12); /* low-opacity backgrounds */
+
+  /* Legacy variables (still referenced in many places) remapped to the
+     new palette so we can rotate the visual direction without touching
+     every call site. Subsequent phases will inline-replace where useful. */
+  --off-white: var(--charcoal);
+  --light-gray: var(--slate-700);
+  --mid-gray: var(--slate-500);
+  --dark-gray: var(--slate-400);
+  --navy: var(--charcoal);
+  --navy-light: var(--slate-800);
+  --navy-dark: var(--ink);
+  --sky: var(--accent);
+  --sky-light: var(--accent-bright);
+  --cyan: var(--accent);
+  --gold: var(--accent);
+  --red: var(--accent);
+  --green: var(--accent);
+  --purple: var(--accent);
+  --text: var(--slate-100);
+  --text-secondary: var(--slate-300);
+  --text-muted: var(--slate-500);
+
   --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --mono: 'JetBrains Mono', monospace;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-  --radius: 12px;
-  --radius-lg: 20px;
+
+  /* Flat by default; shadows are reserved for hover lift only. */
+  --shadow-sm: none;
+  --shadow-md: 0 0 0 1px rgba(0,87,255,0.25);
+  --shadow-lg: 0 0 0 1px rgba(0,87,255,0.55);
+
+  --radius: 4px;
+  --radius-lg: 4px;
 }
 sup.fn a { color: var(--sky); text-decoration: none; font-size: 0.65em; font-weight: 600; vertical-align: super; }
 sup.fn a:hover { text-decoration: underline; }
@@ -64,7 +88,7 @@ sup.fn a:hover { text-decoration: underline; }
 .fn-list li a:hover { text-decoration: underline; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { font-family: var(--font); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+body { font-family: var(--font); color: var(--text); background: var(--ink); line-height: 1.6; overflow-x: hidden; }
 /* Young Serif applied to all display headings */
 h1, h2, h3, h4,
 .hero h1, .hero h2, .narrative-heading, .section-heading,
@@ -75,21 +99,21 @@ h1, h2, h3, h4,
 /* === NAV === */
 .topnav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--light-gray);
+  background: rgba(5,8,17,0.85); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--slate-700);
   padding: 0 2rem; height: 64px;
   display: flex; align-items: center; justify-content: space-between;
-  transition: box-shadow 0.3s;
+  transition: border-color 0.3s;
 }
-.topnav.scrolled { box-shadow: var(--shadow-md); }
+.topnav.scrolled { border-bottom-color: var(--slate-600); }
 .topnav-brand {
-  font-weight: 800; font-size: 1.1rem; color: var(--navy);
+  font-weight: 800; font-size: 1.1rem; color: var(--white);
   letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.6rem;
 }
-.topnav-brand svg { width: 28px; height: 28px; }
+.topnav-brand svg { width: 28px; height: 28px; color: var(--accent); }
 .topnav-links { display: flex; gap: 1.5rem; }
-.topnav-links a { position: relative; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
-.topnav-links a:hover { color: var(--navy); }
+.topnav-links a { position: relative; font-size: 0.85rem; font-weight: 500; color: var(--slate-400); text-decoration: none; transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.topnav-links a:hover { color: var(--white); }
 .topnav-links a[data-desc]::after {
   content: attr(data-desc);
   position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(-4px);
@@ -122,41 +146,49 @@ h1, h2, h3, h4,
 /* === HERO === */
 .hero {
   min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-  text-align: center; padding: 6rem 2rem 4rem;
-  background: linear-gradient(170deg, var(--navy-dark) 0%, var(--navy) 40%, var(--sky) 100%);
-  color: white; position: relative; overflow: hidden;
+  text-align: center; padding: 8rem 2rem 6rem;
+  background: var(--ink);
+  color: var(--white); position: relative; overflow: hidden;
 }
-.hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+/* very subtle dark-to-transparent vignette to break up the flat charcoal */
+.hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,87,255,0.06) 60%, transparent 100%);
+}
+.hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.35; }
 .hero-particles canvas { width: 100%; height: 100%; }
-.hero-content { position: relative; z-index: 2; max-width: 900px; }
+.hero-content { position: relative; z-index: 2; max-width: 880px; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--slate-400); margin-bottom: 2rem;
 }
-.hero-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); animation: blink 2s ease infinite; }
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-.hero h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-.hero-sub { font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(255,255,255,0.75); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
+.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 5.25rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 2rem; color: var(--white); }
+.hero-sub { font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--slate-300); max-width: 620px; margin: 0 auto 2.75rem; line-height: 1.65; font-weight: 400; }
 .hero-cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.85rem 2rem; border-radius: 8px;
-  font-family: var(--font); font-size: 0.95rem; font-weight: 600;
-  cursor: pointer; border: none; text-decoration: none; transition: all 0.25s;
+  padding: 0.85rem 2rem; border-radius: 2px;
+  font-family: var(--font); font-size: 0.9rem; font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer; border: 1px solid transparent; text-decoration: none;
+  transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-primary { background: var(--white); color: var(--navy); }
-.btn-primary:hover { background: var(--off-white); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
-.btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
-.btn-action { background: var(--sky); color: white; }
-.btn-action:hover { background: var(--sky-light); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.btn-action:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.btn-navy { background: var(--navy); color: white; }
-.btn-navy:hover { background: var(--navy-light); transform: translateY(-2px); }
-.btn-sm { padding: 0.5rem 1.2rem; font-size: 0.8rem; }
-.btn-ghost { background: transparent; color: var(--sky); border: 1px solid var(--light-gray); }
-.btn-ghost:hover { background: var(--off-white); }
+.btn-primary { background: var(--accent); color: var(--white); border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn-outline { background: transparent; color: var(--white); border: 1px solid var(--slate-600); }
+.btn-outline:hover { border-color: var(--white); }
+.btn-action { background: var(--accent); color: var(--white); }
+.btn-action:hover { background: var(--accent-bright); }
+.btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-navy { background: var(--slate-800); color: var(--white); border-color: var(--slate-700); }
+.btn-navy:hover { border-color: var(--accent); }
+.btn-sm { padding: 0.5rem 1.1rem; font-size: 0.78rem; }
+.btn-ghost { background: transparent; color: var(--accent); border: 1px solid var(--slate-700); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent-bright); }
 
 .hero-stats-row {
   display: flex; gap: 3rem; justify-content: center; margin-top: 3rem;
@@ -482,7 +514,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 }
 .tl-card {
   position: relative; margin-bottom: 2.5rem; padding: 2rem;
-  background: white; border-radius: var(--radius-lg);
+  background: var(--slate-900); border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md); border: 1px solid var(--light-gray);
   transition: transform 0.3s, box-shadow 0.3s;
   opacity: 0; transform: translateY(20px);
@@ -494,7 +526,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 .tl-card::before {
   content: ''; position: absolute; left: -48px; top: 2rem;
   width: 18px; height: 18px; border-radius: 50%;
-  background: white; border: 3px solid var(--sky);
+  background: var(--slate-900); border: 3px solid var(--sky);
   z-index: 1;
 }
 .tl-card.milestone::before { background: var(--sky); box-shadow: 0 0 12px rgba(0,119,200,0.4); }
@@ -665,7 +697,7 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 @media print {
   .topnav, .modal-overlay, .toast { display: none !important; }
   .hero { min-height: auto; padding: 2rem; }
-  body { color: black; background: white; }
+  body { color: black; background: var(--slate-900); }
   .battle-section { background: #f0f0f0; color: black; }
   .battle-verdict .win, .battle-verdict .close { color: #006600; }
   .battle-verdict .lose { color: #cc0000; }
@@ -683,37 +715,35 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 .page-outline {
   position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 80;
   display: flex; flex-direction: column; gap: 2px;
-  padding: 8px 6px; border-radius: 8px;
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
-  border: 1px solid rgba(0,32,91,0.08);
+  padding: 8px 6px; border-radius: 4px;
+  background: rgba(10,14,26,0.85); backdrop-filter: blur(12px);
+  border: 1px solid var(--slate-700);
   width: 28px; overflow: hidden;
-  transition: width 0.3s cubic-bezier(0.16,1,0.3,1), padding 0.3s, box-shadow 0.3s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .page-outline:hover {
   width: 200px; padding: 10px 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-color: var(--slate-600);
 }
 .page-outline a {
   display: flex; align-items: center; gap: 8px;
-  padding: 5px 6px; border-radius: 4px;
-  text-decoration: none; transition: all 0.2s; cursor: pointer;
+  padding: 5px 6px; border-radius: 2px;
+  text-decoration: none; transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
 }
-.page-outline a:hover { background: rgba(0,32,91,0.04); }
-.page-outline a.active { background: rgba(0,32,91,0.06); }
+.page-outline a:hover { background: rgba(0,87,255,0.08); }
 .outline-dot {
   width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-  background: rgba(0,32,91,0.15); transition: all 0.3s;
+  background: var(--slate-600); transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.page-outline a.active { background: rgba(0,32,91,0.08); }
+.page-outline a.active { background: rgba(0,87,255,0.12); }
 .outline-text {
   font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em;
-  color: rgba(0,32,91,0.35); white-space: nowrap;
+  color: var(--slate-500); white-space: nowrap;
   opacity: 0; transition: opacity 0.2s, color 0.2s;
 }
 .page-outline:hover .outline-text { opacity: 1; }
-.page-outline a.active .outline-text { color: var(--navy); }
-.page-outline a:hover .outline-text { color: rgba(0,32,91,0.6); }
+.page-outline a.active .outline-text { color: var(--white); }
+.page-outline a:hover .outline-text { color: var(--slate-300); }
 @media (max-width: 900px) { .page-outline { display: none; } }
 @media print { .page-outline { display: none; } }
 
@@ -725,51 +755,52 @@ details.skeptic-q[open] > summary { color: var(--sky); }
 details.skeptic-q:hover > summary { background: var(--white); }
 
 /* === COLLAPSIBLE CHAPTER DETAILS ===
-   When closed, each chapter is a rounded card. When open, the card extends:
-   the inner content sits inside the same outlined box and the chapter color
-   stripe runs down the full open card, so the body reads as a continuation
-   of the header. Border + radius live on the details wrapper; summary is the
-   click target inside it. */
+   Flat card on a dark surface. Razor-thin border that brightens on hover.
+   When open, the body sits inside the same outlined box. Chapter color
+   stripe collapsed: all stripes are the single accent. */
 details.chapter-details {
   scroll-margin-top: 80px;
-  margin: 0.5rem auto;
+  margin: 1rem auto;
   max-width: 1200px;
-  background: var(--off-white);
-  border: 1px solid var(--light-gray);
-  border-left-width: 4px;
-  border-radius: 12px;
+  background: var(--charcoal);
+  border: 1px solid var(--slate-700);
+  border-left-width: 2px;
+  border-radius: 4px;
   overflow: hidden;
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 details.chapter-details:hover {
-  box-shadow: 0 4px 18px rgba(0,32,91,0.08);
-  transform: translateY(-1px);
+  border-color: var(--slate-600);
 }
-details.chapter-details[open] { background: white; box-shadow: 0 4px 18px rgba(0,32,91,0.06); transform: none; }
+details.chapter-details:hover { border-left-color: var(--accent); }
+details.chapter-details[open] {
+  background: var(--charcoal);
+  border-color: var(--slate-600);
+  border-left-color: var(--accent);
+}
 details.chapter-details > summary.chapter-summary {
   list-style: none;
   cursor: pointer;
-  padding: 1.4rem 2rem;
+  padding: 1.6rem 2rem;
   display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
-  background: var(--off-white);
+  background: transparent;
   border: 0;
   margin: 0;
-  transition: background 0.2s ease;
+  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-details.chapter-details:hover > summary.chapter-summary { background: var(--white); }
+details.chapter-details:hover > summary.chapter-summary { background: var(--slate-900); }
 details.chapter-details[open] > summary.chapter-summary {
-  background: var(--off-white);
-  border-bottom: 1px solid var(--light-gray);
+  background: var(--slate-900);
+  border-bottom: 1px solid var(--slate-700);
 }
 details.chapter-details > summary.chapter-summary::-webkit-details-marker { display: none; }
 details.chapter-details > summary.chapter-summary::marker { content: ''; }
-details.chapter-details > summary.chapter-summary:hover { background: var(--white); }
 .chapter-summary-text { display: flex; flex-direction: column; gap: 0.3rem; align-items: flex-start; min-width: 0; flex: 1; }
-.chapter-summary-kicker { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-.chapter-summary-title { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 800; color: var(--navy); letter-spacing: -0.01em; line-height: 1.25; }
-.chapter-summary-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; max-width: 640px; }
-.chapter-summary-affordance { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sky); }
-.chapter-summary-arrow { display: inline-block; font-size: 1.1rem; transition: transform 0.25s ease; }
+.chapter-summary-kicker { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.chapter-summary-title { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 700; color: var(--white); letter-spacing: -0.015em; line-height: 1.25; }
+.chapter-summary-desc { font-size: 0.85rem; color: var(--slate-400); line-height: 1.55; max-width: 640px; }
+.chapter-summary-affordance { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.chapter-summary-arrow { display: inline-block; font-size: 1.1rem; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 details.chapter-details[open] > summary.chapter-summary .chapter-summary-arrow { transform: rotate(90deg); }
 details.chapter-details[open] > summary.chapter-summary .chapter-summary-affordance::before { content: 'Close '; }
 details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-affordance::before { content: 'Open '; }
@@ -849,6 +880,29 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
 @media (max-width: 860px) {
   .db-chart { grid-template-columns: 1fr; gap: 1rem; }
 }
+
+/* Catch-all overrides: many inline styles hardcoded navy borders
+   (rgba(0,32,91,X)) that vanish on the new charcoal surface. Catch them
+   via attribute selector and rewrite to slate-700. Hover brightens to slate-600
+   per the brief: "razor-thin border that brightens on hover". */
+[style*="rgba(0,32,91,0.06)"], [style*="rgba(0,32,91,0.08)"],
+[style*="rgba(0,32,91,0.1)"], [style*="rgba(0,32,91,0.12)"],
+[style*="rgba(0,32,91,0.15)"] {
+  border-color: var(--slate-700) !important;
+}
+
+/* Form inputs: dark theme override (many inline styles hardcoded a navy
+   border on white that doesn't read on the new charcoal surface). */
+input[type="text"], input[type="email"], select, textarea {
+  color: var(--slate-100);
+  border-color: var(--slate-700) !important;
+  border-radius: 2px !important;
+}
+input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent) !important;
+}
+select option { background: var(--charcoal); color: var(--slate-100); }
 
 /* Skip-to-content link (visible on focus only) */
 .skip-link {
@@ -948,16 +1002,12 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
 <section class="hero">
   <div class="hero-particles"><canvas id="particleCanvas" role="presentation" aria-hidden="true"></canvas></div>
   <div class="hero-content">
+    <div class="hero-eyebrow"><span class="dot"></span> Airbus for AI &middot; Public AI Company</div>
     <h1>Who controls the AI<br>your country depends on?</h1>
-    <p class="hero-sub">Today, a handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. Export controls shift overnight. API access gets revoked without warning. The CLOUD Act means your citizens' data is one subpoena away from a foreign court.</p>
-    <p class="hero-sub">This is not a market problem. It is a sovereignty crisis. This tool explores what happens when middle powers stop buying AI and start building it together.</p>
+    <p class="hero-sub">A sovereignty crisis, mapped. Then a working model for what middle powers could build instead.</p>
     <div class="hero-cta-row">
-      <a href="#dashboard" class="btn btn-primary">1. The Problem</a>
-      <a href="#story" class="btn btn-outline" style="border-color: var(--sky-light); color: var(--sky-light);">2. The Story</a>
-      <a href="#assembly" class="btn btn-outline" style="border-color: var(--gold); color: var(--gold);">3. Build It</a>
-      <a href="#battle" class="btn btn-outline" style="border-color: var(--green); color: var(--green);">4. Test It</a>
+      <a href="#dashboard" class="btn btn-primary">Begin the case</a>
     </div>
-    <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:1.25rem;font-family:var(--mono);letter-spacing:0.04em;">Each chapter expands &middot; read top-to-bottom, or jump to a tool.</p>
   </div>
 </section>
 
@@ -971,7 +1021,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
   </div>
   <div class="chapter-summary-affordance"><span class="chapter-summary-time">~6 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
-<section style="padding:5rem 2rem;background:linear-gradient(170deg,#001540 0%,#00205b 40%,#0a1a3a 100%);color:white;--db-text:rgba(232,224,204,0.65);--db-dim:rgba(232,224,204,0.4);--db-border:rgba(255,255,255,0.08);--db-raised:#0b1628;--db-cyan:#1a6cd4;--db-green:#0fa37a;--db-red:#ff3333;--db-gold:#c96a2b;--db-aurora:#7b6fd6;">
+<section style="padding:5rem 2rem;background:var(--charcoal);color:var(--white);--db-text:var(--slate-300);--db-dim:var(--slate-400);--db-border:var(--slate-700);--db-raised:var(--slate-900);--db-cyan:var(--accent);--db-green:var(--accent);--db-red:var(--accent);--db-gold:var(--accent);--db-aurora:var(--accent);">
   <div style="max-width:1100px;margin:0 auto;">
     <div style="text-align:center;margin-bottom:3rem;">
       <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--db-dim);margin-bottom:8px;">Deep Data</div>
@@ -1405,7 +1455,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
 </div>
 
 <!-- CONVINCE ME / SKEPTIC PATH (inside Problem chapter) -->
-<div class="narrative-block wide fade-up" style="background:white;max-width:100%;padding:3rem 2rem;">
+<div class="narrative-block wide fade-up" style="background:var(--slate-900);max-width:100%;padding:3rem 2rem;">
   <div style="max-width:780px;margin:0 auto;">
     <div class="narrative-kicker" style="color:var(--red);">Convince Me</div>
     <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The strongest objections, and the strongest replies.</h2>
@@ -1514,7 +1564,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
 </summary>
 
 <!-- WHY NOW (inside Build It) -->
-<div class="narrative-block wide fade-up" style="background:white;max-width:100%;padding:3rem 2rem;">
+<div class="narrative-block wide fade-up" style="background:var(--slate-900);max-width:100%;padding:3rem 2rem;">
   <div style="max-width:720px;margin:0 auto;">
     <div class="narrative-kicker" style="color:var(--green);">Why Now</div>
     <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The window is closing. But the barrier to entry is lower than you think.</h2>
@@ -1569,7 +1619,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
 <div class="merge-context hidden" id="mergeContext"></div>
 
 <!-- THREE-TIER ARCHITECTURE (inside Build It) -->
-<div class="narrative-block wide fade-up" style="max-width:100%;padding:2rem 2rem;background:white;">
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:2rem 2rem;background:var(--slate-900);">
   <div style="max-width:900px;margin:0 auto;">
     <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:var(--off-white);">
       <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;align-items:center;gap:0.5rem;">
@@ -1579,17 +1629,17 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
       <div style="padding:0 1.25rem 1.5rem;">
         <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin:1rem 0 1.25rem;">The Public AI Company is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
         <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
-          <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
+          <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
             <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 1</div>
             <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">The Consortium Core</div>
             <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Shared model building (especially pretraining), shared compute and expertise, shared market strategy and branding. This is the unified lab that competes on the global stage.</p>
           </div>
-          <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--cyan);">
+          <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--cyan);">
             <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 2</div>
             <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">National Entities</div>
             <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each country identifies or organizes at least one participating entity: an existing national champion (Mistral, Cohere), a public lab (Spain's BSC, Japan's RIKEN), or a new public-private partnership. These link the consortium to public compute, local markets, and national populations.</p>
           </div>
-          <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--green);">
+          <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--green);">
             <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 3</div>
             <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Local Layer</div>
             <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each national entity handles localization, in-country deployment, and public engagement. This ensures the Public AI Company serves local needs, languages, and regulatory contexts while benefiting from shared frontier capabilities.</p>
@@ -1661,15 +1711,15 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
       <p>The fund's edge is <strong>governance-as-core-technology</strong>: holding-company structures that separate IP, operations, and deployment; contractual veto rights on capex duplication to prevent wasteful parallel spending; pre-agreed deadlock resolution mechanisms; and ring-fenced national interfaces with shared core infrastructure. This governance architecture enables integration without requiring full political merger.</p>
     </div>
     <div id="fundGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
-      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+      <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Anchor Investment</div>
         <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Government takes a cornerstone equity stake and provides compute infrastructure + procurement contracts. Model: Franco-German Compute JV, ~EUR 35M cornerstone equity consolidating two national GPU programs.</p>
       </div>
-      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+      <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Strategic Merger</div>
         <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Two or more publicly funded model teams merge into a shared IP holding company with single compliance infrastructure under the AI Act. Model: Northern Europe Foundation Model Roll-Up, ~EUR 25M minority stake.</p>
       </div>
-      <div style="background:white;border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
+      <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border:1px solid rgba(0,32,91,0.08);">
         <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Collective Equity</div>
         <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Novel legal instrument where multiple nations pool equity stakes in shared AI infrastructure without full political merger. Multi-state procurement framework with cash flow within 24 months. Model: Regulated-Sector AI Platform, ~EUR 20M project finance. See <a href="https://collectiveequity.com" target="_blank" style="color:var(--sky);">collectiveequity.com</a>.</p>
       </div>
@@ -1692,7 +1742,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
   <div class="timeline-inner">
 
     <!-- AIRBUS PARALLEL CHART -->
-    <div style="background:white;border:1px solid rgba(0,32,91,0.08);border-radius:12px;padding:1.5rem 1.75rem 1.25rem;margin-bottom:2.5rem;box-shadow:0 2px 12px rgba(0,32,91,0.04);">
+    <div style="background:var(--slate-900);border:1px solid rgba(0,32,91,0.08);border-radius:12px;padding:1.5rem 1.75rem 1.25rem;margin-bottom:2.5rem;box-shadow:0 2px 12px rgba(0,32,91,0.04);">
       <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.4rem;">
         <div style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);font-family:var(--mono);font-weight:700;">The Airbus Parallel</div>
         <div style="font-size:0.65rem;color:var(--text-muted);font-family:var(--mono);">x-axis: years since founding</div>
@@ -1736,21 +1786,21 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
     <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;max-width:640px;margin:0 auto 2rem;">How sovereign are the AI models nations depend on? This index scores open-weight models across six dimensions: training data privacy, local training capability, control of weights, model independence, weight privacy, and country-specific knowledge.</p>
 
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;">
-      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
+      <div style="background:var(--slate-900);border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--navy);">6</div>
         <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-top:0.25rem;">Sovereignty Dimensions</div>
       </div>
-      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
+      <div style="background:var(--slate-900);border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--navy);">0-100</div>
         <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-top:0.25rem;">Score Range per Model</div>
       </div>
-      <div style="background:white;border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
+      <div style="background:var(--slate-900);border-radius:10px;padding:1.25rem;border:1px solid rgba(0,32,91,0.08);text-align:center;">
         <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:300;color:var(--navy);">Live</div>
         <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-top:0.25rem;">Hugging Face Metadata</div>
       </div>
     </div>
 
-    <div style="width:100%;border:1px solid rgba(0,32,91,0.08);border-radius:12px;overflow:hidden;background:white;box-shadow:0 2px 20px rgba(0,32,91,0.06);">
+    <div style="width:100%;border:1px solid rgba(0,32,91,0.08);border-radius:12px;overflow:hidden;background:var(--slate-900);box-shadow:0 2px 20px rgba(0,32,91,0.06);">
       <div id="sovereigntyLoading" style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--text-secondary);font-size:0.9rem;">Loading Model Sovereignty Index...</div>
       <iframe
         id="sovereigntyFrame"
@@ -1768,7 +1818,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
     </div>
 
     <div style="max-width:800px;margin:2rem auto 0;text-align:left;">
-      <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:white;">
+      <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:var(--slate-900);">
         <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--navy);">Why model sovereignty matters for the Public AI Company</summary>
         <div style="padding:0 1.25rem 1.25rem;font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
           <p style="margin-bottom:0.75rem;">The Airbus for AI initiative argues that middle powers need to build, not just buy, frontier AI. But how do you measure whether a country actually controls the AI it depends on? The Model Sovereignty Index provides a concrete, data-driven answer.</p>
@@ -1793,9 +1843,9 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
     <h3 style="font-size:1.1rem;margin-bottom:0.25rem;color:var(--navy);">Support this initiative</h3>
     <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem;">Join researchers, policymakers, and technologists calling for a coordinated public AI strategy. We will notify you when the formal coalition letter launches.</p>
     <form id="signOnForm" style="display:flex;gap:0.5rem;flex-wrap:wrap;" onsubmit="event.preventDefault(); document.getElementById('signOnConfirm').style.display='block'; this.style.display='none';">
-      <input type="text" name="name" placeholder="Your name" required style="flex:1;min-width:140px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:white;">
-      <input type="email" name="email" placeholder="Email address" required style="flex:1.5;min-width:180px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:white;">
-      <select name="role" style="flex:1;min-width:140px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:white;color:var(--text-secondary);">
+      <input type="text" name="name" placeholder="Your name" required style="flex:1;min-width:140px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:var(--slate-900);">
+      <input type="email" name="email" placeholder="Email address" required style="flex:1.5;min-width:180px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:var(--slate-900);">
+      <select name="role" style="flex:1;min-width:140px;padding:0.6rem 0.75rem;border:1px solid rgba(0,32,91,0.15);border-radius:6px;font-size:0.85rem;background:var(--slate-900);color:var(--text-secondary);">
         <option value="">Your role</option>
         <option value="researcher">AI Researcher</option>
         <option value="policy">Policymaker / Government</option>
@@ -1828,22 +1878,22 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <button class="btn btn-ghost btn-sm" id="ctaExportBtn">Export Deck (PDF)</button>
       </div>
       <div id="commsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;">
-        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+        <div style="background:var(--slate-900);border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
           <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">100-Word Summary</div>
           <p class="comms-copy" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0 0 0.5rem;">A group of middle-power countries face a choice: consolidate their fragmented AI efforts into a single competitive entity, or accept permanent dependency on US and Chinese frontier labs. Inspired by how Airbus challenged Boeing, the "Airbus for AI" initiative proposes merging companies like Mistral, Cohere, DeepL, and others into a Public AI Company, backed by coordinated government investment in compute, procurement, and talent. Combined, these six companies represent $24B+ in value and 100+ languages. The playbook exists. The companies exist. The question is whether political will forms before the window closes.</p>
-          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:white;cursor:pointer;color:var(--sky);">Copy to clipboard</button>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:var(--slate-900);cursor:pointer;color:var(--sky);">Copy to clipboard</button>
         </div>
-        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+        <div style="background:var(--slate-900);border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
           <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">Press Release Template</div>
           <p class="comms-copy" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0 0 0.5rem;">FOR IMMEDIATE RELEASE: Coalition of [X] nations announces feasibility study for a "Public AI Company," modeled on the Airbus consortium that transformed European aerospace. The initiative, backed by [partner organizations], proposes consolidating middle-power AI investments into a coordinated public-private frontier AI lab. "The question is not whether we need sovereign AI capability, but whether we will act before the window closes," said [spokesperson]. Full details: airbusforai.org</p>
-          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:white;cursor:pointer;color:var(--sky);">Copy to clipboard</button>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:var(--slate-900);cursor:pointer;color:var(--sky);">Copy to clipboard</button>
         </div>
-        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+        <div style="background:var(--slate-900);border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
           <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">Social Media Card Text</div>
           <p class="comms-copy" style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0 0 0.5rem;">Airbus went from 0% to 50% of the aircraft market by pooling European resources. What if we did the same for AI? Six companies. Eleven nations. $24B+ combined. Meet the Public AI Company: airbusforai.org</p>
-          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:white;cursor:pointer;color:var(--sky);">Copy to clipboard</button>
+          <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent.trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy to clipboard',2000);" style="font-size:0.7rem;padding:4px 10px;border:1px solid rgba(0,32,91,0.15);border-radius:4px;background:var(--slate-900);cursor:pointer;color:var(--sky);">Copy to clipboard</button>
         </div>
-        <div style="background:white;border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
+        <div style="background:var(--slate-900);border-radius:8px;padding:1rem;border:1px solid rgba(0,32,91,0.06);">
           <div style="font-weight:700;font-size:0.85rem;color:var(--navy);margin-bottom:0.4rem;">Partner Organizations</div>
           <p style="font-size:0.75rem;color:var(--text-secondary);line-height:1.5;margin:0;">Interested organizations include: Pour Demain, Oxford Martin Programme on AI Governance, LawZero, Ada Lovelace Institute, AI Safety Canada, Trajectory Labs, New America. Contact us to join as a partner.</p>
         </div>
@@ -2271,7 +2321,7 @@ function exportDeck() {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: white; padding: 40px 50px; max-width: 900px; margin: 0 auto; }
+body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: var(--slate-900); padding: 40px 50px; max-width: 900px; margin: 0 auto; }
 h1 { font-size: 36px; font-weight: 900; color: #00205b; line-height: 1.15; margin-bottom: 6px; }
 h2 { font-size: 16px; font-weight: 800; color: #00205b; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #eef0f4; padding-bottom: 4px; }
 h3 { font-size: 13px; font-weight: 700; color: #0077c8; margin-bottom: 4px; }
