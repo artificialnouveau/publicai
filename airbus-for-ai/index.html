@@ -165,27 +165,30 @@ h1, h2, h3, h4,
 }
 
 
-/* === HERO === */
+/* === HERO ===
+   The hero is the one place that breaks the off-white palette: a deep navy
+   gradient with the floating-particle canvas, intentional editorial pop
+   before the page transitions into the refined off-white reading area. */
 .hero {
   min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
   text-align: center; padding: 8rem 2rem 6rem;
-  background: var(--ink);
-  color: var(--white); position: relative; overflow: hidden;
+  background: linear-gradient(170deg, #001540 0%, #00205b 40%, #0057FF 100%);
+  color: #ffffff; position: relative; overflow: hidden;
   border-bottom: 1px solid var(--slate-700);
 }
-.hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.35; }
+.hero-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 1; }
 .hero-particles canvas { width: 100%; height: 100%; }
 .hero-content { position: relative; z-index: 2; max-width: 880px; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 0.5rem;
   font-family: var(--mono);
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--slate-400); margin-bottom: 2rem;
+  color: rgba(255,255,255,0.7); margin-bottom: 2rem;
 }
-.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: #00b4d8; animation: blink 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-.hero h1 { font-size: clamp(2.6rem, 6vw, 5.25rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 2rem; color: var(--white); }
-.hero-sub { font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--slate-300); max-width: 620px; margin: 0 auto 2.75rem; line-height: 1.65; font-weight: 400; }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 5.25rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 2rem; color: #ffffff; }
+.hero-sub { font-size: clamp(1rem, 1.5vw, 1.2rem); color: rgba(255,255,255,0.78); max-width: 620px; margin: 0 auto 2.75rem; line-height: 1.65; font-weight: 400; }
 .hero-cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
@@ -195,8 +198,11 @@ h1, h2, h3, h4,
   cursor: pointer; border: 1px solid transparent; text-decoration: none;
   transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.btn-primary { background: var(--accent); color: var(--white); border-color: var(--accent); }
+.btn-primary { background: var(--accent); color: #ffffff; border-color: var(--accent); }
 .btn-primary:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+/* Hero variant: white button with ink label, higher contrast on navy gradient */
+.hero .btn-primary { background: #ffffff; color: #001540; border-color: #ffffff; }
+.hero .btn-primary:hover { background: rgba(255,255,255,0.92); border-color: rgba(255,255,255,0.92); }
 .btn-outline { background: transparent; color: var(--white); border: 1px solid var(--slate-600); }
 .btn-outline:hover { border-color: var(--white); }
 .btn-action { background: var(--accent); color: var(--white); }
