@@ -29,34 +29,47 @@
   font-display: swap;
 }
 :root {
-  /* Aerospace-engineering palette: graphite base (lighter than pitch
-     charcoal), crisp white text, single electric-blue accent. Bumped up
-     two stops so the page reads "engineering-dark" not "void-dark". */
-  --ink: #131822;          /* body base, slightly tinted graphite */
-  --charcoal: #1a2030;     /* primary card surface */
-  --slate-900: #232a3a;    /* nested card surface (one step up) */
-  --slate-800: #2c3445;    /* hover surface / inputs */
-  --slate-700: #38415a;    /* dividing border at low contrast */
-  --slate-600: #4d566c;    /* mid border / muted accent */
-  --slate-500: #6f7689;    /* muted text and icons */
-  --slate-400: #9ca3b3;    /* secondary text */
-  --slate-300: #c2c7d2;    /* primary secondary text */
-  --slate-100: #ecedf2;    /* near-white body text */
-  --white: #ffffff;        /* pure white for emphasis */
+  /* Refined editorial palette: warm off-white paper, ink-black text,
+     hairline 1px borders, single electric-blue accent. Names kept from
+     the previous dark theme so the rest of the file resolves without
+     needing to touch every call site; values are inverted in tone. */
+  --ink: #F8F6F1;          /* page base — warm off-white, paper-like */
+  --charcoal: #FFFFFF;     /* primary card surface */
+  --slate-900: #FBFAF6;    /* nested card surface (one whisker off bg) */
+  --slate-800: #F0EDE7;    /* hover surface / inputs */
+  --slate-700: rgba(10,10,10,0.08); /* hairline border */
+  --slate-600: rgba(10,10,10,0.18); /* hairline border brightened */
+  --slate-500: #9A9A95;    /* muted text and icons */
+  --slate-400: #6E6E69;    /* secondary text */
+  --slate-300: #3A3A38;    /* primary secondary text */
+  --slate-100: #1A1A1A;    /* primary text (ink) */
+  --white: #0A0A0A;        /* deepest ink for emphasis (var name kept; meaning inverted) */
   --accent: #0057FF;       /* electric blue, single accent */
   --accent-bright: #2a72ff;/* hover-brighter variant */
-  --accent-dim: rgba(0,87,255,0.12); /* low-opacity backgrounds */
+  --accent-dim: rgba(0,87,255,0.08); /* low-opacity backgrounds */
 
-  /* Legacy variables (still referenced in many places) remapped to the
-     new palette so we can rotate the visual direction without touching
-     every call site. Subsequent phases will inline-replace where useful. */
-  --off-white: var(--charcoal);
-  --light-gray: var(--slate-700);
-  --mid-gray: var(--slate-500);
-  --dark-gray: var(--slate-400);
-  --navy: var(--charcoal);
-  --navy-light: var(--slate-800);
-  --navy-dark: var(--ink);
+  /* Data-zone palette: dark inverted region for interactive / chart-heavy
+     sections (Dashboard, Cost of Inaction, Stress Test, Growth Gap, etc.).
+     Editorial contrast against the off-white chrome. */
+  --data-bg: #131822;
+  --data-bg-2: #1a2030;
+  --data-text: #ECEDF2;
+  --data-text-secondary: #C2C7D2;
+  --data-text-muted: #9CA3B3;
+  --data-border: #38415A;
+
+  /* Legacy variables remapped to the new palette. In the original light
+     theme --navy meant "dark text" and --off-white meant "card surface".
+     In this refined-light theme --navy is mapped to ink-black (so any
+     inline color:var(--navy) reads as primary text), and surfaces
+     resolve to the white/off-white scale via --charcoal/--slate-900. */
+  --off-white: var(--charcoal);     /* card surface = white */
+  --light-gray: var(--slate-700);   /* hairline border */
+  --mid-gray: var(--slate-500);     /* muted */
+  --dark-gray: var(--slate-400);    /* secondary */
+  --navy: var(--slate-100);         /* dark text (ink) */
+  --navy-light: var(--slate-300);   /* muted dark text */
+  --navy-dark: var(--white);        /* deepest ink for emphasis */
   --sky: var(--accent);
   --sky-light: var(--accent-bright);
   --cyan: var(--accent);
@@ -91,10 +104,11 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font); color: var(--text); background: var(--ink);
   line-height: 1.6; overflow-x: hidden;
-  /* Subtle engineering-blueprint dot grid (24px spacing, 8% opacity).
-     Lays under all content; chapter cards sit on top with their own bg. */
-  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0);
-  background-size: 24px 24px;
+  /* Refined paper grain: very faint dot grid, dark dots on warm off-white,
+     2.5% opacity at 32px spacing — almost imperceptible up close, gives
+     the page a printed-paper texture rather than digital flatness. */
+  background-image: radial-gradient(circle at 1px 1px, rgba(10,10,10,0.025) 1px, transparent 0);
+  background-size: 32px 32px;
   background-attachment: fixed;
 }
 /* Young Serif applied to all display headings */
@@ -107,7 +121,7 @@ h1, h2, h3, h4,
 /* === NAV === */
 .topnav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(5,8,17,0.85); backdrop-filter: blur(16px);
+  background: rgba(248,246,241,0.88); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--slate-700);
   padding: 0 2rem; height: 64px;
   display: flex; align-items: center; justify-content: space-between;
@@ -220,7 +234,7 @@ h1, h2, h3, h4,
 .story-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--sky); margin-bottom: 0.75rem; }
 
 /* === ASSEMBLY === */
-.assembly-zone { padding: 4rem 2rem 6rem; background: var(--charcoal); }
+.assembly-zone { padding: 4rem 2rem 6rem; background: var(--data-bg); color: var(--data-text); }
 .assembly-inner { max-width: 1280px; margin: 0 auto; }
 .assembly-layout { display: grid; grid-template-columns: 300px 1fr 300px; gap: 2rem; min-height: 600px; align-items: start; }
 .company-dock { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -352,7 +366,7 @@ h1, h2, h3, h4,
 .merge-context.hidden { opacity: 0; max-height: 0; padding: 0 1.5rem; margin: 0 auto; }
 
 /* === THE STRESS TEST === */
-.battle-section { padding: 5rem 2rem; background: var(--charcoal); color: var(--white); }
+.battle-section { padding: 5rem 2rem; background: var(--data-bg); color: var(--data-text); }
 .battle-inner { max-width: 900px; margin: 0 auto; }
 .battle-header { text-align: center; margin-bottom: 2rem; }
 .battle-header h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 0.5rem; }
@@ -757,7 +771,7 @@ details.chapter-details.line-wiped > summary.chapter-summary::before { width: 10
   position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 80;
   display: flex; flex-direction: column; gap: 2px;
   padding: 8px 6px; border-radius: 4px;
-  background: rgba(10,14,26,0.85); backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
   border: 1px solid var(--slate-700);
   width: 28px; overflow: hidden;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -793,7 +807,7 @@ details.skeptic-q > summary { list-style: none; }
 details.skeptic-q > summary::-webkit-details-marker { display: none; }
 details.skeptic-q > summary::marker { content: ''; }
 details.skeptic-q[open] > summary { color: var(--sky); }
-details.skeptic-q:hover > summary { background: var(--white); }
+details.skeptic-q:hover > summary { background: var(--slate-800); }
 
 /* === COLLAPSIBLE CHAPTER DETAILS ===
    Flat card on a dark surface. Razor-thin border that brightens on hover.
@@ -1065,7 +1079,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
   </div>
   <div class="chapter-summary-affordance"><span class="chapter-summary-time">~6 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
 </summary>
-<section style="padding:5rem 2rem;background:var(--charcoal);color:var(--white);--db-text:var(--slate-300);--db-dim:var(--slate-400);--db-border:var(--slate-700);--db-raised:var(--slate-900);--db-cyan:var(--accent);--db-green:var(--accent);--db-red:var(--accent);--db-gold:var(--accent);--db-aurora:var(--accent);">
+<section style="padding:5rem 2rem;background:var(--data-bg);color:var(--data-text);--db-text:var(--data-text-secondary);--db-dim:var(--data-text-muted);--db-border:var(--data-border);--db-raised:var(--data-bg-2);--db-cyan:var(--accent);--db-green:var(--accent);--db-red:var(--accent);--db-gold:var(--accent);--db-aurora:var(--accent);">
   <div style="max-width:1100px;margin:0 auto;">
     <div style="text-align:center;margin-bottom:3rem;">
       <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--db-dim);margin-bottom:8px;">Deep Data</div>
@@ -1433,11 +1447,11 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 </section>
 
 <!-- HISTORICAL AI LAB DATA (Growth Gap, inside Problem chapter) -->
-<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--navy-dark);color:white;">
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--data-bg);color:var(--data-text);">
   <div style="max-width:900px;margin:0 auto;">
-    <div class="narrative-kicker" style="color:var(--cyan);">The Growth Gap</div>
-    <h2 class="narrative-heading" style="color:white;font-size:clamp(1.2rem,2.5vw,1.6rem);">How US labs pulled ahead: 2017-2025</h2>
-    <div class="narrative-body" style="color:rgba(255,255,255,0.7);font-size:0.95rem;margin-bottom:2rem;">
+    <div class="narrative-kicker" style="color:var(--accent);">The Growth Gap</div>
+    <h2 class="narrative-heading" style="color:var(--data-text);font-size:clamp(1.2rem,2.5vw,1.6rem);">How US labs pulled ahead: 2017-2025</h2>
+    <div class="narrative-body" style="color:var(--data-text-secondary);font-size:0.95rem;margin-bottom:2rem;">
       <p>The gap didn't open overnight. It compounded year after year as US labs attracted capital, talent, and compute at a pace no European company could match.</p>
     </div>
     <canvas id="historicalChart" style="width:100%;height:clamp(250px,40vw,400px);display:block;" role="img" aria-label="Historical chart showing AI lab valuation growth from 2017 to 2025"></canvas>
@@ -1447,7 +1461,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 </div>
 
 <!-- COST OF INACTION (inside Problem chapter) -->
-<section class="inaction-section" id="inaction" style="padding:5rem 2rem;background:var(--charcoal);color:var(--white);">
+<section class="inaction-section" id="inaction" style="padding:5rem 2rem;background:var(--data-bg);color:var(--data-text);">
   <div style="max-width:960px;margin:0 auto;">
     <div class="section-header center fade-up">
       <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:0.5rem;font-weight:700;">The Cost of Inaction</div>
@@ -1707,13 +1721,13 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 </summary>
 
 <!-- NARRATIVE: THE CONFRONTATION (inside Test It) -->
-<div class="narrative-block wide fade-up" style="background: var(--navy-dark); color: white; max-width: 100%; padding: 5rem 2rem;">
+<div class="narrative-block wide fade-up" style="background: var(--data-bg); color: var(--data-text); max-width: 100%; padding: 5rem 2rem;">
   <div style="max-width: 720px; margin: 0 auto;">
-    <div class="narrative-kicker" style="color: var(--cyan);">The Stress Test</div>
+    <div class="narrative-kicker" style="color: var(--accent);">The Stress Test</div>
     <h2 class="narrative-heading">Now test it against the incumbents.</h2>
-    <div class="narrative-body" style="color: rgba(255,255,255,0.75);">
+    <div class="narrative-body" style="color: var(--data-text-secondary);">
       <p>A merged entity looks impressive on paper. But can it actually compete? OpenAI hit ~$20B in revenue in 2025<sup class="fn"><a href="#fn9">[9]</a></sup> and now runs at ~$24B annualized. Anthropic hit $14B ARR in February 2026, up from $1B just 14 months earlier.<sup class="fn"><a href="#fn10">[10]</a></sup> Google Gemini sits atop the world's largest compute infrastructure. xAI reached a $230B valuation in January 2026.<sup class="fn"><a href="#fn11">[11]</a></sup></p>
-      <p>The gap is real. But it's not permanent. Use the <strong style="color:white;">scenario levers</strong> below to model what happens when governments invest: compute buildouts, procurement contracts, capital injections, talent programs. <strong style="color:white;">Every lever you pull changes the outcome.</strong></p>
+      <p>The gap is real. But it's not permanent. Use the <strong style="color:var(--data-text);">scenario levers</strong> below to model what happens when governments invest: compute buildouts, procurement contracts, capital injections, talent programs. <strong style="color:var(--data-text);">Every lever you pull changes the outcome.</strong></p>
     </div>
   </div>
 </div>
