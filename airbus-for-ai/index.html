@@ -980,12 +980,18 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
     </div>
 
     <!-- 1. CAPITAL FLOW SANKEY -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>The funding pipeline. EU AI investment ($14B) vs the US's $109B in 2024, plus where European founders go after raising at home: 57% relocate westward.</p>
+        <h4>Why it matters</h4>
+        <p>Capital that gets built in Europe doesn't stay there. Every EU success story becomes a US tax win, a US workforce, and US-controlled IP. Sovereignty starts with keeping the upside at home.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Capital Flow &mdash; Where EU AI Money Ends Up</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EU raised $14B in AI funding vs $109B in the US (2024). 57% of relocating European founders move to the US. The pipeline flows one way.</p>
       <canvas id="dbCapitalFlowCanvas" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="Capital flow diagram: EU AI funding flows to US, showing $14B EU vs $109B US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1009,15 +1015,22 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.stateofeuropeantech.com/" target="_blank">Atomico State of European Tech 2025</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://dealroom.co/reports/ai-europe-report-2024" target="_blank">Dealroom AI Europe Report 2024</a>
       </div>
+      </div>
     </div>
 
     <!-- 2. TALENT MIGRATION -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>Top-tier AI researchers (NeurIPS authors) tracked from birth, through education, to current employer. The arrows mostly point one way.</p>
+        <h4>Why it matters</h4>
+        <p>Europe trains world-class researchers, then exports them. Public universities subsidise US private hiring. A Public AI Company is the only employer big enough to keep the talent at home.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Talent Migration &mdash; Where EU AI Researchers End Up</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">Top-tier AI researchers (NeurIPS authors): where they studied vs. where they work. Europe educates talent that the US employs.</p>
       <canvas id="dbTalentChordCanvas" style="width:100%;height:clamp(250px, 50vw, 400px);" role="img" aria-label="Talent migration flow: EU-educated AI researchers predominantly work in the US"></canvas>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1037,15 +1050,22 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://macropolo.org/digital-projects/the-global-ai-talent-tracker/" target="_blank">MacroPolo Global AI Talent Tracker</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
       </div>
+      </div>
     </div>
 
     <!-- 3. COMPUTE INFRASTRUCTURE -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>11 EuroHPC supercomputers and 12 planned AI Factory sites against the US's 1,136+ hyperscale data centres.</p>
+        <h4>Why it matters</h4>
+        <p>Research compute is plentiful; commercial inference compute isn't. Without the commercial layer, every European AI product still has to live on AWS, Azure, or GCP. Every prompt is a US-routed transaction.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Compute Infrastructure &mdash; What Europe Actually Has</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">EuroHPC supercomputers vs. hyperscaler data centers. Europe has research compute. It does not have commercial-scale AI infrastructure.</p>
       <canvas id="dbComputeMapCanvas" style="width:100%;height:clamp(250px, 50vw, 380px);" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem;">
         <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.05);">
@@ -1088,15 +1108,22 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank">EuroHPC JU</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank">Synergy Research: Hyperscale DCs</a>
       </div>
+      </div>
     </div>
 
     <!-- 4. LANGUAGE HEATMAP -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>Of 24 official EU languages, frontier models support 3 well (English, French, Spanish). 8 get partial coverage. 13+ are at risk of digital extinction.<sup class="fn"><a href="#fn19" style="color:inherit;">[19]</a></sup></p>
+        <h4>Why it matters</h4>
+        <p>When AI doesn't speak your language, your culture goes invisible online. Linguistic sovereignty is the part of national sovereignty that gets quietly conceded first.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Language Coverage &mdash; Digital Equality Across EU Languages</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">24 official EU languages. Only 3 are well-supported by frontier AI models.<sup class="fn"><a href="#fn18" style="color:var(--db-dim);">[18]</a></sup> 20+ official and many regional languages face "digital extinction."<sup class="fn"><a href="#fn19" style="color:var(--db-dim);">[19]</a></sup></p>
       <div id="dbLangHeatmap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:4px;margin-bottom:1rem;"></div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:0.75rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1116,15 +1143,22 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://european-language-equality.eu/reports/" target="_blank">European Language Equality (ELE)</a>
       </div>
+      </div>
     </div>
 
     <!-- 5. AI PATENT FILINGS -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>AI patents (2014-2023): China 38K, US 6.3K, EU 1.2K.<sup class="fn"><a href="#fn20" style="color:inherit;">[20]</a></sup> Citations flip the picture: US patents are cited 7x more than Chinese ones.<sup class="fn"><a href="#fn21" style="color:inherit;">[21]</a></sup> Notable models shipped in 2024: US 40, EU 3.<sup class="fn"><a href="#fn22" style="color:inherit;">[22]</a></sup></p>
+        <h4>Why it matters</h4>
+        <p>Volume is not impact. Europe lags on both axes, and on the harder one (models actually shipped) the gap is widening, not closing. A coordinated lab is the only way to convert research into shipped product at scale.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">AI Patent Filings &mdash; Innovation Output Gap</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">China files 70% of all AI patents.<sup class="fn"><a href="#fn20" style="color:var(--db-dim);">[20]</a></sup> But US patents are cited 7x more.<sup class="fn"><a href="#fn21" style="color:var(--db-dim);">[21]</a></sup> Europe produced only 3 notable AI models in 2024 vs 40 from the US.<sup class="fn"><a href="#fn22" style="color:var(--db-dim);">[22]</a></sup></p>
       <canvas id="dbPatentChart" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="AI patent filings: China leads with 38,000+ inventions, US 6,300, EU 1,200"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1148,25 +1182,39 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.wipo.int/tech_trends/en/artificial_intelligence/patenting.html" target="_blank">WIPO Technology Trends: AI Patents</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://aiindex.stanford.edu/report/" target="_blank">Stanford HAI AI Index 2025</a>
       </div>
+      </div>
     </div>
 
     <!-- 6. AI COMPANY VALUATIONS -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>Standalone AI valuations side by side: OpenAI $852B, Anthropic $380B, xAI $230B against Mistral $13.8B, Cohere $7B, DeepL $2B. Alphabet and Meta figures are estimated AI division value, not full market cap.</p>
+        <h4>Why it matters</h4>
+        <p>Individually, every middle-power lab is too small to compete for compute, talent, or distribution. Combined into one entity (~$24B), they enter the tier where serious GPU contracts and senior researchers become reachable.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">AI Company Valuations &mdash; US vs Coalition ($B)</div>
       </div>
-      <p style="font-size:0.75rem;color:var(--db-dim);margin-bottom:0.75rem;">Standalone AI company/division valuations. Alphabet and Meta figures are estimated AI division value, not full market cap.</p>
       <div id="dbDashboardBars" style="display:flex;flex-direction:column;gap:8px;"></div>
       <div style="margin-top:8px;font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);">Source: public filings, funding announcements, and industry estimates (2025-2026)</div>
+      </div>
     </div>
 
     <!-- 7. COALITION COMPANY REVENUE GROWTH -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>Real revenue trajectories of the candidate companies. Mistral grew ARR 20x in 12 months; Cohere 11x in 24 months; DeepL covers 100+ languages; Stable Diffusion has generated 12.6B images.</p>
+        <h4>Why it matters</h4>
+        <p>These aren't hypothetical. The pieces of a Public AI Company are already operating at commercial scale, just fragmented across borders. The proposal is to coordinate, not to build from scratch.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Coalition Company Revenue Growth</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">These aren't hypothetical startups. The coalition companies are scaling fast, with real enterprise customers and real revenue trajectories.</p>
       <canvas id="dbGrowthChart" style="width:100%;height:clamp(200px, 40vw, 400px);" role="img" aria-label="Coalition revenue growth: Mistral 20x to $400M, Cohere 11x to $240M, DeepL to $185M"></canvas>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:1.5rem;">
         <div style="text-align:center;padding:1rem;border:0.5px solid var(--db-border);border-radius:8px;">
@@ -1192,29 +1240,43 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://en.wikipedia.org/wiki/DeepL_Translator" target="_blank">Wikipedia (DeepL)</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.quantumrun.com/consulting/stable-diffusion-statistics/" target="_blank">Quantumrun (Stability AI)</a>
       </div>
+      </div>
     </div>
 
     <!-- 8. HUGGINGFACE LIVE MODEL DOMINANCE -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>Live snapshot of the top 50 most-downloaded open AI models on HuggingFace, classified by the region of their host org. Refreshes on every page load.</p>
+        <h4>Why it matters</h4>
+        <p>Even open-source AI tilts toward US-controlled defaults. Sovereign open weights need sovereign hosts; without them, "open" just means "hosted in California".</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Who Controls Open-Source AI?</div>
         <span id="hfBadge" style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-dim);"></span> LOADING</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1rem;">Live data from HuggingFace: the top 50 most-downloaded AI models, classified by region. Updated every page load.</p>
       <div id="hfRegionSummary" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem;"></div>
       <div id="hfModelTable" style="font-size:0.75rem;font-family:var(--mono);"></div>
       <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://huggingface.co/models" target="_blank">HuggingFace Model Hub</a>
       </div>
+      </div>
     </div>
 
     <!-- 9. COALITION CAPABILITIES -->
-    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;">
+    <div style="padding:2rem;border-radius:10px;background:var(--db-raised);border:0.5px solid var(--db-border);margin-bottom:2rem;" class="db-chart">
+      <div class="db-explainer">
+        <h4>What it shows</h4>
+        <p>Critical infrastructure the coalition nations already own: ASML's EUV monopoly (&euro;32.7B revenue, 100% market share), Helsing's defense AI ($12B), Mistral Compute (13.8K GPUs in Paris), MareNostrum 5 (4,480 H100s, Salamandra LLMs in 35 European languages).</p>
+        <h4>Why it matters</h4>
+        <p>These can't be sanctioned around or replaced by a hyperscaler announcement. The coalition's leverage isn't aspirational. It already exists, just not coordinated under one strategic roof.</p>
+      </div>
+      <div class="db-visual">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
         <div style="font-size:0.85rem;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--db-dim);">Coalition Sovereign Infrastructure</div>
         <span style="font-size:0.6rem;font-family:var(--mono);color:var(--db-dim);display:inline-flex;align-items:center;gap:3px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> SOURCED</span>
       </div>
-      <p style="font-size:0.95rem;color:var(--db-dim);margin-bottom:1.5rem;">Beyond the core companies, the coalition nations control critical infrastructure that no US hyperscaler can replicate or route around.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
         <!-- ASML -->
         <div style="padding:1.25rem;border:0.5px solid rgba(26,108,212,0.3);border-radius:10px;background:rgba(26,108,212,0.05);">
@@ -1269,6 +1331,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://techcrunch.com/2026/03/30/mistral-ai-raises-830m-in-debt-to-set-up-a-data-center-near-paris/" target="_blank">TechCrunch (Mistral Compute)</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://www.bsc.es/marenostrum/marenostrum-5" target="_blank">BSC (MareNostrum 5)</a>
         <a style="font-size:0.65rem;font-family:var(--mono);color:var(--db-dim);text-decoration:none;padding:2px 8px;border:0.5px solid var(--db-border);border-radius:4px;" href="https://huggingface.co/BSC-LT/salamandra-7b" target="_blank">HuggingFace (Salamandra)</a>
+      </div>
       </div>
     </div>
 
