@@ -227,6 +227,210 @@ h1, h2, h3, h4,
 .qa-question .qa-num { font-family: var(--mono); color: var(--red); flex-shrink: 0; font-size: 0.8rem; letter-spacing: 0.05em; }
 .qa-answer { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; padding-top: 0.65rem; border-top: 1px solid rgba(10,10,10,0.06); }
 
+/* === STRATEGY MATRIX ===
+   The paper's 5×3 (now 6×3) decision table. Rendered as a real <table>
+   for accessibility; horizontal scroll on narrow. The proposal row gets
+   accent emphasis to make the contrast with everything-else visible. */
+.strategy-matrix-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.strategy-matrix {
+  width: 100%; min-width: 720px; border-collapse: collapse;
+  font-size: 0.86rem; background: var(--charcoal);
+  border: 1px solid var(--slate-700); border-radius: 6px; overflow: hidden;
+}
+.strategy-matrix thead th {
+  text-align: left; vertical-align: bottom;
+  padding: 0.85rem 1rem; background: var(--slate-900);
+  border-bottom: 2px solid var(--slate-700);
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-400);
+  white-space: normal;
+}
+.strategy-matrix thead th:first-child { color: var(--slate-300); }
+.strategy-matrix tbody th, .strategy-matrix tbody td {
+  padding: 0.95rem 1rem; vertical-align: top;
+  border-top: 1px solid var(--slate-700);
+}
+.strategy-matrix tbody th { text-align: left; font-weight: 700; color: var(--navy); width: 28%; }
+.strategy-matrix tbody td { color: var(--slate-300); }
+.strategy-matrix tbody tr:hover { background: var(--slate-900); }
+.strategy-matrix .sm-row-title { display: block; font-size: 0.92rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
+.strategy-matrix .sm-row-eg { display: block; font-family: var(--mono); font-size: 0.7rem; font-weight: 500; color: var(--slate-400); }
+.strategy-matrix .sm-yes,
+.strategy-matrix .sm-no,
+.strategy-matrix .sm-warn {
+  display: inline-block; padding: 0.15rem 0.55rem; border-radius: 100px;
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.strategy-matrix .sm-yes  { background: rgba(10,125,61,0.12); color: #0a7d3d; }
+.strategy-matrix .sm-no   { background: rgba(184,0,46,0.10);  color: #b8002e; }
+.strategy-matrix .sm-warn { background: rgba(138,90,0,0.12);  color: #8a5a00; }
+.strategy-matrix .sm-note {
+  display: block; margin-top: 0.4rem;
+  font-size: 0.78rem; line-height: 1.5; color: var(--slate-400); font-weight: 400;
+  font-family: var(--font); text-transform: none; letter-spacing: 0;
+}
+.strategy-matrix .sm-proposal {
+  background: var(--accent-dim);
+}
+.strategy-matrix .sm-proposal:hover { background: rgba(0,87,255,0.14); }
+.strategy-matrix .sm-proposal .sm-row-title { color: var(--accent); }
+.strategy-matrix .sm-proposal td { color: var(--slate-100); }
+@media (max-width: 768px) {
+  .strategy-matrix { font-size: 0.8rem; }
+  .strategy-matrix thead th, .strategy-matrix tbody th, .strategy-matrix tbody td { padding: 0.7rem 0.75rem; }
+}
+
+/* === WHY GRID ===
+   The four reasons-a-consortium-works cards. Big mono-numbered title,
+   plain prose body. No icons, no flourishes — they need to read as
+   arguments, not features. */
+.why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.why-card {
+  background: var(--charcoal); border: 1px solid var(--slate-700);
+  border-radius: 6px; padding: 1.5rem 1.5rem 1.4rem;
+  transition: border-color 0.2s ease;
+}
+.why-card:hover { border-color: var(--accent); }
+.why-num { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 0.6rem; }
+.why-title { font-size: 1.05rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 0.55rem; }
+.why-body { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+@media (max-width: 768px) {
+  .why-grid { grid-template-columns: 1fr; }
+  .why-card { padding: 1.25rem; }
+}
+
+/* === TIER CARDS ===
+   The three-step "how" architecture. Middle card (Step 2 — the Airbus-
+   style enterprise) is the load-bearing one, gets the accent emphasis. */
+.tier-card {
+  background: var(--charcoal); border: 1px solid var(--slate-700);
+  border-radius: 6px; padding: 1.4rem 1.4rem 1.3rem;
+  transition: border-color 0.2s ease;
+}
+.tier-card:hover { border-color: var(--accent); }
+.tier-card--core { background: var(--accent-dim); border-color: rgba(0,87,255,0.3); }
+.tier-card--core:hover { border-color: var(--accent); }
+.tier-step { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.55rem; }
+.tier-title { font-size: 1rem; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; margin-bottom: 0.55rem; }
+.tier-body { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+@media (max-width: 768px) {
+  #tierGrid { grid-template-columns: 1fr !important; }
+}
+
+/* === PREVIEW CARDS ===
+   Hand-curated promos for the sibling pages (narrative.html, simulation.html).
+   Wide card: art panel on the left, prose + CTA on the right. Whole card
+   is one anchor; hover lifts the border to accent and the CTA underlines. */
+.preview-card {
+  display: grid; grid-template-columns: minmax(220px, 32%) 1fr;
+  max-width: 1000px; margin: 2rem auto 3rem;
+  background: var(--charcoal); border: 1px solid var(--slate-700);
+  border-radius: 8px; overflow: hidden;
+  text-decoration: none; color: inherit;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.preview-card:hover, .preview-card:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 6px 24px rgba(0,87,255,0.10);
+  transform: translateY(-2px);
+  outline: none;
+}
+.preview-card-art {
+  position: relative;
+  display: grid; align-content: center; justify-items: center;
+  padding: 2rem 1.5rem; gap: 0.75rem;
+  background: linear-gradient(135deg, #001540 0%, #00205b 60%, #0057FF 100%);
+  color: rgba(255,255,255,0.92);
+  min-height: 200px;
+}
+.preview-card-art--story {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.10), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(0,180,216,0.12), transparent 50%),
+    linear-gradient(160deg, #0a1530 0%, #002460 50%, #0057FF 110%);
+}
+.preview-card-art--sim {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,180,216,0.18), transparent 60%),
+    linear-gradient(180deg, #131822 0%, #0a1224 100%);
+}
+.preview-card-cities {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 0.6rem;
+  font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.06em; justify-content: center; text-align: center;
+}
+.preview-card-cities span {
+  padding: 0.3rem 0.6rem; border-radius: 100px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+}
+.preview-card-decisions {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem;
+  width: min(100%, 200px);
+}
+.preview-card-decisions span {
+  font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+  display: grid; place-items: center; aspect-ratio: 1;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.04);
+}
+.preview-card-decisions span:nth-child(1),
+.preview-card-decisions span:nth-child(4),
+.preview-card-decisions span:nth-child(6) { background: rgba(0,180,216,0.18); color: rgba(255,255,255,0.95); border-color: rgba(0,180,216,0.5); }
+.preview-card-art-label {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.preview-card-body { padding: 1.75rem 1.85rem 1.5rem; }
+.preview-card-eyebrow { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.45rem; }
+.preview-card-title { font-size: 1.55rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 0.65rem; }
+.preview-card-lede { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 0.75rem; }
+.preview-card-meta { font-size: 0.78rem; color: var(--slate-400); margin: 0 0 1rem; font-style: italic; }
+.preview-card-cta {
+  display: inline-block; font-family: var(--font); font-size: 0.85rem;
+  font-weight: 700; color: var(--accent); letter-spacing: 0.01em;
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+.preview-card:hover .preview-card-cta,
+.preview-card:focus-visible .preview-card-cta { border-bottom-color: var(--accent); }
+@media (max-width: 720px) {
+  .preview-card { grid-template-columns: 1fr; }
+  .preview-card-art { min-height: 140px; padding: 1.5rem 1rem; }
+  .preview-card-body { padding: 1.4rem 1.4rem 1.25rem; }
+  .preview-card-title { font-size: 1.3rem; }
+}
+@media print { .preview-card { page-break-inside: avoid; } }
+
+/* === MVP LEDE === */
+.mvp-lede {
+  background: var(--charcoal); border: 1px solid var(--slate-700);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px; padding: 1.75rem 1.75rem 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.mvp-eyebrow { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+.mvp-title { font-size: clamp(1.3rem, 2.4vw, 1.65rem); font-weight: 800; color: var(--navy); letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 1.25rem; }
+.mvp-accent { color: var(--accent); }
+.mvp-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+.mvp-stat {
+  background: var(--slate-900); border: 1px solid var(--slate-700);
+  border-radius: 4px; padding: 0.85rem 1rem;
+}
+.mvp-stat-num { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: -0.01em; line-height: 1; }
+.mvp-stat-label { font-size: 0.72rem; color: var(--slate-400); margin-top: 0.4rem; line-height: 1.4; }
+.mvp-body { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; margin: 0; max-width: 760px; }
+@media (max-width: 768px) {
+  .mvp-stats { grid-template-columns: repeat(2, 1fr); }
+  .mvp-lede { padding: 1.25rem 1.25rem 1.1rem; }
+  .mvp-title { font-size: 1.2rem; }
+}
+
 
 /* === HERO ===
    The hero is the one place that breaks the off-white palette: a deep navy
@@ -597,10 +801,10 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   position: relative; padding-left: 60px; margin-top: 2rem;
 }
 .timeline-vertical::before {
-  content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, transparent 0%, var(--accent) 6%, var(--accent) 94%, transparent 100%);
-  border-radius: 2px;
+  content: ''; position: absolute; left: 24px; top: 0.5rem; bottom: 0.5rem;
+  width: 2px;
+  background: var(--slate-700);
+  border-radius: 1px;
 }
 .tl-card {
   position: relative; margin-bottom: 2rem; padding: 1.75rem;
@@ -1363,6 +1567,69 @@ select option { background: var(--charcoal); color: var(--slate-100); }
   </div>
 </div>
 
+<!-- STRATEGY MATRIX (inside Problem chapter)
+     The paper's clearest one-glance artifact: five sovereign-AI strategies
+     scored on Competitive / Public value / Sovereignty. Every other option
+     fails on at least one axis; only the Airbus-for-AI consortium scores
+     across all three. Source: Bennett School policy brief (Tan et al. 2025). -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:4rem 2rem 3rem;background:var(--off-white);">
+  <div style="max-width:1000px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--red);">The five strategies, scored</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">How does your country access frontier AI?</h2>
+    <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.65;margin:0.5rem 0 1.5rem;max-width:760px;">Every middle power is doing one of these five things today. Each fails on at least one of the three axes that matter, which is why the paper proposes the consortium as the sixth row. Adapted from the Bennett School policy brief.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
+    <div class="strategy-matrix-wrap">
+      <table class="strategy-matrix" aria-label="Five strategies for accessing frontier AI, scored on competitiveness, public value, and sovereignty">
+        <thead>
+          <tr>
+            <th scope="col">Strategy</th>
+            <th scope="col">Competitive with frontier labs?</th>
+            <th scope="col">Generates public value?</th>
+            <th scope="col">Protects national sovereignty?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="sm-row-title">Import private models</span><span class="sm-row-eg">e.g. OpenAI, Anthropic</span></th>
+            <td><span class="sm-yes">Yes</span></td>
+            <td><span class="sm-no">No</span><span class="sm-note">Most value captured privately, abroad.</span></td>
+            <td><span class="sm-no">No</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="sm-row-title">Import open models</span><span class="sm-row-eg">e.g. Meta, DeepSeek</span></th>
+            <td><span class="sm-warn">Mixed</span><span class="sm-note">Cheap, but not best-in-class.</span></td>
+            <td><span class="sm-yes">Yes</span></td>
+            <td><span class="sm-warn">Mixed</span><span class="sm-note">Production still lives abroad.</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="sm-row-title">Back national champions</span><span class="sm-row-eg">e.g. Mistral, Cohere</span></th>
+            <td><span class="sm-warn">Mixed</span><span class="sm-note">Not in consumer or pre-training; some traction in enterprise.</span></td>
+            <td><span class="sm-warn">Mixed</span><span class="sm-note">Spillovers, but no public accountability.</span></td>
+            <td><span class="sm-warn">Mixed</span><span class="sm-note">Foreign acquisition risk (DeepMind, Silo).</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="sm-row-title">Fund national AI labs</span><span class="sm-row-eg">e.g. Swiss AI, BSC</span></th>
+            <td><span class="sm-no">No</span><span class="sm-note">A bit of traction in public-sector use.</span></td>
+            <td><span class="sm-yes">Yes</span></td>
+            <td><span class="sm-yes">Yes</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><span class="sm-row-title">Fund research consortia</span><span class="sm-row-eg">e.g. OpenEuroLLM, CERN-for-AI</span></th>
+            <td><span class="sm-no">No</span><span class="sm-note">Wrong incentives for product. Limited access to capital.</span></td>
+            <td><span class="sm-yes">Yes</span></td>
+            <td><span class="sm-yes">Yes</span></td>
+          </tr>
+          <tr class="sm-proposal">
+            <th scope="row"><span class="sm-row-title">Airbus-for-AI consortium</span><span class="sm-row-eg">the proposal</span></th>
+            <td><span class="sm-yes">Yes</span><span class="sm-note">Pooled compute, single product mission.</span></td>
+            <td><span class="sm-yes">Yes</span><span class="sm-note">Public-private; designed for spillovers.</span></td>
+            <td><span class="sm-yes">Yes</span><span class="sm-note">Multi-state ownership rules out single-nation capture.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- COST OF INACTION (inside Problem chapter) -->
 <section class="inaction-section" id="inaction" style="padding:5rem 2rem;background:var(--data-bg);color:var(--data-text);">
   <div style="max-width:960px;margin:0 auto;">
@@ -1464,20 +1731,28 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 <header class="chapter-header">
   <div class="chapter-kicker">2. The Precedent</div>
   <h2 class="chapter-title">The Slow Boil</h2>
-  <p class="chapter-desc">A near-future scenario in five cities. Dublin to Tokyo, April 2026 to 2027, as middle powers feel the heat and grope toward a coalition.</p>
+  <p class="chapter-desc">The same argument the Bennett brief lays out, staged as places and conversations instead of slides. A near-future scenario in five cities, written by Andy.</p>
 </header>
-<section class="section">
-  <div class="narrative-block wide fade-up" style="max-width:780px;margin:0 auto;text-align:center;">
-    <div class="narrative-kicker">The Story</div>
-    <h2 class="narrative-heading" style="font-size:clamp(1.4rem,3vw,2rem);">The Slow Boil. A near-future scenario in five cities.</h2>
-    <div class="narrative-body" style="font-size:1rem;">
-      <p>Dublin, Brussels, Stockholm, Tokyo, Berlin: between April 2026 and 2027, middle powers feel the heat from US and Chinese AI dependence and grope their way toward a coalition. Part fiction, part working model. The same argument the Bennett School analysis lays out, staged as places, conversations, and turning points instead of slides.</p>
+
+<a class="preview-card" href="narrative.html" aria-label="Read The Slow Boil — a near-future scenario in five cities">
+  <div class="preview-card-art preview-card-art--story" aria-hidden="true">
+    <div class="preview-card-cities">
+      <span>Dublin</span>
+      <span>Brussels</span>
+      <span>Berlin</span>
+      <span>Stockholm</span>
+      <span>Tokyo</span>
     </div>
-    <div style="margin-top:1.5rem;">
-      <a href="narrative.html" class="btn btn-primary">Read the full story &rarr;</a>
-    </div>
+    <div class="preview-card-art-label">April 2026 &mdash; April 2027</div>
   </div>
-</section>
+  <div class="preview-card-body">
+    <div class="preview-card-eyebrow">Sibling page &middot; Narrative</div>
+    <h3 class="preview-card-title">The Slow Boil</h3>
+    <p class="preview-card-lede">An OpenAI policy advisor watches the Dublin office go dark. A Commissioner in Brussels throws out her prepared remarks. A Chancellor in Berlin reads a memo that will change everything &mdash; he just doesn't know it yet. Five capitals, twelve months, one coalition forming under pressure.</p>
+    <p class="preview-card-meta">Part fiction, part working model. Written by Andy.</p>
+    <span class="preview-card-cta">Read the five cities &rarr;</span>
+  </div>
+</a>
 </section>
 
 <!-- 3. BUILD IT -->
@@ -1485,18 +1760,54 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 <header class="chapter-header">
   <div class="chapter-kicker">3. The Coalition</div>
   <h2 class="chapter-title">Assemble Airbus for AI</h2>
-  <p class="chapter-desc">Why the window is open, the interactive Assembly Lab to merge real labs, and the three-tier architecture that holds the merger together.</p>
+  <p class="chapter-desc">Why a consortium is the right structure, how the three tiers fit together, and the interactive Assembly Lab to merge real labs.</p>
 </header>
 
-<!-- WHY NOW (inside Build It) -->
+<!-- WHY: four arguments from the paper.
+     Maps directly to "An Airbus for AI &middot; Why?" in the Bennett brief
+     (Tan et al. 2025): collective action / public goods / autonomy /
+     scale without monopoly. -->
+<div class="narrative-block wide fade-up" style="background:var(--off-white);max-width:100%;padding:3.5rem 2rem 1rem;">
+  <div style="max-width:1000px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--gold);">Why a consortium</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">Four reasons no other shape works.</h2>
+    <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.65;margin:0.5rem 0 2rem;max-width:760px;">If the dilemma is real, why is the coalition the answer rather than a better national champion or a bigger research grant? The paper offers four arguments.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-num">01</div>
+        <div class="why-title">Collective action</div>
+        <p class="why-body">The middle powers' dilemma is fundamentally a coordination problem. Combined, the talent and resources are there; separately, every national champion competes with every other for the same finite pot of capital, talent, and attention. Government intervention to form a public-private consortium solves the collective action problem for firms while sidestepping the zero-sum funding incentives for public labs and nonprofits.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">02</div>
+        <div class="why-title">Public goods are good</div>
+        <p class="why-body">Foundation models are arguably already infrastructure for modern applications, but they aren't <em>public</em> infrastructure like highways, electricity, or the Internet — they should be. Frontier models are non-rival, widely re-usable, and generate broad productivity spillovers. Left to the market, they will be undersupplied and over-enclosed relative to the social optimum.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">03</div>
+        <div class="why-title">Autonomy and sovereignty</div>
+        <p class="why-body">National labs and national champions already underwrite countries' digital sovereignty, but face the middle powers' dilemma. The alternatives are stark: continue investing in sub-scale sovereign AI, import AI from abroad with growing risks to national security and cultural identity, or put faith in pitches like "OpenAI for Countries" or NVIDIA's sovereignty sandwich.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">04</div>
+        <div class="why-title">Scale without monopoly</div>
+        <p class="why-body">Like aerospace in the 20th century, frontier AI requires both horizontal and vertical integration that neither private national champions nor public national labs can manage alone. A consortium achieves scale without centralizing power into one nation or one entity. A multi-state setup also incentivizes interoperable AI ecosystems, benefiting startups and fostering competition rather than reinforcing existing tech oligopolies.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY NOW: urgency closer. The 10-person/3-month/$150k MVP claim moved
+     to the Roadmap lede; this block keeps the &quot;why act this quarter&quot;
+     framing without duplicating the numbers. -->
 <div class="narrative-block wide fade-up" style="background:var(--slate-900);max-width:100%;padding:3rem 2rem;">
-  <div style="max-width:720px;margin:0 auto;">
-    <div class="narrative-kicker" style="color:var(--green);">Why Now</div>
-    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The window is closing. But the barrier to entry is lower than you think.</h2>
+  <div style="max-width:760px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--green);">Why now</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The Overton window has shifted. The team is already there.</h2>
     <div class="narrative-body" style="font-size:0.95rem;">
-      <p>Building Airbus for AI does not require coordinating between 20 different bodies. It can start with <strong>a small team and two labs</strong>. A 10-person team working for 3 months, building on existing collaborations and open-source models, supplied with about 100K GPU-hours (~$150K USD), can deliver a minimum viable product and establish first proof points around product, coordination, and market demand.</p>
-      <p>The world does not currently lack good-enough open-source models. Training a $2 billion "leading frontier model" is not the minimum viable product. Airbus for AI should focus early on generating local demand for existing open models, bootstrapping data flywheels, and launching in partnership with upcoming public AI projects like Swiss AI or OpenEuroLLM.</p>
-      <p>But the urgency is real. Frontier AI's pace of development is accelerating, and current frontier training costs remain within the reach of coordinated bridge powers. Latecomers to AI development risk lasting strategic weakness given increasing barriers to entry. Every quarter of delay is a quarter where talent migrates, infrastructure dependency deepens, and the cost of catching up grows.</p>
+      <p>Governments are already making large investments in public compute and are urgently searching for alternatives to the American and Chinese options. The proposal aligns directly with Canada's Pan-Canadian AI Strategy, Japan's AI Promotion Act, and Europe's AI Continent Plan and Apply AI Strategy. An Airbus-style approach would directly complement (and resolve some of the gaps in) the existing EU AI Gigafactories program.<sup class="fn"><a href="#fn7">[7]</a></sup></p>
+      <p>National champions and national labs have built and released foundation models, and have been doing so for years. Engineers and leaders at these labs already agree on the urgency of collaboration, the insufficiency of existing efforts, and the need for a more competitive product. The MVP team is, in a real sense, already assembled — what's missing is the consortium that lets them work together. See the <a href="#timeline">Roadmap</a> for the day-one numbers.</p>
+      <p>Every quarter of delay is a quarter where talent migrates, infrastructure dependency deepens, and the cost of catching up grows.</p>
     </div>
   </div>
 </div>
@@ -1543,33 +1854,32 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 <!-- MERGE CONTEXT (appears when companies are added, inside Build It) -->
 <div class="merge-context hidden" id="mergeContext"></div>
 
-<!-- THREE-TIER ARCHITECTURE (inside Build It) -->
-<div class="narrative-block wide fade-up" style="max-width:100%;padding:2rem 2rem;background:var(--slate-900);">
-  <div style="max-width:900px;margin:0 auto;">
-    <div style="border:1px solid var(--slate-700);border-radius:10px;background:var(--off-white);padding:1.25rem;">
-      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
-        <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;background:var(--sky);color:white;padding:2px 8px;border-radius:100px;">How it works</span>
-        <span style="font-weight:700;font-size:0.95rem;color:var(--navy);">A three-tier architecture for sovereign AI</span>
+<!-- HOW: three steps from the Bennett brief, mapped to the paper's tier
+     architecture. Step 1 = each nation organizes a national entity;
+     step 2 = those entities integrate into an Airbus-style enterprise
+     coordinating model building / resource sharing / market strategy;
+     step 3 = each national entity handles localization, deployment, and
+     public engagement. -->
+<div class="narrative-block wide fade-up" style="max-width:100%;padding:2.5rem 2rem 3rem;background:var(--off-white);">
+  <div style="max-width:1000px;margin:0 auto;">
+    <div class="narrative-kicker" style="color:var(--accent);">How it works</div>
+    <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">Three tiers that balance scale with sovereignty.</h2>
+    <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.65;margin:0.5rem 0 1.5rem;max-width:760px;">Airbus for AI is not a monolith. The paper describes a three-step assembly: nations bring forward a national entity, those entities integrate into a shared core, and each entity handles its own localization and deployment.</p>
+    <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+      <div class="tier-card">
+        <div class="tier-step">Step 1</div>
+        <div class="tier-title">National entity</div>
+        <p class="tier-body">Each participating nation identifies or organizes at least one entity that will join the consortium: an existing private national champion (Mistral, Cohere), a public lab (Spain's BSC, Japan's RIKEN), an existing regional coalition (New Nordics AI), or a new public-private partnership. Top-level political support and frontier capability in at least one part of the AI stack.</p>
       </div>
-      <div>
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin:0 0 1.25rem;">Airbus for AI is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
-        <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
-          <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
-            <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 1</div>
-            <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">The Consortium Core</div>
-            <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Shared model building (especially pretraining), shared compute and expertise, shared market strategy and branding. This is the unified lab that competes on the global stage.</p>
-          </div>
-          <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--cyan);">
-            <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 2</div>
-            <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">National Entities</div>
-            <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each country identifies or organizes at least one participating entity: an existing national champion (Mistral, Cohere), a public lab (Spain's BSC, Japan's RIKEN), or a new public-private partnership. These link the consortium to public compute, local markets, and national populations.</p>
-          </div>
-          <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--green);">
-            <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 3</div>
-            <div style="font-weight:700;color:var(--navy);margin-bottom:0.5rem;font-size:0.95rem;">Local Layer</div>
-            <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin:0;">Each national entity handles localization, in-country deployment, and public engagement. This ensures Airbus for AI serves local needs, languages, and regulatory contexts while benefiting from shared frontier capabilities.</p>
-          </div>
-        </div>
+      <div class="tier-card tier-card--core">
+        <div class="tier-step">Step 2</div>
+        <div class="tier-title">Airbus-style enterprise</div>
+        <p class="tier-body">National entities integrate into a single enterprise that coordinates three shared activities: <strong>model building</strong> (especially pre-training), <strong>resource sharing</strong> (compute and expertise), and <strong>market strategy</strong> including shared branding. This is the unified lab that competes on the global stage.</p>
+      </div>
+      <div class="tier-card">
+        <div class="tier-step">Step 3</div>
+        <div class="tier-title">Localization &amp; deployment</div>
+        <p class="tier-body">Each national entity handles language and culture localization, in-country deployment in local data centers, and public engagement with citizens and political leadership. Depending on the local environment, each may adopt a public-utility business model — preferential access to public datasets, public compute, and regulatory incentives in exchange for public-value commitments.</p>
       </div>
     </div>
   </div>
@@ -1612,6 +1922,23 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     <div class="battle-verdict" id="battleVerdict" aria-live="polite"></div>
   </div>
 </section>
+
+<!-- SITUATION ROOM PREVIEW: link out to the simulator/game. -->
+<a class="preview-card" href="simulation.html" aria-label="Play the Situation Room — choose 8 pivotal coalition decisions">
+  <div class="preview-card-art preview-card-art--sim" aria-hidden="true">
+    <div class="preview-card-decisions">
+      <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+    </div>
+    <div class="preview-card-art-label">8 decisions &middot; one coalition</div>
+  </div>
+  <div class="preview-card-body">
+    <div class="preview-card-eyebrow">Sibling page &middot; Simulator</div>
+    <h3 class="preview-card-title">The Situation Room</h3>
+    <p class="preview-card-lede">Play through eight pivotal moves the coalition has to make: anchor labs, compute pooling, talent draft, market positioning, governance, retaliation response. Each choice has real consequences. Each path produces a different coalition, scored against the incumbents.</p>
+    <p class="preview-card-meta">Interactive simulator. Built by Ahnjili.</p>
+    <span class="preview-card-cta">Enter the situation room &rarr;</span>
+  </div>
+</a>
 </section>
 
 <!-- FUND EXPLAINER -->
@@ -1652,10 +1979,37 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 <header class="chapter-header">
   <div class="chapter-kicker">Roadmap</div>
   <h2 class="chapter-title">The Airbus parallel + 10-year roadmap</h2>
-  <p class="chapter-desc">Airbus's actual market-share trajectory plotted against an Airbus for AI projection on the same axis. Then milestone by milestone, what coordinated AI sovereignty would actually require.</p>
+  <p class="chapter-desc">It can start now: a 10-person team and three months gets you a minimum viable product. Then the Airbus parallel, milestone by milestone.</p>
 </header>
 <section class="timeline-section">
   <div class="timeline-inner">
+
+    <!-- MVP LEDE: the paper's "It can start now" claim, surfaced as a
+         single-glance stat row at the top of the roadmap. Bennett brief
+         &middot; Tan et al. 2025, "The time is now". -->
+    <div class="mvp-lede">
+      <div class="mvp-eyebrow">It can start now &middot; Day-one MVP</div>
+      <h3 class="mvp-title">A 10-person team. Three months. About <span class="mvp-accent">$150K</span>.</h3>
+      <div class="mvp-stats">
+        <div class="mvp-stat">
+          <div class="mvp-stat-num">10</div>
+          <div class="mvp-stat-label">people on the founding team</div>
+        </div>
+        <div class="mvp-stat">
+          <div class="mvp-stat-num">3 mo</div>
+          <div class="mvp-stat-label">to first proof points</div>
+        </div>
+        <div class="mvp-stat">
+          <div class="mvp-stat-num">~100K</div>
+          <div class="mvp-stat-label">GPU-hours to deliver MVP</div>
+        </div>
+        <div class="mvp-stat">
+          <div class="mvp-stat-num">~$150K</div>
+          <div class="mvp-stat-label">USD all-in for the MVP run</div>
+        </div>
+      </div>
+      <p class="mvp-body">Building a Public AI Company doesn't require coordinating between 20 different bodies, and it doesn't require high-level political approval to get started. The paper argues a small team, two anchor labs, existing collaborations, and open-source models are enough to deliver a minimum viable product and establish first proof points around product, coordination, and market demand.<sup class="fn"><a href="#fn7">[7]</a></sup> Everything below is what would scale from there.</p>
+    </div>
 
     <!-- AIRBUS PARALLEL CHART -->
     <div style="background:var(--slate-900);border:1px solid rgba(0,32,91,0.08);border-radius:12px;padding:1.5rem 1.75rem 1.25rem;margin-bottom:2.5rem;box-shadow:0 2px 12px rgba(0,32,91,0.04);">
