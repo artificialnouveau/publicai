@@ -384,20 +384,29 @@
   .viz-pane {
     position: absolute; inset: 0;
     padding: 1.25rem 1.5rem;
-    overflow-y: auto;
+    overflow: hidden;
     opacity: 0; pointer-events: none;
     transition: opacity 0.25s ease-in-out;
     background: var(--ink);
+    display: flex; flex-direction: column;
   }
   .viz-pane.is-active {
     opacity: 1; pointer-events: auto;
   }
   .viz-pane-inner {
     max-width: 1100px; margin: 0 auto;
+    width: 100%;
+    flex: 1; min-height: 0;
     display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem;
-    align-items: start;
+    align-items: stretch;
   }
   .viz-pane.is-full .viz-pane-inner { grid-template-columns: 320px 1fr; }
+  /* In peek mode, hide the side explainer so the chart fills the dock. */
+  .viz-dock[data-state="peek"] .viz-explainer { display: none; }
+  .viz-dock[data-state="peek"] .viz-pane-inner { grid-template-columns: 1fr; }
+  .viz-explainer {
+    overflow-y: auto; min-height: 0;
+  }
   .viz-explainer h4 {
     font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
@@ -421,7 +430,10 @@
     border: 1px solid var(--hairline);
     border-radius: 6px;
     padding: 1rem;
-    min-height: 220px;
+    min-height: 0; min-width: 0;
+    display: flex; flex-direction: column;
+    overflow: auto;
+    position: relative;
     --db-text: var(--text);
     --db-dim: var(--text-soft);
     --db-border: var(--hairline-strong);
@@ -432,7 +444,13 @@
     --db-aurora: #6c3aa8;
     --data-text-muted: var(--text-soft);
   }
-  .viz-canvas-wrap canvas { display: block; }
+  .viz-canvas-wrap > canvas {
+    flex: 1;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    min-height: 0;
+  }
 
   /* HF live cards */
   .hf-cards {
@@ -730,10 +748,8 @@
     <span class="topnav-brand-text">Airbus for AI</span>
   </a>
   <div class="topnav-links">
-    <a class="topnav-link" href="#briefing" aria-label="Jump to the executive summary">Briefing</a>
+    <a class="topnav-link" href="#briefing" aria-label="Jump to the Airbus for AI executive summary">Airbus for AI</a>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
-    <a class="topnav-link is-external" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener" aria-label="Open the full policy brief PDF">PDF</a>
-    <a class="topnav-link is-external" href="../airbus-for-ai-v1/" aria-label="Read the full case for an Airbus for AI">Full case</a>
   </div>
 </nav>
 
@@ -750,6 +766,46 @@
     <span>Berlin &middot; Apr 2027</span>
   </div>
   <div class="hero-arrow" aria-hidden="true">&darr;</div>
+</section>
+
+<!-- AIRBUS FOR AI (executive summary; sits before the story) -->
+<section class="briefing" id="briefing">
+  <div class="briefing-inner">
+    <h2 class="briefing-title">Airbus for AI</h2>
+    <p class="briefing-lede">The case in six bullets. The story below shows why.</p>
+
+    <ol class="briefing-list">
+      <li>
+        <strong>The problem is structural, not incidental.</strong>
+        A handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. The compute, capital, and talent pipelines all run one way.
+      </li>
+      <li>
+        <strong>National responses don&rsquo;t scale.</strong>
+        No single European or middle-power country has the capital pool, talent depth, or compute footprint to compete with US labs. Sovereign-AI projects keep arriving late, underfunded, and trained on too little.
+      </li>
+      <li>
+        <strong>A consortium does.</strong>
+        Pool the existing labs (Mistral, Cohere, Aleph Alpha, DeepL, Helsing, Salamandra, and others) into one entity. Give it anchor labs, regional contributors, and shared sovereign compute. Run it like Airbus: a transnational, public-private vehicle owned by member states.
+      </li>
+      <li>
+        <strong>Three tiers, three jobs.</strong>
+        Tier 1 anchor labs do the frontier training. Tier 2 regional labs adapt models to local languages, law, and sectors. Tier 3 is shared sovereign compute (EuroHPC plus AI Factory sites) so none of the work has to live on AWS, Azure, or GCP by default.
+      </li>
+      <li>
+        <strong>Financing is the lever.</strong>
+        Three vehicles already exist as templates: NATO Innovation Fund (defense-aligned), EuroHPC JU (compute), and a member-state cap-table (commercial). $20&ndash;30B over five years is the rough order of magnitude. That is achievable.
+      </li>
+      <li>
+        <strong>It can start now.</strong>
+        A 10-person team and three months gets you a minimum viable entity. Then the Airbus parallel: anchor lab + first joint model + first sovereign compute MOU within 18 months.
+      </li>
+    </ol>
+
+    <div class="briefing-cta">
+      <a class="btn btn-primary" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Read the full Bennett brief (PDF) &rarr;</a>
+    </div>
+    <p class="briefing-credit">Tan, Jackson, Berjon, Coyle. <em>Airbus for AI: A global strategy for public value creation.</em> Bennett School of Public Policy, September 2025.</p>
+  </div>
 </section>
 
 <!-- STORY -->
@@ -1103,47 +1159,6 @@
   </div>
 </section>
 
-<!-- BRIEFING -->
-<section class="briefing" id="briefing">
-  <div class="briefing-inner">
-    <div class="briefing-kicker">The Briefing</div>
-    <h2 class="briefing-title">Executive summary</h2>
-    <p class="briefing-lede">The argument under the story, distilled.</p>
-
-    <ol class="briefing-list">
-      <li>
-        <strong>The problem is structural, not incidental.</strong>
-        A handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. The compute, capital, and talent pipelines all run one way.
-      </li>
-      <li>
-        <strong>National responses don&rsquo;t scale.</strong>
-        No single European or middle-power country has the capital pool, talent depth, or compute footprint to compete with US labs. Sovereign-AI projects keep arriving late, underfunded, and trained on too little.
-      </li>
-      <li>
-        <strong>A consortium does.</strong>
-        Pool the existing labs (Mistral, Cohere, Aleph Alpha, DeepL, Helsing, Salamandra, and others) into one entity. Give it anchor labs, regional contributors, and shared sovereign compute. Run it like Airbus: a transnational, public-private vehicle owned by member states.
-      </li>
-      <li>
-        <strong>Three tiers, three jobs.</strong>
-        Tier 1 anchor labs do the frontier training. Tier 2 regional labs adapt models to local languages, law, and sectors. Tier 3 is shared sovereign compute (EuroHPC plus AI Factory sites) so none of the work has to live on AWS, Azure, or GCP by default.
-      </li>
-      <li>
-        <strong>Financing is the bottleneck, not the bottleneck.</strong>
-        Three vehicles already exist as templates: NATO Innovation Fund (defense-aligned), EuroHPC JU (compute), and a member-state cap-table (commercial). $20&ndash;30B over five years is the rough order of magnitude. That is achievable.
-      </li>
-      <li>
-        <strong>It can start now.</strong>
-        A 10-person team and three months gets you a minimum viable entity. Then the Airbus parallel: anchor lab + first joint model + first sovereign compute MOU within 18 months.
-      </li>
-    </ol>
-
-    <div class="briefing-cta">
-      <a class="btn btn-primary" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Read the full Bennett brief (PDF) &rarr;</a>
-      <a class="btn btn-ghost" href="../airbus-for-ai-v1/">Walk through the data &amp; tools</a>
-    </div>
-    <p class="briefing-credit">Tan, Jackson, Berjon, Coyle. <em>Airbus for AI: A global strategy for public value creation.</em> Bennett School of Public Policy, September 2025.</p>
-  </div>
-</section>
 
 <!-- SIGN-ON -->
 <section class="signon" id="signon">
@@ -1185,8 +1200,8 @@
 <section class="outro">
   <p class="outro-line">The slow boil is already underway. The only question is whether anyone turns off the heat.</p>
   <div class="outro-actions">
-    <a class="btn btn-primary" href="../airbus-for-ai-v1/">Read the full case</a>
-    <a class="btn btn-ghost" href="../airbus-for-ai-v1/simulation.html">Play the simulator</a>
+    <a class="btn btn-primary" href="#signon">Sign on</a>
+    <a class="btn btn-ghost" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Read the brief (PDF)</a>
   </div>
 </section>
 
@@ -1199,13 +1214,13 @@
     </div>
     <div class="dock-controls" role="group" aria-label="Dock size">
       <button class="dock-btn" data-dock-state="collapsed" aria-label="Collapse dock" title="Collapse">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10 L8 5 L13 10" transform="translate(0,3)"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 L8 11 L13 6"/></svg>
       </button>
       <button class="dock-btn is-active" data-dock-state="peek" aria-label="Peek dock (default)" title="Peek">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="8" x2="13" y2="8"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="8" x2="13" y2="8"/></svg>
       </button>
       <button class="dock-btn" data-dock-state="full" aria-label="Expand dock to full screen" title="Full screen">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6 L8 1 L13 6" transform="translate(0,5)"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L8 6 L13 11"/></svg>
       </button>
     </div>
   </header>
@@ -1235,7 +1250,7 @@
           <a class="viz-source" href="https://aiindex.stanford.edu/report/" target="_blank" rel="noopener">Stanford HAI 2024</a>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbCapitalFlowCanvas" style="width:100%;height:clamp(180px,30vh,360px);" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
+          <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
         </div>
       </div>
     </div>
@@ -1252,7 +1267,7 @@
           <a class="viz-source" href="https://aiindex.stanford.edu/report/" target="_blank" rel="noopener">Stanford HAI 2025</a>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbTalentChordCanvas" style="width:100%;height:clamp(180px,30vh,360px);" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
+          <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
         </div>
       </div>
     </div>
@@ -1290,7 +1305,7 @@
           <a class="viz-source" href="https://cohere.com/" target="_blank" rel="noopener">Cohere</a>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbGrowthChart" style="width:100%;height:clamp(180px,30vh,360px);" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
+          <canvas id="dbGrowthChart" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
         </div>
       </div>
     </div>
@@ -1326,7 +1341,7 @@
           <a class="viz-source" href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank" rel="noopener">Synergy Research</a>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbComputeMapCanvas" style="width:100%;height:clamp(220px,32vh,380px);" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
+          <canvas id="dbComputeMapCanvas" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
         </div>
       </div>
     </div>
@@ -1489,7 +1504,7 @@
           renderStrip(sceneId);
         });
       });
-      stripStatus.textContent = lockedSet.has(sceneId) ? 'Locked' : 'Live';
+      stripStatus.textContent = '';
     } else {
       stripCounter.textContent = 'Observing';
       stripQuestion.textContent = cfg.label || '';
@@ -1695,7 +1710,7 @@
   const canvas = document.getElementById('dbCapitalFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(360, Math.max(180, canvas.parentElement.clientWidth*0.5));}
+  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.5);}
   resize(); window.addEventListener('resize',resize);
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
@@ -1739,7 +1754,7 @@
   const canvas=document.getElementById('dbTalentChordCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(360, Math.max(220, canvas.parentElement.clientWidth*0.6));}
+  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.6);}
   resize();window.addEventListener('resize',resize);
   const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
   const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
@@ -1784,7 +1799,7 @@
   const canvas=document.getElementById('dbComputeMapCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(380, Math.max(220, canvas.parentElement.clientWidth*0.55));}
+  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(380, canvas.parentElement.clientWidth*0.55);}
   resize();window.addEventListener('resize',resize);
   const euroHPC=[{name:'JUPITER',x:0.46,y:0.40},{name:'LUMI',x:0.55,y:0.15},{name:'Leonardo',x:0.50,y:0.55},{name:'MareNostrum 5',x:0.33,y:0.62},{name:'Deucalion',x:0.25,y:0.58},{name:'Vega',x:0.53,y:0.50},{name:'Karolina',x:0.53,y:0.42},{name:'MeluXina',x:0.44,y:0.43},{name:'Discoverer',x:0.60,y:0.55},{name:'Daedalus',x:0.58,y:0.65},{name:'EHPCPL',x:0.54,y:0.38}];
   const hyperDC=[{name:'Dublin (AWS, Azure, Google)',x:0.30,y:0.32,size:4},{name:'Amsterdam (AWS, Azure)',x:0.43,y:0.35,size:3.5},{name:'Frankfurt (AWS, Azure, Google)',x:0.47,y:0.40,size:4},{name:'Paris (AWS, Azure)',x:0.38,y:0.45,size:3},{name:'Stockholm (AWS)',x:0.52,y:0.20,size:2.5},{name:'London (AWS, Azure, Google)',x:0.35,y:0.36,size:4},{name:'Milan (AWS)',x:0.48,y:0.52,size:2},{name:'Zurich (AWS, Google)',x:0.46,y:0.48,size:2.5}];
@@ -1812,7 +1827,7 @@
   const canvas=document.getElementById('dbGrowthChart');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(360, Math.max(200, canvas.parentElement.clientWidth*0.55));}
+  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.55);}
   resize();window.addEventListener('resize',resize);
   const series=[
     {name:'Mistral AI',color:'#3b82f6',points:[{x:0,y:20,label:'Jan 2025'},{x:0.25,y:50},{x:0.5,y:150},{x:0.75,y:312,label:'Dec 2025'},{x:1,y:400,label:'Jan 2026'}]},
