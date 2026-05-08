@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="The Slow Boil: a near-future scenario in five capitals about who controls AI, with the data underneath each scene.">
 <meta property="og:title" content="The Slow Boil — Airbus for AI">
 <meta property="og:description" content="A near-future scenario in five capitals. The data is docked at the bottom and changes with the story.">
@@ -52,6 +52,75 @@
   ::selection { background: var(--accent-dim); color: var(--text); }
   a { color: var(--accent); text-decoration: none; }
   a:hover { color: var(--accent-bright); text-decoration: underline; }
+
+  /* === ACCESSIBILITY === */
+  /* Skip link: hidden until focused, then jumps to top of main content */
+  .skip-link {
+    position: fixed; top: 0; left: 0;
+    z-index: 100;
+    padding: 0.85rem 1.25rem;
+    background: var(--accent); color: #fff;
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none;
+    transform: translateY(-110%);
+    transition: transform 0.15s ease;
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+    outline: 2px solid #fff; outline-offset: 2px;
+    color: #fff; text-decoration: none;
+  }
+  /* Visible focus rings for keyboard users on every interactive surface.
+     We rely on :focus-visible so mouse clicks don't show a ring. */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .hero a:focus-visible,
+  .hero button:focus-visible {
+    outline-color: #fff;
+  }
+  .topnav-link:focus-visible,
+  .topnav-brand:focus-visible {
+    outline-offset: 1px;
+  }
+  .dock-btn:focus-visible {
+    outline-offset: -2px;
+  }
+  .decision-option:focus-visible {
+    outline-offset: 2px; outline-width: 2px;
+  }
+  .signon-form input:focus,
+  .signon-form textarea:focus { outline: none; } /* border colour change is the indicator */
+  .signon-form input:focus-visible,
+  .signon-form textarea:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px;
+    border-color: var(--accent);
+  }
+  /* Honor user's motion preference: kill decorative animation. Charts also
+     check this at runtime and stop their requestAnimationFrame loops. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    html { scroll-behavior: auto; }
+    .hero-arrow { animation: none; }
+    .hero-eyebrow .dot { animation: none; opacity: 1; }
+  }
+  /* sr-only utility for visually-hidden but screen-reader-readable text */
+  .sr-only {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
+  }
 
   /* === TOP NAV === */
   .topnav {
@@ -374,7 +443,7 @@
     flex-shrink: 0;
   }
   .dock-btn {
-    width: 32px; height: 32px;
+    width: 40px; height: 40px;
     display: inline-flex; align-items: center; justify-content: center;
     background: transparent; border: 1px solid transparent; border-radius: 4px;
     color: var(--text-muted); cursor: pointer;
@@ -542,10 +611,11 @@
   }
   .decision-option {
     display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.4rem 0.75rem;
+    padding: 0.55rem 0.85rem;
+    min-height: 40px;
     background: var(--paper-2); color: var(--text);
     border: 1px solid var(--hairline-strong); border-radius: 4px;
-    font-family: var(--font); font-size: 0.78rem; font-weight: 500;
+    font-family: var(--font); font-size: 0.82rem; font-weight: 500;
     cursor: pointer;
     transition: border-color 0.15s, background 0.15s, color 0.15s;
   }
@@ -717,30 +787,61 @@
   .signon.is-submitted .signon-success { display: block; }
 
   @media (max-width: 600px) {
+    :root {
+      /* Mobile dock: peek a bit taller so the chart still gets ~150px clear of the strip. */
+      --dock-peek: 50vh;
+      --dock-full: calc(100vh - 56px - env(safe-area-inset-top, 0px));
+    }
     .topnav { padding: 0 0.85rem; }
-    .topnav-link { padding: 0.45rem 0.6rem; font-size: 0.65rem; }
+    .topnav-link { padding: 0.55rem 0.7rem; font-size: 0.7rem; min-height: 40px; display: inline-flex; align-items: center; }
     .topnav-brand { font-size: 0.7rem; }
     .topnav-brand-text { display: none; }
-    .hero { padding: 5rem 1.25rem 4rem; }
-    .hero-meta { gap: 0.9rem; font-size: 0.6rem; }
+    .hero { padding: 4.5rem 1.25rem 3.5rem; min-height: 0; }
+    .hero h1 { font-size: clamp(2rem, 9vw, 3rem); margin-bottom: 1rem; }
+    .hero-sub { font-size: 0.92rem; line-height: 1.55; margin-bottom: 1.75rem; }
+    /* Hero TOC: 2-column grid so 11 items don't sprawl into 6 wrapping rows. */
+    .hero-meta {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.45rem 0.85rem; font-size: 0.62rem;
+      padding-top: 1.25rem;
+      max-width: 100%;
+    }
+    .hero-meta a { white-space: normal; line-height: 1.35; }
+    .hero-arrow { margin-top: 1.75rem; }
     .story { padding: 3rem 1.25rem var(--dock-peek); }
     .scene { margin-bottom: 4.5rem; }
     .scene-prose p { font-size: 1.04rem; }
+    .scene-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
     .doc-inset { padding: 1.1rem 1.2rem; }
-    .dock-controls .dock-btn { width: 36px; height: 36px; }
+    .dock-controls .dock-btn { width: 44px; height: 44px; }
     .dock-kicker { display: none; }
+    .dock-title { font-size: 0.78rem; }
     .briefing { padding: 3rem 1.25rem; }
+    .briefing-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
     .briefing-list li { padding: 0.9rem 0 0.9rem 2.6rem; font-size: 0.92rem; }
     .briefing-list li::before { font-size: 0.68rem; top: 1rem; }
     .decision-strip { padding: 0.7rem 1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.5rem; }
-    .decision-strip-options { gap: 0.3rem; }
-    .decision-option { padding: 0.35rem 0.6rem; font-size: 0.72rem; }
-    .dock-body.has-strip .viz-pane.is-active { padding-top: 9rem; }
+    .decision-strip-options { gap: 0.4rem; }
+    .decision-option { padding: 0.5rem 0.7rem; font-size: 0.78rem; min-height: 40px; }
+    .dock-body.has-strip .viz-pane.is-active { padding-top: 10rem; }
     .outcome { padding: 3rem 1.25rem; }
-    .outcome-row { grid-template-columns: 1fr; gap: 0.2rem; }
+    .outcome-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
+    .outcome-row { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.6rem 0; }
+    .outcome-row-tag { justify-self: start; }
+    .outcome-actions .btn { width: 100%; justify-content: center; }
     .signon { padding: 3rem 1.25rem; }
+    .signon-title { font-size: clamp(1.5rem, 6vw, 2rem); }
     .signon-form { grid-template-columns: 1fr; }
+    .signon-actions { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+    .signon-actions .btn { width: 100%; justify-content: center; }
+    .signon-fallback { text-align: center; }
+    .signon-form input,
+    .signon-form textarea { font-size: 16px; } /* prevent iOS zoom on focus */
+    .outro { padding: 3rem 1.25rem 4rem; }
+    .outro-actions .btn { flex: 1 1 200px; justify-content: center; }
+    /* iOS notch: keep the dock above the home indicator */
+    .viz-dock { padding-bottom: env(safe-area-inset-bottom, 0px); }
   }
   @media print {
     .topnav, .viz-dock, .hero-arrow { display: none !important; }
@@ -750,6 +851,9 @@
 </style>
 </head>
 <body>
+
+<!-- SKIP LINK -->
+<a class="skip-link" href="#main">Skip to content</a>
 
 <!-- TOP NAV -->
 <nav class="topnav" aria-label="Site navigation">
@@ -766,6 +870,8 @@
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
 </nav>
+
+<main id="main">
 
 <!-- HERO -->
 <section class="hero" id="top">
@@ -981,7 +1087,7 @@
       <div class="scene-kicker">Chapter 4</div>
       <span class="scene-dateline">
         2.19.2027<br>
-        Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda, Tokyo<br>
+        <span lang="ja-Latn">Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda</span>, Tokyo<br>
         Office of the Prime Minister, Her Excellency Sanae Takaichi
       </span>
       <h2 class="scene-title">Tokyo</h2>
@@ -989,19 +1095,19 @@
     <div class="scene-prose">
       <p>China is the thorn in my side. For godssake it&rsquo;s the burden we&rsquo;ve all inherited. If people still think I&rsquo;m smarting from Xi&rsquo;s childish election gambit, they are blind to the fact that ruthlessness isn&rsquo;t a scarce resource. I can play the game, too. The &ldquo;dirty neck that lunges?.&rdquo; Obscene. Utterly obscene.</p>
       <p>Thirty researchers filed into the conference room. No cameras were allowed. Status updates, the numbers: give me something I can give to the public. I have a year and a half and no one seems to understand that this is a snap of your fingers in politics. A blink of an eye.</p>
-      <p>They were afraid to make eye contact. &ldquo;Someone explain this to me like I&rsquo;m in elementary school, like I&rsquo;m in Sh&#333;gakk&#333;. Can you do that?&rdquo;</p>
+      <p>They were afraid to make eye contact. &ldquo;Someone explain this to me like I&rsquo;m in elementary school, like I&rsquo;m in <span lang="ja-Latn">Sh&#333;gakk&#333;</span>. Can you do that?&rdquo;</p>
       <p>Nervous shuffling. It was the kind of silence you could see if you squinted hard enough. A quicksilver haze choking them all to passionately avoid being the one to admit that a $6.7bn investment shattered into a market sell-off and geopolitical tensions of which none of the frontier model researchers quite understood.</p>
       <p>After Prime Minister Takaichi indicated that she wouldn&rsquo;t say a word until someone else did, the head of the sovereign model project stepped forward, eyes glued to his shoes.</p>
       <p>&ldquo;Our model hallucinated.&rdquo;</p>
       <p>Prime Minister Takaichi was unimpressed. &ldquo;Say more.&rdquo;</p>
       <p>&ldquo;Well, the way an AI system like ours works is that it trains on large sets of data. Without getting too deep into the details, what happens is that the model generates words based on what is likely to come next. Again, given the given context before it.&rdquo;</p>
-      <p>Stern and impassive, Prime Minister Takaichi nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo; &ldquo;Yes, Takaichi Shush&#333;. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
+      <p>Stern and impassive, Prime Minister Takaichi nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo; &ldquo;Yes, <span lang="ja-Latn">Takaichi Shush&#333;</span>. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
       <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasnt&rsquo; good enough?&rdquo;</p>
       <p>The head of the program started to mumble something before Prime Minister Takaichi cut him off. &ldquo;This model, the one I promised all of our citizens would be imbued with traditional Japanese values. Technology they could trust. And you&rsquo;re telling me I lied to them? That I broke their trust?&rdquo;</p>
       <p>&ldquo;No&hellip; no&rdquo; stammered the program head.</p>
       <p>&ldquo;Why would no one tell me this before we integrated into all of our ministries? Or push it out to our major industries? Are we naive? Are we blind? Are we over-confident?&rdquo; A pause hung in the air before she continued with a different tenor in her voice, one that was slower and more poisonous. &ldquo;I just want to know what I&rsquo;m missing because I have to go on television in twenty minutes and explain why we can&rsquo;t make cars because China won&rsquo;t trade with us anymore.&rdquo;</p>
       <p>Realizing that he and the rest of his team would, in all likelihood be fired in a few minutes, he decided to lay bare the real reason that an executive briefing falsely concluded that, from a shipping-risk assessment, China looked to squeeze export restrictions on the trade of rare earth minerals.</p>
-      <p>&ldquo;Takaichi Shush&#333;: the model hallucinated, yes, because its training data might not have been robust. But it simply wasn&rsquo;t ready to analyze something as complicated as global trade. The timeline was too aggressive. It works fine for administrative work, but when we were asked to integrate it into larger, more complex systems we did send a warning that it wasn&rsquo;t ready.&rdquo;</p>
+      <p>&ldquo;<span lang="ja-Latn">Takaichi Shush&#333;</span>: the model hallucinated, yes, because its training data might not have been robust. But it simply wasn&rsquo;t ready to analyze something as complicated as global trade. The timeline was too aggressive. It works fine for administrative work, but when we were asked to integrate it into larger, more complex systems we did send a warning that it wasn&rsquo;t ready.&rdquo;</p>
       <p>Prime Minister Takaichi snapped her fingers to summon one of her aides. &ldquo;Find me that request.&rdquo;</p>
       <p>She gestured around the room to the research team: &ldquo;get comfortable, you&rsquo;re in this now, too.&rdquo;</p>
       <p>Surveying the damage, Prime Minister Takaichi made a mental list of how to allocate blame. This was part of politics; any of those cliches about being the first through the breach had come from people who never won elections.</p>
@@ -1166,7 +1272,7 @@
 </article>
 
 <!-- OUTCOME (populated by JS once user reaches it) -->
-<section class="outcome" id="outcome" data-tier="boil">
+<section class="outcome" id="outcome" data-tier="boil" aria-labelledby="outcomeTitle" aria-live="polite">
   <div class="outcome-inner">
     <div class="outcome-kicker" id="outcomeKicker">Your Coalition</div>
     <h2 class="outcome-title" id="outcomeTitle">The Slow Boil Did Its Work</h2>
@@ -1225,6 +1331,8 @@
   </div>
 </section>
 
+</main>
+
 <!-- VIZ DOCK -->
 <aside class="viz-dock" id="vizDock" data-state="peek" aria-label="Data visualization dock">
   <header class="dock-header">
@@ -1232,15 +1340,15 @@
       <span class="dock-kicker">Live data</span>
       <span class="dock-title" id="dockTitle">Capital flow &mdash; where EU AI money ends up</span>
     </div>
-    <div class="dock-controls" role="group" aria-label="Dock size">
-      <button class="dock-btn" data-dock-state="collapsed" aria-label="Collapse dock" title="Collapse">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6 L8 11 L13 6"/></svg>
+    <div class="dock-controls" role="radiogroup" aria-label="Dock size">
+      <button class="dock-btn" data-dock-state="collapsed" role="radio" aria-checked="false" aria-label="Collapse dock" title="Collapse">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6 L8 11 L13 6"/></svg>
       </button>
-      <button class="dock-btn is-active" data-dock-state="peek" aria-label="Peek dock (default)" title="Peek">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="8" x2="13" y2="8"/></svg>
+      <button class="dock-btn is-active" data-dock-state="peek" role="radio" aria-checked="true" aria-label="Peek dock (default)" title="Peek">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="3" y1="8" x2="13" y2="8"/></svg>
       </button>
-      <button class="dock-btn" data-dock-state="full" aria-label="Expand dock to full screen" title="Full screen">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L8 6 L13 11"/></svg>
+      <button class="dock-btn" data-dock-state="full" role="radio" aria-checked="false" aria-label="Expand dock to full screen" title="Full screen">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 11 L8 6 L13 11"/></svg>
       </button>
     </div>
   </header>
@@ -1382,7 +1490,11 @@
   function setState(state){
     if (!['collapsed','peek','full'].includes(state)) return;
     dock.dataset.state = state;
-    buttons.forEach(b => b.classList.toggle('is-active', b.dataset.dockState === state));
+    buttons.forEach(b => {
+      const on = b.dataset.dockState === state;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
     if (story) {
       story.classList.remove('dock-collapsed','dock-peek','dock-full');
       story.classList.add('dock-' + state);
@@ -1682,6 +1794,11 @@
 // CHART RENDER FUNCTIONS — lifted from the v1 dashboard
 // ============================================================
 
+// Honor prefers-reduced-motion: charts will draw once and stop their
+// requestAnimationFrame loops. The static frame still conveys the data;
+// only the particle-along-curve flourishes go away.
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // --- Language Heatmap ---
 (function(){
   const container = document.getElementById('dbLangHeatmap');
@@ -1763,7 +1880,7 @@
       const labelX=ci===0?n.x*W+12:ci===2?n.x*W-12:n.x*W;
       ctx.fillText(n.label,labelX,n.y*H-10);
     });});
-    requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   // Always draw — the dock is fixed so visibility is controlled separately
   draw();
@@ -1809,7 +1926,7 @@
       ctx.textAlign='left';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(10,10,10,0.65)';ctx.fillText(n.label,RX*W+14,n.y*H+4);
       ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);
     });
-    requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -1837,7 +1954,7 @@
     hyperDC.forEach((n,i)=>{const pulse=1+0.15*Math.sin(t*0.02+i+3);const sz=n.size*W/500;ctx.beginPath();ctx.arc(n.x*W,n.y*H,(sz+8)*pulse,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.04)';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,sz,0,Math.PI*2);ctx.fillStyle='rgba(184,0,46,0.6)';ctx.fill();ctx.fillStyle='rgba(184,0,46,0.55)';ctx.font=dcFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H+sz+12);});
     euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR*W/500,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR*0.4,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font=nodeFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
     const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font=legFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,nodeR,0,Math.PI*2);ctx.fillStyle='rgba(184,0,46,0.6)';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
-    requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -1855,7 +1972,7 @@
     {name:'DeepL',color:'#06b6d4',points:[{x:0,y:141,label:'2023'},{x:1,y:185,label:'2024'}]}
   ];
   const maxY=420;
-  let grown=0;
+  let grown=reduceMotion?1:0;
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W=canvas.width,H=canvas.height;
