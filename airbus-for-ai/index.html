@@ -39,7 +39,7 @@
   --slate-800: #F0EDE7;    /* hover surface / inputs */
   --slate-700: rgba(10,10,10,0.08); /* hairline border */
   --slate-600: rgba(10,10,10,0.18); /* hairline border brightened */
-  --slate-500: #9A9A95;    /* muted text and icons */
+  --slate-500: #5B5B57;    /* muted text — tuned for WCAG AA on off-white */
   --slate-400: #6E6E69;    /* secondary text */
   --slate-300: #3A3A38;    /* primary secondary text */
   --slate-100: #1A1A1A;    /* primary text (ink) */
@@ -48,15 +48,15 @@
   --accent-bright: #2a72ff;/* hover-brighter variant */
   --accent-dim: rgba(0,87,255,0.08); /* low-opacity backgrounds */
 
-  /* Data-zone palette: dark inverted region for interactive / chart-heavy
-     sections (Dashboard, Cost of Inaction, Stress Test, Growth Gap, etc.).
-     Editorial contrast against the off-white chrome. */
-  --data-bg: #131822;
-  --data-bg-2: #1a2030;
-  --data-text: #ECEDF2;
-  --data-text-secondary: #C2C7D2;
-  --data-text-muted: #9CA3B3;
-  --data-border: #38415A;
+  /* Data-zone palette: light region for interactive / chart-heavy sections
+     (Dashboard, Cost of Inaction, Stress Test, Growth Gap, etc.). One step
+     off the page bg so charts read as dedicated cards, not separate mode. */
+  --data-bg: #FBFAF6;
+  --data-bg-2: #F0EDE7;
+  --data-text: #1A1A1A;
+  --data-text-secondary: #3A3A38;
+  --data-text-muted: #5B5B57;
+  --data-border: rgba(10,10,10,0.10);
 
   /* Legacy variables remapped to the new palette. In the original light
      theme --navy meant "dark text" and --off-white meant "card surface".
@@ -118,51 +118,114 @@ h1, h2, h3, h4,
   font-family: var(--font-display);
 }
 
-/* === NAV === */
+/* === NAV ===
+   Single sticky top nav that lists every section on the page plus the
+   sibling pages (Story, Game, Sovereignty, Paper). On narrow screens the
+   list scrolls horizontally; on wide screens it just sits inline. The old
+   hover-tooltip pattern (data-desc) is gone — labels are always visible,
+   so tablets without hover are not handicapped. */
 .topnav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(248,246,241,0.88); backdrop-filter: blur(16px);
+  background: rgba(248,246,241,0.92); backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--slate-700);
-  padding: 0 2rem; height: 64px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1rem 0 1.25rem; height: 56px;
+  display: flex; align-items: center; gap: 1rem;
   transition: border-color 0.3s;
 }
-.topnav.scrolled { border-bottom-color: var(--slate-600); }
+.topnav.scrolled { border-bottom-color: var(--slate-600); box-shadow: 0 2px 12px rgba(10,10,10,0.04); }
 .topnav-brand {
-  font-weight: 800; font-size: 1.1rem; color: var(--white);
-  letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.6rem;
+  font-weight: 800; font-size: 1rem; color: var(--white);
+  letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.5rem;
+  flex-shrink: 0; text-decoration: none;
 }
-.topnav-brand svg { width: 28px; height: 28px; color: var(--accent); }
-.topnav-links { display: flex; gap: 1.5rem; }
-.topnav-links a { position: relative; font-size: 0.85rem; font-weight: 500; color: var(--slate-400); text-decoration: none; transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-.topnav-links a:hover { color: var(--white); }
-.topnav-links a[data-desc]::after {
-  content: attr(data-desc);
-  position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(-4px);
-  width: max-content; max-width: 260px;
-  background: var(--navy); color: rgba(255,255,255,0.92);
-  font-size: 0.75rem; font-weight: 400; line-height: 1.45; letter-spacing: 0;
-  padding: 0.6rem 0.8rem; border-radius: 8px;
-  box-shadow: var(--shadow-lg);
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  z-index: 200;
-  white-space: normal;
+.topnav-brand svg { width: 24px; height: 24px; color: var(--accent); }
+.topnav-brand-text { display: inline-block; }
+.topnav-list {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 0.1rem;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding: 0 0.25rem;
+  /* fade the edges so users see scroll affordance */
+  mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
 }
-.topnav-links a[data-desc]::before {
-  content: ''; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-  border: 6px solid transparent; border-bottom-color: var(--navy);
-  opacity: 0; transition: opacity 0.18s ease;
-  z-index: 201;
+.topnav-list::-webkit-scrollbar { display: none; }
+.topnav-link {
+  white-space: nowrap; flex-shrink: 0; scroll-snap-align: start;
+  padding: 0.4rem 0.7rem; border-radius: 4px;
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.01em;
+  color: var(--slate-400); text-decoration: none;
+  transition: background 0.2s, color 0.2s;
 }
-.topnav-links a[data-desc]:hover::after,
-.topnav-links a[data-desc]:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
-.topnav-links a[data-desc]:hover::before,
-.topnav-links a[data-desc]:focus-visible::before { opacity: 1; }
+.topnav-link:hover { color: var(--white); background: var(--slate-800); }
+.topnav-link.active { color: var(--accent); background: var(--accent-dim); font-weight: 600; }
+.topnav-link.is-external { color: var(--slate-300); }
+.topnav-link.is-external::after { content: '\2197'; margin-left: 0.25em; opacity: 0.5; font-weight: 600; }
+.topnav-divider { width: 1px; height: 16px; background: var(--slate-700); margin: 0 0.35rem; flex-shrink: 0; align-self: center; }
 @media (max-width: 768px) {
-  .topnav-links a[data-desc]::after,
-  .topnav-links a[data-desc]::before { display: none; }
+  .topnav { padding: 0 0.5rem; height: 52px; gap: 0.5rem; }
+  .topnav-brand-text { display: none; }
+  .topnav-link { padding: 0.4rem 0.55rem; font-size: 0.72rem; }
 }
+
+/* === BACK-TO-TOP === */
+.back-to-top {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 90;
+  width: 44px; height: 44px; border: none; border-radius: 50%;
+  background: var(--accent); color: white;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 14px rgba(0,87,255,0.32);
+  opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.back-to-top:hover, .back-to-top:focus-visible { background: var(--accent-bright); outline: none; }
+@media print { .back-to-top { display: none; } }
+
+/* === CHAPTER SECTION (replaces the old foldable chapter-details) ===
+   Continuous reading. The header acts as a section anchor + visual break;
+   no click-to-reveal. A 3px top stripe in the chapter accent color signals
+   the section change without needing a card outline. */
+.chapter-section {
+  scroll-margin-top: 72px;
+  margin: 3rem auto 0;
+  max-width: 100%;
+}
+.chapter-header {
+  max-width: 1120px; margin: 0 auto;
+  padding: 2.25rem 2rem 1.25rem;
+  border-top: 3px solid var(--slate-700);
+}
+.chapter-section.is-dashboard .chapter-header { border-top-color: var(--accent); }
+.chapter-section.is-story .chapter-header { border-top-color: var(--accent); }
+.chapter-section.is-assembly .chapter-header { border-top-color: var(--accent); }
+.chapter-section.is-battle .chapter-header { border-top-color: var(--accent); }
+.chapter-section.is-fund .chapter-header { border-top-color: var(--accent); opacity: 0.95; }
+.chapter-section.is-timeline .chapter-header { border-top-color: var(--accent); opacity: 0.95; }
+.chapter-section.is-sovereignty .chapter-header { border-top-color: var(--accent); opacity: 0.95; }
+.chapter-kicker { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+.chapter-title { font-size: clamp(1.4rem, 2.6vw, 1.85rem); font-weight: 800; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.55rem; }
+.chapter-desc { font-size: 0.95rem; color: var(--slate-300); line-height: 1.55; max-width: 720px; }
+@media (max-width: 768px) {
+  .chapter-section { margin: 2rem auto 0; }
+  .chapter-header { padding: 1.6rem 1.15rem 1rem; }
+  .chapter-title { font-size: 1.25rem; }
+  .chapter-desc { font-size: 0.88rem; }
+}
+@media print {
+  .chapter-section { page-break-inside: avoid; }
+}
+
+/* === FLAT Q&A (replaces the nested skeptic-q <details> blocks) === */
+.qa-block { background: var(--off-white); border: 1px solid rgba(10,10,10,0.08); border-radius: 10px; padding: 1.1rem 1.25rem; }
+.qa-block + .qa-block { margin-top: 0.6rem; }
+.qa-question { display: flex; gap: 0.6rem; align-items: flex-start; font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.65rem; }
+.qa-question .qa-num { font-family: var(--mono); color: var(--red); flex-shrink: 0; font-size: 0.8rem; letter-spacing: 0.05em; }
+.qa-answer { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; padding-top: 0.65rem; border-top: 1px solid rgba(10,10,10,0.06); }
 
 
 /* === HERO ===
@@ -372,7 +435,10 @@ h1, h2, h3, h4,
 .merge-context.hidden { opacity: 0; max-height: 0; padding: 0 1.5rem; margin: 0 auto; }
 
 /* === THE STRESS TEST === */
-.battle-section { padding: 5rem 2rem; background: var(--data-bg); color: var(--data-text); }
+/* Stress Test stays on a deep navy surface — this is interactive UI, not
+   reading content. Keeps the white-on-dark labels and chart axes legible
+   without rewriting hundreds of inline styles. */
+.battle-section { padding: 5rem 2rem; background: #131822; color: #ECEDF2; }
 .battle-inner { max-width: 900px; margin: 0 auto; }
 .battle-header { text-align: center; margin-bottom: 2rem; }
 .battle-header h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 0.5rem; }
@@ -635,9 +701,9 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
 /* Underline-expand for body content links (not buttons / cards / source pills).
    Single accent underline that scales from 0 to full width on hover. */
 .narrative-body a:not(.btn):not(.no-underline-expand),
-.chapter-summary-desc a:not(.btn),
+.chapter-desc a:not(.btn),
 .db-explainer a:not(.btn),
-.skeptic-q a:not(.btn) {
+.qa-answer a:not(.btn) {
   position: relative; color: var(--accent); text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-position: 0 100%;
@@ -646,22 +712,9 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius
   transition: background-size 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .narrative-body a:not(.btn):not(.no-underline-expand):hover,
-.chapter-summary-desc a:not(.btn):hover,
+.chapter-desc a:not(.btn):hover,
 .db-explainer a:not(.btn):hover,
-.skeptic-q a:not(.btn):hover { background-size: 100% 1px; }
-
-/* Section line-wipe reveal for chapter summary cards.
-   The 1px top border draws from left to right when the card scrolls in. */
-details.chapter-details > summary.chapter-summary {
-  position: relative;
-}
-details.chapter-details > summary.chapter-summary::before {
-  content: ''; position: absolute; left: 0; top: 0; height: 1px;
-  width: 0; background: var(--accent);
-  transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-  transition-delay: 0.1s;
-}
-details.chapter-details.line-wiped > summary.chapter-summary::before { width: 100%; }
+.qa-answer a:not(.btn):hover { background-size: 100% 1px; }
 
 /* Count-up stat: nothing extra needed, JS animates textContent in place */
 
@@ -713,9 +766,9 @@ details.chapter-details.line-wiped > summary.chapter-summary::before { width: 10
   #dashboard [style*="grid-template-columns:repeat(3"] { grid-template-columns: 1fr !important; }
   #dashboard [style*="grid-template-columns:repeat(auto-fit"] { grid-template-columns: repeat(2, 1fr) !important; }
   #dashboard [style*="display:flex;justify-content:space-between"] { flex-direction: column; gap: 0.25rem; }
-  #dashboard [style*="font-size:0.85rem"][style*="text-transform:uppercase"] { font-size: 0.7rem !important; word-break: break-word; color: rgba(232,224,204,0.7) !important; }
-  #dashboard [style*="font-size:0.95rem"][style*="color:var(--db-dim)"] { color: rgba(232,224,204,0.6) !important; }
-  #dashboard [style*="font-size:0.65rem"][style*="font-family:var(--mono)"] { font-size: 0.6rem !important; color: rgba(232,224,204,0.55) !important; overflow-wrap: break-word; word-break: break-word; }
+  #dashboard [style*="font-size:0.85rem"][style*="text-transform:uppercase"] { font-size: 0.7rem !important; word-break: break-word; color: var(--data-text-muted) !important; }
+  #dashboard [style*="font-size:0.95rem"][style*="color:var(--db-dim)"] { color: var(--data-text-muted) !important; }
+  #dashboard [style*="font-size:0.65rem"][style*="font-family:var(--mono)"] { font-size: 0.6rem !important; color: var(--data-text-muted) !important; overflow-wrap: break-word; word-break: break-word; }
   #dashboard [style*="font-size:2rem"] { font-size: 1.4rem !important; }
   #dashboard [style*="font-size:1.7rem"] { font-size: 1.2rem !important; }
   #dashboard [style*="font-size:1.6rem"] { font-size: 1.2rem !important; }
@@ -772,155 +825,10 @@ details.chapter-details.line-wiped > summary.chapter-summary::before { width: 10
   #particleCanvas { display: none; }
 }
 
-/* === SIDE OUTLINE === */
-.page-outline {
-  position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 80;
-  display: flex; flex-direction: column; gap: 2px;
-  padding: 8px 6px; border-radius: 4px;
-  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
-  border: 1px solid var(--slate-700);
-  width: 28px; overflow: hidden;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.page-outline:hover {
-  width: 200px; padding: 10px 12px;
-  border-color: var(--slate-600);
-}
-.page-outline a {
-  display: flex; align-items: center; gap: 8px;
-  padding: 5px 6px; border-radius: 2px;
-  text-decoration: none; transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-}
-.page-outline a:hover { background: rgba(0,87,255,0.08); }
-.outline-dot {
-  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-  background: var(--slate-600); transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.page-outline a.active { background: rgba(0,87,255,0.12); }
-.outline-text {
-  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em;
-  color: var(--slate-500); white-space: nowrap;
-  opacity: 0; transition: opacity 0.2s, color 0.2s;
-}
-.page-outline:hover .outline-text { opacity: 1; }
-.page-outline a.active .outline-text { color: var(--white); }
-.page-outline a:hover .outline-text { color: var(--slate-300); }
-@media (max-width: 900px) { .page-outline { display: none; } }
-@media print { .page-outline { display: none; } }
-
-/* === SKEPTIC Q&A === */
-details.skeptic-q > summary { list-style: none; }
-details.skeptic-q > summary::-webkit-details-marker { display: none; }
-details.skeptic-q > summary::marker { content: ''; }
-details.skeptic-q[open] > summary { color: var(--sky); }
-details.skeptic-q:hover > summary { background: var(--slate-800); }
-
-/* === COLLAPSIBLE CHAPTER DETAILS ===
-   Flat card on a dark surface. Razor-thin border that brightens on hover.
-   When open, the body sits inside the same outlined box. Chapter color
-   stripe collapsed: all stripes are the single accent. */
-details.chapter-details {
-  scroll-margin-top: 80px;
-  margin: 1rem auto;
-  max-width: 1200px;
-  background: var(--charcoal);
-  border: 1px solid var(--slate-700);
-  border-left-width: 2px;
-  border-radius: 4px;
-  overflow: hidden;
-  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-details.chapter-details:hover {
-  border-color: var(--slate-600);
-}
-details.chapter-details:hover { border-left-color: var(--accent); }
-details.chapter-details[open] {
-  background: var(--charcoal);
-  border-color: var(--slate-600);
-  border-left-color: var(--accent);
-}
-details.chapter-details > summary.chapter-summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 1.6rem 2rem;
-  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
-  background: transparent;
-  border: 0;
-  margin: 0;
-  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-details.chapter-details:hover > summary.chapter-summary { background: var(--slate-900); }
-details.chapter-details[open] > summary.chapter-summary {
-  background: var(--slate-900);
-  border-bottom: 1px solid var(--slate-700);
-}
-details.chapter-details > summary.chapter-summary::-webkit-details-marker { display: none; }
-details.chapter-details > summary.chapter-summary::marker { content: ''; }
-.chapter-summary-text { display: flex; flex-direction: column; gap: 0.3rem; align-items: flex-start; min-width: 0; flex: 1; }
-.chapter-summary-kicker { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-.chapter-summary-title { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 700; color: var(--white); letter-spacing: -0.015em; line-height: 1.25; }
-.chapter-summary-desc { font-size: 0.85rem; color: var(--slate-400); line-height: 1.55; max-width: 640px; }
-.chapter-summary-affordance { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
-.chapter-summary-arrow { display: inline-block; font-size: 1.1rem; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-details.chapter-details[open] > summary.chapter-summary .chapter-summary-arrow { transform: rotate(90deg); }
-details.chapter-details[open] > summary.chapter-summary .chapter-summary-affordance::before { content: 'Close '; }
-details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-affordance::before { content: 'Open '; }
 @media (max-width: 600px) {
-  details.chapter-details > summary.chapter-summary { padding: 1.1rem 1.15rem 1.1rem 1rem; gap: 0.6rem; }
-  details.chapter-details { border-left-width: 3px !important; }
-  .chapter-summary-affordance { font-size: 0.6rem; gap: 0.25rem; }
-  .chapter-summary-time { padding-right: 0.35rem; margin-right: 0.35rem; font-size: 0.6rem; }
-  .chapter-summary-title { font-size: 1rem !important; line-height: 1.3 !important; }
-  .chapter-summary-desc { font-size: 0.78rem !important; }
-  .chapter-summary-kicker { font-size: 0.6rem !important; letter-spacing: 0.08em !important; }
-  /* Hide the 'Open '/'Close ' word prefix on small screens; keep arrow + time. */
-  details.chapter-details[open] > summary.chapter-summary .chapter-summary-affordance::before,
-  details.chapter-details:not([open]) > summary.chapter-summary .chapter-summary-affordance::before { content: ''; }
-
-  /* Convince Me Q&A: stack reply pill below question on narrow screens. */
-  details.skeptic-q > summary { flex-wrap: wrap !important; padding: 0.85rem 1rem !important; }
-  details.skeptic-q > summary > span:last-child { font-size: 0.6rem !important; }
-
   /* Airbus Parallel card padding tightens. */
   #timeline canvas#airbusParallelCanvas { height: clamp(220px, 60vw, 320px) !important; }
 }
-@media (max-width: 380px) {
-  /* Very narrow: hide reading-time badge entirely so the chapter title stays readable. */
-  .chapter-summary-time { display: none; }
-  .chapter-summary-affordance { gap: 0.15rem; }
-}
-
-/* Chapter color stripes (left border on each summary) */
-/* Chapter color stripe: applied to the wrapper so it runs through the full
-   open card, not just the summary. */
-details#dashboard.chapter-details { border-left-color: var(--red); }
-details#story.chapter-details { border-left-color: var(--sky); }
-details#assembly.chapter-details { border-left-color: var(--gold); }
-details#battle.chapter-details { border-left-color: var(--green); }
-details#fund.chapter-details { border-left-color: var(--purple); }
-details#timeline.chapter-details { border-left-color: var(--gold); }
-details#sovereignty.chapter-details { border-left-color: var(--purple); }
-
-/* Side rail dot colors mirror chapter kicker colors */
-.page-outline a[href="#dashboard"] .outline-dot { background: var(--red); }
-.page-outline a[href="#story"] .outline-dot { background: var(--sky); }
-.page-outline a[href="#assembly"] .outline-dot { background: var(--gold); }
-.page-outline a[href="#battle"] .outline-dot { background: var(--green); }
-.page-outline a[href="#fund"] .outline-dot { background: var(--purple); }
-.page-outline a[href="#timeline"] .outline-dot { background: var(--gold); opacity: 0.65; }
-.page-outline a[href="#sovereignty"] .outline-dot { background: var(--purple); opacity: 0.65; }
-.page-outline a[href="#sign-on"] .outline-dot { background: var(--navy); }
-.page-outline a.active .outline-dot { box-shadow: 0 0 8px currentColor; transform: scale(1.3); }
-.outline-divider {
-  display: block;
-  width: 12px;
-  height: 1px;
-  background: rgba(0,32,91,0.15);
-  margin: 0.4rem auto;
-}
-
-/* Reading-time badge inside chapter affordance */
-.chapter-summary-time { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-right: 0.5rem; padding-right: 0.5rem; border-right: 1px solid rgba(0,32,91,0.12); }
 
 /* External link arrow indicator (footnotes, source links).
    Opt out with .no-ext-arrow on links where it would clutter (buttons, source-pill chips). */
@@ -929,7 +837,7 @@ details#sovereignty.chapter-details { border-left-color: var(--purple); }
 
 /* Dashboard chart explainer layout (Problem chapter) */
 .db-chart { display: grid; grid-template-columns: minmax(220px, 280px) 1fr; gap: 1.25rem 2rem; align-items: start; }
-.db-explainer { font-size: 0.85rem; color: rgba(232,224,204,0.78); line-height: 1.55; min-width: 0; }
+.db-explainer { font-size: 0.85rem; color: var(--data-text-secondary); line-height: 1.55; min-width: 0; }
 .db-explainer h4 {
   font-size: 0.65rem; font-family: var(--mono); font-weight: 700;
   letter-spacing: 0.12em; text-transform: uppercase;
@@ -1025,10 +933,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 
 /* Print styling: assume JS has force-opened all details */
 @media print {
-  details.chapter-details > summary.chapter-summary { background: white !important; border-bottom: 1px solid #ddd !important; }
-  details.chapter-details > summary.chapter-summary .chapter-summary-affordance,
-  details.chapter-details > summary.chapter-summary .chapter-summary-arrow { display: none !important; }
-  .topnav, .page-outline, .hero-cta-row, #ctaExportBtn, .btn { display: none !important; }
+  .topnav, .back-to-top, .hero-cta-row, #ctaExportBtn, .btn { display: none !important; }
 }
 </style>
 </head>
@@ -1036,31 +941,29 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 
 <a href="#dashboard" class="skip-link">Skip to content</a>
 
-<!-- NAV -->
-<nav class="topnav" id="topnav">
-  <div class="topnav-brand">
-    <svg viewBox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-  </div>
-  <div class="topnav-links">
-    <a href="#dashboard" style="color:var(--red);" data-desc="Who controls frontier AI today, and what your country loses by buying access instead of building it.">1. The Problem</a>
-    <a href="narrative.html" style="color:var(--sky);" data-desc="How Europe built Airbus when no single country could rival Boeing alone, and why the same logic applies to AI.">2. The Story</a>
-    <a href="#assembly" style="color:var(--gold);" data-desc="Drag middle-power AI labs together and watch the merged entity's compute, talent, and market power add up.">3. Build It</a>
-    <a href="#battle" style="color:var(--green);" data-desc="Stress-test your assembled entity against Big Tech across five fights: compute, talent, capital, distribution, and policy.">4. Test It</a>
+<!-- NAV: single sticky top bar. All sections + sibling pages live here.
+     Active link tracks scroll via IntersectionObserver in the page script. -->
+<nav class="topnav" id="topnav" aria-label="Page sections">
+  <a href="#top" class="topnav-brand" aria-label="Airbus for AI — top of page">
+    <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span class="topnav-brand-text">Airbus for AI</span>
+  </a>
+  <div class="topnav-list" id="topnavList">
+    <a class="topnav-link" href="#dashboard" data-section="dashboard">Problem</a>
+    <a class="topnav-link" href="#story" data-section="story">Precedent</a>
+    <a class="topnav-link" href="#assembly" data-section="assembly">Coalition</a>
+    <a class="topnav-link" href="#battle" data-section="battle">Stress Test</a>
+    <a class="topnav-link" href="#fund" data-section="fund">Financing</a>
+    <a class="topnav-link" href="#timeline" data-section="timeline">Roadmap</a>
+    <a class="topnav-link" href="#sovereignty" data-section="sovereignty">Sovereignty</a>
+    <span class="topnav-divider" aria-hidden="true"></span>
+    <a class="topnav-link is-external" href="narrative.html">The Slow Boil</a>
+    <a class="topnav-link is-external" href="simulation.html">Situation Room</a>
+    <a class="topnav-link" href="#sign-on" data-section="sign-on">Sign on</a>
   </div>
 </nav>
 
-<!-- SIDE OUTLINE -->
-<nav class="page-outline" id="pageOutline" aria-label="Page sections">
-  <a href="#dashboard" data-section="dashboard"><span class="outline-dot"></span><span class="outline-text">1. The Problem</span></a>
-  <a href="#story" data-section="story"><span class="outline-dot"></span><span class="outline-text">2. The Story</span></a>
-  <a href="#assembly" data-section="assembly"><span class="outline-dot"></span><span class="outline-text">3. Build It</span></a>
-  <a href="#battle" data-section="battle"><span class="outline-dot"></span><span class="outline-text">4. Test It</span></a>
-  <span class="outline-divider" aria-hidden="true"></span>
-  <a href="#fund" data-section="fund"><span class="outline-dot"></span><span class="outline-text">Fund</span></a>
-  <a href="#timeline" data-section="timeline"><span class="outline-dot"></span><span class="outline-text">Roadmap</span></a>
-  <a href="#sovereignty" data-section="sovereignty"><span class="outline-dot"></span><span class="outline-text">Sovereignty Idx</span></a>
-  <a href="#sign-on" data-section="sign-on"><span class="outline-dot"></span><span class="outline-text">Sign On</span></a>
-</nav>
+<button class="back-to-top" id="backToTop" aria-label="Back to top" type="button">&uarr;</button>
 
 <!-- HERO -->
 <section class="hero">
@@ -1073,20 +976,17 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 </section>
 
 <!-- 1. THE PROBLEM -->
-<details id="dashboard" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--red);">1. The Problem</div>
-    <div class="chapter-summary-title">Who controls the AI today and what it costs</div>
-    <div class="chapter-summary-desc">Dashboard, growth gap, cost of inaction, the risks of fixing it, and Convince Me: the strongest objections steelmanned with the strongest replies.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~6 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
-<section style="padding:5rem 2rem;background:var(--data-bg);color:var(--data-text);--db-text:var(--data-text-secondary);--db-dim:var(--data-text-muted);--db-border:var(--data-border);--db-raised:var(--data-bg-2);--db-cyan:var(--accent);--db-green:var(--accent);--db-red:var(--accent);--db-gold:var(--accent);--db-aurora:var(--accent);">
+<section id="dashboard" class="chapter-section is-dashboard">
+<header class="chapter-header">
+  <div class="chapter-kicker">1. The Problem</div>
+  <h2 class="chapter-title">Who controls the AI today and what it costs</h2>
+  <p class="chapter-desc">Dashboard, growth gap, cost of inaction, the risks of fixing it, and the strongest objections steelmanned with the strongest replies.</p>
+</header>
+<section style="padding:5rem 2rem;background:var(--data-bg);color:var(--data-text);--db-text:var(--data-text-secondary);--db-dim:var(--data-text-muted);--db-border:var(--data-border);--db-raised:var(--data-bg-2);--db-cyan:#006a8a;--db-green:#0a7d3d;--db-red:#b8002e;--db-gold:#8a5a00;--db-aurora:#6c3aa8;">
   <div style="max-width:1100px;margin:0 auto;">
     <div style="text-align:center;margin-bottom:3rem;">
       <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--db-dim);margin-bottom:8px;">Deep Data</div>
-      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;margin-bottom:0.5rem;color:rgba(232,224,204,0.9);letter-spacing:-0.01em;">The Numbers Behind the Narrative</h2>
+      <h2 style="font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:300;margin-bottom:0.5rem;color:var(--data-text);letter-spacing:-0.01em;">The Numbers Behind the Narrative</h2>
       <p style="color:var(--db-dim);font-size:1rem;">Six research-backed visualizations exploring Europe's AI sovereignty gap.</p>
     </div>
 
@@ -1399,7 +1299,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
             <div style="display:flex;justify-content:space-between;"><span>EUV Market Share</span><span style="color:var(--db-cyan);font-family:var(--mono);">100%</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Market Cap</span><span style="color:var(--db-cyan);font-family:var(--mono);">~$527B</span></div>
           </div>
-          <div style="margin-top:8px;font-size:0.65rem;color:rgba(232,224,204,0.3);">Every advanced AI chip (TSMC, Samsung, Intel) requires ASML machines.</div>
+          <div style="margin-top:8px;font-size:0.65rem;color:var(--data-text-muted);">Every advanced AI chip (TSMC, Samsung, Intel) requires ASML machines.</div>
         </div>
         <!-- Helsing -->
         <div style="padding:1.25rem;border:0.5px solid rgba(15,163,122,0.3);border-radius:10px;background:rgba(15,163,122,0.05);">
@@ -1411,7 +1311,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
             <div style="display:flex;justify-content:space-between;"><span>Employees</span><span style="color:var(--db-green);font-family:var(--mono);">900</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Chairman</span><span style="color:var(--db-green);font-family:var(--mono);">Daniel Ek</span></div>
           </div>
-          <div style="margin-top:8px;font-size:0.65rem;color:rgba(232,224,204,0.3);">AI integrated into Eurofighter Typhoon. Mistral partnership for defense AI models.</div>
+          <div style="margin-top:8px;font-size:0.65rem;color:var(--data-text-muted);">AI integrated into Eurofighter Typhoon. Mistral partnership for defense AI models.</div>
         </div>
         <!-- Mistral Compute -->
         <div style="padding:1.25rem;border:0.5px solid rgba(59,130,246,0.3);border-radius:10px;background:rgba(59,130,246,0.05);">
@@ -1422,7 +1322,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
             <div style="display:flex;justify-content:space-between;"><span>Debt Financing (Mar 2026)</span><span style="color:#3b82f6;font-family:var(--mono);">$830M</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Nuclear Grid Share</span><span style="color:#3b82f6;font-family:var(--mono);">~70%</span></div>
           </div>
-          <div style="margin-top:8px;font-size:0.65rem;color:rgba(232,224,204,0.3);">France's nuclear grid provides near-zero carbon power for AI workloads.</div>
+          <div style="margin-top:8px;font-size:0.65rem;color:var(--data-text-muted);">France's nuclear grid provides near-zero carbon power for AI workloads.</div>
         </div>
         <!-- BSC -->
         <div style="padding:1.25rem;border:0.5px solid rgba(201,106,43,0.3);border-radius:10px;background:rgba(201,106,43,0.05);">
@@ -1433,7 +1333,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
             <div style="display:flex;justify-content:space-between;"><span>Storage</span><span style="color:var(--db-gold);font-family:var(--mono);">248 PB</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Salamandra Languages</span><span style="color:var(--db-gold);font-family:var(--mono);">35</span></div>
           </div>
-          <div style="margin-top:8px;font-size:0.65rem;color:rgba(232,224,204,0.3);">Open-source Salamandra LLMs (2B/7B/40B) trained from scratch in European languages.</div>
+          <div style="margin-top:8px;font-size:0.65rem;color:var(--data-text-muted);">Open-source Salamandra LLMs (2B/7B/40B) trained from scratch in European languages.</div>
         </div>
       </div>
       <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
@@ -1488,7 +1388,7 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     <div id="inactionCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;"></div>
 
     <!-- Chart -->
-    <div style="position:relative;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.2);padding:1rem;">
+    <div style="position:relative;border-radius:12px;overflow:hidden;background:var(--data-bg-2);border:1px solid var(--data-border);padding:1rem;">
       <canvas id="inactionChart" style="width:100%;height:clamp(220px,35vw,360px);display:block;" role="img" aria-label="Cost of inaction chart: projected divergence between fragmented and coalition AI development trajectories"></canvas>
       <div id="inactionLegend" style="display:flex;gap:1.5rem;justify-content:center;margin-top:0.75rem;font-size:0.7rem;opacity:0.5;"></div>
     </div>
@@ -1520,85 +1420,52 @@ select option { background: var(--charcoal); color: var(--slate-100); }
   <div style="max-width:780px;margin:0 auto;">
     <div class="narrative-kicker" style="color:var(--red);">Convince Me</div>
     <h2 class="narrative-heading" style="font-size:clamp(1.2rem,2.5vw,1.6rem);">The strongest objections, and the strongest replies.</h2>
-    <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1.5rem;line-height:1.65;">If Airbus for AI is the right answer, why hasn't it happened? Five real objections, steelmanned, with the strongest reply to each. Click any question.</p>
+    <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1.5rem;line-height:1.65;">If Airbus for AI is the right answer, why hasn't it happened? Six real objections, steelmanned, with the strongest reply to each.</p>
 
     <div style="display:flex;flex-direction:column;gap:0.6rem;">
 
-      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
-        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
-          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q1.</span><span>Won't 11-nation governance be a coordination nightmare?</span></span>
-          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
-        </summary>
-        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
-          <p style="margin-top:1rem;"><strong style="color:var(--navy);">It is hard.</strong> Airbus nearly collapsed under Franco-German management conflict more than once. Three things make AI different. <strong style="color:var(--navy);">First,</strong> templates already work: EuroHPC coordinates 33 countries on shared compute today; ESA runs 22 nations; CERN runs 24. <strong style="color:var(--navy);">Second,</strong> day one is 2&ndash;3 anchor countries, not 11. The Bennett brief proposes starting with France/Germany plus one of UK/Japan/Canada and expanding from there. <strong style="color:var(--navy);">Third,</strong> the holding-company governance pattern (separated IP, operations, and deployment, with veto rights against duplicated capex) is built specifically to neutralize the Airbus failure modes.</p>
-        </div>
-      </details>
+      <div class="qa-block">
+        <div class="qa-question"><span class="qa-num">Q1.</span><span>Won't 11-nation governance be a coordination nightmare?</span></div>
+        <div class="qa-answer"><p><strong style="color:var(--navy);">It is hard.</strong> Airbus nearly collapsed under Franco-German management conflict more than once. Three things make AI different. <strong style="color:var(--navy);">First,</strong> templates already work: EuroHPC coordinates 33 countries on shared compute today; ESA runs 22 nations; CERN runs 24. <strong style="color:var(--navy);">Second,</strong> day one is 2&ndash;3 anchor countries, not 11. The Bennett brief proposes starting with France/Germany plus one of UK/Japan/Canada and expanding from there. <strong style="color:var(--navy);">Third,</strong> the holding-company governance pattern (separated IP, operations, and deployment, with veto rights against duplicated capex) is built specifically to neutralize the Airbus failure modes.</p></div>
+      </div>
 
-      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
-        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
-          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q2.</span><span>AI isn't aircraft. You can't merge a translator, a defense lab, and a chip monopoly into one company.</span></span>
-          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
-        </summary>
-        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
-          <p style="margin-top:1rem;"><strong style="color:var(--navy);">Right &mdash; and the merger doesn't pretend to.</strong> The proposal isn't a single product company. The merger is at the holding, compute, and commercial-strategy layer. Mistral keeps building Mistral models. DeepL keeps building translation. Helsing keeps building defense AI. ASML stays a public listed company entirely. What's <em>shared</em> is procurement leverage, GPU access, regulatory compliance work, and a coordinated commercial strategy against US hyperscalers. Think Airbus's structure (one holding, multiple national subsidiaries with their own R&amp;D), not a forced product merger.</p>
-        </div>
-      </details>
+      <div class="qa-block">
+        <div class="qa-question"><span class="qa-num">Q2.</span><span>AI isn't aircraft. You can't merge a translator, a defense lab, and a chip monopoly into one company.</span></div>
+        <div class="qa-answer"><p><strong style="color:var(--navy);">Right &mdash; and the merger doesn't pretend to.</strong> The proposal isn't a single product company. The merger is at the holding, compute, and commercial-strategy layer. Mistral keeps building Mistral models. DeepL keeps building translation. Helsing keeps building defense AI. ASML stays a public listed company entirely. What's <em>shared</em> is procurement leverage, GPU access, regulatory compliance work, and a coordinated commercial strategy against US hyperscalers. Think Airbus's structure (one holding, multiple national subsidiaries with their own R&amp;D), not a forced product merger.</p></div>
+      </div>
 
-      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
-        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
-          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q3.</span><span>Top researchers will keep leaving for US labs. Money plus compute plus GPU access wins.</span></span>
-          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
-        </summary>
-        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
-          <p style="margin-top:1rem;"><strong style="color:var(--navy);">Compute is the bigger reason than salary.</strong> Airbus for AI's anchor purpose is pooled compute access at frontier scale, which most national labs cannot offer alone. BSC's MareNostrum 5 already trains Salamandra in 35 European languages on 4,480 H100s. Mistral's 13.8K-GPU Paris data center already exists, with a 200MW target by 2027. Pooling those plus EuroHPC AI Factory sites gets you to a compute envelope a researcher can build a career on. Salaries still matter, but compute is the threshold; below it, no salary helps.</p>
-        </div>
-      </details>
+      <div class="qa-block">
+        <div class="qa-question"><span class="qa-num">Q3.</span><span>Top researchers will keep leaving for US labs. Money plus compute plus GPU access wins.</span></div>
+        <div class="qa-answer"><p><strong style="color:var(--navy);">Compute is the bigger reason than salary.</strong> Airbus for AI's anchor purpose is pooled compute access at frontier scale, which most national labs cannot offer alone. BSC's MareNostrum 5 already trains Salamandra in 35 European languages on 4,480 H100s. Mistral's 13.8K-GPU Paris data center already exists, with a 200MW target by 2027. Pooling those plus EuroHPC AI Factory sites gets you to a compute envelope a researcher can build a career on. Salaries still matter, but compute is the threshold; below it, no salary helps.</p></div>
+      </div>
 
-      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
-        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
-          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q4.</span><span>$24B coalition can't catch $852B OpenAI. The gap is too wide.</span></span>
-          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
-        </summary>
-        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
-          <p style="margin-top:1rem;"><strong style="color:var(--navy);">You don't need to catch them in their market. You need to win yours.</strong> Airbus didn't beat Boeing; it captured roughly half of a market that wasn't winner-take-all. Airbus for AI's addressable market is sovereign deployment, language coverage, regulated industries (banking, health, defense, government), latency-sensitive workloads, and citizens whose data legally cannot sit on US servers under the CLOUD Act. US labs structurally can't compete in that wedge &mdash; not because they're worse, but because their compliance posture and ownership structure rule them out. The gap that matters isn't $24B vs $852B; it's "can the merged entity reach good-enough capability for that wedge?"</p>
-        </div>
-      </details>
+      <div class="qa-block">
+        <div class="qa-question"><span class="qa-num">Q4.</span><span>$24B coalition can't catch $852B OpenAI. The gap is too wide.</span></div>
+        <div class="qa-answer"><p><strong style="color:var(--navy);">You don't need to catch them in their market. You need to win yours.</strong> Airbus didn't beat Boeing; it captured roughly half of a market that wasn't winner-take-all. Airbus for AI's addressable market is sovereign deployment, language coverage, regulated industries (banking, health, defense, government), latency-sensitive workloads, and citizens whose data legally cannot sit on US servers under the CLOUD Act. US labs structurally can't compete in that wedge &mdash; not because they're worse, but because their compliance posture and ownership structure rule them out. The gap that matters isn't $24B vs $852B; it's "can the merged entity reach good-enough capability for that wedge?"</p></div>
+      </div>
 
-      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
-        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
-          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q5.</span><span>By the time you build it, frontier AI will have moved on. You'll always be one cycle behind.</span></span>
-          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
-        </summary>
-        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
-          <p style="margin-top:1rem;"><strong style="color:var(--navy);">True for frontier-only metrics. False for the actual demand.</strong> Most of what middle-power governments, citizens, and regulated sectors need (multilingual support, on-device or sovereign-cloud inference, regulatory compliance, defense applications, government workloads) doesn't require being at the absolute frontier. Reaching GPT-4o or Claude 3.5 class capability sovereignly is enough for 90% of the addressable wedge, and that target is moving more slowly than headline frontier benchmarks. Frontier obsession is a US-narrative trap; sovereignty buyers are price-sensitive on capability, not capability-obsessed.</p>
-        </div>
-      </details>
+      <div class="qa-block">
+        <div class="qa-question"><span class="qa-num">Q5.</span><span>By the time you build it, frontier AI will have moved on. You'll always be one cycle behind.</span></div>
+        <div class="qa-answer"><p><strong style="color:var(--navy);">True for frontier-only metrics. False for the actual demand.</strong> Most of what middle-power governments, citizens, and regulated sectors need (multilingual support, on-device or sovereign-cloud inference, regulatory compliance, defense applications, government workloads) doesn't require being at the absolute frontier. Reaching GPT-4o or Claude 3.5 class capability sovereignly is enough for 90% of the addressable wedge, and that target is moving more slowly than headline frontier benchmarks. Frontier obsession is a US-narrative trap; sovereignty buyers are price-sensitive on capability, not capability-obsessed.</p></div>
+      </div>
 
-      <details class="skeptic-q" style="background:var(--off-white);border:1px solid rgba(0,32,91,0.08);border-radius:10px;">
-        <summary style="padding:0.95rem 1.15rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;list-style:none;">
-          <span style="display:flex;gap:0.6rem;align-items:flex-start;"><span style="font-family:var(--mono);color:var(--red);flex-shrink:0;font-size:0.8rem;letter-spacing:0.05em;">Q6.</span><span>What if the US retaliates with chip export controls or NVIDIA cuts you off? The coalition collapses the moment Washington frowns.</span></span>
-          <span style="color:var(--sky);font-size:0.7rem;font-family:var(--mono);font-weight:700;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em;align-self:center;">Reply &rsaquo;</span>
-        </summary>
-        <div style="padding:0 1.15rem 1.15rem;font-size:0.88rem;color:var(--text-secondary);line-height:1.65;border-top:1px solid rgba(0,32,91,0.06);">
-          <p style="margin-top:1rem;"><strong style="color:var(--navy);">This is the strongest objection, and the proposal is partly a response to it.</strong> The CHIPS-Act-style export-control regime already exists; the coalition's job is to reduce single-point exposure to it, not pretend it can't happen. Three planks. <strong style="color:var(--navy);">First, ASML.</strong> The Netherlands is in the candidate list; ASML holds a 100% monopoly on EUV lithography. Every advanced chip that TSMC, Samsung, and Intel make depends on machines no US firm produces. Coercion runs both ways. <strong style="color:var(--navy);">Second, an open-weight strategy.</strong> Salamandra (35 European languages, BSC), DeepL's models, and Mistral's open releases mean the coalition's deployment is not gated by a single US API. <strong style="color:var(--navy);">Third, redundant compute.</strong> Mistral Compute (13.8K GB300s, scaling to 200MW), MareNostrum 5 (4,480 H100s), JUPITER, LUMI, and the EuroHPC AI Factory programme give the coalition a frontier-class footprint that does not depend on AWS or Azure being available. The risk is real; it's also the core reason this initiative exists rather than something to wave it away. The brief argues middle powers are already exposed to retaliation under <em>status quo dependency</em>; building gives leverage, buying gives none.</p>
-        </div>
-      </details>
+      <div class="qa-block">
+        <div class="qa-question"><span class="qa-num">Q6.</span><span>What if the US retaliates with chip export controls or NVIDIA cuts you off? The coalition collapses the moment Washington frowns.</span></div>
+        <div class="qa-answer"><p><strong style="color:var(--navy);">This is the strongest objection, and the proposal is partly a response to it.</strong> The CHIPS-Act-style export-control regime already exists; the coalition's job is to reduce single-point exposure to it, not pretend it can't happen. Three planks. <strong style="color:var(--navy);">First, ASML.</strong> The Netherlands is in the candidate list; ASML holds a 100% monopoly on EUV lithography. Every advanced chip that TSMC, Samsung, and Intel make depends on machines no US firm produces. Coercion runs both ways. <strong style="color:var(--navy);">Second, an open-weight strategy.</strong> Salamandra (35 European languages, BSC), DeepL's models, and Mistral's open releases mean the coalition's deployment is not gated by a single US API. <strong style="color:var(--navy);">Third, redundant compute.</strong> Mistral Compute (13.8K GB300s, scaling to 200MW), MareNostrum 5 (4,480 H100s), JUPITER, LUMI, and the EuroHPC AI Factory programme give the coalition a frontier-class footprint that does not depend on AWS or Azure being available. The risk is real; it's also the core reason this initiative exists rather than something to wave it away. The brief argues middle powers are already exposed to retaliation under <em>status quo dependency</em>; building gives leverage, buying gives none.</p></div>
+      </div>
 
     </div>
   </div>
 </div>
-</details>
+</section>
 
 <!-- 2. THE STORY -->
-<details id="story" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--sky);">2. The Story</div>
-    <div class="chapter-summary-title">The Slow Boil</div>
-    <div class="chapter-summary-desc">A near-future scenario in five cities. Dublin to Tokyo, April 2026 to 2027, as middle powers feel the heat and grope toward a coalition.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~12 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
+<section id="story" class="chapter-section is-story">
+<header class="chapter-header">
+  <div class="chapter-kicker">2. The Precedent</div>
+  <h2 class="chapter-title">The Slow Boil</h2>
+  <p class="chapter-desc">A near-future scenario in five cities. Dublin to Tokyo, April 2026 to 2027, as middle powers feel the heat and grope toward a coalition.</p>
+</header>
 <section class="section">
   <div class="narrative-block wide fade-up" style="max-width:780px;margin:0 auto;text-align:center;">
     <div class="narrative-kicker">The Story</div>
@@ -1611,18 +1478,15 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     </div>
   </div>
 </section>
-</details>
+</section>
 
 <!-- 3. BUILD IT -->
-<details id="assembly" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--gold);">3. Build It</div>
-    <div class="chapter-summary-title">Assemble Airbus for AI</div>
-    <div class="chapter-summary-desc">Why the window is open, the interactive Assembly Lab to merge real labs, and the three-tier architecture that holds the merger together.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">Interactive</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
+<section id="assembly" class="chapter-section is-assembly">
+<header class="chapter-header">
+  <div class="chapter-kicker">3. The Coalition</div>
+  <h2 class="chapter-title">Assemble Airbus for AI</h2>
+  <p class="chapter-desc">Why the window is open, the interactive Assembly Lab to merge real labs, and the three-tier architecture that holds the merger together.</p>
+</header>
 
 <!-- WHY NOW (inside Build It) -->
 <div class="narrative-block wide fade-up" style="background:var(--slate-900);max-width:100%;padding:3rem 2rem;">
@@ -1682,13 +1546,13 @@ select option { background: var(--charcoal); color: var(--slate-100); }
 <!-- THREE-TIER ARCHITECTURE (inside Build It) -->
 <div class="narrative-block wide fade-up" style="max-width:100%;padding:2rem 2rem;background:var(--slate-900);">
   <div style="max-width:900px;margin:0 auto;">
-    <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:var(--off-white);">
-      <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.95rem;color:var(--navy);display:flex;align-items:center;gap:0.5rem;">
-        <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;background:var(--sky);color:white;padding:2px 8px;border-radius:100px;">How It Works</span>
-        A three-tier architecture for sovereign AI
-      </summary>
-      <div style="padding:0 1.25rem 1.5rem;">
-        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin:1rem 0 1.25rem;">Airbus for AI is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
+    <div style="border:1px solid var(--slate-700);border-radius:10px;background:var(--off-white);padding:1.25rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.65rem;">
+        <span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;background:var(--sky);color:white;padding:2px 8px;border-radius:100px;">How it works</span>
+        <span style="font-weight:700;font-size:0.95rem;color:var(--navy);">A three-tier architecture for sovereign AI</span>
+      </div>
+      <div>
+        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin:0 0 1.25rem;">Airbus for AI is not a monolith. It operates through three tiers that balance scale with sovereignty.</p>
         <div id="tierGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
           <div style="background:var(--slate-900);border-radius:10px;padding:1.5rem;border-left:4px solid var(--navy);">
             <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);font-weight:700;margin-bottom:0.5rem;">Tier 1</div>
@@ -1707,21 +1571,18 @@ select option { background: var(--charcoal); color: var(--slate-100); }
           </div>
         </div>
       </div>
-    </details>
+    </div>
   </div>
 </div>
-</details>
+</section>
 
 <!-- 4. TEST IT -->
-<details id="battle" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--green);">4. Test It</div>
-    <div class="chapter-summary-title">Stress Test the Merged Entity</div>
-    <div class="chapter-summary-desc">The narrative bridge to the test, then five fights against a US hyperscaler with policy levers you can pull.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">Interactive</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
+<section id="battle" class="chapter-section is-battle">
+<header class="chapter-header">
+  <div class="chapter-kicker">4. The Stress Test</div>
+  <h2 class="chapter-title">Stress test the merged entity</h2>
+  <p class="chapter-desc">The narrative bridge to the test, then five fights against a US hyperscaler with policy levers you can pull.</p>
+</header>
 
 <!-- NARRATIVE: THE CONFRONTATION (inside Test It) -->
 <div class="narrative-block wide fade-up" style="background: var(--data-bg); color: var(--data-text); max-width: 100%; padding: 5rem 2rem;">
@@ -1751,18 +1612,15 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     <div class="battle-verdict" id="battleVerdict" aria-live="polite"></div>
   </div>
 </section>
-</details>
+</section>
 
 <!-- FUND EXPLAINER -->
-<details id="fund" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--purple);">Appendix &middot; Financing</div>
-    <div class="chapter-summary-title">The Airbus for AI Fund</div>
-    <div class="chapter-summary-desc">Three vehicles for transnational AI investment, modeled on the NATO Innovation Fund and EuroHPC.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~2 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
+<section id="fund" class="chapter-section is-fund">
+<header class="chapter-header">
+  <div class="chapter-kicker">Financing</div>
+  <h2 class="chapter-title">The Airbus for AI Fund</h2>
+  <p class="chapter-desc">Three vehicles for transnational AI investment, modeled on the NATO Innovation Fund and EuroHPC.</p>
+</header>
 <div class="narrative-block wide fade-up" style="max-width:100%;padding:3rem 2rem;background:var(--off-white);">
   <div style="max-width:900px;margin:0 auto;">
     <div class="narrative-kicker" style="color:var(--purple);">The Airbus for AI Fund</div>
@@ -1787,18 +1645,15 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     </div>
   </div>
 </div>
-</details>
+</section>
 
 <!-- ROADMAP (reference) -->
-<details id="timeline" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--gold);">Appendix &middot; Timeline</div>
-    <div class="chapter-summary-title">The Airbus Parallel + 10-Year Roadmap</div>
-    <div class="chapter-summary-desc">Airbus's actual market-share trajectory plotted against an Airbus for AI projection on the same axis. Then milestone by milestone, what coordinated AI sovereignty would actually require.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">~3 min</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
+<section id="timeline" class="chapter-section is-timeline">
+<header class="chapter-header">
+  <div class="chapter-kicker">Roadmap</div>
+  <h2 class="chapter-title">The Airbus parallel + 10-year roadmap</h2>
+  <p class="chapter-desc">Airbus's actual market-share trajectory plotted against an Airbus for AI projection on the same axis. Then milestone by milestone, what coordinated AI sovereignty would actually require.</p>
+</header>
 <section class="timeline-section">
   <div class="timeline-inner">
 
@@ -1828,18 +1683,15 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     <div class="timeline-vertical" id="timelineVertical"></div>
   </div>
 </section>
-</details>
+</section>
 
 <!-- MODEL SOVEREIGNTY INDEX (reference tool) -->
-<details id="sovereignty" class="chapter-details">
-<summary class="chapter-summary">
-  <div class="chapter-summary-text">
-    <div class="chapter-summary-kicker" style="color:var(--purple);">Appendix &middot; Live tool</div>
-    <div class="chapter-summary-title">Model Sovereignty Index</div>
-    <div class="chapter-summary-desc">How sovereign are the AI models your country depends on? Scores open-weight models on six dimensions, live from Hugging Face.</div>
-  </div>
-  <div class="chapter-summary-affordance"><span class="chapter-summary-time">Live tool</span><span class="chapter-summary-arrow">&rsaquo;</span></div>
-</summary>
+<section id="sovereignty" class="chapter-section is-sovereignty">
+<header class="chapter-header">
+  <div class="chapter-kicker">Live tool &middot; Sovereignty</div>
+  <h2 class="chapter-title">Model Sovereignty Index</h2>
+  <p class="chapter-desc">How sovereign are the AI models your country depends on? Scores open-weight models on six dimensions, live from Hugging Face.</p>
+</header>
 <section style="padding:4rem 2rem;background:var(--off-white);">
   <div style="max-width:900px;margin:0 auto;text-align:center;">
     <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:0.5rem;font-weight:700;">Live Dashboard</div>
@@ -1879,9 +1731,9 @@ select option { background: var(--charcoal); color: var(--slate-100); }
     </div>
 
     <div style="max-width:800px;margin:2rem auto 0;text-align:left;">
-      <details style="border:1px solid rgba(0,32,91,0.12);border-radius:10px;background:var(--slate-900);">
-        <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:700;font-size:0.9rem;color:var(--navy);">Why model sovereignty matters for Airbus for AI</summary>
-        <div style="padding:0 1.25rem 1.25rem;font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
+      <div style="border:1px solid var(--slate-700);border-radius:10px;background:var(--slate-900);padding:1.25rem;">
+        <h3 style="margin:0 0 0.85rem;font-weight:700;font-size:0.95rem;color:var(--navy);">Why model sovereignty matters for Airbus for AI</h3>
+        <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.7;">
           <p style="margin-bottom:0.75rem;">The Airbus for AI initiative argues that middle powers need to build, not just buy, frontier AI. But how do you measure whether a country actually controls the AI it depends on? The Model Sovereignty Index provides a concrete, data-driven answer.</p>
           <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Training Data Privacy</strong> measures whether a model's training data can be audited and controlled, critical for GDPR compliance and preventing foreign surveillance through training data.</p>
           <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Local Training Capability</strong> assesses whether a model can be trained or fine-tuned on domestic infrastructure, the core argument for pooled European compute.</p>
@@ -1890,11 +1742,11 @@ select option { background: var(--charcoal); color: var(--slate-100); }
           <p style="margin-bottom:0.75rem;"><strong style="color:var(--navy);">Weight Privacy</strong> assesses protection against unauthorized extraction, relevant for defense and critical infrastructure use cases.</p>
           <p><strong style="color:var(--navy);">Country-Specific Knowledge</strong> measures linguistic and cultural coverage, the dimension where DeepL's 100+ languages and Cohere's Aya models provide the coalition's strongest advantage.</p>
         </div>
-      </details>
+      </div>
     </div>
   </div>
 </section>
-</details>
+</section>
 
 <!-- CTA + SIGN-ON -->
 <section class="cta-section" id="sign-on">
@@ -2982,18 +2834,6 @@ function setupScroll() {
   }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-  // Line-wipe reveal: chapter summary's 1px top accent line draws across
-  // when the chapter scrolls into view.
-  const wipeObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('line-wiped');
-        wipeObserver.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('details.chapter-details').forEach(el => wipeObserver.observe(el));
-
   // Count-up stats: any element with [data-count-up] animates from 0 to its
   // numeric textContent on first scroll-into-view. Preserves any prefix
   // (~, $, +) and suffix (B, M, K, %, x, +) around the number.
@@ -3113,22 +2953,59 @@ function init() {
     setTimeout(function() { if (sovFrame.style.display === 'none') showSovFrame(); }, 8000);
   }
 
-  // Side outline scroll tracking
-  const outlineLinks = document.querySelectorAll('#pageOutline a[data-section]');
-  const sectionIds = Array.from(outlineLinks).map(a => a.dataset.section);
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        outlineLinks.forEach(a => a.classList.remove('active'));
-        const match = document.querySelector(`#pageOutline a[data-section="${entry.target.id}"]`);
-        if (match) match.classList.add('active');
+  // Top-nav scroll tracking + horizontal auto-scroll of the active link.
+  // Each in-page section gets observed; the section with the largest
+  // intersectionRatio wins. Cross-page links (.is-external) are skipped.
+  const navLinks = Array.from(document.querySelectorAll('#topnavList .topnav-link[data-section]'));
+  const navList = document.getElementById('topnavList');
+  const navIds = navLinks.map(a => a.dataset.section);
+  let _activeSection = null;
+  const setActive = (id) => {
+    if (_activeSection === id) return;
+    _activeSection = id;
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.section === id));
+    const active = navLinks.find(a => a.dataset.section === id);
+    if (active && navList) {
+      // keep the active pill within the visible scroll viewport
+      const aRect = active.getBoundingClientRect();
+      const lRect = navList.getBoundingClientRect();
+      if (aRect.left < lRect.left + 24) {
+        navList.scrollBy({ left: aRect.left - lRect.left - 32, behavior: 'smooth' });
+      } else if (aRect.right > lRect.right - 24) {
+        navList.scrollBy({ left: aRect.right - lRect.right + 32, behavior: 'smooth' });
       }
+    }
+  };
+  const visible = new Map();
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) visible.set(e.target.id, e.intersectionRatio);
+      else visible.delete(e.target.id);
     });
-  }, { rootMargin: '-30% 0px -60% 0px' });
-  sectionIds.forEach(id => {
+    let best = null, bestRatio = 0;
+    for (const [id, ratio] of visible) {
+      if (ratio > bestRatio) { best = id; bestRatio = ratio; }
+    }
+    if (best) setActive(best);
+  }, { rootMargin: '-72px 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
+  navIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) sectionObserver.observe(el);
   });
+
+  // Topnav shadow on scroll, plus back-to-top FAB visibility.
+  const topnavEl = document.getElementById('topnav');
+  const backTopBtn = document.getElementById('backToTop');
+  const onScroll = () => {
+    const y = window.scrollY || window.pageYOffset;
+    if (topnavEl) topnavEl.classList.toggle('scrolled', y > 12);
+    if (backTopBtn) backTopBtn.classList.toggle('visible', y > 480);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  if (backTopBtn) {
+    backTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
 
 }
 
@@ -3161,11 +3038,11 @@ function buildDbBars() {
     const pct = (c.val / maxVal) * 100;
     const isEU = c.region !== 'US' && c.region !== 'CN';
     return `<div style="display:flex;align-items:center;gap:10px;">
-      <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(255,255,255,${isEU?'0.7':'0.4'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
-      <div style="flex:1;height:14px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
+      <div style="min-width:130px;font-size:0.75rem;font-family:var(--mono);color:rgba(10,10,10,${isEU?'0.85':'0.55'});font-weight:${isEU?'700':'400'};text-align:right;">${c.name}</div>
+      <div style="flex:1;height:14px;background:rgba(10,10,10,0.08);border-radius:2px;overflow:hidden;">
         <div style="width:${pct}%;height:100%;background:${c.color};border-radius:2px;opacity:0.7;transition:width 1s;"></div>
       </div>
-      <div style="min-width:45px;font-size:0.7rem;font-family:var(--mono);color:rgba(232,224,204,0.4);font-weight:700;">$${c.val}B</div>
+      <div style="min-width:45px;font-size:0.7rem;font-family:var(--mono);color:rgba(10,10,10,0.55);font-weight:700;">$${c.val}B</div>
     </div>`;
   }).join('');
 }
@@ -3206,7 +3083,7 @@ function buildDbBars() {
     cell.style.cssText = `padding:10px 8px;border-radius:6px;border:0.5px solid ${colorMap[lang.level]}30;background:${colorMap[lang.level]}0a;text-align:center;`;
     cell.innerHTML = `
       <div style="font-family:var(--mono);font-size:0.85rem;font-weight:500;color:${colorMap[lang.level]};">${lang.code}</div>
-      <div style="font-size:0.6rem;color:rgba(232,224,204,0.4);margin-top:2px;">${lang.name}</div>
+      <div style="font-size:0.6rem;color:rgba(10,10,10,0.55);margin-top:2px;">${lang.name}</div>
       <div style="font-size:0.55rem;color:${colorMap[lang.level]}80;margin-top:1px;">${lang.speakers}</div>
     `;
     container.appendChild(cell);
@@ -3222,7 +3099,7 @@ function buildDbBars() {
   resize(); window.addEventListener('resize',resize);
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
-  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#ff3333'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0fa37a'},{label:'Diluted / lost',x:0.93,y:0.80,col:'rgba(232,224,204,0.3)'}];
+  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#ff3333'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0fa37a'},{label:'Diluted / lost',x:0.93,y:0.80,col:'rgba(10,10,10,0.45)'}];
   const allNodes=[colA,colB,colC];
   const colHeaders=[{label:'EU FUNDING SOURCES',x:0.07},{label:'WHERE FOUNDERS GO',x:0.50},{label:'ECONOMIC RESULT',x:0.93}];
   const flows=[{from:[0,0],to:[1,0],w:0.22},{from:[0,1],to:[1,0],w:0.18},{from:[0,1],to:[1,1],w:0.12},{from:[0,2],to:[1,1],w:0.10},{from:[0,2],to:[1,2],w:0.08},{from:[0,3],to:[1,2],w:0.05},{from:[0,3],to:[1,3],w:0.06},{from:[1,0],to:[2,0],w:0.30},{from:[1,1],to:[2,1],w:0.15},{from:[1,2],to:[2,1],w:0.08},{from:[1,3],to:[2,2],w:0.06}];
@@ -3234,7 +3111,7 @@ function buildDbBars() {
     const fs=Math.max(7, Math.min(9, W*0.025));
     const lfs=Math.max(8, Math.min(11, W*0.03));
     ctx.font=fs+'px Inter, sans-serif';ctx.textAlign='center';
-    colHeaders.forEach(ch=>{ctx.fillStyle='rgba(232,224,204,0.25)';ctx.fillText(ch.label,ch.x*W,12);});
+    colHeaders.forEach(ch=>{ctx.fillStyle='rgba(10,10,10,0.4)';ctx.fillText(ch.label,ch.x*W,12);});
     flows.forEach((f,fi)=>{
       const n1=allNodes[f.from[0]][f.from[1]],n2=allNodes[f.to[0]][f.to[1]];
       const x1=n1.x*W,y1=n1.y*H,x2=n2.x*W,y2=n2.y*H,thickness=f.w*H*0.7;
@@ -3246,7 +3123,7 @@ function buildDbBars() {
     });
     allNodes.forEach((col,ci)=>{col.forEach(n=>{
       ctx.beginPath();ctx.arc(n.x*W,n.y*H,Math.max(3,5*W/500),0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
-      ctx.fillStyle='rgba(232,224,204,0.65)';ctx.font=lfs+'px Inter, sans-serif';
+      ctx.fillStyle='rgba(10,10,10,0.78)';ctx.font=lfs+'px Inter, sans-serif';
       ctx.textAlign=ci===0?'left':ci===2?'right':'center';
       const labelX=ci===0?n.x*W+12:ci===2?n.x*W-12:n.x*W;
       ctx.fillText(n.label,labelX,n.y*H-10);
@@ -3265,7 +3142,7 @@ function buildDbBars() {
   function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(400, Math.max(250, canvas.parentElement.clientWidth*0.7));}
   resize();window.addEventListener('resize',resize);
   const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
-  const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(232,224,204,0.4)',pct:'~5%'}];
+  const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
   const LX=0.18,RX=0.82;
   let particles=flows.map(()=>Math.random());
@@ -3276,9 +3153,9 @@ function buildDbBars() {
     const lfs=Math.max(8, Math.min(11, W*0.028));
     const pfs=Math.max(7, Math.min(10, W*0.025));
     const dotR=Math.max(3, Math.min(5, W*0.012));
-    ctx.font=tfs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(232,224,204,0.25)';
+    ctx.font=tfs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(10,10,10,0.4)';
     ctx.fillText('EDUCATED IN',LX*W,14);ctx.fillText('NOW WORKING IN',RX*W,14);
-    ctx.fillStyle='rgba(232,224,204,0.08)';ctx.font='28px Inter, sans-serif';ctx.fillText('\u2192',0.5*W,0.5*H);
+    ctx.fillStyle='rgba(10,10,10,0.12)';ctx.font='28px Inter, sans-serif';ctx.fillText('\u2192',0.5*W,0.5*H);
     flows.forEach((f,fi)=>{
       const src=educated[f.from],dst=working[f.to];const x1=LX*W+8,y1=src.y*H,x2=RX*W-8,y2=dst.y*H,thickness=f.w*H*0.65;
       ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=src.col+'12';ctx.lineWidth=thickness;ctx.stroke();
@@ -3287,8 +3164,8 @@ function buildDbBars() {
       const bx=bezPt(x1,x1+(x2-x1)*0.35,x1+(x2-x1)*0.65,x2,s),by=bezPt(y1,y1,y2,y2,s);
       ctx.beginPath();ctx.arc(bx,by,2,0,Math.PI*2);ctx.fillStyle=dst.col;ctx.fill();
     });
-    educated.forEach(n=>{ctx.beginPath();ctx.arc(LX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='right';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,LX*W-14,n.y*H+4);ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);});
-    working.forEach(n=>{ctx.beginPath();ctx.arc(RX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='left';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(232,224,204,0.6)';ctx.fillText(n.label,RX*W+14,n.y*H+4);ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);});
+    educated.forEach(n=>{ctx.beginPath();ctx.arc(LX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='right';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='var(--data-text-muted)';ctx.fillText(n.label,LX*W-14,n.y*H+4);ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);});
+    working.forEach(n=>{ctx.beginPath();ctx.arc(RX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();ctx.textAlign='left';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='var(--data-text-muted)';ctx.fillText(n.label,RX*W+14,n.y*H+4);ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);});
     requestAnimationFrame(draw);
   }
   const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
@@ -3313,11 +3190,11 @@ function buildDbBars() {
     const nodeFs=Math.max(7, Math.min(9, W*0.022));
     const legFs=Math.max(7, Math.min(10, W*0.025));
     const nodeR=Math.max(2.5, Math.min(4, W*0.01));
-    ctx.fillStyle='rgba(232,224,204,0.06)';ctx.font='600 '+titleFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE',W/2,24);
+    ctx.fillStyle='rgba(10,10,10,0.10)';ctx.font='600 '+titleFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE',W/2,24);
     connections.forEach(([i,j])=>{const a=euroHPC[i],b=euroHPC[j];ctx.beginPath();ctx.moveTo(a.x*W,a.y*H);ctx.lineTo(b.x*W,b.y*H);ctx.strokeStyle='rgba(26,108,212,0.12)';ctx.lineWidth=0.5;ctx.stroke();const prog=((t*0.005+i*0.2)%1);ctx.beginPath();ctx.arc(a.x*W+(b.x*W-a.x*W)*prog,a.y*H+(b.y*H-a.y*H)*prog,1.2,0,Math.PI*2);ctx.fillStyle='rgba(26,108,212,0.3)';ctx.fill();});
     hyperDC.forEach((n,i)=>{const pulse=1+0.15*Math.sin(t*0.02+i+3);const sz=n.size*W/500;ctx.beginPath();ctx.arc(n.x*W,n.y*H,(sz+8)*pulse,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.04)';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,sz,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(255,51,51,0.3)';ctx.font=dcFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H+sz+12);});
-    euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR*W/500,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR*0.4,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.55)';ctx.font=nodeFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
-    const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font=legFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,nodeR,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(232,224,204,0.5)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
+    euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR*W/500,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR*0.4,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='var(--data-text-muted)';ctx.font=nodeFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
+    const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font=legFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,nodeR,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.5)';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
     requestAnimationFrame(draw);
   }
   const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){draw();obs.disconnect();}});
@@ -3331,17 +3208,17 @@ function buildDbBars() {
   const ctx=canvas.getContext('2d');
   function resize(){canvas.width=canvas.parentElement.clientWidth;canvas.height=Math.min(300, Math.max(200, canvas.parentElement.clientWidth*0.55));}
   resize();window.addEventListener('resize',resize);
-  const data=[{label:'China',patents:38000,col:'#c96a2b'},{label:'United States',patents:6300,col:'#1a6cd4'},{label:'South Korea',patents:2800,col:'#7b6fd6'},{label:'Japan',patents:1500,col:'#4a8ce4'},{label:'EU Total',patents:1200,col:'#0fa37a'},{label:'India',patents:800,col:'rgba(232,224,204,0.4)'}];
+  const data=[{label:'China',patents:38000,col:'#c96a2b'},{label:'United States',patents:6300,col:'#1a6cd4'},{label:'South Korea',patents:2800,col:'#7b6fd6'},{label:'Japan',patents:1500,col:'#4a8ce4'},{label:'EU Total',patents:1200,col:'#0fa37a'},{label:'India',patents:800,col:'rgba(10,10,10,0.55)'}];
   let grown=data.map(()=>0);
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;const maxVal=38000;
     const sc=W/500;const barH=Math.max(18,28*sc),gap=Math.max(8,14*sc),labelW=Math.max(55,90*sc),startY=30;
     const titleFs=Math.max(7,9*sc),labelFs=Math.max(8,11*sc),valFs=Math.max(7,10*sc);
-    ctx.fillStyle='rgba(232,224,204,0.3)';ctx.font=titleFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('GENERATIVE AI INVENTIONS (2014-2023)',labelW,18);
+    ctx.fillStyle='rgba(10,10,10,0.45)';ctx.font=titleFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('GENERATIVE AI INVENTIONS (2014-2023)',labelW,18);
     grown=grown.map(g=>Math.min(g+0.02,1));const allDone=grown.every(g=>g>=1);
     data.forEach((d,i)=>{
       const y=startY+i*(barH+gap),barW=((W-labelW-80*sc)*(d.patents/maxVal))*grown[i];
-      ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font=labelFs+'px Inter, sans-serif';ctx.textAlign='right';ctx.fillText(d.label,labelW-10,y+barH/2+4);
+      ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font=labelFs+'px Inter, sans-serif';ctx.textAlign='right';ctx.fillText(d.label,labelW-10,y+barH/2+4);
       ctx.fillStyle='rgba(255,255,255,0.03)';ctx.beginPath();ctx.roundRect(labelW,y,W-labelW-80*sc,barH,4);ctx.fill();
       ctx.fillStyle=d.col+'40';ctx.beginPath();ctx.roundRect(labelW,y,barW,barH,4);ctx.fill();
       ctx.strokeStyle=d.col+'80';ctx.lineWidth=0.5;ctx.beginPath();ctx.roundRect(labelW,y,barW,barH,4);ctx.stroke();
@@ -3381,12 +3258,12 @@ function buildDbBars() {
     for(let v=0;v<=400;v+=100){
       const y=pad.t+ch-(v/maxY)*ch;
       ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cw,y);ctx.stroke();
-      ctx.fillStyle='rgba(232,224,204,0.3)';ctx.font='10px JetBrains Mono, monospace';ctx.textAlign='right';
+      ctx.fillStyle='rgba(10,10,10,0.45)';ctx.font='10px JetBrains Mono, monospace';ctx.textAlign='right';
       ctx.fillText('$'+v+'M',pad.l-8,y+4);
     }
 
     // Y-axis label
-    ctx.save();ctx.translate(14,pad.t+ch/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='rgba(232,224,204,0.2)';ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('ARR ($M)',0,0);ctx.restore();
+    ctx.save();ctx.translate(14,pad.t+ch/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='rgba(10,10,10,0.35)';ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('ARR ($M)',0,0);ctx.restore();
 
     // Series
     series.forEach(s=>{
@@ -3404,7 +3281,7 @@ function buildDbBars() {
         const y=pad.t+ch-(Math.min(p.y*grown,p.y)/maxY)*ch;
         ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
         if(p.label&&grown>0.8){
-          ctx.fillStyle='rgba(232,224,204,0.4)';ctx.font='8px Inter, sans-serif';ctx.textAlign='center';
+          ctx.fillStyle='rgba(10,10,10,0.55)';ctx.font='8px Inter, sans-serif';ctx.textAlign='center';
           ctx.fillText(p.label,x,y>pad.t+30?y-10:y+16);
         }
       });
@@ -3424,7 +3301,7 @@ function buildDbBars() {
     series.forEach((s,i)=>{
       const ly=pad.t+10+i*16;
       ctx.beginPath();ctx.arc(lx,ly,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
-      ctx.fillStyle='rgba(232,224,204,0.5)';ctx.font='10px Inter, sans-serif';ctx.textAlign='left';
+      ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font='10px Inter, sans-serif';ctx.textAlign='left';
       ctx.fillText(s.name,lx+8,ly+4);
     });
 
@@ -3531,10 +3408,10 @@ async function fetchHFModels(retries=2){
     const total=models.length;
     const groupColors={'United States':'var(--db-red)','Europe/Coalition':'var(--db-cyan)','China':'var(--db-gold)',
       'South Korea':'#7b6fd6','Australia':'#0fa37a','India':'#f59e0b','Ukraine':'#06b6d4','UAE':'#c96a2b',
-      'Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(232,224,204,0.3)'};
+      'Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(10,10,10,0.45)'};
     summary.innerHTML=Object.entries(displayGroups).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([name,count])=>{
       const pct=Math.round((count/total)*100);
-      const col=groupColors[name]||'rgba(232,224,204,0.3)';
+      const col=groupColors[name]||'rgba(10,10,10,0.45)';
       return `<div style="padding:0.6rem 1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;min-width:90px;">
         <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${col};line-height:1;">${pct}%</div>
         <div style="font-size:0.6rem;color:var(--db-dim);margin-top:2px;">${name}</div>
@@ -3543,7 +3420,7 @@ async function fetchHFModels(retries=2){
     }).join('');
     const rcols={'US':'var(--db-red)','France':'var(--db-cyan)','Germany':'var(--db-cyan)','Finland':'var(--db-cyan)','Canada':'var(--db-cyan)',
       'China':'var(--db-gold)','South Korea':'#7b6fd6','Australia':'#0fa37a','India':'#f59e0b','Ukraine':'#06b6d4',
-      'UAE':'#c96a2b','Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(232,224,204,0.3)'};
+      'UAE':'#c96a2b','Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(10,10,10,0.45)'};
     table.innerHTML=`<div style="display:grid;grid-template-columns:24px 1fr 80px 70px;gap:4px 12px;align-items:center;">
       <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">#</div>
       <div style="font-size:0.6rem;color:var(--db-dim);font-weight:700;">MODEL</div>
@@ -3553,7 +3430,7 @@ async function fetchHFModels(retries=2){
         <div style="color:var(--db-dim);">${r.rank}</div>
         <div style="color:rgba(255,255,255,0.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.name}">${r.name}</div>
         <div style="color:var(--db-dim);">${hfFormatDl(r.downloads)}</div>
-        <div style="color:${rcols[r.region]||'rgba(232,224,204,0.3)'};font-weight:600;font-size:0.7rem;">${r.region}</div>
+        <div style="color:${rcols[r.region]||'rgba(10,10,10,0.45)'};font-weight:600;font-size:0.7rem;">${r.region}</div>
       `).join('')}
     </div>`;
     badge.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:var(--db-green);"></span> LIVE';
@@ -3565,7 +3442,7 @@ async function fetchHFModels(retries=2){
       {pct:'~16%',label:'Europe/Coalition',col:'var(--db-cyan)'},
       {pct:'~4%',label:'South Korea',col:'#7b6fd6'},
       {pct:'~4%',label:'Australia',col:'#0fa37a'},
-      {pct:'~12%',label:'Other',col:'rgba(232,224,204,0.3)'}
+      {pct:'~12%',label:'Other',col:'rgba(10,10,10,0.45)'}
     ].map(g=>{
       return `<div style="padding:0.6rem 1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:0.5px solid var(--db-border);text-align:center;min-width:90px;">
         <div style="font-family:var(--mono);font-size:1.4rem;font-weight:800;color:${g.col};line-height:1;">${g.pct}</div>
@@ -3815,7 +3692,7 @@ function renderInactionCards(year, showCoalition) {
     const worse = m.invert ? sq < m.base : sq > m.base;
     const arrow = worse ? '\u2191' : '\u2193';
     const changeColor = worse ? 'var(--red)' : 'var(--green)';
-    return `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;text-align:center;">
+    return `<div style="background:var(--data-bg-2);border:1px solid var(--data-border);border-radius:10px;padding:1rem;text-align:center;">
       <div style="font-size:1.4rem;margin-bottom:0.25rem;">${m.icon}</div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:300;color:${m.color};">${sq}${m.unit}</div>
       ${showCoalition ? `<div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--cyan);opacity:0.7;margin-top:2px;">${co}${m.unit} <span style="font-size:0.65rem;">w/ coalition</span></div>` : ''}
@@ -3843,7 +3720,7 @@ function renderInactionChart() {
   for (let y = 2026; y <= 2035; y++) years.push(y);
 
   // Draw grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.strokeStyle = 'rgba(10,10,10,0.10)';
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i++) {
     const y = padT + (ch / 4) * i;
@@ -3851,7 +3728,7 @@ function renderInactionChart() {
   }
 
   // X-axis labels
-  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillStyle = 'rgba(10,10,10,0.55)';
   ctx.font = '10px JetBrains Mono, monospace';
   ctx.textAlign = 'center';
   years.forEach((yr, i) => {
@@ -4097,17 +3974,11 @@ window.addEventListener('afterprint', () => {
   _detailsPriorOpenState = new Map();
 });
 
-document.querySelectorAll('details.chapter-details').forEach(d => {
-  d.addEventListener('toggle', () => {
-    if (!d.open) return;
-    // Piggyback on the existing resize handler to redraw canvases inside
-    window.dispatchEvent(new Event('resize'));
-    // Stress Test rebuilds rounds/scoreboard from arrays, not on resize -- nudge it
-    if (d.id === 'battle') {
-      try { if (typeof renderChallengers === 'function') renderChallengers(); } catch {}
-      try { if (typeof updateBattle === 'function') updateBattle(false); } catch {}
-    }
-  });
+// Sections are always rendered now (no fold) — kick the stress-test rebuild
+// once on load so its rounds populate without needing a toggle event.
+document.addEventListener('DOMContentLoaded', () => {
+  try { if (typeof renderChallengers === 'function') renderChallengers(); } catch {}
+  try { if (typeof updateBattle === 'function') updateBattle(false); } catch {}
 });
 
 </script>

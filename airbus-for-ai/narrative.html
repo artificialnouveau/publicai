@@ -1368,16 +1368,53 @@ body::after {
 <!-- PROGRESS BAR -->
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
-<!-- TOP NAV -->
-<nav class="topnav">
-  <a href="index.html" class="topnav-brand glow">The Assembly Lab &gt;</a>
-  <div class="topnav-chapters">
-    <a href="#chapterGrid">CHAPTERS</a>
-    <a href="#deep-data">DATA</a>
-    <a href="index.html#sovereignty" style="color:var(--purple);">SOVEREIGNTY INDEX</a>
-    <a href="simulation.html" style="color:var(--green);">SITUATION ROOM</a>
+<!-- TOP NAV: shared structure with index.html so cross-page jumps stay
+     one click. Dark theme kept here because the Slow Boil is an immersive
+     narrative experience, not policy reading content. -->
+<nav class="topnav" id="topnav" aria-label="Site navigation">
+  <a href="index.html" class="topnav-brand">&larr; Airbus for AI</a>
+  <div class="topnav-chapters" id="topnavList">
+    <a href="#chapterGrid">Chapters</a>
+    <a href="#deep-data">Data</a>
+    <a href="index.html#dashboard">Problem</a>
+    <a href="index.html#assembly">Coalition</a>
+    <a href="index.html#battle">Stress Test</a>
+    <a href="simulation.html">Situation Room</a>
+    <a href="index.html#sovereignty">Sovereignty</a>
   </div>
 </nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top" type="button">&uarr;</button>
+
+<style>
+.topnav-brand { font-weight: 800; font-size: 0.85rem; color: var(--cyan); text-decoration: none; letter-spacing: 0.02em; padding-right: 0.75rem; }
+.topnav-brand:hover { color: var(--text-primary, #fff); }
+.topnav-chapters a { color: var(--text-dim); padding: 0 0.7rem; }
+.topnav-chapters a.active { color: var(--cyan); }
+.back-to-top {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 90;
+  width: 44px; height: 44px; border: none; border-radius: 50%;
+  background: var(--cyan, #1a6cd4); color: white;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 14px rgba(26,108,212,0.45);
+  opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.back-to-top:hover, .back-to-top:focus-visible { background: #4a8ce4; outline: none; }
+@media print { .back-to-top { display: none; } }
+</style>
+<script>
+(function(){
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  const onScroll = () => btn.classList.toggle('visible', (window.scrollY || 0) > 480);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+</script>
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="hero">

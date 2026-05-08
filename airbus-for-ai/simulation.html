@@ -842,7 +842,45 @@ h1, h2, h3, h4,
   <span class="clock-text" id="clockText">DECISION 1 / 8</span>
 </div>
 
-<nav class="topnav" id="topnav"><a href="index.html">&larr; The Assembly Lab</a><span style="display:flex;gap:1.5rem;"><a href="index.html#sovereignty" style="color:var(--purple);font-family:var(--mono);font-size:0.75rem;font-weight:600;text-decoration:none;letter-spacing:0.1em;">SOVEREIGNTY INDEX</a><a href="narrative.html" style="color:var(--gold);font-family:var(--mono);font-size:0.75rem;font-weight:600;text-decoration:none;letter-spacing:0.1em;">THE STORY</a></span></nav>
+<!-- TOP NAV: shared cross-page links. Side-outline below is a game-progress
+     tracker, not site navigation. -->
+<nav class="topnav" id="topnav" aria-label="Site navigation">
+  <a href="index.html" style="font-family:var(--mono);font-size:0.78rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.05em;">&larr; Airbus for AI</a>
+  <span style="display:flex;gap:0.25rem;flex-wrap:wrap;justify-content:flex-end;">
+    <a href="index.html#dashboard" style="font-family:var(--mono);font-size:0.72rem;font-weight:600;text-decoration:none;letter-spacing:0.08em;color:rgba(255,255,255,0.6);padding:0.3rem 0.6rem;border-radius:4px;">Problem</a>
+    <a href="index.html#assembly" style="font-family:var(--mono);font-size:0.72rem;font-weight:600;text-decoration:none;letter-spacing:0.08em;color:rgba(255,255,255,0.6);padding:0.3rem 0.6rem;border-radius:4px;">Coalition</a>
+    <a href="index.html#battle" style="font-family:var(--mono);font-size:0.72rem;font-weight:600;text-decoration:none;letter-spacing:0.08em;color:rgba(255,255,255,0.6);padding:0.3rem 0.6rem;border-radius:4px;">Stress Test</a>
+    <a href="narrative.html" style="font-family:var(--mono);font-size:0.72rem;font-weight:600;text-decoration:none;letter-spacing:0.08em;color:var(--gold);padding:0.3rem 0.6rem;border-radius:4px;">Slow Boil</a>
+    <a href="index.html#sovereignty" style="font-family:var(--mono);font-size:0.72rem;font-weight:600;text-decoration:none;letter-spacing:0.08em;color:var(--purple);padding:0.3rem 0.6rem;border-radius:4px;">Sovereignty</a>
+  </span>
+</nav>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top" type="button">&uarr;</button>
+<style>
+.back-to-top {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 90;
+  width: 44px; height: 44px; border: none; border-radius: 50%;
+  background: var(--cyan, #1a6cd4); color: white;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 4px 14px rgba(26,108,212,0.45);
+  opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.back-to-top:hover, .back-to-top:focus-visible { background: #4a8ce4; outline: none; }
+@media print { .back-to-top { display: none; } }
+</style>
+<script>
+(function(){
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  const onScroll = () => btn.classList.toggle('visible', (window.scrollY || 0) > 480);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+})();
+</script>
 
 <!-- Side Outline -->
 <nav class="side-outline" id="sideOutline">
