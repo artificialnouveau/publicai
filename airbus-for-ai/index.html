@@ -116,13 +116,27 @@
     margin-bottom: 2.25rem;
   }
   .hero-meta {
-    display: flex; gap: 1.75rem; justify-content: center; flex-wrap: wrap;
+    display: flex; gap: 0.5rem 1.1rem; justify-content: center; flex-wrap: wrap;
     font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
     letter-spacing: 0.1em; text-transform: uppercase;
     color: rgba(255,255,255,0.55);
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255,255,255,0.15);
+    max-width: 880px;
   }
+  .hero-meta a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    display: inline-flex; align-items: baseline; gap: 0.45rem;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .hero-meta a:hover { color: #ffffff; text-decoration: none; }
+  .hero-meta-num {
+    color: rgba(255,255,255,0.35);
+    font-weight: 700;
+  }
+  .hero-meta a:hover .hero-meta-num { color: #00b4d8; }
   .hero-arrow {
     margin-top: 2.25rem;
     font-size: 1.3rem; color: rgba(255,255,255,0.45);
@@ -759,11 +773,17 @@
   <h1>The Slow Boil</h1>
   <p class="hero-sub">Five capitals, twelve months, one coalition forming under pressure. The data is at the bottom of the screen and changes with the story.</p>
   <div class="hero-meta">
-    <span>Dublin &middot; Apr 2026</span>
-    <span>Brussels &middot; Jun 2026</span>
-    <span>Stockholm &middot; Dec 2026</span>
-    <span>Tokyo &middot; Feb 2027</span>
-    <span>Berlin &middot; Apr 2027</span>
+    <a href="#scene-dublin-apr"><span class="hero-meta-num">01</span> Dublin &middot; Apr 2026</a>
+    <a href="#scene-berlin"><span class="hero-meta-num">02</span> Berlin &middot; Apr 2027</a>
+    <a href="#scene-brussels"><span class="hero-meta-num">03</span> Brussels &middot; Jun 2026</a>
+    <a href="#scene-tokyo"><span class="hero-meta-num">04</span> Tokyo &middot; Feb 2027</a>
+    <a href="#scene-stockholm"><span class="hero-meta-num">05</span> Stockholm &middot; Dec 2026</a>
+    <a href="#scene-monroe"><span class="hero-meta-num">06</span> Monroe, LA &middot; Sep 2026</a>
+    <a href="#scene-ottawa"><span class="hero-meta-num">07</span> Ottawa &middot; Apr 2027</a>
+    <a href="#scene-paris"><span class="hero-meta-num">08</span> Paris &middot; Apr 2027</a>
+    <a href="#scene-dublin-jan"><span class="hero-meta-num">09</span> Dublin &middot; Jan 2026</a>
+    <a href="#scene-whitehouse"><span class="hero-meta-num">10</span> White House &middot; Apr 2027</a>
+    <a href="#scene-ether"><span class="hero-meta-num">11</span> The Ether &middot; Apr 2027</a>
   </div>
   <div class="hero-arrow" aria-hidden="true">&darr;</div>
 </section>
