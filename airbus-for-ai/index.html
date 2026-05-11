@@ -1751,8 +1751,10 @@
     saveState();
   }
 
-  // Reveal the whole viz dock once chapter 1 reaches the top of the viewport.
+  // Reveal the whole viz dock once chapter 1 reaches the top of the viewport,
+  // and hide it again once the outcome section reaches the top (story is over).
   const firstScene = document.getElementById('scene-dublin-apr');
+  const outcomeEl = document.getElementById('outcome');
   const dockEl = document.getElementById('vizDock');
   if (firstScene && dockEl) {
     let scheduled = false;
@@ -1762,7 +1764,8 @@
       const top = firstScene.getBoundingClientRect().top;
       // Reveal a little above chapter 1: when its top is ~30vh from the viewport top.
       const threshold = Math.max(200, window.innerHeight * 0.3);
-      if (top <= threshold) {
+      const pastEnd = outcomeEl && outcomeEl.getBoundingClientRect().top <= threshold;
+      if (top <= threshold && !pastEnd) {
         dockEl.classList.add('is-live');
         if (!wasLive) {
           // First reveal: size canvas charts to the now-visible dock.
@@ -1805,9 +1808,8 @@
       if (e.isIntersecting) {
         visible.set(e.target.id, e.target);
       } else {
-        // If scrolled fully above the viewport, lock this scene's decision.
-        const rect = e.boundingClientRect;
-        if (rect.bottom < 0) lockIfDecide(e.target.id);
+        // Note: scenes no longer auto-lock on scroll-past. Picks remain editable
+        // until the outcome section appears (see outObs below).
         visible.delete(e.target.id);
       }
     });
