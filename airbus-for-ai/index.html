@@ -408,9 +408,16 @@
     background: var(--ink);
     border-top: 1px solid var(--hairline-strong);
     box-shadow: 0 -8px 24px rgba(10,10,10,0.06);
-    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease, transform 0.3s ease;
     display: flex; flex-direction: column;
     overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transform: translateY(12px);
+  }
+  .viz-dock.is-live {
+    opacity: 1; pointer-events: auto;
+    transform: translateY(0);
   }
   .viz-dock[data-state="collapsed"] { height: var(--dock-collapsed); }
   .viz-dock[data-state="peek"]      { height: var(--dock-peek); }
@@ -432,10 +439,7 @@
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--text-soft);
     flex-shrink: 0;
-    opacity: 0;
-    transition: opacity 0.25s ease;
   }
-  .viz-dock.is-live .dock-kicker { opacity: 1; }
   .dock-title {
     font-family: var(--font); font-size: 0.88rem; font-weight: 600;
     color: var(--text);
@@ -567,10 +571,10 @@
   /* === DESKTOP: dock moves from bottom strip to top-right panel === */
   @media (min-width: 1024px) {
     :root {
-      --dock-panel-width: clamp(340px, 26vw, 420px);
+      --dock-panel-width: clamp(400px, 32vw, 560px);
       --dock-panel-top: 72px;
       --dock-panel-gap: 16px;
-      --dock-peek: 62vh;
+      --dock-peek: 64vh;
       --dock-full: calc(100vh - var(--dock-panel-top) - var(--dock-panel-gap));
     }
     body { padding-right: calc(var(--dock-panel-width) + var(--dock-panel-gap) * 2); }
@@ -964,7 +968,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 1</div>
       <span class="scene-dateline">
-        4.23.2026<br>
+        Apr.23.2026<br>
         Dublin, Ireland<br>
         OpenAI Offices
       </span>
@@ -993,7 +997,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 2</div>
       <span class="scene-dateline">
-        4.16.2027<br>
+        Apr.16.2027<br>
         Berlin, Germany<br>
         NAME OF CHANCELLOR HOUSE
       </span>
@@ -1073,7 +1077,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 3</div>
       <span class="scene-dateline">
-        6.03.2026<br>
+        Jun.03.2026<br>
         Brussels, Belgium<br>
         Office of the European Commission
       </span>
@@ -1108,7 +1112,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 4</div>
       <span class="scene-dateline">
-        2.19.2027<br>
+        Feb.19.2027<br>
         <span lang="ja-Latn">Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda</span>, Tokyo<br>
         Office of the Prime Minister, Her Excellency Sanae Takaichi
       </span>
@@ -1146,7 +1150,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 5</div>
       <span class="scene-dateline">
-        12.07.2026<br>
+        Dec.07.2026<br>
         Prima Materia Office<br>
         Box 8114104 20 Stockholm, Sweden
       </span>
@@ -1182,7 +1186,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 6</div>
       <span class="scene-dateline">
-        9.04.2026<br>
+        Sep.04.2026<br>
         IBEW Data Center<br>
         Monroe, LA
       </span>
@@ -1201,7 +1205,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 7</div>
       <span class="scene-dateline">
-        4.17.2027<br>
+        Apr.17.2027<br>
         Ottawa, Canada<br>
         24 Sussex Drive
       </span>
@@ -1232,7 +1236,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 8</div>
       <span class="scene-dateline">
-        4.17.2027<br>
+        Apr.17.2027<br>
         Paris, France<br>
         H&ocirc;tel Matignon, 57 Rue de Varenne
       </span>
@@ -1248,7 +1252,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 9</div>
       <span class="scene-dateline">
-        1.12.2026<br>
+        Jan.12.2026<br>
         Dublin, Ireland<br>
         OpenAI Offices
       </span>
@@ -1264,7 +1268,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 10</div>
       <span class="scene-dateline">
-        4.18.2027<br>
+        Apr.18.2027<br>
         The White House<br>
         1600 Pennsylvania Avenue
       </span>
@@ -1280,7 +1284,7 @@
     <header class="scene-header">
       <div class="scene-kicker">Chapter 11</div>
       <span class="scene-dateline">
-        4.25.27<br>
+        Apr.25.2027<br>
         The Ether<br>
         Conference Call
       </span>
@@ -1695,20 +1699,41 @@
     saveState();
   }
 
-  // Toggle the "Live data" dock kicker once the first chapter enters view.
+  // Reveal the whole viz dock once the first chapter enters view.
   const firstScene = document.getElementById('scene-dublin-apr');
   const dockEl = document.getElementById('vizDock');
   if (firstScene && dockEl) {
     const liveObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
+        const wasLive = dockEl.classList.contains('is-live');
         if (e.isIntersecting || e.boundingClientRect.top < 0) {
           dockEl.classList.add('is-live');
+          // First reveal: trigger a resize so canvas charts size to the dock now that it's visible.
+          if (!wasLive) {
+            requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+          }
         } else {
           dockEl.classList.remove('is-live');
         }
       });
     }, { rootMargin: '-25% 0px 0px 0px', threshold: [0] });
     liveObs.observe(firstScene);
+  }
+
+  // Keep canvas charts in sync with dock width changes (e.g., desktop panel resize).
+  if (typeof ResizeObserver !== 'undefined') {
+    const wraps = document.querySelectorAll('.viz-canvas-wrap');
+    if (wraps.length) {
+      let rafId = 0;
+      const ro = new ResizeObserver(() => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          rafId = 0;
+          window.dispatchEvent(new Event('resize'));
+        });
+      });
+      wraps.forEach(w => ro.observe(w));
+    }
   }
 
   // Track which scenes are intersecting; the topmost one drives activation.
