@@ -1730,13 +1730,14 @@
   const firstScene = document.getElementById('scene-dublin-apr');
   const dockEl = document.getElementById('vizDock');
   if (firstScene && dockEl) {
-    const TOP_THRESHOLD = 80; // just below the 56px topnav
     let scheduled = false;
     const update = () => {
       scheduled = false;
       const wasLive = dockEl.classList.contains('is-live');
       const top = firstScene.getBoundingClientRect().top;
-      if (top <= TOP_THRESHOLD) {
+      // Reveal a little above chapter 1: when its top is ~30vh from the viewport top.
+      const threshold = Math.max(200, window.innerHeight * 0.3);
+      if (top <= threshold) {
         dockEl.classList.add('is-live');
         if (!wasLive) {
           // First reveal: size canvas charts to the now-visible dock.
