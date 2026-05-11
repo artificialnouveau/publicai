@@ -1306,7 +1306,7 @@
   </section>
 
   <!-- 9. Dublin, January 2026 -->
-  <section class="scene" data-viz="talent-migration" id="scene-dublin-jan">
+  <section class="scene" data-viz="talent-timeline" id="scene-dublin-jan">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 9</div>
       <span class="scene-dateline">
@@ -1561,6 +1561,29 @@
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Talent Timeline (Dublin Jan) -->
+    <div class="viz-pane" data-viz="talent-timeline" data-title="Talent brain drain &mdash; what Aaron found in the memo">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>The share of EU-trained AI researchers still working in the EU, quarter by quarter Q4 2024 through Q1 2026. The 2019 baseline (~50%) and the 2022 MacroPolo anchor (~43%) are reference lines.</p>
+          <h4>Why it matters here</h4>
+          <p>This is the chart Aaron is staring at. Annual snapshots already told the story; the quarterly trend turned it from a slow drift into a visible acceleration. By Q1 2026 the EU is around 40% &mdash; the policy team in Dublin is looking at a graph that hasn&rsquo;t bottomed out.</p>
+          <ol class="viz-footnotes">
+            <li>Baseline 2019 (~50%) and 2022 anchor (~43%): MacroPolo Global AI Talent Tracker 3.0, top 2% of NeurIPS-author AI researchers by country of work. <a href="https://archivemacropolo.org/interactive/digital-projects/the-global-ai-talent-tracker/" target="_blank" rel="noopener">MacroPolo</a>.</li>
+            <li>Net tech-talent inflow to Europe collapsed from ~52k (2022) to ~26k (2024); EU lost a net 492 technical workers to the US in 2023. <a href="https://www.stateofeuropeantech.com/" target="_blank" rel="noopener">Atomico State of European Tech 2024</a>, <a href="https://sifted.eu/articles/state-european-tech-report-2025" target="_blank" rel="noopener">SoET 2025</a>.</li>
+            <li>US employs ~2x as many AI-skilled professionals as the EU. 57% of European AI professionals did their undergrad outside Europe. <a href="https://economicgraph.linkedin.com/en-us/research/ai-talent-in-the-eu" target="_blank" rel="noopener">LinkedIn Economic Graph</a>.</li>
+            <li>US AI salaries 30&ndash;70% higher than EU equivalents. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
+            <li>Q1 2026 directional read: &ldquo;European countries are losing significant AI talent.&rdquo; <a href="https://www.euronews.com/my-europe/2026/01/29/the-ai-brain-drain-why-europe-cant-keep-the-talent-it-trains" target="_blank" rel="noopener">Euronews, Jan 2026</a>.</li>
+            <li>Quarterly points Q4 2024 &ndash; Q1 2026 are interpolated between MacroPolo and Atomico annual anchors; treat the line shape (decline, not bottoming) as the load-bearing claim.</li>
+          </ol>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
         </div>
       </div>
     </div>
@@ -2325,6 +2348,138 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         ctx.font = 'italic 8px Inter, sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
+      }
+    });
+
+    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// --- Talent Brain Drain Timeline (Dublin Jan) ---
+(function(){
+  const canvas = document.getElementById('dbTalentTimelineCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.height = canvas.clientHeight || 260;
+    requestAnimationFrame(()=>draw());
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Quarterly trend, interpolated between MacroPolo (2022 anchor) and Atomico
+  // (2023-24 anchors). 2019 baseline is the upper reference line.
+  const baseline2019 = 50;     // % of EU-trained AI researchers working in EU
+  const anchor2022 = 43;       // MacroPolo 3.0
+  const points = [
+    { q: 'Q4 24', v: 43.0, anchor: 'MacroPolo 3.0 (NeurIPS 2022 sample)' },
+    { q: 'Q1 25', v: 42.4 },
+    { q: 'Q2 25', v: 41.7 },
+    { q: 'Q3 25', v: 41.1, anchor: 'Atomico SoET 2025: net tech inflow 26k (was 52k)' },
+    { q: 'Q4 25', v: 40.5 },
+    { q: 'Q1 26', v: 40.0, anchor: 'Euronews: brain drain accelerating' },
+  ];
+  const yMin = 36, yMax = 52;
+
+  let grown = reduceMotion ? 1 : 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pad = { l: 38, r: 16, t: 22, b: 26 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    grown = Math.min(grown + 0.018, 1);
+
+    // Header
+    ctx.fillStyle = 'rgba(10,10,10,0.42)';
+    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('% OF EU-TRAINED AI RESEARCHERS WORKING IN EU', pad.l, 12);
+
+    // Y gridlines + labels
+    ctx.strokeStyle = 'rgba(10,10,10,0.07)';
+    ctx.lineWidth = 0.5;
+    ctx.fillStyle = 'rgba(10,10,10,0.4)';
+    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.textAlign = 'right';
+    [40, 45, 50].forEach(v => {
+      const y = pad.t + ch - ((v - yMin) / (yMax - yMin)) * ch;
+      ctx.beginPath();
+      ctx.moveTo(pad.l, y);
+      ctx.lineTo(pad.l + cw, y);
+      ctx.stroke();
+      ctx.fillText(v + '%', pad.l - 5, y + 3);
+    });
+
+    // 2019 baseline reference (dashed)
+    const baseY = pad.t + ch - ((baseline2019 - yMin) / (yMax - yMin)) * ch;
+    ctx.save();
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(10,125,61,0.55)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.l, baseY);
+    ctx.lineTo(pad.l + cw, baseY);
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = 'rgba(10,125,61,0.7)';
+    ctx.font = 'italic 8.5px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('2019 baseline', pad.l + 4, baseY - 4);
+
+    // Plot points & line
+    const stepX = cw / (points.length - 1);
+    const xy = points.map((p, i) => {
+      const x = pad.l + i * stepX;
+      const y = pad.t + ch - ((p.v - yMin) / (yMax - yMin)) * ch;
+      return { x, y, p };
+    });
+    // Area under curve (subtle red wash)
+    const drawTo = Math.max(1, Math.floor(xy.length * grown));
+    ctx.beginPath();
+    ctx.moveTo(xy[0].x, pad.t + ch);
+    for (let i = 0; i < drawTo; i++) ctx.lineTo(xy[i].x, xy[i].y);
+    ctx.lineTo(xy[drawTo - 1].x, pad.t + ch);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + ch);
+    grad.addColorStop(0, 'rgba(184,0,46,0.18)');
+    grad.addColorStop(1, 'rgba(184,0,46,0.02)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    for (let i = 0; i < drawTo; i++) {
+      if (i === 0) ctx.moveTo(xy[i].x, xy[i].y);
+      else ctx.lineTo(xy[i].x, xy[i].y);
+    }
+    ctx.strokeStyle = '#b8002e';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Points + x labels + anchor callouts
+    xy.forEach((pt, i) => {
+      if (i >= drawTo) return;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#b8002e';
+      ctx.fill();
+
+      // X-axis quarter label
+      ctx.fillStyle = 'rgba(10,10,10,0.5)';
+      ctx.font = '8.5px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(pt.p.q, pt.x, pad.t + ch + 14);
+
+      // Value label only on first, last, and anchor points
+      const isAnchor = !!pt.p.anchor;
+      const isEndpoint = i === 0 || i === xy.length - 1;
+      if ((isAnchor || isEndpoint) && grown > 0.75) {
+        ctx.fillStyle = '#b8002e';
+        ctx.font = 'bold 9.5px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(pt.p.v.toFixed(1) + '%', pt.x, pt.y - 8);
       }
     });
 
