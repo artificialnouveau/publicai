@@ -1715,25 +1715,34 @@
     saveState();
   }
 
-  // Reveal the whole viz dock once the first chapter enters view.
+  // Reveal the whole viz dock once chapter 1 reaches the top of the viewport.
   const firstScene = document.getElementById('scene-dublin-apr');
   const dockEl = document.getElementById('vizDock');
   if (firstScene && dockEl) {
-    const liveObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        const wasLive = dockEl.classList.contains('is-live');
-        if (e.isIntersecting || e.boundingClientRect.top < 0) {
-          dockEl.classList.add('is-live');
-          // First reveal: trigger a resize so canvas charts size to the dock now that it's visible.
-          if (!wasLive) {
-            requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
-          }
-        } else {
-          dockEl.classList.remove('is-live');
+    const TOP_THRESHOLD = 80; // just below the 56px topnav
+    let scheduled = false;
+    const update = () => {
+      scheduled = false;
+      const wasLive = dockEl.classList.contains('is-live');
+      const top = firstScene.getBoundingClientRect().top;
+      if (top <= TOP_THRESHOLD) {
+        dockEl.classList.add('is-live');
+        if (!wasLive) {
+          // First reveal: size canvas charts to the now-visible dock.
+          requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
         }
-      });
-    }, { rootMargin: '-25% 0px 0px 0px', threshold: [0] });
-    liveObs.observe(firstScene);
+      } else {
+        dockEl.classList.remove('is-live');
+      }
+    };
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
   }
 
   // Keep canvas charts in sync with dock width changes (e.g., desktop panel resize).
