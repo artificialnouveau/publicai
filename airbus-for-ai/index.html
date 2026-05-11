@@ -530,6 +530,28 @@
     border-radius: 4px; text-decoration: none;
   }
   .viz-explainer .viz-source + .viz-source { margin-left: 4px; }
+  .viz-footnotes {
+    margin-top: 0.85rem;
+    padding-left: 1.1rem;
+    list-style: decimal;
+    font-family: var(--font);
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: var(--text-soft);
+  }
+  .viz-footnotes li { margin-bottom: 0.3rem; }
+  .viz-footnotes li::marker {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-weight: 700;
+  }
+  .viz-footnotes a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--hairline-strong);
+    text-underline-offset: 2px;
+  }
+  .viz-footnotes a:hover { color: var(--accent); text-decoration-color: var(--accent); }
   .viz-canvas-wrap {
     background: var(--paper-2);
     border: 1px solid var(--hairline);
@@ -1268,7 +1290,7 @@
   </section>
 
   <!-- 8. Paris, April 2027 -->
-  <section class="scene" data-viz="coalition-revenue" id="scene-paris">
+  <section class="scene" data-viz="eu-public-capex" id="scene-paris">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 8</div>
       <span class="scene-dateline">
@@ -1516,6 +1538,29 @@
         <div class="viz-canvas-wrap">
           <div class="hf-cards" id="hfRegionSummary"></div>
           <div id="hfModelTable" style="font-size:0.72rem;font-family:var(--mono);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: EU Public AI Capex (Paris) -->
+    <div class="viz-pane" data-viz="eu-public-capex" data-title="Public AI commitments &mdash; what European states are putting up">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>State-committed public AI funding (solid bars, in &euro;B) for the major European economies plus the EU level. Hashed extension flags the &ldquo;mobilisation&rdquo; or private-pipeline pledge often quoted alongside.</p>
+          <h4>Why it matters here</h4>
+          <p>This is what France actually controls. Macron&rsquo;s &euro;109B Paris-summit headline is mostly private money (UAE/MGX, Brookfield, Apollo) &mdash; the state line item is &euro;2.5B. Whether the coalition has weight depends on what other capitals will put alongside it.</p>
+          <ol class="viz-footnotes">
+            <li>France &euro;2.5B: France 2030 AI envelope plus 2024 Action Plan. <a href="https://www.elysee.fr/admin/upload/default/0001/17/d9c1462e7337d353f918aac7d654b896b77c5349.pdf" target="_blank" rel="noopener">&Eacute;lys&eacute;e Feb 2025</a>.</li>
+            <li>France &euro;107B aspirational: Paris AI Summit pledge pipeline, predominantly private (MGX ~&euro;50B, Brookfield ~&euro;20B, Apollo, Amazon). <a href="https://www.campusfrance.org/en/intelligence-artificielle-plan-macron-Ai-for-humanity" target="_blank" rel="noopener">Campus France</a>.</li>
+            <li>EU InvestAI &euro;20B (new public fund, Feb 2025); &euro;200B figure is a mobilisation target, not committed money. <a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_25_467" target="_blank" rel="noopener">EC IP_25_467</a>.</li>
+            <li>Germany &euro;5B cumulative through 2025 (BMBF KI-Aktionsplan). <a href="https://www.plattform-lernende-systeme.de/ki-indikatoren-include-elemente-en.html" target="_blank" rel="noopener">Plattform Lernende Systeme</a>.</li>
+            <li>UK &euro;2.4B (&pound;2B): AI Opportunities Action Plan, Clifford, Jan 2025. <a href="https://assets.publishing.service.gov.uk/media/67851771f0528401055d2329/ai_opportunities_action_plan.pdf" target="_blank" rel="noopener">UK Gov</a>.</li>
+            <li>Spain &euro;2.1B (ENIA 2024-25); Italy &euro;1B (CDP AI fund, 5-yr); Netherlands &euro;204M (AiNed); Nordics ~&euro;0.35B aggregate. Sources: <a href="https://www.lamoncloa.gob.es/lang/en/gobierno/councilministers/paginas/2024/20240514-council-press-conference.aspx" target="_blank" rel="noopener">La Moncloa</a>, <a href="https://decode39.com/8856/rome-unveils-billion-fund-boost-italian-ai/" target="_blank" rel="noopener">Decode39</a>, <a href="https://www.nwo.nl/en/researchprogrammes/national-growth-fund/ained" target="_blank" rel="noopener">NWO AiNed</a>, <a href="https://www.sigma2.no/news/2024/new-chapter-lumi-ai" target="_blank" rel="noopener">Sigma2</a>.</li>
+          </ol>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
         </div>
       </div>
     </div>
@@ -2153,6 +2198,137 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.fillText(s.name,lx+8,ly+4);
     });
     if(grown<1)requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// --- EU Public AI Capex (Paris) ---
+(function(){
+  const canvas = document.getElementById('dbEuCapexCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.height = canvas.clientHeight || 260;
+    requestAnimationFrame(()=>draw());
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // State-committed public AI funding, in €B. Sorted descending.
+  // `asp` = aspirational/private-pipeline pledge typically quoted alongside.
+  const data = [
+    { name: 'EU (InvestAI)',  state: 20.0, asp: 180, highlight: false, aspNote: 'mobilisation target €200B' },
+    { name: 'Germany',        state:  5.0, asp: 0,   highlight: false, aspNote: '' },
+    { name: 'France',         state:  2.5, asp: 107, highlight: true,  aspNote: 'private pipeline €109B' },
+    { name: 'UK',             state:  2.4, asp: 0,   highlight: false, aspNote: '' },
+    { name: 'Spain',          state:  2.1, asp: 0,   highlight: false, aspNote: '' },
+    { name: 'Italy',          state:  1.0, asp: 0,   highlight: false, aspNote: '' },
+    { name: 'Nordics',        state:  0.35,asp: 0,   highlight: false, aspNote: '' },
+    { name: 'Netherlands',    state:  0.2, asp: 0,   highlight: false, aspNote: '' },
+  ];
+  const maxState = 22; // scale max — EU at 20€B is the largest committed
+  const ACCENT = '#0077c8';
+  const BAR = 'rgba(10,10,10,0.7)';
+
+  let grown = reduceMotion ? 1 : 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pad = { l: 90, r: 18, t: 20, b: 10 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    grown = Math.min(grown + 0.025, 1);
+
+    // Header label
+    ctx.fillStyle = 'rgba(10,10,10,0.42)';
+    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('PUBLIC AI COMMITMENT — €B (STATE)', pad.l, 11);
+
+    const rowH = ch / data.length;
+    const barH = Math.min(18, rowH * 0.55);
+
+    // Faint vertical gridlines at 5, 10, 15, 20
+    ctx.strokeStyle = 'rgba(10,10,10,0.06)';
+    ctx.lineWidth = 0.5;
+    [5, 10, 15, 20].forEach(v => {
+      const x = pad.l + (v / maxState) * cw;
+      ctx.beginPath();
+      ctx.moveTo(x, pad.t);
+      ctx.lineTo(x, pad.t + ch);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(10,10,10,0.30)';
+      ctx.font = '8px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('€' + v, x, pad.t + ch + 8);
+    });
+
+    data.forEach((d, i) => {
+      const y = pad.t + i * rowH;
+      const cy = y + rowH / 2;
+      const by = cy - barH / 2;
+
+      // Country label (left)
+      ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.78)';
+      ctx.font = d.highlight ? 'bold 10.5px Inter, sans-serif' : '10.5px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(d.name, pad.l - 8, cy + 3.5);
+
+      // Solid state bar
+      const stateW = (d.state / maxState) * cw * grown;
+      ctx.fillStyle = d.highlight ? ACCENT : BAR;
+      ctx.fillRect(pad.l, by, stateW, barH);
+
+      // Aspirational hashed extension, capped at the chart edge
+      if (d.asp > 0 && grown > 0.4) {
+        const aspAvail = cw - stateW;
+        const aspW = Math.min((d.asp / maxState) * cw, aspAvail) * Math.min((grown - 0.4) / 0.6, 1);
+        if (aspW > 0) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(pad.l + stateW, by, aspW, barH);
+          ctx.clip();
+          // Diagonal hatch pattern
+          ctx.strokeStyle = d.highlight ? 'rgba(0,119,200,0.35)' : 'rgba(10,10,10,0.28)';
+          ctx.lineWidth = 1;
+          for (let x = -barH; x < aspW + barH; x += 5) {
+            ctx.beginPath();
+            ctx.moveTo(pad.l + stateW + x, by + barH);
+            ctx.lineTo(pad.l + stateW + x + barH, by);
+            ctx.stroke();
+          }
+          ctx.restore();
+          // Trailing edge fade to indicate truncation
+          if ((d.asp / maxState) * cw > aspAvail) {
+            const grad = ctx.createLinearGradient(pad.l + cw - 20, 0, pad.l + cw, 0);
+            grad.addColorStop(0, 'rgba(248,246,241,0)');
+            grad.addColorStop(1, 'rgba(248,246,241,1)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(pad.l + cw - 20, by, 20, barH);
+          }
+        }
+      }
+
+      // State value label (right of solid bar)
+      if (grown > 0.5) {
+        ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.68)';
+        ctx.font = 'bold 9.5px JetBrains Mono, monospace';
+        ctx.textAlign = 'left';
+        const labelX = Math.min(pad.l + stateW + 5, pad.l + cw - 38);
+        const val = d.state >= 1 ? d.state.toFixed(1) : d.state.toFixed(2);
+        ctx.fillText('€' + val + 'B', labelX, cy + 3.5);
+      }
+
+      // Aspirational note above the bar
+      if (d.asp > 0 && grown > 0.85) {
+        ctx.fillStyle = d.highlight ? 'rgba(0,119,200,0.7)' : 'rgba(10,10,10,0.45)';
+        ctx.font = 'italic 8px Inter, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
+      }
+    });
+
+    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
