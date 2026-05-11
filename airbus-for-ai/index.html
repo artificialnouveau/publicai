@@ -1259,7 +1259,7 @@
   </section>
 
   <!-- 7. Ottawa, April 2027 -->
-  <section class="scene" data-viz="compute-map" id="scene-ottawa">
+  <section class="scene" data-viz="coalition-blocs" id="scene-ottawa">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 7</div>
       <span class="scene-dateline">
@@ -1322,7 +1322,7 @@
   </section>
 
   <!-- 10. The White House, April 2027 -->
-  <section class="scene" data-viz="hf-live" id="scene-whitehouse">
+  <section class="scene" data-viz="export-controls" id="scene-whitehouse">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 10</div>
       <span class="scene-dateline">
@@ -1565,6 +1565,31 @@
       </div>
     </div>
 
+    <!-- VIZ: Coalition Blocs (Ottawa) -->
+    <div class="viz-pane" data-viz="coalition-blocs" data-title="AI policy blocs &mdash; who&rsquo;s in which circles">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>How many AI policy blocs each country sits in, split between <strong>standards bodies</strong> (INAISI, OECD-AI Principles, Five Eyes, EU AI Act) and <strong>summit declarations</strong> (Bletchley, Seoul Ministerial, Hiroshima AI Process, G7). Standards seats are where rules actually get written.</p>
+          <h4>Why it matters here</h4>
+          <p>Canada is the only country in all four Western standards bodies <em>and</em> the G7 leaders' table. India, Brazil, UAE, and Saudi Arabia show up at the summits but are largely absent from the technical layer &mdash; the gap a Canada-anchored coalition could plausibly bridge.</p>
+          <ol class="viz-footnotes">
+            <li>Bletchley Declaration, Nov 1 2023 (28 + EU). <a href="https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023" target="_blank" rel="noopener">GOV.UK</a>.</li>
+            <li>Seoul Ministerial Statement, May 22 2024 (27 + EU). <a href="https://www.mofa.go.jp/files/100672534.pdf" target="_blank" rel="noopener">MOFA Japan</a>.</li>
+            <li>Hiroshima AI Process Friends Group (G7-launched Oct 2023; ~66 countries by 2026). <a href="https://www.soumu.go.jp/hiroshimaaiprocess/en/supporters.html" target="_blank" rel="noopener">Japan MIC</a>.</li>
+            <li>International Network of AI Safety Institutes (founded Nov 2024). Founding members: AU, CA, FR, GB, JP, KE, KR, SG, US, EU. <a href="https://www.nist.gov/news-events/news/2024/11/fact-sheet-us-department-commerce-us-department-state-launch-international" target="_blank" rel="noopener">NIST</a>.</li>
+            <li>EU AI Act (in force Aug 1 2024, phased). <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">EUR-Lex</a>.</li>
+            <li>G7 (CA, FR, DE, IT, JP, GB, US + EU). <a href="https://www.consilium.europa.eu/en/press/press-releases/2024/06/14/g7-leaders-statement-on-ukraine/" target="_blank" rel="noopener">Apulia communique 2024</a>.</li>
+            <li>Five Eyes (AU, CA, NZ, GB, US). <a href="https://www.gchq.gov.uk/section/mission/our-partners" target="_blank" rel="noopener">UK GCHQ</a>.</li>
+            <li>OECD AI Principles, updated 2024 (47 adherents). <a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener">OECD.AI</a>.</li>
+          </ol>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbCoalitionBlocsCanvas" role="img" aria-label="AI policy bloc membership by country: Canada and Western allies central, India / Brazil / UAE / Saudi Arabia present in summits but absent from standards bodies"></canvas>
+        </div>
+      </div>
+    </div>
+
     <!-- VIZ: Talent Timeline (Dublin Jan) -->
     <div class="viz-pane" data-viz="talent-timeline" data-title="Talent brain drain &mdash; what Aaron found in the memo">
       <div class="viz-pane-inner">
@@ -1584,6 +1609,33 @@
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Export Controls (White House) -->
+    <div class="viz-pane" data-viz="export-controls" data-title="US export controls &mdash; what&rsquo;s in force, what got rolled back">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>The US chip / AI export-control timeline from Oct 2022 to early 2026, with each action marked &ldquo;in force&rdquo; or &ldquo;rescinded.&rdquo; The headline shift is the AI Diffusion Rule: published Jan 2025, rescinded May 2025; the H20 license requirement reversed two months later.</p>
+          <h4>Why it matters here</h4>
+          <p>The US tightens, the US loosens, then the US tightens again. The whole point of an Airbus for AI is that allies can&rsquo;t plan five-year capex around something that can flip with an administration. The Diffusion Rule&rsquo;s rescinded tier list is the explicit version of that risk.</p>
+          <ol class="viz-footnotes">
+            <li>Oct 7 2022 BIS Interim Final Rule — ECCN 3A090, supercomputer end-use, 28 PRC entities listed. <a href="https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor" target="_blank" rel="noopener">87 FR 62186</a>.</li>
+            <li>Oct 17 2023 update — closed A800/H800 loophole, added performance-density metric, HBM density threshold, 40+ country FDPR. <a href="https://www.federalregister.gov/documents/2023/10/25/2023-23055/implementation-of-additional-export-controls-certain-advanced-computing-items-supercomputer-and" target="_blank" rel="noopener">88 FR 73458</a>.</li>
+            <li>Dec 2 2024 &ldquo;third package&rdquo; — ECCN 3A090.c on all production HBM, 140 entities added. <a href="https://www.bis.gov/press-release/commerce-strengthens-export-controls-restrict-chinas-capability-produce-advanced-semiconductors-military" target="_blank" rel="noopener">BIS</a>.</li>
+            <li>Jan 13 2025 AI Diffusion Framework — three-tier country system; closed-weight model controls (ECCN 4E091); per-country compute cap ~50k H100-eq through 2027. <a href="https://www.federalregister.gov/documents/2025/01/15/2025-00636/framework-for-artificial-intelligence-diffusion" target="_blank" rel="noopener">90 FR 4544</a>; <a href="https://www.rand.org/pubs/perspectives/PEA3776-1.html" target="_blank" rel="noopener">RAND PEA3776-1</a>.</li>
+            <li>Apr 15 2025 H20/MI308 license requirement — Nvidia $5.5B inventory charge. <a href="https://www.bis.gov/press-release/department-commerce-revises-license-review-policy-semiconductors-exported-china" target="_blank" rel="noopener">BIS</a>.</li>
+            <li>May 13 2025 rescission of AI Diffusion Rule. <a href="https://media.bis.gov/press-release/department-commerce-rescinds-biden-era-artificial-intelligence-diffusion-rule-strengthens-chip-related" target="_blank" rel="noopener">BIS press release</a>.</li>
+            <li>Jul 2025 H20 reversal — Trump Commerce allowed shipments to resume. <a href="https://builtin.com/articles/trump-lifts-ai-chip-ban-china-nvidia" target="_blank" rel="noopener">Built In summary</a>.</li>
+            <li>Sep 29 2025 &ldquo;50% Affiliates Rule&rdquo; (suspended Nov 10 for 1 year). <a href="https://www.sidley.com/en/insights/newsupdates/2025/10/us-commerce-department-bureau-of-industry-and-security-adopts-50-percent-rule-for-export-controls" target="_blank" rel="noopener">Sidley</a>.</li>
+            <li>Jan 13 2026 H200 / MI325X case-by-case license posture. <a href="https://www.mayerbrown.com/en/insights/publications/2026/01/administration-policies-on-advanced-ai-chips-codified" target="_blank" rel="noopener">Mayer Brown</a>.</li>
+            <li>Jan 14 2026 Section 232 25% semiconductor tariff. <a href="https://www.pillsburylaw.com/en/news-and-insights/trump-advanced-ai-semiconductors-actions.html" target="_blank" rel="noopener">Pillsbury</a>.</li>
+          </ol>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
         </div>
       </div>
     </div>
@@ -2348,6 +2400,241 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         ctx.font = 'italic 8px Inter, sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
+      }
+    });
+
+    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// --- Export Controls Timeline (White House) ---
+(function(){
+  const canvas = document.getElementById('dbExportControlsCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.height = canvas.clientHeight || 320;
+    requestAnimationFrame(()=>draw());
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // status: 'force' (red/green dot), 'rescinded' (gray), 'reversed' (orange), 'suspended' (orange)
+  const events = [
+    { date: 'Oct \'22', label: 'BIS Oct 7 rule (advanced computing ICs to PRC)', status: 'force',     pill: 'in force' },
+    { date: 'Oct \'23', label: 'Performance-density + HBM update; 40+ country FDPR',       status: 'force',     pill: 'in force' },
+    { date: 'Dec \'24', label: 'HBM controls (3A090.c); 140 entities listed',              status: 'force',     pill: 'in force' },
+    { date: 'Jan \'25', label: 'AI Diffusion Rule — 3-tier countries + model weights',     status: 'rescinded', pill: 'rescinded' },
+    { date: 'Apr \'25', label: 'H20 / MI308 license requirement',                          status: 'reversed',  pill: 'reversed' },
+    { date: 'May \'25', label: 'Diffusion Rule rescinded',                                  status: 'force',     pill: 'in force' },
+    { date: 'Jul \'25', label: 'H20 shipments to China resume',                             status: 'force',     pill: 'in force' },
+    { date: 'Sep \'25', label: '50% Affiliates Rule',                                       status: 'suspended', pill: 'suspended' },
+    { date: 'Jan \'26', label: 'H200 / MI325X case-by-case licensing',                      status: 'force',     pill: 'in force' },
+    { date: 'Jan \'26', label: '25% Section 232 semiconductor tariff',                      status: 'force',     pill: 'in force' },
+  ];
+
+  const colors = {
+    force:     '#0a7d3d',
+    rescinded: 'rgba(10,10,10,0.40)',
+    reversed:  '#c96a2b',
+    suspended: '#c96a2b',
+  };
+
+  let grown = reduceMotion ? 1 : 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pad = { l: 8, r: 10, t: 22, b: 8 };
+    const dateColW = 48;
+    const pillW = 64;
+
+    grown = Math.min(grown + 0.025, 1);
+
+    // Header
+    ctx.fillStyle = 'rgba(10,10,10,0.42)';
+    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('US AI EXPORT-CONTROL ACTIONS (2022–2026)', pad.l, 12);
+
+    const usableH = H - pad.t - pad.b;
+    const rowH = Math.min(24, usableH / events.length);
+    const labelX = pad.l + dateColW + 14;
+    const labelMaxW = W - labelX - pillW - 12 - pad.r;
+
+    // Vertical timeline rail
+    const railX = pad.l + dateColW + 4;
+    ctx.strokeStyle = 'rgba(10,10,10,0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(railX, pad.t);
+    ctx.lineTo(railX, pad.t + rowH * events.length);
+    ctx.stroke();
+
+    const drawTo = Math.max(1, Math.floor(events.length * grown));
+    events.forEach((e, i) => {
+      if (i >= drawTo) return;
+      const y = pad.t + i * rowH;
+      const cy = y + rowH / 2;
+
+      // Date
+      ctx.fillStyle = 'rgba(10,10,10,0.6)';
+      ctx.font = 'bold 9px JetBrains Mono, monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(e.date, pad.l, cy + 3);
+
+      // Marker dot
+      ctx.beginPath();
+      ctx.arc(railX, cy, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = colors[e.status] || '#1e293b';
+      ctx.fill();
+
+      // Label
+      ctx.fillStyle = e.status === 'rescinded' ? 'rgba(10,10,10,0.5)' : 'rgba(10,10,10,0.85)';
+      ctx.font = '10px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      // Truncate label if too long
+      let label = e.label;
+      while (ctx.measureText(label).width > labelMaxW && label.length > 4) {
+        label = label.slice(0, -2);
+      }
+      if (label !== e.label) label = label.slice(0, -1) + '…';
+      ctx.fillText(label, labelX, cy + 3);
+
+      // Status pill
+      const pillX = W - pad.r - pillW;
+      const pillY = cy - 7;
+      ctx.fillStyle = colors[e.status] || '#1e293b';
+      ctx.globalAlpha = 0.18;
+      ctx.fillRect(pillX, pillY, pillW, 14);
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = colors[e.status] || '#1e293b';
+      ctx.lineWidth = 0.7;
+      ctx.strokeRect(pillX + 0.5, pillY + 0.5, pillW - 1, 13);
+      ctx.fillStyle = colors[e.status] || '#1e293b';
+      ctx.font = 'bold 8px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.pill.toUpperCase(), pillX + pillW / 2, cy + 3);
+
+      // Strike-through for rescinded
+      if (e.status === 'rescinded') {
+        ctx.strokeStyle = 'rgba(10,10,10,0.35)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(labelX, cy);
+        ctx.lineTo(labelX + Math.min(labelMaxW, ctx.measureText(label).width), cy);
+        ctx.stroke();
+      }
+    });
+
+    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// --- Coalition Blocs (Ottawa) ---
+(function(){
+  const canvas = document.getElementById('dbCoalitionBlocsCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.height = canvas.clientHeight || 260;
+    requestAnimationFrame(()=>draw());
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // std = INAISI + OECD-AI + Five Eyes + EU AI Act seats (0-4)
+  // sum = Bletchley + Seoul Min. + Hiroshima AI Process + G7 seats (0-4)
+  const data = [
+    { name: 'Canada',       std: 3, sum: 4, highlight: true  },
+    { name: 'France',       std: 3, sum: 4, highlight: false },
+    { name: 'UK',           std: 3, sum: 4, highlight: false },
+    { name: 'US',           std: 3, sum: 4, highlight: false },
+    { name: 'Australia',    std: 3, sum: 3, highlight: false },
+    { name: 'Germany',      std: 2, sum: 4, highlight: false },
+    { name: 'Italy',        std: 2, sum: 4, highlight: false },
+    { name: 'Japan',        std: 2, sum: 4, highlight: false },
+    { name: 'Korea',        std: 2, sum: 3, highlight: false },
+    { name: 'Singapore',    std: 2, sum: 3, highlight: false },
+    { name: 'India',        std: 0, sum: 3, highlight: false },
+    { name: 'Brazil',       std: 1, sum: 2, highlight: false },
+    { name: 'UAE',          std: 0, sum: 3, highlight: false },
+    { name: 'Saudi Arabia', std: 0, sum: 3, highlight: false },
+  ];
+  const maxTotal = 8;
+  const ACCENT = '#0077c8';
+  const STD_COL = '#1e293b';
+  const SUM_COL = 'rgba(30,41,59,0.32)';
+
+  let grown = reduceMotion ? 1 : 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pad = { l: 96, r: 26, t: 28, b: 10 };
+    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
+    grown = Math.min(grown + 0.025, 1);
+
+    // Header
+    ctx.fillStyle = 'rgba(10,10,10,0.42)';
+    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('AI POLICY BLOC SEATS  (max 8)', pad.l, 12);
+
+    // Legend
+    const legY = 22;
+    ctx.fillStyle = STD_COL;
+    ctx.fillRect(pad.l, legY, 8, 8);
+    ctx.fillStyle = 'rgba(10,10,10,0.65)';
+    ctx.font = '8.5px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Standards', pad.l + 12, legY + 7);
+    ctx.fillStyle = SUM_COL;
+    ctx.fillRect(pad.l + 70, legY, 8, 8);
+    ctx.fillStyle = 'rgba(10,10,10,0.65)';
+    ctx.fillText('Summits', pad.l + 82, legY + 7);
+
+    const rowH = (ch - 6) / data.length;
+    const barH = Math.min(13, rowH * 0.6);
+
+    data.forEach((d, i) => {
+      const y = pad.t + 6 + i * rowH;
+      const cy = y + rowH / 2;
+      const by = cy - barH / 2;
+
+      // Country label
+      ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.78)';
+      ctx.font = d.highlight ? 'bold 10px Inter, sans-serif' : '10px Inter, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(d.name, pad.l - 6, cy + 3);
+
+      // Standards segment (solid)
+      const stdW = (d.std / maxTotal) * cw * grown;
+      ctx.fillStyle = d.highlight ? ACCENT : STD_COL;
+      ctx.fillRect(pad.l, by, stdW, barH);
+
+      // Summits segment (light)
+      const sumW = (d.sum / maxTotal) * cw * grown;
+      ctx.fillStyle = d.highlight ? 'rgba(0,119,200,0.32)' : SUM_COL;
+      ctx.fillRect(pad.l + stdW, by, sumW, barH);
+
+      // Total label
+      if (grown > 0.55) {
+        const total = d.std + d.sum;
+        ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.62)';
+        ctx.font = 'bold 9.5px JetBrains Mono, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(total + '/8', pad.l + stdW + sumW + 4, cy + 3);
+      }
+
+      // "Summit only" callout for the absent-from-standards countries
+      if (d.std === 0 && grown > 0.8) {
+        ctx.fillStyle = 'rgba(184,0,46,0.8)';
+        ctx.font = 'italic 8px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('summit only', pad.l + 2, cy + 3);
       }
     });
 
