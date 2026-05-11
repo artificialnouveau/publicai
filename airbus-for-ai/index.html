@@ -149,6 +149,21 @@
   }
   .topnav-link:hover { color: var(--text); background: var(--paper-2); text-decoration: none; }
   .topnav-link.is-external::after { content: ' \2197'; opacity: 0.5; }
+  .topnav-link.is-placeholder {
+    color: var(--text-soft);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .topnav-link.is-placeholder::after {
+    content: ' \B7 Soon';
+    font-size: 0.58rem;
+    opacity: 0.6;
+    margin-left: 0.2rem;
+  }
+  .topnav-link.is-placeholder:hover {
+    color: var(--text-soft);
+    background: transparent;
+  }
 
   /* === HERO === */
   .hero {
@@ -906,6 +921,7 @@
     <span class="topnav-brand-text">Airbus for AI</span>
   </a>
   <div class="topnav-links">
+    <a class="topnav-link is-placeholder" href="#" aria-disabled="true" title="Coming soon" aria-label="Simulation (coming soon)" onclick="event.preventDefault()">Simulation</a>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
 </nav>
