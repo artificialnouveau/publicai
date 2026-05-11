@@ -607,9 +607,22 @@
     .story,
     .story.dock-collapsed,
     .story.dock-full { padding-bottom: 5rem; }
-    .viz-pane { padding: 1rem 1.15rem; }
+    /* Allow the pane to scroll vertically when chart + explainer don't fit. */
+    .viz-pane {
+      padding: 1rem 1.15rem;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
     .viz-pane-inner { grid-template-columns: 1fr; gap: 0.85rem; }
     .viz-dock[data-state="full"] .viz-pane-inner { grid-template-columns: 1fr; }
+    /* Always show the explainer/legend on desktop, even in peek mode. */
+    .viz-dock[data-state="peek"] .viz-explainer { display: block; }
+    .viz-dock[data-state="peek"] .viz-pane-inner { grid-template-columns: 1fr; }
+    .viz-explainer { overflow: visible; }
+    /* Give the chart a fixed-ish minimum height so it doesn't get squashed
+       when stacked under the explainer text. */
+    .viz-canvas-wrap { min-height: 260px; flex: 0 0 auto; }
+    .viz-canvas-wrap > canvas { height: 260px !important; min-height: 260px; }
     /* Decision strip becomes narrower; stack meta + options */
     .decision-strip { padding: 0.7rem 1.1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
