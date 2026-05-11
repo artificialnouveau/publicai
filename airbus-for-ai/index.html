@@ -624,7 +624,10 @@
     /* Decision strip becomes narrower; stack meta + options */
     .decision-strip { padding: 0.7rem 1.1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
-    .dock-body.has-strip .viz-pane.is-active { padding-top: 8.5rem; }
+    /* Padding-top is now driven by JS measuring the strip; fallback is generous. */
+    .dock-body.has-strip .viz-pane.is-active {
+      padding-top: calc(var(--strip-h, 9rem) + 0.5rem);
+    }
   }
 
   /* === RESPONSIVE === */
@@ -668,6 +671,12 @@
   .decision-strip[data-type="observe"] .decision-strip-counter {
     color: var(--text-soft);
   }
+  .decision-strip-purpose {
+    font-family: var(--font); font-size: 0.72rem; font-weight: 500;
+    color: var(--text-soft); line-height: 1.4;
+    font-style: italic;
+  }
+  .decision-strip[data-type="observe"] .decision-strip-purpose { display: none; }
   .decision-strip-question {
     font-family: var(--font); font-size: 0.85rem; font-weight: 600;
     color: var(--text); line-height: 1.4;
@@ -1412,6 +1421,7 @@
       <div class="decision-strip-inner">
         <div class="decision-strip-meta">
           <span class="decision-strip-counter" id="decisionCounter">DECISION 1 OF 7</span>
+          <span class="decision-strip-purpose">You&rsquo;re shaping the coalition. Picks across chapters tally into one of three endings.</span>
           <span class="decision-strip-question" id="decisionQuestion"></span>
         </div>
         <div class="decision-strip-options" id="decisionOptions" role="radiogroup"></div>
@@ -1698,7 +1708,22 @@
     }
     strip.classList.add('is-active');
     if (dockBody) dockBody.classList.add('has-strip');
+    measureStrip();
   }
+
+  // Keep the viz-pane's top padding in sync with the strip's actual height
+  // so wrapped option chips never crop the chart/explainer underneath.
+  function measureStrip(){
+    if (!strip || !dockBody) return;
+    requestAnimationFrame(() => {
+      const h = strip.getBoundingClientRect().height;
+      if (h > 0) dockBody.style.setProperty('--strip-h', h + 'px');
+    });
+  }
+  if (typeof ResizeObserver !== 'undefined' && strip) {
+    new ResizeObserver(measureStrip).observe(strip);
+  }
+  window.addEventListener('resize', measureStrip);
 
   // Viz panes
   const scenes = Array.from(document.querySelectorAll('.scene[data-viz]'));
@@ -2064,7 +2089,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas=document.getElementById('dbGrowthChart');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.55);}
+  function resize(){
+    canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;
+    canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.55);
+    // Re-draw after a resize so the chart re-appears at the new size, since
+    // draw() halts its rAF loop once the entrance animation finishes.
+    requestAnimationFrame(()=>draw());
+  }
   resize();window.addEventListener('resize',resize);
   const series=[
     {name:'Mistral AI',color:'#3b82f6',points:[{x:0,y:20,label:'Jan 2025'},{x:0.25,y:50},{x:0.5,y:150},{x:0.75,y:312,label:'Dec 2025'},{x:1,y:400,label:'Jan 2026'}]},
