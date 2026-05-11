@@ -432,7 +432,10 @@
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--text-soft);
     flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.25s ease;
   }
+  .viz-dock.is-live .dock-kicker { opacity: 1; }
   .dock-title {
     font-family: var(--font); font-size: 0.88rem; font-weight: 600;
     color: var(--text);
@@ -559,6 +562,39 @@
     background: linear-gradient(transparent, var(--ink));
     pointer-events: none;
     display: block;
+  }
+
+  /* === DESKTOP: dock moves from bottom strip to top-right panel === */
+  @media (min-width: 1024px) {
+    :root {
+      --dock-panel-width: clamp(340px, 26vw, 420px);
+      --dock-panel-top: 72px;
+      --dock-panel-gap: 16px;
+      --dock-peek: 62vh;
+      --dock-full: calc(100vh - var(--dock-panel-top) - var(--dock-panel-gap));
+    }
+    body { padding-right: calc(var(--dock-panel-width) + var(--dock-panel-gap) * 2); }
+    .topnav { margin-right: calc(-1 * (var(--dock-panel-width) + var(--dock-panel-gap) * 2)); }
+    .viz-dock {
+      top: var(--dock-panel-top);
+      right: var(--dock-panel-gap);
+      bottom: auto;
+      left: auto;
+      width: var(--dock-panel-width);
+      border: 1px solid var(--hairline-strong);
+      border-radius: 10px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+    }
+    .story,
+    .story.dock-collapsed,
+    .story.dock-full { padding-bottom: 5rem; }
+    .viz-pane { padding: 1rem 1.15rem; }
+    .viz-pane-inner { grid-template-columns: 1fr; gap: 0.85rem; }
+    .viz-dock[data-state="full"] .viz-pane-inner { grid-template-columns: 1fr; }
+    /* Decision strip becomes narrower; stack meta + options */
+    .decision-strip { padding: 0.7rem 1.1rem; }
+    .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
+    .dock-body.has-strip .viz-pane.is-active { padding-top: 8.5rem; }
   }
 
   /* === RESPONSIVE === */
@@ -866,7 +902,6 @@
     <span class="topnav-brand-text">Airbus for AI</span>
   </a>
   <div class="topnav-links">
-    <a class="topnav-link" href="#briefing" aria-label="Jump to the Airbus for AI executive summary">Airbus for AI</a>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
 </nav>
@@ -876,21 +911,8 @@
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-eyebrow"><span class="dot"></span> A near-future scenario</div>
-  <h1>The Slow Boil</h1>
-  <p class="hero-sub">Five capitals, twelve months, one coalition forming under pressure. The data is at the bottom of the screen and changes with the story.</p>
-  <div class="hero-meta">
-    <a href="#scene-dublin-apr"><span class="hero-meta-num">01</span> Dublin &middot; Apr 2026</a>
-    <a href="#scene-berlin"><span class="hero-meta-num">02</span> Berlin &middot; Apr 2027</a>
-    <a href="#scene-brussels"><span class="hero-meta-num">03</span> Brussels &middot; Jun 2026</a>
-    <a href="#scene-tokyo"><span class="hero-meta-num">04</span> Tokyo &middot; Feb 2027</a>
-    <a href="#scene-stockholm"><span class="hero-meta-num">05</span> Stockholm &middot; Dec 2026</a>
-    <a href="#scene-monroe"><span class="hero-meta-num">06</span> Monroe, LA &middot; Sep 2026</a>
-    <a href="#scene-ottawa"><span class="hero-meta-num">07</span> Ottawa &middot; Apr 2027</a>
-    <a href="#scene-paris"><span class="hero-meta-num">08</span> Paris &middot; Apr 2027</a>
-    <a href="#scene-dublin-jan"><span class="hero-meta-num">09</span> Dublin &middot; Jan 2026</a>
-    <a href="#scene-whitehouse"><span class="hero-meta-num">10</span> White House &middot; Apr 2027</a>
-    <a href="#scene-ether"><span class="hero-meta-num">11</span> The Ether &middot; Apr 2027</a>
-  </div>
+  <h1>The Airbus for AI Story</h1>
+  <p class="hero-sub">An interactive case for an Airbus for AI: eleven chapters across five capitals, where the decisions, the politics, and the live data at the bottom of the screen play out together as the coalition forms (or fails to).</p>
   <div class="hero-arrow" aria-hidden="true">&darr;</div>
 </section>
 
@@ -1671,6 +1693,22 @@
     }
     lockedSet.add(sceneId);
     saveState();
+  }
+
+  // Toggle the "Live data" dock kicker once the first chapter enters view.
+  const firstScene = document.getElementById('scene-dublin-apr');
+  const dockEl = document.getElementById('vizDock');
+  if (firstScene && dockEl) {
+    const liveObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting || e.boundingClientRect.top < 0) {
+          dockEl.classList.add('is-live');
+        } else {
+          dockEl.classList.remove('is-live');
+        }
+      });
+    }, { rootMargin: '-25% 0px 0px 0px', threshold: [0] });
+    liveObs.observe(firstScene);
   }
 
   // Track which scenes are intersecting; the topmost one drives activation.
