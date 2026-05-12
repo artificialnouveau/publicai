@@ -767,7 +767,7 @@
     padding: 5rem 1.5rem;
   }
   .outcome-inner {
-    max-width: 78ch; margin: 0 auto;
+    max-width: 92ch; margin: 0 auto;
   }
   .outcome-kicker {
     font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
@@ -863,6 +863,88 @@
   .design-pick-impact[data-strength="active"]  { border-left-color: var(--accent); }
   .design-pick-impact[data-strength="mid"]     { border-left-color: var(--gold); }
   .design-pick-impact[data-strength="passive"] { border-left-color: var(--red); }
+
+  /* Per-section split: controls/context on the left, derived result on the
+     right. Engages on desktop only; stacks below 1024px. */
+  .design-split-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    margin-top: 1.1rem;
+  }
+  .design-split-body .design-picks { margin: 0; }
+  .design-split-body .design-grid,
+  .design-split-body .design-rows { margin: 0; }
+  @media (min-width: 1024px) {
+    .design-split-body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 2rem;
+      align-items: start;
+    }
+    /* Within a split, the right column has less width; use a 2-column card
+       grid so 10 cards lay out as a compact 5x2. */
+    .design-split-body .design-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* "Derivation" block used on sections that have no inline picks (the left
+     column instead carries the static reasoning that shapes the right). */
+  .design-derivation {
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-dim);
+    border-radius: 0 4px 4px 0;
+  }
+  .design-derivation-label {
+    display: block;
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .design-derivation p {
+    font-family: var(--font); font-size: 0.85rem; line-height: 1.55;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .design-derivation p:last-child { margin-bottom: 0; }
+  .design-derivation-quote {
+    font-style: italic;
+    color: var(--text-soft);
+    border-top: 1px dashed var(--hairline-strong);
+    padding-top: 0.55rem;
+    margin-top: 0.55rem;
+  }
+
+  /* Summary section: list of "Component  ·  resolved value" rows in the right
+     column. */
+  .design-section-summary { border-top: 2px solid var(--accent); padding-top: 2rem; }
+  .design-summary-stats {
+    display: grid; gap: 0.6rem;
+    padding: 1rem 0;
+    border: 1px solid var(--accent-dim);
+    border-radius: 5px;
+    background: var(--paper);
+  }
+  .design-summary-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .design-summary-row:last-child { border-bottom: none; }
+  .design-summary-row-label {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft);
+  }
+  .design-summary-row-value {
+    font-family: var(--font); font-size: 0.95rem; font-weight: 600;
+    color: var(--text);
+  }
   .design-section {
     padding-top: 1.75rem;
     border-top: 1px solid var(--hairline);
@@ -2397,6 +2479,32 @@
     return { members: inSet, labs: labsIn, governance: gov, scope: stockholm };
   }
 
+  // One-sentence synthesis of the coalition shape, derived from picks.
+  function synthesizeCoalition(shape){
+    const memberCount = shape.members.size;
+    const labCount = shape.labs.size;
+    const govName = (GOVERNANCE.find(g => g.id === shape.governance) || {}).name || 'an unsettled governance shape';
+    const scopeName = (SCOPE.find(s => s.id === shape.scope) || {}).name || 'an unsettled scope';
+
+    let geo;
+    const hasFiveEyesEU = shape.members.has('GB') && shape.members.has('CA');
+    const hasAsia = shape.members.has('JP') || shape.members.has('KR') || shape.members.has('SG');
+    const hasEU = shape.members.has('FR') || shape.members.has('DE') || shape.members.has('ES');
+    if (memberCount === 0) geo = 'an empty coalition (no states in)';
+    else if (hasFiveEyesEU && hasAsia) geo = 'a EU + Five Eyes + Asia-Pacific coalition';
+    else if (hasFiveEyesEU) geo = 'a EU + Five Eyes coalition';
+    else if (hasAsia && hasEU) geo = 'a EU + Asia-Pacific coalition';
+    else if (hasEU) geo = 'an EU-only coalition';
+    else geo = 'a coalition of ' + memberCount + ' states';
+
+    const anchorList = Array.from(shape.labs);
+    const anchorStr = anchorList.length === 0 ? 'no anchor labs' :
+                      anchorList.length === 1 ? 'anchored by ' + anchorList[0] :
+                      'anchored by ' + anchorList.slice(0, -1).join(', ') + ' and ' + anchorList[anchorList.length - 1];
+
+    return `${geo.charAt(0).toUpperCase() + geo.slice(1)}, ${anchorStr} (${labCount} of 4 named), operating as ${govName.toLowerCase()}, building toward ${scopeName.toLowerCase()}.`;
+  }
+
   // Short, brief-style labels for each decision (different from the in-story
   // question text so the outcome reads like a configurable policy brief).
   const PICK_LABELS = {
@@ -2490,56 +2598,112 @@
       <div class="design-section">
         <div class="design-section-kicker">Member states (10 named in the brief)</div>
         <h3 class="design-section-title">Who joins</h3>
-        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025) name France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada as the first-cohort middle powers. Four picks decide which of them are eligible.</p>
-        <div class="design-picks">
-          ${pickHtml('scene-brussels')}
-          ${pickHtml('scene-ottawa')}
-          ${pickHtml('scene-tokyo')}
-          ${pickHtml('scene-paris')}
+        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025) name France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada as the first-cohort middle powers. Four picks on the left decide which of them are eligible on the right.</p>
+        <div class="design-split-body">
+          <div class="design-picks">
+            ${pickHtml('scene-brussels')}
+            ${pickHtml('scene-ottawa')}
+            ${pickHtml('scene-tokyo')}
+            ${pickHtml('scene-paris')}
+          </div>
+          <div class="design-grid">${memberHtml}</div>
         </div>
-        <div class="design-grid">${memberHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">Anchor labs (the brief says four, not twenty)</div>
         <h3 class="design-section-title">Who anchors</h3>
-        <p class="design-section-note">Two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). A lab is in when its host state is in, so the anchors follow directly from the member picks above.</p>
-        <div class="design-grid">${labsHtml}</div>
+        <p class="design-section-note">Two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). The anchors follow from the member picks above.</p>
+        <div class="design-split-body">
+          <div class="design-derivation">
+            <span class="design-derivation-label">Derivation</span>
+            <p>A lab is &ldquo;in&rdquo; when its host state is &ldquo;in.&rdquo; That means anchors are downstream of which states you bring under <em>Who joins</em>.</p>
+            <p>Currently <strong>${shape.labs.size} of 4</strong> anchor labs active.</p>
+            <p class="design-derivation-quote">&ldquo;Start small: four labs, not twenty.&rdquo; &mdash; Bennett brief, p. 7.</p>
+          </div>
+          <div class="design-grid">${labsHtml}</div>
+        </div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">Governance shape</div>
         <h3 class="design-section-title">How it&rsquo;s held together</h3>
-        <p class="design-section-note">The brief proposes a public-private partnership (p. 4, &ldquo;How?&rdquo;) but leaves room for &ldquo;most likely something bespoke.&rdquo; The relationship to the US Digital Liberty Act, plus the final structure call, decide which archetype you end up with.</p>
-        <div class="design-picks">
-          ${pickHtml('scene-berlin')}
-          ${pickHtml('scene-ether')}
+        <p class="design-section-note">The brief proposes a public-private partnership (p. 4) but leaves room for &ldquo;most likely something bespoke.&rdquo; The picks on the left decide which archetype it lands as.</p>
+        <div class="design-split-body">
+          <div class="design-picks">
+            ${pickHtml('scene-berlin')}
+            ${pickHtml('scene-ether')}
+          </div>
+          <div class="design-rows">${govHtml}</div>
         </div>
-        <div class="design-rows">${govHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">Scope</div>
         <h3 class="design-section-title">What the coalition covers</h3>
         <p class="design-section-note">The brief&rsquo;s preferred end-state is the full stack; the entry point can be narrower.</p>
-        <div class="design-picks">
-          ${pickHtml('scene-stockholm')}
+        <div class="design-split-body">
+          <div class="design-picks">
+            ${pickHtml('scene-stockholm')}
+          </div>
+          <div class="design-rows">${scopeHtml}</div>
         </div>
-        <div class="design-rows">${scopeHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">MVP target (the brief&rsquo;s floor)</div>
         <h3 class="design-section-title">How small the first version can be</h3>
-        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025), p. 8: the smallest credible coalition that can grow into a frontier programme. The same MVP regardless of which shape you pick above.</p>
-        <div class="design-mvp">
-          <div class="design-mvp-stats">
-            <div class="design-mvp-stat">10<span>person team</span></div>
-            <div class="design-mvp-stat">3<span>months</span></div>
-            <div class="design-mvp-stat">~100k<span>GPU-hours</span></div>
-            <div class="design-mvp-stat">~$150k<span>budget</span></div>
+        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025), p. 8: the smallest credible coalition that can grow into a frontier programme. Independent of the shape above.</p>
+        <div class="design-split-body">
+          <div class="design-derivation">
+            <span class="design-derivation-label">Why this small</span>
+            <p>The MVP is deliberately tiny: small enough to ship before politics catches up, big enough to demonstrate the concept.</p>
+            <p>The headline number for a frontier training run today is roughly $2B (p. 15). The brief is explicit that this is <em>not</em> what the MVP should aim at.</p>
+            <p class="design-derivation-quote">&ldquo;Training a $2 billion &lsquo;leading frontier model&rsquo; is not the minimum viable product.&rdquo; &mdash; p. 6.</p>
           </div>
-          <p class="design-mvp-anti">Anti-target (p. 6): &ldquo;Training a $2 billion 'leading frontier model' is not the minimum viable product.&rdquo;</p>
+          <div class="design-mvp">
+            <div class="design-mvp-stats">
+              <div class="design-mvp-stat">10<span>person team</span></div>
+              <div class="design-mvp-stat">3<span>months</span></div>
+              <div class="design-mvp-stat">~100k<span>GPU-hours</span></div>
+              <div class="design-mvp-stat">~$150k<span>budget</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="design-section design-section-summary">
+        <div class="design-section-kicker">In summary</div>
+        <h3 class="design-section-title">What you&rsquo;d be supporting</h3>
+        <p class="design-section-note">One sentence, derived from your picks above. Change any choice and this updates.</p>
+        <div class="design-split-body">
+          <div class="design-derivation">
+            <span class="design-derivation-label">Coalition shape</span>
+            <p>${synthesizeCoalition(shape)}</p>
+            <p class="design-derivation-quote">If this is the proposal you&rsquo;d sign your name to, add it to the public roll below.</p>
+          </div>
+          <div class="design-summary-stats">
+            <div class="design-summary-row">
+              <span class="design-summary-row-label">Members</span>
+              <span class="design-summary-row-value">${shape.members.size} of 10 named</span>
+            </div>
+            <div class="design-summary-row">
+              <span class="design-summary-row-label">Anchor labs</span>
+              <span class="design-summary-row-value">${shape.labs.size} of 4 named</span>
+            </div>
+            <div class="design-summary-row">
+              <span class="design-summary-row-label">Governance</span>
+              <span class="design-summary-row-value">${(GOVERNANCE.find(g=>g.id===shape.governance)||{}).name || '&mdash;'}</span>
+            </div>
+            <div class="design-summary-row">
+              <span class="design-summary-row-label">Mandate</span>
+              <span class="design-summary-row-value">${(SCOPE.find(s=>s.id===shape.scope)||{}).name || '&mdash;'}</span>
+            </div>
+            <div class="design-summary-row">
+              <span class="design-summary-row-label">MVP</span>
+              <span class="design-summary-row-value">10 ppl &middot; 3 mo &middot; ~$150k</span>
+            </div>
+          </div>
         </div>
       </div>
     `;
