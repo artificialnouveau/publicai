@@ -670,8 +670,10 @@
     .viz-canvas-wrap { order: 1; }
   }
 
-  /* === DECISION STRIP (in-dock simulation) === */
-  .decision-strip {
+  /* === DECISION STRIP (legacy in-dock; decisions now live in the outcome
+     section, but the markup is kept to avoid breaking event refs) === */
+  .decision-strip { display: none !important; }
+  .decision-strip-legacy {
     position: absolute; top: 0; left: 0; right: 0; z-index: 5;
     background: var(--ink);
     border-bottom: 1px solid var(--hairline-strong);
@@ -787,9 +789,83 @@
     color: var(--text); margin-bottom: 2.5rem;
     max-width: 60ch;
   }
+  .outcome-grid-title {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft);
+    margin: 0 0 0.85rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--hairline);
+  }
   .outcome-grid {
     display: grid; grid-template-columns: 1fr; gap: 0.5rem;
     margin-bottom: 2.5rem;
+  }
+  /* === DECISIONS PANEL (in the outcome section) === */
+  .decisions-panel {
+    margin: 0.5rem 0 2rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .decisions-panel-title {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: 0.45rem;
+  }
+  .decisions-panel-note {
+    font-family: var(--font); font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-bottom: 1.25rem;
+    max-width: 60ch;
+  }
+  .decisions-list {
+    list-style: none;
+    display: grid; gap: 1.1rem;
+    margin: 0; padding: 0;
+  }
+  .decision-card {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 0.95rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .decision-card-num {
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    padding-top: 2px;
+  }
+  .decision-card-question {
+    font-family: var(--font); font-size: 1.0rem; font-weight: 600;
+    color: var(--text); line-height: 1.4;
+    margin-bottom: 0.65rem;
+  }
+  .decision-card-options {
+    display: flex; flex-wrap: wrap; gap: 0.45rem;
+  }
+  .decision-card-option {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.55rem 0.85rem;
+    min-height: 38px;
+    background: var(--paper-2); color: var(--text);
+    border: 1px solid var(--hairline-strong); border-radius: 4px;
+    font-family: var(--font); font-size: 0.86rem; font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .decision-card-option:hover { border-color: var(--accent); color: var(--accent); }
+  .decision-card-option.is-picked {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .decision-card-option .option-tag {
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+  @media (max-width: 600px) {
+    .decision-card { grid-template-columns: 1fr; gap: 0.45rem; }
+    .decision-card-option { font-size: 0.82rem; min-height: 40px; }
   }
   .outcome-row {
     display: grid; grid-template-columns: 160px 1fr auto; gap: 1rem;
@@ -1366,12 +1442,18 @@
 <section class="outcome" id="outcome" data-tier="boil" aria-labelledby="outcomeTitle" aria-live="polite">
   <div class="outcome-inner">
     <div class="outcome-kicker" id="outcomeKicker">Your Coalition</div>
-    <h2 class="outcome-title" id="outcomeTitle">The Slow Boil Did Its Work</h2>
-    <p class="outcome-synthesis" id="outcomeSynthesis">You let things default. Each small concession was rational in isolation. Their accumulation was catastrophic.</p>
+    <h2 class="outcome-title" id="outcomeTitle">The coalition stays a proposal.</h2>
+    <p class="outcome-synthesis" id="outcomeSynthesis">You picked the safe defaults across the board. Each call was rational on its own; together they leave a coalition on paper and the same dependencies you started with.</p>
+    <div class="decisions-panel" aria-labelledby="decisionsPanelTitle">
+      <h3 class="decisions-panel-title" id="decisionsPanelTitle">Your decisions</h3>
+      <p class="decisions-panel-note">Pick or repick any of the seven calls. The summary above and the breakdown below update as you do.</p>
+      <ol class="decisions-list" id="decisionsList"></ol>
+    </div>
+    <h3 class="outcome-grid-title">Coalition breakdown</h3>
     <div class="outcome-grid" id="outcomeGrid"></div>
     <div class="outcome-actions">
-      <a class="btn btn-primary" href="#scene-dublin-apr">Replay with different choices</a>
-      <a class="btn btn-ghost" href="#briefing">What does this mean?</a>
+      <a class="btn btn-primary" href="#signon">Sign on</a>
+      <a class="btn btn-ghost" href="#briefing">Re-read the briefing</a>
     </div>
   </div>
 </section>
@@ -1415,7 +1497,7 @@
 
 <!-- OUTRO -->
 <section class="outro">
-  <p class="outro-line">The slow boil is already underway. The only question is whether anyone turns off the heat.</p>
+  <p class="outro-line">Eleven chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
   <div class="outro-actions">
     <a class="btn btn-primary" href="#signon">Sign on</a>
     <a class="btn btn-ghost" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Read the brief (PDF)</a>
@@ -1914,7 +1996,7 @@
     panes.forEach(p => p.classList.toggle('is-active', p.dataset.viz === vizId));
     const activePane = panes.find(p => p.dataset.viz === vizId);
     if (activePane && titleEl) titleEl.innerHTML = activePane.dataset.title || '';
-    renderStrip(sceneEl.id);
+    // Decisions now live in the outcome section, not in the dock.
     window.dispatchEvent(new Event('resize'));
   }
 
@@ -2030,18 +2112,18 @@
     const tier = tierFor(total, max);
     outcome.dataset.tier = tier;
     const titles = {
-      forms: 'The Coalition Forms.',
-      imperfect: 'A Coalition Forms, Imperfectly.',
-      boil: 'The Slow Boil Did Its Work.'
+      forms: 'The coalition forms.',
+      imperfect: 'A coalition forms, on paper.',
+      boil: 'The coalition stays a proposal.'
     };
     const synthesis = {
-      forms: 'You picked coordination over fragmentation. From Dublin to Berlin to the Ether, you chose action when inaction was easier. The coalition has a fighting chance. The slow boil can still be turned off.',
-      imperfect: 'You moved on some calls, defaulted on others. A coalition exists on paper, but it is held together by goodwill rather than commitment. It will hold for a while. It may not hold under stress.',
-      boil: 'You let things default. Aaron’s drive stayed unread. Virkkunen’s speech changed nothing. Merz signed the contracts he swore he wouldn’t. Each small concession was rational in isolation. Their accumulation was catastrophic. The slow boil did its work.'
+      forms: 'You chose coordination every time it cost something: backing the Digital Liberty Act, expanding the mandate beyond defence, accepting the messier governance model. The result is a coalition that exists in practice, not just on paper.',
+      imperfect: 'You picked the active option where it was already politically affordable and defaulted on the harder calls. The coalition has a charter; it does not yet have shared infrastructure or a real division of labour.',
+      boil: 'You picked the safe defaults: keep the framing narrow, keep allies cautious, keep the existing contracts. Each call was rational in isolation. Together they leave a coalition on paper and the same dependencies you started with.'
     };
     document.getElementById('outcomeTitle').textContent = titles[tier];
     document.getElementById('outcomeSynthesis').textContent = synthesis[tier];
-    document.getElementById('outcomeKicker').textContent = 'Your Coalition — ' + total + ' of ' + max + ' active picks';
+    document.getElementById('outcomeKicker').textContent = 'Your Coalition  ·  ' + total + ' of ' + max + ' active picks';
     const grid = document.getElementById('outcomeGrid');
     grid.innerHTML = rows.map(r => `
       <div class="outcome-row">
@@ -2054,19 +2136,53 @@
     if (outcomeField) outcomeField.value = tier + ' (' + total + '/' + max + ')';
   }
 
-  let outcomeRendered = false;
-  if (outcome) {
-    const outObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !outcomeRendered) {
-          // Lock any unvisited decisions to their default.
-          decisionOrder.forEach(id => lockIfDecide(id));
-          renderOutcome();
-          outcomeRendered = true;
-        }
+  // Render the seven decisions as cards inside the outcome section. Clicking
+  // any option updates the pick, re-renders the outcome above, and re-renders
+  // the cards themselves to reflect the new "is-picked" state.
+  function renderDecisionsPanel(){
+    const list = document.getElementById('decisionsList');
+    if (!list) return;
+    list.innerHTML = decisionOrder.map((id, idx) => {
+      const cfg = SIM[id];
+      const pick = getPick(id);
+      const sceneEl = document.getElementById(id);
+      const sceneTitle = sceneEl && sceneEl.querySelector('.scene-title')
+        ? sceneEl.querySelector('.scene-title').textContent
+        : id;
+      const options = cfg.options.map(o => `
+        <button type="button"
+                class="decision-card-option ${o.id === pick ? 'is-picked' : ''}"
+                data-scene="${id}" data-pick="${o.id}"
+                role="radio" aria-checked="${o.id === pick}">
+          <span>${o.label}</span>
+          ${o.default ? '<span class="option-tag">default</span>' : ''}
+        </button>`).join('');
+      return `
+        <li class="decision-card" data-scene="${id}">
+          <div class="decision-card-num">${String(idx + 1).padStart(2, '0')} / ${sceneTitle}</div>
+          <div class="decision-card-body">
+            <div class="decision-card-question">${cfg.question}</div>
+            <div class="decision-card-options" role="radiogroup">${options}</div>
+          </div>
+        </li>`;
+    }).join('');
+    list.querySelectorAll('.decision-card-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sceneId = btn.dataset.scene;
+        const pickId = btn.dataset.pick;
+        simState[sceneId] = pickId;
+        saveState();
+        renderOutcome();
+        renderDecisionsPanel();
       });
-    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.05 });
-    outObs.observe(outcome);
+    });
+  }
+
+  // Render the panel + initial outcome on load so the section is ready
+  // whenever the user reaches it.
+  if (outcome) {
+    renderDecisionsPanel();
+    renderOutcome();
   }
 })();
 
