@@ -481,30 +481,24 @@
   }
   .dock-btn svg { width: 14px; height: 14px; }
 
+  /* dock-body is the scroll container on mobile/tablet. Active pane is a
+     normal block child whose content can exceed the dock height — the dock-body
+     scrolls. On desktop this is overridden to overflow: visible so the dock
+     itself auto-sizes to content. */
   .dock-body {
     flex: 1; min-height: 0;
     position: relative;
-    overflow: hidden;
-    /* Active pane is a flex child so it can fill the body and scroll inside. */
-    display: flex; flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
-  /* Panes are display:none unless active so the dock-body can size to the
-     active pane's actual content height (not to the tallest hidden pane). */
   .viz-pane {
     display: none;
     padding: 1.25rem 1.5rem;
     background: var(--ink);
-    flex-direction: column;
   }
   .viz-pane.is-active {
-    display: flex;
-    /* Mobile / tablet: fill the dock-body and allow vertical scrolling inside
-       if content exceeds the dock's height. (Desktop overrides remove this so
-       the dock auto-fits.) */
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    display: block;
   }
   .viz-pane-inner {
     max-width: 1100px; margin: 0 auto;
@@ -720,11 +714,6 @@
     /* No internal scrolling on desktop — the dock itself sizes to fit. */
     .viz-pane {
       padding: 1rem 1.15rem;
-    }
-    .viz-pane.is-active {
-      overflow: visible;
-      flex: 0 0 auto;
-      min-height: 0;
     }
     .viz-pane-inner { grid-template-columns: 1fr; gap: 0.85rem; }
     .viz-dock[data-state="full"] .viz-pane-inner { grid-template-columns: 1fr; }
