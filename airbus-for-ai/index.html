@@ -595,7 +595,9 @@
     gap: 4px;
   }
 
-  /* Fade scroll padding inside dock body when peeked */
+  /* Fade scroll padding inside dock body when peeked. Kept as pointer-events:
+     none so it doesn't intercept clicks, and explicitly z-index:0 so it never
+     stacks over real content. */
   .viz-pane::after {
     content: '';
     position: sticky; bottom: 0; left: 0; right: 0;
@@ -603,6 +605,7 @@
     background: linear-gradient(transparent, var(--ink));
     pointer-events: none;
     display: block;
+    z-index: 0;
   }
 
   /* === DESKTOP: dock moves from bottom strip to top-right panel === */
@@ -647,9 +650,22 @@
     .viz-dock[data-state="peek"] .viz-pane-inner { grid-template-columns: 1fr; }
     .viz-explainer { overflow: visible; }
     /* Give the chart a fixed-ish minimum height so it doesn't get squashed
-       when stacked under the explainer text. */
-    .viz-canvas-wrap { min-height: 260px; flex: 0 0 auto; }
+       when stacked under the explainer text. Margin-top creates clear
+       separation; relative + z-index + solid bg prevents any visual overlap
+       with the scrolling explainer text above. */
+    .viz-canvas-wrap {
+      min-height: 260px;
+      flex: 0 0 auto;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 1;
+      background: var(--paper-2);
+    }
     .viz-canvas-wrap > canvas { height: 260px !important; min-height: 260px; }
+    /* Force the explainer column to behave as a normal flow item so it
+       can't visually leak past its grid cell. */
+    .viz-explainer { position: relative; z-index: 0; overflow: hidden; }
+    .viz-explainer .viz-footnotes { overflow: hidden; }
     /* Decision strip becomes narrower; stack meta + options */
     .decision-strip { padding: 0.7rem 1.1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
