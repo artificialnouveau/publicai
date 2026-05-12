@@ -863,9 +863,34 @@
     letter-spacing: 0.1em; text-transform: uppercase;
     opacity: 0.7;
   }
+  .decision-card-impact {
+    margin-top: 0.85rem;
+    padding: 0.7rem 0.9rem;
+    border-left: 3px solid var(--hairline-strong);
+    background: var(--paper-2);
+    border-radius: 0 4px 4px 0;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
+  }
+  .decision-card-impact[data-strength="active"]  { border-left-color: var(--accent); }
+  .decision-card-impact[data-strength="mid"]     { border-left-color: var(--gold); }
+  .decision-card-impact[data-strength="passive"] { border-left-color: var(--red); }
+  .decision-card-strength {
+    flex-shrink: 0;
+    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 3px;
+  }
+  .decision-card-strength[data-strength="active"]  { background: var(--accent-dim); color: var(--accent); }
+  .decision-card-strength[data-strength="mid"]     { background: rgba(138,90,0,0.12); color: var(--gold); }
+  .decision-card-strength[data-strength="passive"] { background: rgba(184,0,46,0.10); color: var(--red); }
+  .decision-card-impact-text {
+    font-family: var(--font); font-size: 0.88rem; line-height: 1.5;
+    color: var(--text);
+  }
   @media (max-width: 600px) {
     .decision-card { grid-template-columns: 1fr; gap: 0.45rem; }
     .decision-card-option { font-size: 0.82rem; min-height: 40px; }
+    .decision-card-impact { padding: 0.6rem 0.7rem; }
   }
   .outcome-row {
     display: grid; grid-template-columns: 160px 1fr auto; gap: 1rem;
@@ -1852,42 +1877,63 @@
   const SIM = {
     'scene-dublin-apr': { type:'observe', label:'The talent shock arrives.' },
     'scene-berlin':     { type:'decide', question:'The Digital Liberty Act is on the desk. Germany’s call:', options:[
-      { id:'sign',          label:'Sign',                    strength:'passive', score:0, default:true },
-      { id:'negotiate',     label:'Negotiate slow walk',     strength:'mid',     score:1 },
-      { id:'refuse-bloc',   label:'Refuse and form a bloc',  strength:'active',  score:2 }
+      { id:'sign',          label:'Sign',                    strength:'passive', score:0, default:true,
+        impact:'Germany aligns with the US framework. The Digital Liberty Act constrains the coalition before it forms.' },
+      { id:'negotiate',     label:'Negotiate slow walk',     strength:'mid',     score:1,
+        impact:'Germany asks for carve-outs and a longer transition. The coalition gets time, not certainty.' },
+      { id:'refuse-bloc',   label:'Refuse and form a bloc',  strength:'active',  score:2,
+        impact:'Germany refuses to sign and convenes a counter-bloc. The coalition gains its first anchor and its first explicit opponent.' }
     ] },
     'scene-brussels':   { type:'decide', question:'How do you frame the public case?', options:[
-      { id:'national',      label:'National only',           strength:'passive', score:0, default:true },
-      { id:'eu-coalition',  label:'EU coalition',            strength:'mid',     score:1 },
-      { id:'eu-allies',     label:'EU + allies',             strength:'active',  score:2 }
+      { id:'national',      label:'National only',           strength:'passive', score:0, default:true,
+        impact:'You frame the case in domestic terms. Other capitals hear it as someone else’s problem.' },
+      { id:'eu-coalition',  label:'EU coalition',            strength:'mid',     score:1,
+        impact:'The case lands as EU industrial policy. Membership is bounded to the 27; mandate stays narrow.' },
+      { id:'eu-allies',     label:'EU + allies',             strength:'active',  score:2,
+        impact:'The case lands as a middle-power proposal. Canada, Japan, South Korea, Singapore become eligible co-founders.' }
     ] },
     'scene-tokyo':      { type:'decide', question:'After the hallucination, where do your models come from?', options:[
-      { id:'off-the-shelf', label:'Off-the-shelf US',        strength:'passive', score:0, default:true },
-      { id:'build-own',     label:'Build your own',          strength:'mid',     score:1 },
-      { id:'coalition-model', label:'Join a coalition model', strength:'active', score:2 }
+      { id:'off-the-shelf', label:'Off-the-shelf US',        strength:'passive', score:0, default:true,
+        impact:'Japan stays a consumer. Sovereignty is rhetorical; inference still routes through US-controlled APIs.' },
+      { id:'build-own',     label:'Build your own',          strength:'mid',     score:1,
+        impact:'Japan trains a national model. Useful for language coverage, but not at frontier scale.' },
+      { id:'coalition-model', label:'Join a coalition model', strength:'active', score:2,
+        impact:'Japan co-trains with the coalition. RIKEN compute and Japanese-language data enter the shared stack.' }
     ] },
     'scene-stockholm':  { type:'decide', question:'What does the coalition cover?', options:[
-      { id:'defense-only',  label:'Defense only (Helsing)',  strength:'passive', score:0, default:true },
-      { id:'defense-commercial', label:'Defense + commercial', strength:'mid',  score:1 },
-      { id:'full-stack',    label:'Full sovereign stack',    strength:'active', score:2 }
+      { id:'defense-only',  label:'Defense only (Helsing)',  strength:'passive', score:0, default:true,
+        impact:'The coalition stays narrow and saleable to security ministries. Civilian models remain US-dependent.' },
+      { id:'defense-commercial', label:'Defense + commercial', strength:'mid',  score:1,
+        impact:'Two product lines fund each other. Governance gets harder; the political base broadens.' },
+      { id:'full-stack',    label:'Full sovereign stack',    strength:'active', score:2,
+        impact:'Models, compute, deployment, language tooling. Closer to the Bennett brief’s frontier-and-APIs scope.' }
     ] },
     'scene-monroe':     { type:'observe', label:'The other side keeps building.' },
     'scene-ottawa':     { type:'decide', question:'Coalition with whom?', options:[
-      { id:'eu-only',       label:'EU only',                 strength:'passive', score:0, default:true },
-      { id:'eu-canada',     label:'EU + Canada',             strength:'mid',     score:1 },
-      { id:'five-eyes-minus-us', label:'EU + Five Eyes (minus US)', strength:'active', score:2 }
+      { id:'eu-only',       label:'EU only',                 strength:'passive', score:0, default:true,
+        impact:'Geographically tidy, politically smaller. No Five Eyes overlap, no Atlantic crossing.' },
+      { id:'eu-canada',     label:'EU + Canada',             strength:'mid',     score:1,
+        impact:'Canada brings Cohere and a Five Eyes seat. The coalition crosses one Atlantic line.' },
+      { id:'five-eyes-minus-us', label:'EU + Five Eyes (minus US)', strength:'active', score:2,
+        impact:'UK, Canada, Australia, New Zealand join with the EU. Standards-body coverage jumps; intelligence-sharing gets complicated.' }
     ] },
     'scene-paris':      { type:'decide', question:'France’s move:', options:[
-      { id:'defers',        label:'France defers',           strength:'passive', score:0, default:true },
-      { id:'co-leads',      label:'France co-leads',         strength:'mid',     score:1 },
-      { id:'leads',         label:'France leads',            strength:'active',  score:2 }
+      { id:'defers',        label:'France defers',           strength:'passive', score:0, default:true,
+        impact:'The proposal continues without a French anchor. The Airbus parallel weakens.' },
+      { id:'co-leads',      label:'France co-leads',         strength:'mid',     score:1,
+        impact:'France contributes Mistral, Jean Zay, and the AI Action Plan budget. Leadership is shared, not owned.' },
+      { id:'leads',         label:'France leads',            strength:'active',  score:2,
+        impact:'France hosts the coalition, anchors the legal entity, contributes Mistral as the first frontier model.' }
     ] },
     'scene-dublin-jan': { type:'observe', label:'What Aaron found.' },
     'scene-whitehouse': { type:'observe', label:'The US tightens.' },
     'scene-ether':      { type:'decide', question:'The coalition decides:', options:[
-      { id:'sign-dla',      label:'Sign the DLA',            strength:'passive', score:0, default:true },
-      { id:'hybrid',        label:'Hybrid path',             strength:'mid',     score:1 },
-      { id:'form-entity',   label:'Form coalition entity',   strength:'active',  score:2 }
+      { id:'sign-dla',      label:'Sign the DLA',            strength:'passive', score:0, default:true,
+        impact:'The coalition formally accepts the US framework. It exists, but inside someone else’s rules.' },
+      { id:'hybrid',        label:'Hybrid path',             strength:'mid',     score:1,
+        impact:'You operate inside the DLA for now and build outside it in parallel. Two stacks for a while.' },
+      { id:'form-entity',   label:'Form coalition entity',   strength:'active',  score:2,
+        impact:'A legal entity is incorporated, joint compute and IP get signed, an MVP ships inside Bennett’s 3-month frame.' }
     ] }
   };
 
@@ -2145,6 +2191,7 @@
     list.innerHTML = decisionOrder.map((id, idx) => {
       const cfg = SIM[id];
       const pick = getPick(id);
+      const pickedOpt = cfg.options.find(o => o.id === pick) || cfg.options[0];
       const sceneEl = document.getElementById(id);
       const sceneTitle = sceneEl && sceneEl.querySelector('.scene-title')
         ? sceneEl.querySelector('.scene-title').textContent
@@ -2157,12 +2204,18 @@
           <span>${o.label}</span>
           ${o.default ? '<span class="option-tag">default</span>' : ''}
         </button>`).join('');
+      const impactHtml = pickedOpt && pickedOpt.impact ? `
+        <div class="decision-card-impact" data-strength="${pickedOpt.strength}">
+          <span class="decision-card-strength" data-strength="${pickedOpt.strength}">${pickedOpt.strength}</span>
+          <span class="decision-card-impact-text">${pickedOpt.impact}</span>
+        </div>` : '';
       return `
         <li class="decision-card" data-scene="${id}">
           <div class="decision-card-num">${String(idx + 1).padStart(2, '0')} / ${sceneTitle}</div>
           <div class="decision-card-body">
             <div class="decision-card-question">${cfg.question}</div>
             <div class="decision-card-options" role="radiogroup">${options}</div>
+            ${impactHtml}
           </div>
         </li>`;
     }).join('');
