@@ -486,17 +486,16 @@
     position: relative;
     overflow: hidden;
   }
+  /* Panes are display:none unless active so the dock-body can size to the
+     active pane's actual content height (not to the tallest hidden pane). */
   .viz-pane {
-    position: absolute; inset: 0;
+    display: none;
     padding: 1.25rem 1.5rem;
-    overflow: hidden;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.25s ease-in-out;
     background: var(--ink);
-    display: flex; flex-direction: column;
+    flex-direction: column;
   }
   .viz-pane.is-active {
-    opacity: 1; pointer-events: auto;
+    display: flex;
   }
   .viz-pane-inner {
     max-width: 1100px; margin: 0 auto;
@@ -627,6 +626,15 @@
       border-radius: 10px;
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
     }
+    /* Peek = auto-fit to content (no internal scrolling). Cap at the viewport
+       so a particularly long pane doesn't push past the screen. */
+    .viz-dock[data-state="peek"] {
+      height: auto;
+      max-height: var(--dock-full);
+    }
+    .dock-body {
+      overflow: visible;
+    }
     .story,
     .story.dock-collapsed,
     .story.dock-full { padding-bottom: 5rem; }
@@ -637,11 +645,10 @@
     .story {
       margin-right: calc(var(--dock-panel-width) + var(--dock-panel-gap) * 2 + 1.5rem);
     }
-    /* Allow the pane to scroll vertically when chart + explainer don't fit. */
+    /* No internal scrolling on desktop — the dock itself sizes to fit. */
     .viz-pane {
       padding: 1rem 1.15rem;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: visible;
     }
     .viz-pane-inner { grid-template-columns: 1fr; gap: 0.85rem; }
     .viz-dock[data-state="full"] .viz-pane-inner { grid-template-columns: 1fr; }
@@ -662,10 +669,6 @@
       background: var(--paper-2);
     }
     .viz-canvas-wrap > canvas { height: 260px !important; min-height: 260px; }
-    /* Force the explainer column to behave as a normal flow item so it
-       can't visually leak past its grid cell. */
-    .viz-explainer { position: relative; z-index: 0; overflow: hidden; }
-    .viz-explainer .viz-footnotes { overflow: hidden; }
     /* Decision strip becomes narrower; stack meta + options */
     .decision-strip { padding: 0.7rem 1.1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
