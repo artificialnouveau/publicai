@@ -1811,15 +1811,17 @@
 
   const SIM_KEY = 'afa_sim_v1';
   let simState = {};
+  // lockedSet is intentionally NOT restored from storage. Locks are a within-
+  // session UX detail (once the outcome view appears, picks freeze); the user
+  // should always be able to reopen the page and change their picks again.
   let lockedSet = new Set();
   try {
     const raw = JSON.parse(sessionStorage.getItem(SIM_KEY) || '{}');
     simState = raw.picks || {};
-    lockedSet = new Set(raw.locked || []);
   } catch(e) { /* ignore */ }
 
   function saveState(){
-    try { sessionStorage.setItem(SIM_KEY, JSON.stringify({ picks: simState, locked: Array.from(lockedSet) })); } catch(e){}
+    try { sessionStorage.setItem(SIM_KEY, JSON.stringify({ picks: simState })); } catch(e){}
   }
 
   const decisionOrder = Object.keys(SIM).filter(id => SIM[id].type === 'decide');
@@ -2200,11 +2202,15 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
   const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
-  const LX=0.20,RX=0.80;
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;
+    // Reserve at least ~140px on each side for the labels; widen the flow
+    // region on roomy canvases.
+    const insetPx = 140;
+    const LX = Math.max(0.20, insetPx / W);
+    const RX = 1 - LX;
     const tfs=Math.max(7, Math.min(9, W*0.022));
     const lfs=Math.max(8, Math.min(11, W*0.026));
     const pfs=Math.max(7, Math.min(10, W*0.024));
@@ -2235,30 +2241,103 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   draw();
 })();
 
-// --- Compute Map ---
+// --- Compute Map (asymmetry stats) ---
 (function(){
   const canvas=document.getElementById('dbComputeMapCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(380, canvas.parentElement.clientWidth*0.55);}
+  function resize(){
+    canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;
+    canvas.height=canvas.clientHeight||Math.min(380, canvas.parentElement.clientWidth*0.55);
+    requestAnimationFrame(()=>draw());
+  }
   resize();window.addEventListener('resize',resize);
-  const euroHPC=[{name:'JUPITER',x:0.46,y:0.40},{name:'LUMI',x:0.55,y:0.15},{name:'Leonardo',x:0.50,y:0.55},{name:'MareNostrum 5',x:0.33,y:0.62},{name:'Deucalion',x:0.25,y:0.58},{name:'Vega',x:0.53,y:0.50},{name:'Karolina',x:0.53,y:0.42},{name:'MeluXina',x:0.44,y:0.43},{name:'Discoverer',x:0.60,y:0.55},{name:'Daedalus',x:0.58,y:0.65},{name:'EHPCPL',x:0.54,y:0.38}];
-  const hyperDC=[{name:'Dublin (AWS, Azure, Google)',x:0.30,y:0.32,size:4},{name:'Amsterdam (AWS, Azure)',x:0.43,y:0.35,size:3.5},{name:'Frankfurt (AWS, Azure, Google)',x:0.47,y:0.40,size:4},{name:'Paris (AWS, Azure)',x:0.38,y:0.45,size:3},{name:'Stockholm (AWS)',x:0.52,y:0.20,size:2.5},{name:'London (AWS, Azure, Google)',x:0.35,y:0.36,size:4},{name:'Milan (AWS)',x:0.48,y:0.52,size:2},{name:'Zurich (AWS, Google)',x:0.46,y:0.48,size:2.5}];
-  const connections=[[0,6],[0,7],[6,10],[6,5],[5,2],[2,3],[3,4],[5,8],[8,9],[0,1]];
-  let t=0;
+
+  // Three rows: EU sovereign supercomputers, planned AI Factories, and global
+  // hyperscale data centres. Each shown as a "big number" + horizontal bar
+  // on a shared log scale so the asymmetry reads at a glance.
+  const rows = [
+    { value: 11,    label: 'EuroHPC sovereign supercomputers (operational)', subtext: 'LUMI, JUPITER, Leonardo, MareNostrum 5, Discoverer, Karolina, Vega, MeluXina, Deucalion, Daedalus, EHPC-PL', col: '#1a6cd4' },
+    { value: 12,    label: 'Planned EuroHPC AI Factory sites',               subtext: '2024-2025 selection rounds (DE, FR, IT, ES, FI, SE, GR, PL, LU, BG, AT, IE)', col: '#0a7d3d' },
+    { value: 1136,  label: 'Global hyperscale data centres (end-2024)',      subtext: 'US holds the majority share; ~8 EU metros host AWS / Azure / Google capacity (Dublin, Frankfurt, Amsterdam, Paris, London, Stockholm, Milan, Zurich)', col: '#b8002e' },
+  ];
+
+  let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;t++;
-    const titleFs=Math.max(9, Math.min(14, W*0.03));
-    const dcFs=Math.max(6, Math.min(8, W*0.02));
-    const nodeFs=Math.max(7, Math.min(9, W*0.022));
-    const legFs=Math.max(7, Math.min(10, W*0.025));
-    const nodeR=Math.max(2.5, Math.min(4, W*0.01));
-    ctx.fillStyle='rgba(10,10,10,0.10)';ctx.font='600 '+titleFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('EUROPEAN AI COMPUTE LANDSCAPE',W/2,24);
-    connections.forEach(([i,j])=>{const a=euroHPC[i],b=euroHPC[j];ctx.beginPath();ctx.moveTo(a.x*W,a.y*H);ctx.lineTo(b.x*W,b.y*H);ctx.strokeStyle='rgba(26,108,212,0.12)';ctx.lineWidth=0.5;ctx.stroke();const prog=((t*0.005+i*0.2)%1);ctx.beginPath();ctx.arc(a.x*W+(b.x*W-a.x*W)*prog,a.y*H+(b.y*H-a.y*H)*prog,1.2,0,Math.PI*2);ctx.fillStyle='rgba(26,108,212,0.3)';ctx.fill();});
-    hyperDC.forEach((n,i)=>{const pulse=1+0.15*Math.sin(t*0.02+i+3);const sz=n.size*W/500;ctx.beginPath();ctx.arc(n.x*W,n.y*H,(sz+8)*pulse,0,Math.PI*2);ctx.fillStyle='rgba(255,51,51,0.04)';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,sz,0,Math.PI*2);ctx.fillStyle='rgba(184,0,46,0.6)';ctx.fill();ctx.fillStyle='rgba(184,0,46,0.55)';ctx.font=dcFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H+sz+12);});
-    euroHPC.forEach((n,i)=>{const pulse=(t*0.02+i*0.5)%(Math.PI*2);for(let r=0;r<3;r++){const ringR=8+r*10+Math.sin(pulse+r)*4;ctx.beginPath();ctx.arc(n.x*W,n.y*H,ringR*W/500,0,Math.PI*2);ctx.strokeStyle=`rgba(26,108,212,${Math.max(0,0.15-r*0.05)})`;ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.beginPath();ctx.arc(n.x*W,n.y*H,nodeR*0.4,0,Math.PI*2);ctx.fillStyle='#e8e0cc';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font=nodeFs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillText(n.name,n.x*W,n.y*H-10);});
-    const ly=H-16;ctx.beginPath();ctx.arc(W*0.2,ly,nodeR,0,Math.PI*2);ctx.fillStyle='#1a6cd4';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font=legFs+'px Inter, sans-serif';ctx.textAlign='left';ctx.fillText('EuroHPC Sovereign Supercomputers (11)',W*0.2+10,ly+4);ctx.beginPath();ctx.arc(W*0.65,ly,nodeR,0,Math.PI*2);ctx.fillStyle='rgba(184,0,46,0.6)';ctx.fill();ctx.fillStyle='rgba(10,10,10,0.65)';ctx.fillText('US Hyperscaler Data Centers',W*0.65+10,ly+4);
-    if (!reduceMotion) requestAnimationFrame(draw);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const W=canvas.width,H=canvas.height;
+    const pad={l:10,r:14,t:22,b:8};
+    grown=Math.min(grown+0.025,1);
+
+    // Header
+    ctx.fillStyle='rgba(10,10,10,0.42)';
+    ctx.font='8.5px JetBrains Mono, monospace';
+    ctx.textAlign='left';
+    ctx.fillText('EUROPEAN SOVEREIGN vs GLOBAL HYPERSCALE',pad.l,12);
+
+    // Use log scale so 11 and 1136 are both visible.
+    const maxLog = Math.log10(1200);
+    const usableH = H - pad.t - pad.b;
+    const rowH = usableH / rows.length;
+
+    rows.forEach((r, i) => {
+      const y = pad.t + i * rowH;
+      const barY = y + 18;
+      const barH = 8;
+      const bigNumX = pad.l;
+      const labelX = pad.l + 78;
+      const barX = pad.l;
+      const barMaxW = W - pad.l - pad.r;
+      const w = (Math.log10(r.value) / maxLog) * barMaxW * grown;
+
+      // Big number
+      ctx.fillStyle = r.col;
+      ctx.font = 'bold 22px JetBrains Mono, monospace';
+      ctx.textAlign = 'left';
+      const numTxt = r.value >= 1000 ? r.value.toLocaleString() + '+' : r.value.toString();
+      ctx.fillText(numTxt, bigNumX, y + 14);
+
+      // Label
+      ctx.fillStyle = 'rgba(10,10,10,0.85)';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(r.label, labelX, y + 8);
+
+      // Bar (log-scale)
+      ctx.fillStyle = r.col;
+      ctx.globalAlpha = 0.18;
+      ctx.fillRect(barX, barY, barMaxW, barH);
+      ctx.globalAlpha = 1;
+      ctx.fillRect(barX, barY, w, barH);
+
+      // Subtext (wrap manually)
+      if (grown > 0.6) {
+        ctx.fillStyle = 'rgba(10,10,10,0.55)';
+        ctx.font = '8.5px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        const maxLineW = W - labelX - pad.r;
+        const words = r.subtext.split(/\s+/);
+        let line = '';
+        let yy = y + 22;
+        for (const word of words) {
+          const test = line ? line + ' ' + word : word;
+          if (ctx.measureText(test).width > maxLineW) {
+            ctx.fillText(line, labelX, yy);
+            line = word;
+            yy += 11;
+            if (yy > y + rowH - 4) {
+              line += '...';
+              break;
+            }
+          } else {
+            line = test;
+          }
+        }
+        if (line) ctx.fillText(line, labelX, yy);
+      }
+    });
+
+    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
