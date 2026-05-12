@@ -551,6 +551,35 @@
     text-underline-offset: 2px;
   }
   .viz-footnotes a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  /* Collapsible sources block (collapsed by default). */
+  .viz-sources {
+    margin-top: 0.9rem;
+    padding-top: 0.7rem;
+    border-top: 1px dashed var(--hairline-strong);
+  }
+  .viz-sources > summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft);
+    user-select: none;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.2rem 0;
+  }
+  .viz-sources > summary::-webkit-details-marker { display: none; }
+  .viz-sources > summary::before {
+    content: '+';
+    font-family: var(--mono); font-size: 0.85rem;
+    width: 0.85rem; display: inline-block;
+    color: var(--accent);
+  }
+  .viz-sources[open] > summary::before { content: '\2212'; }
+  .viz-sources > summary:hover { color: var(--text); }
+  .viz-sources > .viz-footnotes {
+    margin-top: 0.5rem;
+    padding-top: 0;
+  }
   .viz-canvas-wrap {
     background: var(--paper-2);
     border: 1px solid var(--hairline);
@@ -1889,11 +1918,11 @@
           <p>The funding pipeline. EU AI investment ($14B) vs the US&rsquo;s $109B in 2024, plus where European founders go after raising at home: 57% relocate westward.</p>
           <h4>Why it matters here</h4>
           <p>Capital that gets built in Europe doesn&rsquo;t stay there. Every EU success story becomes a US tax win, a US workforce, US-controlled IP.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>$109B US private AI investment vs $14B EU in 2024. <a href="https://aiindex.stanford.edu/report/" target="_blank" rel="noopener">Stanford AI Index 2025</a>, ch. 4 (Economy).</li>
             <li>57% of EU founders who relocate go to the US; net tech-talent inflow collapsed 52k (2022) &rarr; 26k (2024). <a href="https://www.stateofeuropeantech.com/" target="_blank" rel="noopener">Atomico State of European Tech 2024/2025</a>.</li>
             <li>Flow weights between blocs are stylised; treat the direction of the asymmetry, not the magnitude of any single arrow, as the load-bearing claim.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
@@ -1909,12 +1938,12 @@
           <p>Top-tier AI researchers (NeurIPS authors) tracked from education to current employer. The arrows mostly point one way.</p>
           <h4>Why it matters here</h4>
           <p>Aaron and the rest of the Dublin policy team are downstream of this. Europe trains world-class researchers, then exports them. Public universities subsidise US private hiring.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Top 2% of AI researchers by NeurIPS authorship: 57% work in the US (latest annual sample). <a href="https://archivemacropolo.org/interactive/digital-projects/the-global-ai-talent-tracker/" target="_blank" rel="noopener">MacroPolo Global AI Talent Tracker 3.0</a>.</li>
             <li>Within US labs, US- and Chinese-origin researchers are now 75% of top-tier talent (up from 58% in 2019). <a href="https://www.paulsoninstitute.org/press_release/study-finds-us-remains-a-magnet-for-worlds-best-and-brightest-ai-talent-but-more-global-talent-are-staying-home-instead-of-going-abroad/" target="_blank" rel="noopener">Paulson Institute / MacroPolo</a>.</li>
             <li>LinkedIn data shows US employs ~2x as many AI-skilled professionals as the EU. <a href="https://economicgraph.linkedin.com/en-us/research/ai-talent-in-the-eu" target="_blank" rel="noopener">LinkedIn Economic Graph</a>.</li>
             <li>57% of European AI professionals did their undergrad outside Europe; in the US that figure is 38%. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
@@ -1930,12 +1959,12 @@
           <p>Of 24 official EU languages, frontier models support 3 well (English, French, Spanish). 8 get partial coverage. 13+ are at risk of digital extinction.</p>
           <h4>Why it matters here</h4>
           <p>Virkkunen is talking about sovereignty, but the most everyday version of it is which languages your tools understand. When AI doesn&rsquo;t speak your language, your culture goes invisible online.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>24 official EU languages: established under EU Council Regulation 1/1958, as amended. <a href="https://eur-lex.europa.eu/eli/reg/1958/1(1)/oj" target="_blank" rel="noopener">EUR-Lex Reg 1/1958</a>.</li>
             <li>Frontier model coverage is strongest for English, French, Spanish; the European Language Equality project assesses 12+ EU languages as having &ldquo;weak&rdquo; or &ldquo;fragmentary&rdquo; LT support, putting them at digital-extinction risk. <a href="https://european-language-equality.eu/results/" target="_blank" rel="noopener">ELE Strategic Research Agenda</a>; <a href="https://aclanthology.org/2024.findings-acl.595/" target="_blank" rel="noopener">Joshi et al., ACL 2024</a>.</li>
             <li>Native-speaker counts shown on cells: standard demographic estimates (Eurostat &amp; Ethnologue, ranges).</li>
             <li>Strong / Moderate / Weak buckets are simplified from the ELE multidimensional readiness scoring; specific scores per language are published in the ELE country deliverables.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <div id="dbLangHeatmap" style="margin-bottom:0.5rem;"></div>
@@ -1956,12 +1985,12 @@
           <p>Mistral 20x to $400M ARR, Cohere 11x to $240M, DeepL up to $185M. The European labs that exist today are growing fast &mdash; just not coordinated.</p>
           <h4>Why it matters here</h4>
           <p>This is the raw material Ek and Zennstr&ouml;m are looking at. The companies are real, the revenue is real. The missing piece is the entity that lets them act as one.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Mistral ARR ~$20M (Jan 2025) &rarr; ~$400M (Jan 2026), per reporting around the Series C and the &euro;1.7B June 2025 raise. <a href="https://www.theinformation.com/articles/mistrals-revenue-jumps-as-it-pursues-mega-funding" target="_blank" rel="noopener">The Information</a>; <a href="https://www.reuters.com/technology/artificial-intelligence/mistral-ai-raises-17-billion-euros-led-asml-2025-09-09/" target="_blank" rel="noopener">Reuters, 2025</a>.</li>
             <li>Cohere ARR climb to ~$240M by early 2026, per company disclosures around the Series E round. <a href="https://cohere.com/blog/cohere-series-e" target="_blank" rel="noopener">Cohere announcement</a>; <a href="https://www.bloomberg.com/news/articles/2025-08-14/cohere-reaches-6-8-billion-valuation-with-funding-from-amd-radical-ventures" target="_blank" rel="noopener">Bloomberg, Aug 2025</a>.</li>
             <li>DeepL revenue ~&euro;141M (2023) &rarr; ~&euro;185M (2024), per company financials and reporting. <a href="https://sifted.eu/articles/deepl-revenue-growth-2024" target="_blank" rel="noopener">Sifted</a>.</li>
             <li>Animation is the entrance only; absolute ARR values are nominal USD / EUR converted at ~1:1 for visual comparability.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbGrowthChart" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
@@ -1979,12 +2008,12 @@
           </p>
           <h4>Why it matters here</h4>
           <p>Takaichi&rsquo;s sovereign model exists in a market that&rsquo;s already structured. When she reaches for off-the-shelf, she&rsquo;s reaching at this distribution.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Data is pulled live from the HuggingFace public models API, sorted by download count. <a href="https://huggingface.co/docs/hub/api" target="_blank" rel="noopener">HuggingFace Hub API</a>.</li>
             <li>Region attribution is by host-org country mapping (e.g., <code>mistralai</code> &rarr; France, <code>meta-llama</code> &rarr; US). The mapping table is in this file&rsquo;s source.</li>
             <li>Falls back to a historical snapshot if the API call fails or rate-limits.</li>
             <li>Downloads measure repository pulls, not deployments &mdash; treat as a popularity proxy, not deployed inference volume.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <div class="hf-cards" id="hfRegionSummary"></div>
@@ -2001,14 +2030,14 @@
           <p>State-committed public AI funding (solid bars, in &euro;B) for the major European economies plus the EU level. Hashed extension flags the &ldquo;mobilisation&rdquo; or private-pipeline pledge often quoted alongside.</p>
           <h4>Why it matters here</h4>
           <p>This is what France actually controls. Macron&rsquo;s &euro;109B Paris-summit headline is mostly private money (UAE/MGX, Brookfield, Apollo) &mdash; the state line item is &euro;2.5B. Whether the coalition has weight depends on what other capitals will put alongside it.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>France &euro;2.5B: France 2030 AI envelope plus 2024 Action Plan. <a href="https://www.elysee.fr/admin/upload/default/0001/17/d9c1462e7337d353f918aac7d654b896b77c5349.pdf" target="_blank" rel="noopener">&Eacute;lys&eacute;e Feb 2025</a>.</li>
             <li>France &euro;107B aspirational: Paris AI Summit pledge pipeline, predominantly private (MGX ~&euro;50B, Brookfield ~&euro;20B, Apollo, Amazon). <a href="https://www.campusfrance.org/en/intelligence-artificielle-plan-macron-Ai-for-humanity" target="_blank" rel="noopener">Campus France</a>.</li>
             <li>EU InvestAI &euro;20B (new public fund, Feb 2025); &euro;200B figure is a mobilisation target, not committed money. <a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_25_467" target="_blank" rel="noopener">EC IP_25_467</a>.</li>
             <li>Germany &euro;5B cumulative through 2025 (BMBF KI-Aktionsplan). <a href="https://www.plattform-lernende-systeme.de/ki-indikatoren-include-elemente-en.html" target="_blank" rel="noopener">Plattform Lernende Systeme</a>.</li>
             <li>UK &euro;2.4B (&pound;2B): AI Opportunities Action Plan, Clifford, Jan 2025. <a href="https://assets.publishing.service.gov.uk/media/67851771f0528401055d2329/ai_opportunities_action_plan.pdf" target="_blank" rel="noopener">UK Gov</a>.</li>
             <li>Spain &euro;2.1B (ENIA 2024-25); Italy &euro;1B (CDP AI fund, 5-yr); Netherlands &euro;204M (AiNed); Nordics ~&euro;0.35B aggregate. Sources: <a href="https://www.lamoncloa.gob.es/lang/en/gobierno/councilministers/paginas/2024/20240514-council-press-conference.aspx" target="_blank" rel="noopener">La Moncloa</a>, <a href="https://decode39.com/8856/rome-unveils-billion-fund-boost-italian-ai/" target="_blank" rel="noopener">Decode39</a>, <a href="https://www.nwo.nl/en/researchprogrammes/national-growth-fund/ained" target="_blank" rel="noopener">NWO AiNed</a>, <a href="https://www.sigma2.no/news/2024/new-chapter-lumi-ai" target="_blank" rel="noopener">Sigma2</a>.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
@@ -2024,7 +2053,7 @@
           <p>How many AI policy blocs each country sits in, split between <strong>standards bodies</strong> (INAISI, OECD-AI Principles, Five Eyes, EU AI Act) and <strong>summit declarations</strong> (Bletchley, Seoul Ministerial, Hiroshima AI Process, G7). Standards seats are where rules actually get written.</p>
           <h4>Why it matters here</h4>
           <p>Canada is the only country in all four Western standards bodies <em>and</em> the G7 leaders' table. India, Brazil, UAE, and Saudi Arabia show up at the summits but are largely absent from the technical layer &mdash; the gap a Canada-anchored coalition could plausibly bridge.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Bletchley Declaration, Nov 1 2023 (28 + EU). <a href="https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023" target="_blank" rel="noopener">GOV.UK</a>.</li>
             <li>Seoul Ministerial Statement, May 22 2024 (27 + EU). <a href="https://www.mofa.go.jp/files/100672534.pdf" target="_blank" rel="noopener">MOFA Japan</a>.</li>
             <li>Hiroshima AI Process Friends Group (G7-launched Oct 2023; ~66 countries by 2026). <a href="https://www.soumu.go.jp/hiroshimaaiprocess/en/supporters.html" target="_blank" rel="noopener">Japan MIC</a>.</li>
@@ -2033,7 +2062,7 @@
             <li>G7 (CA, FR, DE, IT, JP, GB, US + EU). <a href="https://www.consilium.europa.eu/en/press/press-releases/2024/06/14/g7-leaders-statement-on-ukraine/" target="_blank" rel="noopener">Apulia communique 2024</a>.</li>
             <li>Five Eyes (AU, CA, NZ, GB, US). <a href="https://www.gchq.gov.uk/section/mission/our-partners" target="_blank" rel="noopener">UK GCHQ</a>.</li>
             <li>OECD AI Principles, updated 2024 (47 adherents). <a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener">OECD.AI</a>.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbCoalitionBlocsCanvas" role="img" aria-label="AI policy bloc membership by country: Canada and Western allies central, India / Brazil / UAE / Saudi Arabia present in summits but absent from standards bodies"></canvas>
@@ -2049,14 +2078,14 @@
           <p>The share of EU-trained AI researchers still working in the EU, quarter by quarter Q4 2024 through Q1 2026. The 2019 baseline (~50%) and the 2022 MacroPolo anchor (~43%) are reference lines.</p>
           <h4>Why it matters here</h4>
           <p>This is the chart Aaron is staring at. Annual snapshots already told the story; the quarterly trend turned it from a slow drift into a visible acceleration. By Q1 2026 the EU is around 40% &mdash; the policy team in Dublin is looking at a graph that hasn&rsquo;t bottomed out.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Baseline 2019 (~50%) and 2022 anchor (~43%): MacroPolo Global AI Talent Tracker 3.0, top 2% of NeurIPS-author AI researchers by country of work. <a href="https://archivemacropolo.org/interactive/digital-projects/the-global-ai-talent-tracker/" target="_blank" rel="noopener">MacroPolo</a>.</li>
             <li>Net tech-talent inflow to Europe collapsed from ~52k (2022) to ~26k (2024); EU lost a net 492 technical workers to the US in 2023. <a href="https://www.stateofeuropeantech.com/" target="_blank" rel="noopener">Atomico State of European Tech 2024</a>, <a href="https://sifted.eu/articles/state-european-tech-report-2025" target="_blank" rel="noopener">SoET 2025</a>.</li>
             <li>US employs ~2x as many AI-skilled professionals as the EU. 57% of European AI professionals did their undergrad outside Europe. <a href="https://economicgraph.linkedin.com/en-us/research/ai-talent-in-the-eu" target="_blank" rel="noopener">LinkedIn Economic Graph</a>.</li>
             <li>US AI salaries 30&ndash;70% higher than EU equivalents. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
             <li>Q1 2026 directional read: &ldquo;European countries are losing significant AI talent.&rdquo; <a href="https://www.euronews.com/my-europe/2026/01/29/the-ai-brain-drain-why-europe-cant-keep-the-talent-it-trains" target="_blank" rel="noopener">Euronews, Jan 2026</a>.</li>
             <li>Quarterly points Q4 2024 &ndash; Q1 2026 are interpolated between MacroPolo and Atomico annual anchors; treat the line shape (decline, not bottoming) as the load-bearing claim.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
@@ -2072,7 +2101,7 @@
           <p>The proposed first-cohort coalition from the Bennett &ldquo;Airbus for AI&rdquo; brief: ~10 middle-power member states unified into a Public AI Company. Anchor labs (filled) are the four named entities. The minimum viable product is deliberately small: a 10-person team, three months, ~100k GPU-hours, ~$150k.</p>
           <h4>Why it matters here</h4>
           <p>The brief&rsquo;s explicit guidance is &ldquo;start small &mdash; four labs, not twenty.&rdquo; This isn&rsquo;t a $2B frontier-model bet on day one; it&rsquo;s the smallest credible coalition that can become one. The Ether moment is whether the room can agree to a shape this small to start.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Tan, J., Jackson, B., Berjon, R. &amp; Coyle, D. (2025). <em>Airbus for AI: A global strategy for public value creation.</em> Bennett School of Public Policy, University of Cambridge. <a href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">PDF</a> &middot; DOI: 10.17863/CAM.121150.</li>
             <li>Named members (p. 4): &ldquo;Canada, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, France, the U.K., and other middle powers.&rdquo;</li>
             <li>Named anchor labs/entities (p. 4, 8): Mistral (FR, private), Cohere (CA, private), BSC (ES, public), RIKEN (JP, public). Also referenced: New Nordics AI, Swiss AI, OpenEuroLLM.</li>
@@ -2081,7 +2110,7 @@
             <li>Anti-target (p. 6): &ldquo;training a $2 billion 'leading frontier model' is not the minimum viable product.&rdquo;</li>
             <li>Market context cited in the brief (p. 2): ChatGPT 79.8% global consumer chatbot share (Statcounter, July 2025); Mistral Le Chat &lt;4% French penetration.</li>
             <li>Airbus historical parallel (p. 3): division of labor mapped country-to-component (FR avionics &amp; assembly, DE fuselage, UK wings, ES tail) &mdash; the brief proposes pre-training / evaluation / fine-tuning / inference as the AI equivalent.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbBennettBaselineCanvas" role="img" aria-label="Bennett brief coalition: 10 member states unified into a Public AI Company, anchored by Mistral, Cohere, BSC, RIKEN"></canvas>
@@ -2097,7 +2126,7 @@
           <p>The US chip / AI export-control timeline from Oct 2022 to early 2026, with each action marked &ldquo;in force&rdquo; or &ldquo;rescinded.&rdquo; The headline shift is the AI Diffusion Rule: published Jan 2025, rescinded May 2025; the H20 license requirement reversed two months later.</p>
           <h4>Why it matters here</h4>
           <p>The US tightens, the US loosens, then the US tightens again. The whole point of an Airbus for AI is that allies can&rsquo;t plan five-year capex around something that can flip with an administration. The Diffusion Rule&rsquo;s rescinded tier list is the explicit version of that risk.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>Oct 7 2022 BIS Interim Final Rule — ECCN 3A090, supercomputer end-use, 28 PRC entities listed. <a href="https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor" target="_blank" rel="noopener">87 FR 62186</a>.</li>
             <li>Oct 17 2023 update — closed A800/H800 loophole, added performance-density metric, HBM density threshold, 40+ country FDPR. <a href="https://www.federalregister.gov/documents/2023/10/25/2023-23055/implementation-of-additional-export-controls-certain-advanced-computing-items-supercomputer-and" target="_blank" rel="noopener">88 FR 73458</a>.</li>
             <li>Dec 2 2024 &ldquo;third package&rdquo; — ECCN 3A090.c on all production HBM, 140 entities added. <a href="https://www.bis.gov/press-release/commerce-strengthens-export-controls-restrict-chinas-capability-produce-advanced-semiconductors-military" target="_blank" rel="noopener">BIS</a>.</li>
@@ -2108,7 +2137,7 @@
             <li>Sep 29 2025 &ldquo;50% Affiliates Rule&rdquo; (suspended Nov 10 for 1 year). <a href="https://www.sidley.com/en/insights/newsupdates/2025/10/us-commerce-department-bureau-of-industry-and-security-adopts-50-percent-rule-for-export-controls" target="_blank" rel="noopener">Sidley</a>.</li>
             <li>Jan 13 2026 H200 / MI325X case-by-case license posture. <a href="https://www.mayerbrown.com/en/insights/publications/2026/01/administration-policies-on-advanced-ai-chips-codified" target="_blank" rel="noopener">Mayer Brown</a>.</li>
             <li>Jan 14 2026 Section 232 25% semiconductor tariff. <a href="https://www.pillsburylaw.com/en/news-and-insights/trump-advanced-ai-semiconductors-actions.html" target="_blank" rel="noopener">Pillsbury</a>.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
@@ -2124,12 +2153,12 @@
           <p>11 EuroHPC supercomputers and 12 planned AI Factory sites against 1,136+ global hyperscale data centres (US owns the majority).</p>
           <h4>Why it matters here</h4>
           <p>This is what Merz means when he says he doesn&rsquo;t know how exposed Germany is. Even &ldquo;sovereign&rdquo; European stacks run on top of AWS, Azure, or Google. Every prompt is a US-routed transaction.</p>
-          <ol class="viz-footnotes">
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>11 operational EuroHPC supercomputers (LUMI, Leonardo, MareNostrum 5, JUPITER, Discoverer, Karolina, Vega, Meluxina, Deucalion, Daedalus, Levente). <a href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank" rel="noopener">EuroHPC JU</a>.</li>
             <li>12 EuroHPC AI Factory host sites confirmed across the 2024-2025 selection rounds. <a href="https://www.eurohpc-ju.europa.eu/eurohpc-joint-undertaking-launches-ai-factories-calls-boost-european-leadership-trustworthy-ai-2024-09-10_en" target="_blank" rel="noopener">EuroHPC AI Factories call</a>.</li>
             <li>1,136+ global hyperscale data centres at end-2024, with the US holding the majority. <a href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank" rel="noopener">Synergy Research</a>.</li>
             <li>JUPITER (J&uuml;lich): &euro;500M total, half EU / half Germany; first European exascale system, designated AI Factory host. <a href="https://www.eurohpc-ju.europa.eu/new-jupiter-module-strengthens-leading-position-europes-upcoming-exascale-supercomputer-2024-11-18_en" target="_blank" rel="noopener">EuroHPC</a>.</li>
-          </ol>
+          </ol></details>
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbComputeMapCanvas" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs US hyperscaler data centers"></canvas>
@@ -3092,19 +3121,40 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     requestAnimationFrame(()=>draw());
   }
   resize();window.addEventListener('resize',resize);
+  // Real-time axis: points carry an absolute date (year + month/12) so all
+  // three series share one timeline.
+  const X_MIN = 2023.0;
+  const X_MAX = 2026.25;
   const series=[
-    {name:'Mistral AI',color:'#3b82f6',points:[{x:0,y:20,label:'Jan 2025'},{x:0.25,y:50},{x:0.5,y:150},{x:0.75,y:312,label:'Dec 2025'},{x:1,y:400,label:'Jan 2026'}]},
-    {name:'Cohere',color:'#ef4444',points:[{x:0,y:22,label:'Mar 2024'},{x:0.33,y:100,label:'May 2025'},{x:0.66,y:150,label:'Oct 2025'},{x:1,y:240,label:'Feb 2026'}]},
-    {name:'DeepL',color:'#06b6d4',points:[{x:0,y:141,label:'2023'},{x:1,y:185,label:'2024'}]}
+    {name:'Mistral AI',color:'#3b82f6',points:[
+      {date:2025.0,  y:20,  label:'Jan 2025'},
+      {date:2025.25, y:50},
+      {date:2025.5,  y:150},
+      {date:2025.92, y:312, label:'Dec 2025'},
+      {date:2026.0,  y:400, label:'Jan 2026'},
+    ]},
+    {name:'Cohere',color:'#ef4444',points:[
+      {date:2024.17, y:22,  label:'Mar 2024'},
+      {date:2025.33, y:100, label:'May 2025'},
+      {date:2025.75, y:150, label:'Oct 2025'},
+      {date:2026.08, y:240, label:'Feb 2026'},
+    ]},
+    {name:'DeepL',color:'#06b6d4',points:[
+      {date:2023.5, y:141, label:'2023'},
+      {date:2024.5, y:185, label:'2024'},
+    ]}
   ];
   const maxY=420;
+  function dateToX(d){ return (d - X_MIN) / (X_MAX - X_MIN); }
   let grown=reduceMotion?1:0;
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     const W=canvas.width,H=canvas.height;
-    const pad={l:60,r:30,t:30,b:36};
+    const pad={l:54,r:64,t:30,b:42};
     const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
     grown=Math.min(grown+0.015,1);
+
+    // Y gridlines + labels
     ctx.strokeStyle='rgba(10,10,10,0.06)';ctx.lineWidth=0.5;
     for(let v=0;v<=400;v+=100){
       const y=pad.t+ch-(v/maxY)*ch;
@@ -3112,17 +3162,35 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.fillStyle='rgba(10,10,10,0.45)';ctx.font='10px JetBrains Mono, monospace';ctx.textAlign='right';
       ctx.fillText('$'+v+'M',pad.l-8,y+4);
     }
+    // Y-axis title
     ctx.save();ctx.translate(14,pad.t+ch/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='rgba(10,10,10,0.35)';ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('ARR ($M)',0,0);ctx.restore();
+
+    // X-axis baseline + year ticks
+    ctx.strokeStyle='rgba(10,10,10,0.25)';ctx.lineWidth=0.8;
+    ctx.beginPath();ctx.moveTo(pad.l,pad.t+ch);ctx.lineTo(pad.l+cw,pad.t+ch);ctx.stroke();
+    for(let year=2023; year<=2026; year++){
+      const x = pad.l + dateToX(year) * cw;
+      ctx.strokeStyle='rgba(10,10,10,0.25)';
+      ctx.beginPath();ctx.moveTo(x,pad.t+ch);ctx.lineTo(x,pad.t+ch+4);ctx.stroke();
+      ctx.fillStyle='rgba(10,10,10,0.55)';
+      ctx.font='9.5px JetBrains Mono, monospace';
+      ctx.textAlign='center';
+      ctx.fillText(year, x, pad.t+ch+18);
+      // Faint vertical gridline
+      ctx.strokeStyle='rgba(10,10,10,0.04)';
+      ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,pad.t+ch);ctx.stroke();
+    }
+
     series.forEach(s=>{
       ctx.beginPath();
       s.points.forEach((p,i)=>{
-        const x=pad.l+p.x*cw;
+        const x=pad.l+dateToX(p.date)*cw;
         const y=pad.t+ch-(Math.min(p.y*grown,p.y)/maxY)*ch;
         if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
       });
       ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.stroke();
       s.points.forEach(p=>{
-        const x=pad.l+p.x*cw;
+        const x=pad.l+dateToX(p.date)*cw;
         const y=pad.t+ch-(Math.min(p.y*grown,p.y)/maxY)*ch;
         ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
         if(p.label&&grown>0.8){
@@ -3131,13 +3199,18 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         }
       });
       const last=s.points[s.points.length-1];
-      const lx=pad.l+last.x*cw;
+      const lx=pad.l+dateToX(last.date)*cw;
       const ly=pad.t+ch-(Math.min(last.y*grown,last.y)/maxY)*ch;
       if(grown>0.8){
         ctx.fillStyle=s.color;ctx.font='bold 11px JetBrains Mono, monospace';ctx.textAlign='left';
-        ctx.fillText('$'+Math.round(last.y*grown)+'M',lx+8,ly+4);
+        const labelTxt = '$'+Math.round(last.y*grown)+'M';
+        // Clamp label inside canvas, never cropped.
+        const maxLabelX = W - ctx.measureText(labelTxt).width - 4;
+        ctx.fillText(labelTxt, Math.min(lx+8, maxLabelX), ly+4);
       }
     });
+
+    // Legend (top-left)
     const lx=pad.l+10;
     series.forEach((s,i)=>{
       const ly=pad.t+10+i*16;
