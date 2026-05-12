@@ -767,7 +767,7 @@
     padding: 5rem 1.5rem;
   }
   .outcome-inner {
-    max-width: 78ch; margin: 0 auto;
+    max-width: 1180px; margin: 0 auto;
   }
   .outcome-kicker {
     font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
@@ -801,10 +801,46 @@
     margin-bottom: 2.5rem;
   }
 
+  /* === SPLIT LAYOUT: decisions left, coalition design right === */
+  .outcome-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    gap: 2.75rem;
+    margin: 2rem 0 2.5rem;
+    align-items: start;
+  }
+  .outcome-split-left {
+    min-width: 0;
+  }
+  .outcome-split-right {
+    min-width: 0;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+  }
+  /* Below 1024px, stack vertically and drop the sticky behaviour. */
+  @media (max-width: 1023px) {
+    .outcome-split {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .outcome-split-right {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
+    }
+  }
+
+  /* Tighten the synthesis copy so it doesn't sprawl across the wider container. */
+  .outcome-title { max-width: 32ch; }
+  .outcome-synthesis { max-width: 60ch; }
+
   /* === COALITION DESIGN PANEL === */
   .coalition-design {
-    display: grid; gap: 2.25rem;
-    margin: 2rem 0 2.5rem;
+    display: grid; gap: 2rem;
   }
   .design-section {
     padding-top: 1.75rem;
@@ -1594,14 +1630,19 @@
   <div class="outcome-inner">
     <div class="outcome-kicker">Your Coalition</div>
     <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
-    <p class="outcome-synthesis">The Bennett School brief lays out the proposal as a set of moving parts: which states join, which labs anchor it, how it&rsquo;s governed, what it covers, how small the first version can be. Below: the universe of options, with your seven picks highlighting which slice the story takes.</p>
+    <p class="outcome-synthesis">The Bennett School brief lays out the proposal as a set of moving parts: which states join, which labs anchor it, how it&rsquo;s governed, what it covers, how small the first version can be. Pick on the left; watch the shape on the right.</p>
 
-    <div class="coalition-design" id="coalitionDesign"></div>
-
-    <div class="decisions-panel" aria-labelledby="decisionsPanelTitle">
-      <h3 class="decisions-panel-title" id="decisionsPanelTitle">Your seven calls</h3>
-      <p class="decisions-panel-note">Pick or repick any of the seven. The components above update as you do.</p>
-      <ol class="decisions-list" id="decisionsList"></ol>
+    <div class="outcome-split">
+      <div class="outcome-split-left">
+        <div class="decisions-panel" aria-labelledby="decisionsPanelTitle">
+          <h3 class="decisions-panel-title" id="decisionsPanelTitle">Your seven calls</h3>
+          <p class="decisions-panel-note">Each call moves one component of the coalition shape on the right.</p>
+          <ol class="decisions-list" id="decisionsList"></ol>
+        </div>
+      </div>
+      <div class="outcome-split-right">
+        <div class="coalition-design" id="coalitionDesign"></div>
+      </div>
     </div>
 
     <div class="outcome-actions">
