@@ -1338,7 +1338,7 @@
   </section>
 
   <!-- 11. The Ether, April 2027 -->
-  <section class="scene" data-viz="capital-flow" id="scene-ether">
+  <section class="scene" data-viz="bennett-baseline" id="scene-ether">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 11</div>
       <span class="scene-dateline">
@@ -1609,6 +1609,31 @@
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Bennett Baseline (The Ether) -->
+    <div class="viz-pane" data-viz="bennett-baseline" data-title="The Bennett baseline &mdash; what the brief actually proposes">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>The proposed first-cohort coalition from the Bennett &ldquo;Airbus for AI&rdquo; brief: ~10 middle-power member states unified into a Public AI Company. Anchor labs (filled) are the four named entities. The minimum viable product is deliberately small: a 10-person team, three months, ~100k GPU-hours, ~$150k.</p>
+          <h4>Why it matters here</h4>
+          <p>The brief&rsquo;s explicit guidance is &ldquo;start small &mdash; four labs, not twenty.&rdquo; This isn&rsquo;t a $2B frontier-model bet on day one; it&rsquo;s the smallest credible coalition that can become one. The Ether moment is whether the room can agree to a shape this small to start.</p>
+          <ol class="viz-footnotes">
+            <li>Tan, J., Jackson, B., Berjon, R. &amp; Coyle, D. (2025). <em>Airbus for AI: A global strategy for public value creation.</em> Bennett School of Public Policy, University of Cambridge. <a href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">PDF</a> &middot; DOI: 10.17863/CAM.121150.</li>
+            <li>Named members (p. 4): &ldquo;Canada, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, France, the U.K., and other middle powers.&rdquo;</li>
+            <li>Named anchor labs/entities (p. 4, 8): Mistral (FR, private), Cohere (CA, private), BSC (ES, public), RIKEN (JP, public). Also referenced: New Nordics AI, Swiss AI, OpenEuroLLM.</li>
+            <li>MVP scale (p. 8): &ldquo;A 10-person team working for 3 months, building on existing collaborations and open-source models, and supplied with about 100k GPU-hours (~150k USD), can deliver a minimum viable product.&rdquo;</li>
+            <li>Cohort guidance (p. 7): &ldquo;start small: four labs, not twenty.&rdquo;</li>
+            <li>Anti-target (p. 6): &ldquo;training a $2 billion 'leading frontier model' is not the minimum viable product.&rdquo;</li>
+            <li>Market context cited in the brief (p. 2): ChatGPT 79.8% global consumer chatbot share (Statcounter, July 2025); Mistral Le Chat &lt;4% French penetration.</li>
+            <li>Airbus historical parallel (p. 3): division of labor mapped country-to-component (FR avionics &amp; assembly, DE fuselage, UK wings, ES tail) &mdash; the brief proposes pre-training / evaluation / fine-tuning / inference as the AI equivalent.</li>
+          </ol>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbBennettBaselineCanvas" role="img" aria-label="Bennett brief coalition: 10 member states unified into a Public AI Company, anchored by Mistral, Cohere, BSC, RIKEN"></canvas>
         </div>
       </div>
     </div>
@@ -2402,6 +2427,140 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
       }
     });
+
+    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// --- Bennett Baseline (The Ether) ---
+(function(){
+  const canvas = document.getElementById('dbBennettBaselineCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.height = canvas.clientHeight || 280;
+    requestAnimationFrame(()=>draw());
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Bennett brief first-cohort members (p. 4). `entity` = named anchor lab.
+  // `anchor: true` = one of the four "start small" labs.
+  const members = [
+    { country: 'France',       entity: 'Mistral',      anchor: true  },
+    { country: 'Canada',       entity: 'Cohere',       anchor: true  },
+    { country: 'Spain',        entity: 'BSC',          anchor: true  },
+    { country: 'Japan',        entity: 'RIKEN',        anchor: true  },
+    { country: 'Switzerland',  entity: 'Swiss AI',     anchor: false },
+    { country: 'Sweden',       entity: 'Nordics AI',   anchor: false },
+    { country: 'Germany',      entity: '',             anchor: false },
+    { country: 'Singapore',    entity: '',             anchor: false },
+    { country: 'S. Korea',     entity: '',             anchor: false },
+    { country: 'UK',           entity: '',             anchor: false },
+  ];
+  const ACCENT = '#0077c8';
+
+  let grown = reduceMotion ? 1 : 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    grown = Math.min(grown + 0.022, 1);
+
+    // Header
+    ctx.fillStyle = 'rgba(10,10,10,0.42)';
+    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('BENNETT BASELINE COALITION  (Sept 2025)', 8, 12);
+
+    const cx = W / 2;
+    const cy = H / 2 + 6;
+    const r = Math.min(W, H) * 0.36;
+
+    // Connections (drawn first so they sit behind nodes)
+    ctx.strokeStyle = 'rgba(10,10,10,0.16)';
+    ctx.lineWidth = 0.7;
+    members.forEach((m, i) => {
+      const angle = -Math.PI / 2 + i * (2 * Math.PI / members.length);
+      const fade = Math.min(1, Math.max(0, (grown - i / members.length / 1.4) * 3));
+      const x = cx + Math.cos(angle) * r * fade;
+      const y = cy + Math.sin(angle) * r * fade;
+      ctx.globalAlpha = fade * 0.55;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+
+    // Central "Public AI Co" node
+    const centralR = 36;
+    ctx.beginPath();
+    ctx.arc(cx, cy, centralR, 0, Math.PI * 2);
+    ctx.fillStyle = ACCENT;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,119,200,0.4)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, centralR + 5, 0, Math.PI * 2);
+    ctx.stroke();
+    // Central labels
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Public AI Co.', cx, cy - 6);
+    ctx.font = '8px JetBrains Mono, monospace';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText('MVP: 10 ppl', cx, cy + 6);
+    ctx.fillText('100k GPU-h', cx, cy + 16);
+    ctx.fillText('$150k · 3 mo', cx, cy + 26);
+
+    // Member nodes
+    members.forEach((m, i) => {
+      const angle = -Math.PI / 2 + i * (2 * Math.PI / members.length);
+      const appear = Math.min(1, Math.max(0, (grown - i / members.length / 1.4) * 3));
+      if (appear <= 0) return;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+
+      // Node dot
+      ctx.beginPath();
+      ctx.arc(x, y, m.anchor ? 5.5 : 4, 0, Math.PI * 2);
+      ctx.fillStyle = m.anchor ? ACCENT : 'rgba(30,41,59,0.85)';
+      ctx.fill();
+      if (m.anchor) {
+        ctx.strokeStyle = 'rgba(0,119,200,0.35)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(x, y, 9, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Label position (push away from center)
+      const lx = cx + Math.cos(angle) * (r + 18);
+      const ly = cy + Math.sin(angle) * (r + 18);
+      const align = Math.cos(angle) > 0.2 ? 'left' : Math.cos(angle) < -0.2 ? 'right' : 'center';
+      ctx.textAlign = align;
+      ctx.fillStyle = m.anchor ? ACCENT : 'rgba(10,10,10,0.82)';
+      ctx.font = m.anchor ? 'bold 9.5px Inter, sans-serif' : '9.5px Inter, sans-serif';
+      ctx.globalAlpha = appear;
+      ctx.fillText(m.country, lx, ly);
+      if (m.entity) {
+        ctx.fillStyle = 'rgba(10,10,10,0.55)';
+        ctx.font = '8.5px JetBrains Mono, monospace';
+        ctx.fillText(m.entity, lx, ly + 10);
+      }
+      ctx.globalAlpha = 1;
+    });
+
+    // Bottom quote
+    if (grown > 0.85) {
+      ctx.fillStyle = 'rgba(10,10,10,0.55)';
+      ctx.font = 'italic 9px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('"Start small: four labs, not twenty."', cx, H - 6);
+    }
 
     if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
   }
