@@ -767,7 +767,7 @@
     padding: 5rem 1.5rem;
   }
   .outcome-inner {
-    max-width: 1180px; margin: 0 auto;
+    max-width: 78ch; margin: 0 auto;
   }
   .outcome-kicker {
     font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
@@ -801,47 +801,68 @@
     margin-bottom: 2.5rem;
   }
 
-  /* === SPLIT LAYOUT: decisions left, coalition design right === */
-  .outcome-split {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
-    gap: 2.75rem;
-    margin: 2rem 0 2.5rem;
-    align-items: start;
-  }
-  .outcome-split-left {
-    min-width: 0;
-  }
-  .outcome-split-right {
-    min-width: 0;
-    position: sticky;
-    top: 80px;
-    max-height: calc(100vh - 96px);
-    overflow-y: auto;
-    padding-right: 0.5rem;
-  }
-  /* Below 1024px, stack vertically and drop the sticky behaviour. */
-  @media (max-width: 1023px) {
-    .outcome-split {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .outcome-split-right {
-      position: static;
-      max-height: none;
-      overflow: visible;
-      padding-right: 0;
-    }
-  }
-
-  /* Tighten the synthesis copy so it doesn't sprawl across the wider container. */
-  .outcome-title { max-width: 32ch; }
-  .outcome-synthesis { max-width: 60ch; }
-
   /* === COALITION DESIGN PANEL === */
   .coalition-design {
-    display: grid; gap: 2rem;
+    display: grid; gap: 2.5rem;
+    margin: 2rem 0 2.5rem;
   }
+
+  /* Inline picks embedded inside each design-section. Each pick reads as a
+     line of the brief: short label, option chips, and the picked option's
+     impact in a hairline-bordered callout. */
+  .design-picks {
+    display: grid; gap: 1.1rem;
+    margin: 1.1rem 0 1.4rem;
+  }
+  .design-pick {
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--hairline);
+  }
+  .design-pick:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+  .design-pick-label {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft);
+    display: block; margin-bottom: 0.55rem;
+  }
+  .design-pick-options {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .design-pick-option {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.45rem 0.75rem;
+    min-height: 36px;
+    background: var(--paper-2); color: var(--text);
+    border: 1px solid var(--hairline-strong); border-radius: 4px;
+    font-family: var(--font); font-size: 0.82rem; font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .design-pick-option:hover { border-color: var(--accent); color: var(--accent); }
+  .design-pick-option.is-picked {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .design-pick-option .option-tag {
+    font-family: var(--mono); font-size: 0.52rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .design-pick-impact {
+    font-family: var(--font); font-size: 0.82rem; line-height: 1.5;
+    color: var(--text-soft);
+    padding: 0.5rem 0.75rem;
+    border-left: 3px solid var(--hairline-strong);
+    background: var(--paper-2);
+    border-radius: 0 4px 4px 0;
+    margin: 0;
+  }
+  .design-pick-impact[data-strength="active"]  { border-left-color: var(--accent); }
+  .design-pick-impact[data-strength="mid"]     { border-left-color: var(--gold); }
+  .design-pick-impact[data-strength="passive"] { border-left-color: var(--red); }
   .design-section {
     padding-top: 1.75rem;
     border-top: 1px solid var(--hairline);
@@ -1630,20 +1651,9 @@
   <div class="outcome-inner">
     <div class="outcome-kicker">Your Coalition</div>
     <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
-    <p class="outcome-synthesis">The Bennett School brief lays out the proposal as a set of moving parts: which states join, which labs anchor it, how it&rsquo;s governed, what it covers, how small the first version can be. Pick on the left; watch the shape on the right.</p>
+    <p class="outcome-synthesis">An interactive brief: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Sourced from Tan, Jackson, Berjon &amp; Coyle (2025) and the story above.</p>
 
-    <div class="outcome-split">
-      <div class="outcome-split-left">
-        <div class="decisions-panel" aria-labelledby="decisionsPanelTitle">
-          <h3 class="decisions-panel-title" id="decisionsPanelTitle">Your seven calls</h3>
-          <p class="decisions-panel-note">Each call moves one component of the coalition shape on the right.</p>
-          <ol class="decisions-list" id="decisionsList"></ol>
-        </div>
-      </div>
-      <div class="outcome-split-right">
-        <div class="coalition-design" id="coalitionDesign"></div>
-      </div>
-    </div>
+    <div class="coalition-design" id="coalitionDesign"></div>
 
     <div class="outcome-actions">
       <a class="btn btn-primary" href="#signon">Sign on</a>
@@ -2387,6 +2397,40 @@
     return { members: inSet, labs: labsIn, governance: gov, scope: stockholm };
   }
 
+  // Short, brief-style labels for each decision (different from the in-story
+  // question text so the outcome reads like a configurable policy brief).
+  const PICK_LABELS = {
+    'scene-brussels':  'How the case is framed',
+    'scene-ottawa':    'Trans-Atlantic shape',
+    'scene-tokyo':     'Japan participation',
+    'scene-paris':     'France role',
+    'scene-berlin':    'Germany on the Digital Liberty Act',
+    'scene-ether':     'Final structure',
+    'scene-stockholm': 'Mandate scope',
+  };
+
+  // Render a single inline pick (label + chips + impact callout).
+  function pickHtml(sceneId){
+    const cfg = SIM[sceneId];
+    if (!cfg) return '';
+    const pick = getPick(sceneId);
+    const pickedOpt = cfg.options.find(o => o.id === pick) || cfg.options[0];
+    const options = cfg.options.map(o => `
+      <button type="button"
+              class="design-pick-option ${o.id === pick ? 'is-picked' : ''}"
+              data-scene="${sceneId}" data-pick="${o.id}"
+              role="radio" aria-checked="${o.id === pick}">
+        <span>${o.label}</span>
+        ${o.default ? '<span class="option-tag">default</span>' : ''}
+      </button>`).join('');
+    return `
+      <div class="design-pick" data-scene="${sceneId}">
+        <span class="design-pick-label">${PICK_LABELS[sceneId] || cfg.question}</span>
+        <div class="design-pick-options" role="radiogroup">${options}</div>
+        <p class="design-pick-impact" data-strength="${pickedOpt.strength}">${pickedOpt.impact || ''}</p>
+      </div>`;
+  }
+
   function renderCoalitionDesign(){
     const root = document.getElementById('coalitionDesign');
     if (!root) return;
@@ -2424,7 +2468,7 @@
         <div class="design-row ${active ? 'is-active' : ''}">
           <div class="design-row-name">
             ${g.name}
-            ${active ? '<span class="design-card-tag">your picks</span>' : ''}
+            ${active ? '<span class="design-card-tag">your shape</span>' : ''}
           </div>
           <div class="design-row-desc">${g.desc}</div>
         </div>`;
@@ -2436,7 +2480,7 @@
         <div class="design-row ${active ? 'is-active' : ''}">
           <div class="design-row-name">
             ${s.name}
-            ${active ? '<span class="design-card-tag">your picks</span>' : ''}
+            ${active ? '<span class="design-card-tag">your shape</span>' : ''}
           </div>
           <div class="design-row-desc">${s.desc}</div>
         </div>`;
@@ -2446,35 +2490,48 @@
       <div class="design-section">
         <div class="design-section-kicker">Member states (10 named in the brief)</div>
         <h3 class="design-section-title">Who joins</h3>
-        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025) name France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada as the first-cohort middle powers. Your picks across Brussels, Ottawa, Tokyo, and Paris shape which of them are in.</p>
+        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025) name France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada as the first-cohort middle powers. Four picks decide which of them are eligible.</p>
+        <div class="design-picks">
+          ${pickHtml('scene-brussels')}
+          ${pickHtml('scene-ottawa')}
+          ${pickHtml('scene-tokyo')}
+          ${pickHtml('scene-paris')}
+        </div>
         <div class="design-grid">${memberHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">Anchor labs (the brief says four, not twenty)</div>
         <h3 class="design-section-title">Who anchors</h3>
-        <p class="design-section-note">The four named anchors: two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). A lab is in if its host state is in.</p>
+        <p class="design-section-note">Two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). A lab is in when its host state is in, so the anchors follow directly from the member picks above.</p>
         <div class="design-grid">${labsHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">Governance shape</div>
         <h3 class="design-section-title">How it&rsquo;s held together</h3>
-        <p class="design-section-note">The brief proposes a public-private partnership (p. 4, &ldquo;How?&rdquo;), but explicitly leaves room for &ldquo;most likely something bespoke.&rdquo; The four archetypes the literature recognises:</p>
+        <p class="design-section-note">The brief proposes a public-private partnership (p. 4, &ldquo;How?&rdquo;) but leaves room for &ldquo;most likely something bespoke.&rdquo; The relationship to the US Digital Liberty Act, plus the final structure call, decide which archetype you end up with.</p>
+        <div class="design-picks">
+          ${pickHtml('scene-berlin')}
+          ${pickHtml('scene-ether')}
+        </div>
         <div class="design-rows">${govHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">Scope</div>
         <h3 class="design-section-title">What the coalition covers</h3>
-        <p class="design-section-note">From the Stockholm call. The brief&rsquo;s preferred end-state is the full stack, but the entry point can be narrower.</p>
+        <p class="design-section-note">The brief&rsquo;s preferred end-state is the full stack; the entry point can be narrower.</p>
+        <div class="design-picks">
+          ${pickHtml('scene-stockholm')}
+        </div>
         <div class="design-rows">${scopeHtml}</div>
       </div>
 
       <div class="design-section">
         <div class="design-section-kicker">MVP target (the brief&rsquo;s floor)</div>
         <h3 class="design-section-title">How small the first version can be</h3>
-        <p class="design-section-note">From Tan, Jackson, Berjon &amp; Coyle (2025), p. 8: the smallest credible coalition that can grow into a frontier programme.</p>
+        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025), p. 8: the smallest credible coalition that can grow into a frontier programme. The same MVP regardless of which shape you pick above.</p>
         <div class="design-mvp">
           <div class="design-mvp-stats">
             <div class="design-mvp-stat">10<span>person team</span></div>
@@ -2486,6 +2543,15 @@
         </div>
       </div>
     `;
+
+    // Wire up the inline pick buttons.
+    root.querySelectorAll('.design-pick-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        simState[btn.dataset.scene] = btn.dataset.pick;
+        saveState();
+        renderCoalitionDesign();
+      });
+    });
 
     // Store the derived shape on the sign-on form so it travels with the
     // sign-on submission.
@@ -2499,60 +2565,10 @@
   // working; it now just re-renders the design panel.
   function renderOutcome(){ renderCoalitionDesign(); }
 
-  // Render the seven decisions as cards inside the outcome section. Clicking
-  // any option updates the pick, re-renders the outcome above, and re-renders
-  // the cards themselves to reflect the new "is-picked" state.
-  function renderDecisionsPanel(){
-    const list = document.getElementById('decisionsList');
-    if (!list) return;
-    list.innerHTML = decisionOrder.map((id, idx) => {
-      const cfg = SIM[id];
-      const pick = getPick(id);
-      const pickedOpt = cfg.options.find(o => o.id === pick) || cfg.options[0];
-      const sceneEl = document.getElementById(id);
-      const sceneTitle = sceneEl && sceneEl.querySelector('.scene-title')
-        ? sceneEl.querySelector('.scene-title').textContent
-        : id;
-      const options = cfg.options.map(o => `
-        <button type="button"
-                class="decision-card-option ${o.id === pick ? 'is-picked' : ''}"
-                data-scene="${id}" data-pick="${o.id}"
-                role="radio" aria-checked="${o.id === pick}">
-          <span>${o.label}</span>
-          ${o.default ? '<span class="option-tag">default</span>' : ''}
-        </button>`).join('');
-      const impactHtml = pickedOpt && pickedOpt.impact ? `
-        <div class="decision-card-impact" data-strength="${pickedOpt.strength}">
-          <span class="decision-card-strength" data-strength="${pickedOpt.strength}">${pickedOpt.strength}</span>
-          <span class="decision-card-impact-text">${pickedOpt.impact}</span>
-        </div>` : '';
-      return `
-        <li class="decision-card" data-scene="${id}">
-          <div class="decision-card-num">${String(idx + 1).padStart(2, '0')} / ${sceneTitle}</div>
-          <div class="decision-card-body">
-            <div class="decision-card-question">${cfg.question}</div>
-            <div class="decision-card-options" role="radiogroup">${options}</div>
-            ${impactHtml}
-          </div>
-        </li>`;
-    }).join('');
-    list.querySelectorAll('.decision-card-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const sceneId = btn.dataset.scene;
-        const pickId = btn.dataset.pick;
-        simState[sceneId] = pickId;
-        saveState();
-        renderOutcome();
-        renderDecisionsPanel();
-      });
-    });
-  }
-
-  // Render the panel + initial outcome on load so the section is ready
-  // whenever the user reaches it.
+  // Render the design panel on load so the outcome section is ready whenever
+  // the user reaches it. Picks are inline inside each section now.
   if (outcome) {
-    renderDecisionsPanel();
-    renderOutcome();
+    renderCoalitionDesign();
   }
 })();
 
