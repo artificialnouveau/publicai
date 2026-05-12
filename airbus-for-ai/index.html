@@ -2256,8 +2256,7 @@
         if (o.default) cls.push('is-default');
         return `<button type="button" class="${cls.join(' ')}" data-pick="${o.id}" role="radio" aria-checked="${o.id === pick}">
           <span>${o.label}</span>
-          ${o.default ? '<span class="option-tag">default</span>' : ''}
-        </button>`;
+          </button>`;
       }).join('');
       stripOptions.querySelectorAll('button').forEach(b => {
         b.addEventListener('click', () => {
@@ -2529,7 +2528,6 @@
               data-scene="${sceneId}" data-pick="${o.id}"
               role="radio" aria-checked="${o.id === pick}">
         <span>${o.label}</span>
-        ${o.default ? '<span class="option-tag">default</span>' : ''}
       </button>`).join('');
     return `
       <div class="design-pick" data-scene="${sceneId}">
