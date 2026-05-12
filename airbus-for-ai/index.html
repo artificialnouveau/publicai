@@ -800,6 +800,132 @@
     display: grid; grid-template-columns: 1fr; gap: 0.5rem;
     margin-bottom: 2.5rem;
   }
+
+  /* === COALITION DESIGN PANEL === */
+  .coalition-design {
+    display: grid; gap: 2.25rem;
+    margin: 2rem 0 2.5rem;
+  }
+  .design-section {
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .design-section-kicker {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .design-section-title {
+    font-family: var(--serif); font-size: 1.4rem; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .design-section-note {
+    font-family: var(--font); font-size: 0.9rem;
+    color: var(--text-soft);
+    margin-bottom: 1.1rem;
+    max-width: 65ch;
+  }
+  .design-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.7rem;
+  }
+  .design-card {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    background: var(--paper);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .design-card.is-active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .design-card.is-anchor { border-style: solid; }
+  .design-card-name {
+    font-family: var(--font); font-size: 0.95rem; font-weight: 600;
+    color: var(--text);
+    display: flex; align-items: baseline; gap: 0.4rem;
+  }
+  .design-card.is-active .design-card-name { color: var(--accent); }
+  .design-card-tag {
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); opacity: 0.85;
+  }
+  .design-card-entity {
+    font-family: var(--mono); font-size: 0.68rem;
+    color: var(--text-soft);
+    margin-top: 2px;
+  }
+  .design-card-brings {
+    font-family: var(--font); font-size: 0.78rem; line-height: 1.45;
+    color: var(--text);
+    margin-top: 0.45rem;
+  }
+  .design-card[aria-disabled="true"] {
+    opacity: 0.45;
+  }
+
+  .design-rows { display: grid; gap: 0.55rem; }
+  .design-row {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    background: var(--paper);
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .design-row.is-active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .design-row-name {
+    font-family: var(--font); font-size: 0.92rem; font-weight: 600;
+    color: var(--text);
+    display: flex; align-items: baseline; gap: 0.4rem;
+  }
+  .design-row.is-active .design-row-name { color: var(--accent); }
+  .design-row-desc {
+    font-family: var(--font); font-size: 0.85rem; line-height: 1.5;
+    color: var(--text-soft);
+  }
+  .design-row.is-active .design-row-desc { color: var(--text); }
+
+  .design-mvp {
+    padding: 1.2rem 1.4rem;
+    border: 1px solid var(--accent);
+    background: var(--accent-dim);
+    border-radius: 6px;
+  }
+  .design-mvp-stats {
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+    margin-bottom: 0.65rem;
+  }
+  .design-mvp-stat {
+    font-family: var(--mono); font-size: 0.92rem; font-weight: 700;
+    color: var(--accent);
+  }
+  .design-mvp-stat span {
+    display: block;
+    font-family: var(--font); font-size: 0.65rem; font-weight: 500;
+    color: var(--text-soft);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .design-mvp-anti {
+    font-family: var(--font); font-size: 0.82rem;
+    color: var(--text-soft);
+    font-style: italic;
+  }
+  @media (max-width: 600px) {
+    .design-row { grid-template-columns: 1fr; gap: 0.3rem; }
+    .design-grid { grid-template-columns: 1fr; }
+  }
   /* === DECISIONS PANEL (in the outcome section) === */
   .decisions-panel {
     margin: 0.5rem 0 2rem;
@@ -1464,18 +1590,20 @@
 </article>
 
 <!-- OUTCOME (populated by JS once user reaches it) -->
-<section class="outcome" id="outcome" data-tier="boil" aria-labelledby="outcomeTitle" aria-live="polite">
+<section class="outcome" id="outcome" aria-labelledby="outcomeTitle">
   <div class="outcome-inner">
-    <div class="outcome-kicker" id="outcomeKicker">Your Coalition</div>
-    <h2 class="outcome-title" id="outcomeTitle">The coalition stays a proposal.</h2>
-    <p class="outcome-synthesis" id="outcomeSynthesis">You picked the safe defaults across the board. Each call was rational on its own; together they leave a coalition on paper and the same dependencies you started with.</p>
+    <div class="outcome-kicker">Your Coalition</div>
+    <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
+    <p class="outcome-synthesis">The Bennett School brief lays out the proposal as a set of moving parts: which states join, which labs anchor it, how it&rsquo;s governed, what it covers, how small the first version can be. Below: the universe of options, with your seven picks highlighting which slice the story takes.</p>
+
+    <div class="coalition-design" id="coalitionDesign"></div>
+
     <div class="decisions-panel" aria-labelledby="decisionsPanelTitle">
-      <h3 class="decisions-panel-title" id="decisionsPanelTitle">Your decisions</h3>
-      <p class="decisions-panel-note">Pick or repick any of the seven calls. The summary above and the breakdown below update as you do.</p>
+      <h3 class="decisions-panel-title" id="decisionsPanelTitle">Your seven calls</h3>
+      <p class="decisions-panel-note">Pick or repick any of the seven. The components above update as you do.</p>
       <ol class="decisions-list" id="decisionsList"></ol>
     </div>
-    <h3 class="outcome-grid-title">Coalition breakdown</h3>
-    <div class="outcome-grid" id="outcomeGrid"></div>
+
     <div class="outcome-actions">
       <a class="btn btn-primary" href="#signon">Sign on</a>
       <a class="btn btn-ghost" href="#briefing">Re-read the briefing</a>
@@ -2133,54 +2261,202 @@
 
   // ===== Outcome rendering =====
   const outcome = document.getElementById('outcome');
-  function tierFor(score, max){
-    const pct = max > 0 ? score / max : 0;
-    if (pct >= 0.7) return 'forms';
-    if (pct >= 0.35) return 'imperfect';
-    return 'boil';
+  // =====================================================================
+  // COALITION DESIGN PANEL
+  // The components the Bennett brief actually names. Each section shows the
+  // universe of options; the user's picks (from the seven calls) highlight
+  // which slice the story takes. No tier, no score.
+  // =====================================================================
+
+  const COALITION_MEMBERS = [
+    { iso: 'FR', name: 'France',       entity: 'Mistral AI',     role: 'private champion', brings: 'Frontier generalist LLM; €2.5B France 2030 state line.' },
+    { iso: 'CA', name: 'Canada',       entity: 'Cohere',         role: 'private champion', brings: 'Enterprise + RAG tooling; Five Eyes bridge.' },
+    { iso: 'ES', name: 'Spain',        entity: 'BSC (Salamandra)', role: 'public lab',     brings: 'MareNostrum 5 compute; multilingual EU LLM.' },
+    { iso: 'JP', name: 'Japan',        entity: 'RIKEN',          role: 'public lab',       brings: 'Fugaku-class compute; Japanese-language stack.' },
+    { iso: 'DE', name: 'Germany',      entity: '',               role: '',                 brings: 'JUPITER exascale; €5B KI-Aktionsplan.' },
+    { iso: 'GB', name: 'UK',           entity: '',               role: '',                 brings: 'AI Safety Institute; £2B AI Opportunities Plan.' },
+    { iso: 'KR', name: 'South Korea',  entity: '',               role: '',                 brings: 'Chip supply chain; INAISI seat.' },
+    { iso: 'SE', name: 'Sweden',       entity: 'New Nordics AI', role: 'regional',         brings: 'Nordic-Baltic AI Centre; LUMI-AI upgrade.' },
+    { iso: 'SG', name: 'Singapore',    entity: '',               role: '',                 brings: 'INAISI seat; Asia-Pacific bridge.' },
+    { iso: 'CH', name: 'Switzerland',  entity: 'Swiss AI',       role: 'public-academic',  brings: 'EPFL/ETH research; multilingual evals.' },
+  ];
+
+  const COALITION_LABS = [
+    { name: 'Mistral',  country: 'France',  type: 'Private champion', evidence: '~€400M ARR (Jan 2026); €1.7B Sept 2025 raise.' },
+    { name: 'Cohere',   country: 'Canada',  type: 'Private champion', evidence: '~$240M ARR; AMD-backed Series E.' },
+    { name: 'BSC',      country: 'Spain',   type: 'Public lab',       evidence: 'Salamandra family; MareNostrum 5; €90M AI upgrade.' },
+    { name: 'RIKEN',    country: 'Japan',   type: 'Public lab',       evidence: 'Fugaku compute; METI-backed sovereign LLM.' },
+  ];
+
+  const GOVERNANCE = [
+    { id: 'state-led',  name: 'State-led merger',          desc: 'Pure Airbus model: member states own equity, slow to form, strong sovereignty.' },
+    { id: 'ppp',        name: 'Public-private partnership', desc: "The brief's preferred shape. Member contributes one national entity; consortium coordinates pre-training, compute, market." },
+    { id: 'foundation', name: 'Foundation / non-profit',   desc: 'Mozilla / Linux Foundation style. Open by default; harder to capitalize at frontier scale.' },
+    { id: 'federated',  name: 'Federated co-op',           desc: 'Visa-like consortium of autonomous members. Easy to start, weak central capacity.' },
+  ];
+
+  const SCOPE = [
+    { id: 'defense-only',       name: 'Defense only',          desc: 'Helsing-anchored. Saleable to security ministries; civilian models stay US-dependent.' },
+    { id: 'defense-commercial', name: 'Defense + commercial',  desc: 'Two product lines fund each other. Broader political base, harder governance.' },
+    { id: 'full-stack',         name: 'Full sovereign stack',  desc: "The brief's scope: models, compute, deployment, language tooling, APIs." },
+  ];
+
+  // Map the user's picks onto each design dimension.
+  function deriveShape(){
+    const p = simState;
+    const brussels = p['scene-brussels']  || 'national';
+    const ottawa   = p['scene-ottawa']    || 'eu-only';
+    const tokyo    = p['scene-tokyo']     || 'off-the-shelf';
+    const paris    = p['scene-paris']     || 'defers';
+    const berlin   = p['scene-berlin']    || 'sign';
+    const ether    = p['scene-ether']     || 'sign-dla';
+    const stockholm = p['scene-stockholm']|| 'defense-only';
+
+    // Members: build the set from Brussels (scope) + Ottawa (Atlantic) + Tokyo (Japan in/out) + Paris (FR role)
+    const inSet = new Set();
+    // France in if France co-leads/leads OR EU coalition+ scope
+    if (paris !== 'defers' || brussels !== 'national') inSet.add('FR');
+    // Spain, Germany, Sweden, Switzerland in if EU coalition or wider
+    if (brussels !== 'national') {
+      inSet.add('DE'); inSet.add('ES'); inSet.add('SE'); inSet.add('CH');
+    }
+    // Canada via Ottawa
+    if (ottawa === 'eu-canada' || ottawa === 'five-eyes-minus-us') inSet.add('CA');
+    // UK + Five Eyes minus US
+    if (ottawa === 'five-eyes-minus-us') inSet.add('GB');
+    // Japan/Korea/Singapore via Tokyo or EU+allies framing
+    if (brussels === 'eu-allies' || tokyo === 'coalition-model') {
+      inSet.add('JP'); inSet.add('KR'); inSet.add('SG');
+    }
+
+    // Anchor labs follow their country's membership
+    const labsIn = new Set();
+    if (inSet.has('FR')) labsIn.add('Mistral');
+    if (inSet.has('CA')) labsIn.add('Cohere');
+    if (inSet.has('ES')) labsIn.add('BSC');
+    if (inSet.has('JP')) labsIn.add('RIKEN');
+
+    // Governance derives from Berlin + Ether
+    let gov = 'state-led';
+    if (ether === 'form-entity' && berlin === 'refuse-bloc') gov = 'state-led';
+    else if (ether === 'form-entity') gov = 'ppp';
+    else if (ether === 'hybrid') gov = 'federated';
+    else gov = 'foundation';
+
+    return { members: inSet, labs: labsIn, governance: gov, scope: stockholm };
   }
-  function renderOutcome(){
-    if (!outcome) return;
-    let total = 0, max = 0;
-    const rows = [];
-    decisionOrder.forEach(id => {
-      const cfg = SIM[id];
-      const pick = getPick(id);
-      const opt = cfg.options.find(o => o.id === pick) || cfg.options[0];
-      total += opt.score;
-      max += Math.max.apply(null, cfg.options.map(o => o.score));
-      const sceneEl = document.getElementById(id);
-      const sceneTitle = sceneEl && sceneEl.querySelector('.scene-title')
-        ? sceneEl.querySelector('.scene-title').textContent
-        : id;
-      rows.push({ chapter: sceneTitle, label: opt.label, strength: opt.strength });
-    });
-    const tier = tierFor(total, max);
-    outcome.dataset.tier = tier;
-    const titles = {
-      forms: 'The coalition forms.',
-      imperfect: 'A coalition forms, on paper.',
-      boil: 'The coalition stays a proposal.'
-    };
-    const synthesis = {
-      forms: 'You chose coordination every time it cost something: backing the Digital Liberty Act, expanding the mandate beyond defence, accepting the messier governance model. The result is a coalition that exists in practice, not just on paper.',
-      imperfect: 'You picked the active option where it was already politically affordable and defaulted on the harder calls. The coalition has a charter; it does not yet have shared infrastructure or a real division of labour.',
-      boil: 'You picked the safe defaults: keep the framing narrow, keep allies cautious, keep the existing contracts. Each call was rational in isolation. Together they leave a coalition on paper and the same dependencies you started with.'
-    };
-    document.getElementById('outcomeTitle').textContent = titles[tier];
-    document.getElementById('outcomeSynthesis').textContent = synthesis[tier];
-    document.getElementById('outcomeKicker').textContent = 'Your Coalition  ·  ' + total + ' of ' + max + ' active picks';
-    const grid = document.getElementById('outcomeGrid');
-    grid.innerHTML = rows.map(r => `
-      <div class="outcome-row">
-        <div class="outcome-row-label">${r.chapter}</div>
-        <div class="outcome-row-value">${r.label}</div>
-        <span class="outcome-row-tag" data-strength="${r.strength}">${r.strength}</span>
+
+  function renderCoalitionDesign(){
+    const root = document.getElementById('coalitionDesign');
+    if (!root) return;
+    const shape = deriveShape();
+
+    const memberHtml = COALITION_MEMBERS.map(m => {
+      const active = shape.members.has(m.iso);
+      return `
+        <div class="design-card ${active ? 'is-active' : ''}">
+          <div class="design-card-name">
+            ${m.name}
+            ${active ? '<span class="design-card-tag">in</span>' : ''}
+          </div>
+          ${m.entity ? `<div class="design-card-entity">${m.entity}${m.role ? '  ·  ' + m.role : ''}</div>` : ''}
+          <div class="design-card-brings">${m.brings}</div>
+        </div>`;
+    }).join('');
+
+    const labsHtml = COALITION_LABS.map(l => {
+      const active = shape.labs.has(l.name);
+      return `
+        <div class="design-card is-anchor ${active ? 'is-active' : ''}">
+          <div class="design-card-name">
+            ${l.name}
+            ${active ? '<span class="design-card-tag">anchor</span>' : ''}
+          </div>
+          <div class="design-card-entity">${l.country}  ·  ${l.type}</div>
+          <div class="design-card-brings">${l.evidence}</div>
+        </div>`;
+    }).join('');
+
+    const govHtml = GOVERNANCE.map(g => {
+      const active = shape.governance === g.id;
+      return `
+        <div class="design-row ${active ? 'is-active' : ''}">
+          <div class="design-row-name">
+            ${g.name}
+            ${active ? '<span class="design-card-tag">your picks</span>' : ''}
+          </div>
+          <div class="design-row-desc">${g.desc}</div>
+        </div>`;
+    }).join('');
+
+    const scopeHtml = SCOPE.map(s => {
+      const active = shape.scope === s.id;
+      return `
+        <div class="design-row ${active ? 'is-active' : ''}">
+          <div class="design-row-name">
+            ${s.name}
+            ${active ? '<span class="design-card-tag">your picks</span>' : ''}
+          </div>
+          <div class="design-row-desc">${s.desc}</div>
+        </div>`;
+    }).join('');
+
+    root.innerHTML = `
+      <div class="design-section">
+        <div class="design-section-kicker">Member states (10 named in the brief)</div>
+        <h3 class="design-section-title">Who joins</h3>
+        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025) name France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada as the first-cohort middle powers. Your picks across Brussels, Ottawa, Tokyo, and Paris shape which of them are in.</p>
+        <div class="design-grid">${memberHtml}</div>
       </div>
-    `).join('');
+
+      <div class="design-section">
+        <div class="design-section-kicker">Anchor labs (the brief says four, not twenty)</div>
+        <h3 class="design-section-title">Who anchors</h3>
+        <p class="design-section-note">The four named anchors: two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). A lab is in if its host state is in.</p>
+        <div class="design-grid">${labsHtml}</div>
+      </div>
+
+      <div class="design-section">
+        <div class="design-section-kicker">Governance shape</div>
+        <h3 class="design-section-title">How it&rsquo;s held together</h3>
+        <p class="design-section-note">The brief proposes a public-private partnership (p. 4, &ldquo;How?&rdquo;), but explicitly leaves room for &ldquo;most likely something bespoke.&rdquo; The four archetypes the literature recognises:</p>
+        <div class="design-rows">${govHtml}</div>
+      </div>
+
+      <div class="design-section">
+        <div class="design-section-kicker">Scope</div>
+        <h3 class="design-section-title">What the coalition covers</h3>
+        <p class="design-section-note">From the Stockholm call. The brief&rsquo;s preferred end-state is the full stack, but the entry point can be narrower.</p>
+        <div class="design-rows">${scopeHtml}</div>
+      </div>
+
+      <div class="design-section">
+        <div class="design-section-kicker">MVP target (the brief&rsquo;s floor)</div>
+        <h3 class="design-section-title">How small the first version can be</h3>
+        <p class="design-section-note">From Tan, Jackson, Berjon &amp; Coyle (2025), p. 8: the smallest credible coalition that can grow into a frontier programme.</p>
+        <div class="design-mvp">
+          <div class="design-mvp-stats">
+            <div class="design-mvp-stat">10<span>person team</span></div>
+            <div class="design-mvp-stat">3<span>months</span></div>
+            <div class="design-mvp-stat">~100k<span>GPU-hours</span></div>
+            <div class="design-mvp-stat">~$150k<span>budget</span></div>
+          </div>
+          <p class="design-mvp-anti">Anti-target (p. 6): &ldquo;Training a $2 billion 'leading frontier model' is not the minimum viable product.&rdquo;</p>
+        </div>
+      </div>
+    `;
+
+    // Store the derived shape on the sign-on form so it travels with the
+    // sign-on submission.
     const outcomeField = document.getElementById('signonOutcome');
-    if (outcomeField) outcomeField.value = tier + ' (' + total + '/' + max + ')';
+    if (outcomeField) {
+      outcomeField.value = `members:${shape.members.size}/10 labs:${shape.labs.size}/4 gov:${shape.governance} scope:${shape.scope}`;
+    }
   }
+
+  // The legacy renderOutcome() name is preserved so existing call sites keep
+  // working; it now just re-renders the design panel.
+  function renderOutcome(){ renderCoalitionDesign(); }
 
   // Render the seven decisions as cards inside the outcome section. Clicking
   // any option updates the pick, re-renders the outcome above, and re-renders
