@@ -496,6 +496,10 @@
   }
   .viz-pane.is-active {
     display: flex;
+    /* Mobile / tablet: allow vertical scrolling inside the dock if content
+       exceeds peek height. (Desktop overrides this to overflow: visible.) */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .viz-pane-inner {
     max-width: 1100px; margin: 0 auto;
@@ -1915,7 +1919,7 @@
   <header class="dock-header">
     <div class="dock-title-wrap">
       <span class="dock-kicker">Live data</span>
-      <span class="dock-title" id="dockTitle">Capital flow &mdash; where EU AI money ends up</span>
+      <span class="dock-title" id="dockTitle">Capital flow</span>
     </div>
     <div class="dock-controls" role="radiogroup" aria-label="Dock size">
       <button class="dock-btn" data-dock-state="collapsed" role="radio" aria-checked="false" aria-label="Collapse dock" title="Collapse">
@@ -1945,7 +1949,7 @@
     </div>
 
     <!-- VIZ: Capital Flow -->
-    <div class="viz-pane is-active" data-viz="capital-flow" data-title="Capital flow &mdash; where EU AI money ends up">
+    <div class="viz-pane is-active" data-viz="capital-flow" data-title="Capital flow">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -1965,7 +1969,7 @@
     </div>
 
     <!-- VIZ: Talent Migration -->
-    <div class="viz-pane" data-viz="talent-migration" data-title="Talent migration &mdash; where EU AI researchers end up">
+    <div class="viz-pane" data-viz="talent-migration" data-title="Talent migration">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -1986,7 +1990,7 @@
     </div>
 
     <!-- VIZ: Language Heatmap -->
-    <div class="viz-pane" data-viz="lang-heatmap" data-title="Language coverage &mdash; whose languages frontier AI speaks">
+    <div class="viz-pane" data-viz="lang-heatmap" data-title="Language coverage">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2012,7 +2016,7 @@
     </div>
 
     <!-- VIZ: Coalition Revenue -->
-    <div class="viz-pane" data-viz="coalition-revenue" data-title="Coalition revenue &mdash; what European labs already do">
+    <div class="viz-pane" data-viz="coalition-revenue" data-title="Coalition revenue">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2033,7 +2037,7 @@
     </div>
 
     <!-- VIZ: HF Live -->
-    <div class="viz-pane" data-viz="hf-live" data-title="HuggingFace live &mdash; whose open models actually get used">
+    <div class="viz-pane" data-viz="hf-live" data-title="HuggingFace live">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2057,7 +2061,7 @@
     </div>
 
     <!-- VIZ: EU Public AI Capex (Paris) -->
-    <div class="viz-pane" data-viz="eu-public-capex" data-title="Public AI commitments &mdash; what European states are putting up">
+    <div class="viz-pane" data-viz="eu-public-capex" data-title="Public AI commitments">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2080,7 +2084,7 @@
     </div>
 
     <!-- VIZ: Coalition Blocs (Ottawa) -->
-    <div class="viz-pane" data-viz="coalition-blocs" data-title="AI policy blocs &mdash; who&rsquo;s in which circles">
+    <div class="viz-pane" data-viz="coalition-blocs" data-title="AI policy blocs">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2105,7 +2109,7 @@
     </div>
 
     <!-- VIZ: Talent Timeline (Dublin Jan) -->
-    <div class="viz-pane" data-viz="talent-timeline" data-title="Talent brain drain &mdash; what Aaron found in the memo">
+    <div class="viz-pane" data-viz="talent-timeline" data-title="Brain drain timeline">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2128,7 +2132,7 @@
     </div>
 
     <!-- VIZ: Bennett Baseline (The Ether) -->
-    <div class="viz-pane" data-viz="bennett-baseline" data-title="The Bennett baseline &mdash; what the brief actually proposes">
+    <div class="viz-pane" data-viz="bennett-baseline" data-title="Bennett baseline">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2153,7 +2157,7 @@
     </div>
 
     <!-- VIZ: Export Controls (White House) -->
-    <div class="viz-pane" data-viz="export-controls" data-title="US export controls &mdash; what&rsquo;s in force, what got rolled back">
+    <div class="viz-pane" data-viz="export-controls" data-title="US export controls">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2180,7 +2184,7 @@
     </div>
 
     <!-- VIZ: Compute Map -->
-    <div class="viz-pane" data-viz="compute-map" data-title="Compute infrastructure &mdash; what Europe actually has">
+    <div class="viz-pane" data-viz="compute-map" data-title="Compute infrastructure">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2975,7 +2979,16 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbCapitalFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.5);}
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.5));
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
   resize(); window.addEventListener('resize',resize);
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
@@ -2986,8 +2999,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
   function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);
+    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     const fs=Math.max(7, Math.min(9, W*0.025));
     const lfs=Math.max(8, Math.min(11, W*0.03));
     ctx.font=fs+'px Inter, sans-serif';ctx.textAlign='center';
@@ -3019,7 +3032,16 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas=document.getElementById('dbTalentChordCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.6);}
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.6));
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
   resize();window.addEventListener('resize',resize);
   const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
   const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
@@ -3027,7 +3049,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     // Reserve at least ~140px on each side for the labels; widen the flow
     // region on roomy canvases.
     const insetPx = 140;
@@ -3071,8 +3093,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
   function resize(){
-    canvas.width=canvas.clientWidth||canvas.parentElement.clientWidth;
-    canvas.height=canvas.clientHeight||Math.min(360, canvas.parentElement.clientWidth*0.55);
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.55));
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // Re-draw after a resize so the chart re-appears at the new size, since
     // draw() halts its rAF loop once the entrance animation finishes.
     requestAnimationFrame(()=>draw());
@@ -3105,8 +3133,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function dateToX(d){ return (d - X_MIN) / (X_MAX - X_MIN); }
   let grown=reduceMotion?1:0;
   function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const W=canvas.width,H=canvas.height;
+    ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);
+    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     const pad={l:54,r:64,t:30,b:42};
     const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
     grown=Math.min(grown+0.015,1);
@@ -3125,14 +3153,19 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     // X-axis baseline + year ticks
     ctx.strokeStyle='rgba(10,10,10,0.25)';ctx.lineWidth=0.8;
     ctx.beginPath();ctx.moveTo(pad.l,pad.t+ch);ctx.lineTo(pad.l+cw,pad.t+ch);ctx.stroke();
+    // Year labels: skip alternate years on narrow canvases so they don't collide.
+    const xLabelFs = cw < 280 ? 8 : 9.5;
+    const skipEven = cw < 240;
     for(let year=2023; year<=2026; year++){
       const x = pad.l + dateToX(year) * cw;
       ctx.strokeStyle='rgba(10,10,10,0.25)';
       ctx.beginPath();ctx.moveTo(x,pad.t+ch);ctx.lineTo(x,pad.t+ch+4);ctx.stroke();
-      ctx.fillStyle='rgba(10,10,10,0.55)';
-      ctx.font='9.5px JetBrains Mono, monospace';
-      ctx.textAlign='center';
-      ctx.fillText(year, x, pad.t+ch+18);
+      if (!skipEven || year % 2 === 1) {
+        ctx.fillStyle='rgba(10,10,10,0.55)';
+        ctx.font = xLabelFs + 'px JetBrains Mono, monospace';
+        ctx.textAlign='center';
+        ctx.fillText(year, x, pad.t+ch+18);
+      }
       // Faint vertical gridline
       ctx.strokeStyle='rgba(10,10,10,0.04)';
       ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,pad.t+ch);ctx.stroke();
@@ -3186,8 +3219,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   function resize(){
-    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
-    canvas.height = canvas.clientHeight || 260;
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (260);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     requestAnimationFrame(()=>draw());
   }
   resize();
@@ -3211,8 +3250,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     const pad = { l: 90, r: 18, t: 20, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     grown = Math.min(grown + 0.025, 1);
@@ -3317,8 +3356,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   function resize(){
-    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
-    canvas.height = canvas.clientHeight || 280;
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (280);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     requestAnimationFrame(()=>draw());
   }
   resize();
@@ -3342,8 +3387,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     grown = Math.min(grown + 0.022, 1);
 
     // Header
@@ -3451,8 +3496,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   function resize(){
-    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
-    canvas.height = canvas.clientHeight || 320;
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (320);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     requestAnimationFrame(()=>draw());
   }
   resize();
@@ -3481,8 +3532,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     const pad = { l: 8, r: 10, t: 22, b: 8 };
     const dateColW = 48;
     const pillW = 64;
@@ -3576,8 +3627,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   function resize(){
-    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
-    canvas.height = canvas.clientHeight || 260;
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (260);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     requestAnimationFrame(()=>draw());
   }
   resize();
@@ -3608,8 +3665,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     const pad = { l: 96, r: 26, t: 28, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     grown = Math.min(grown + 0.025, 1);
@@ -3686,8 +3743,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   function resize(){
-    canvas.width = canvas.clientWidth || canvas.parentElement.clientWidth;
-    canvas.height = canvas.clientHeight || 260;
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const cssH = canvas.clientHeight || (260);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     requestAnimationFrame(()=>draw());
   }
   resize();
@@ -3709,8 +3772,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     const pad = { l: 38, r: 16, t: 22, b: 26 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     grown = Math.min(grown + 0.018, 1);
