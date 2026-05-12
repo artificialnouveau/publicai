@@ -635,20 +635,7 @@
   .compute-stat-sub {
     font-family: var(--font); font-size: 0.74rem; line-height: 1.5;
     color: var(--text-soft);
-    margin-bottom: 0.55rem;
   }
-  .compute-stat-bar {
-    height: 6px; background: rgba(10,10,10,0.06); border-radius: 3px;
-    overflow: hidden;
-  }
-  .compute-stat-bar > span {
-    display: block;
-    height: 100%;
-    border-radius: 3px;
-  }
-  .compute-stat[data-tone="blue"]  .compute-stat-bar > span { background: #1a6cd4; }
-  .compute-stat[data-tone="green"] .compute-stat-bar > span { background: #0a7d3d; }
-  .compute-stat[data-tone="red"]   .compute-stat-bar > span { background: #b8002e; }
   @media (max-width: 600px) {
     .compute-stat { grid-template-columns: 64px 1fr; gap: 0.65rem; }
     .compute-stat-number { font-size: 1.25rem; }
@@ -2214,7 +2201,6 @@
               <div class="compute-stat-body">
                 <div class="compute-stat-label">EuroHPC sovereign supercomputers (operational)</div>
                 <div class="compute-stat-sub">LUMI, JUPITER, Leonardo, MareNostrum 5, Discoverer, Karolina, Vega, MeluXina, Deucalion, Daedalus, EHPC-PL</div>
-                <div class="compute-stat-bar"><span style="width: 1%"></span></div>
               </div>
             </div>
             <div class="compute-stat" data-tone="green">
@@ -2222,7 +2208,6 @@
               <div class="compute-stat-body">
                 <div class="compute-stat-label">Planned EuroHPC AI Factory sites</div>
                 <div class="compute-stat-sub">2024-2025 selection rounds (DE, FR, IT, ES, FI, SE, GR, PL, LU, BG, AT, IE)</div>
-                <div class="compute-stat-bar"><span style="width: 1.1%"></span></div>
               </div>
             </div>
             <div class="compute-stat" data-tone="red">
@@ -2230,7 +2215,6 @@
               <div class="compute-stat-body">
                 <div class="compute-stat-label">Global hyperscale data centres (end-2024)</div>
                 <div class="compute-stat-sub">US holds the majority share. 8 EU metros host AWS / Azure / Google capacity (Dublin, Frankfurt, Amsterdam, Paris, London, Stockholm, Milan, Zurich).</div>
-                <div class="compute-stat-bar"><span style="width: 100%"></span></div>
               </div>
             </div>
           </div>
