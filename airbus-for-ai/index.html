@@ -165,6 +165,78 @@
     background: transparent;
   }
 
+  /* Outline dropdown: minimalist chapter index hung from the topnav. */
+  .outline-toggle {
+    background: transparent; border: 1px solid transparent;
+    font-family: var(--mono); cursor: pointer;
+  }
+  .outline-toggle::after {
+    content: ' \25BE'; opacity: 0.5; margin-left: 0.25rem;
+  }
+  .outline-toggle[aria-expanded="true"]::after { content: ' \25B4'; opacity: 1; }
+  .outline-menu {
+    position: absolute;
+    top: 56px; right: 0.5rem;
+    background: rgba(248,246,241,0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 6px;
+    box-shadow: 0 12px 32px rgba(10,10,10,0.12);
+    min-width: 280px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    z-index: 60;
+    padding: 0.5rem 0;
+    animation: outlineMenuIn 0.18s ease-out;
+  }
+  .outline-menu[hidden] { display: none; }
+  @keyframes outlineMenuIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .outline-list {
+    list-style: none; margin: 0; padding: 0;
+  }
+  .outline-list a {
+    display: flex; align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.45rem 1rem;
+    text-decoration: none;
+    color: var(--text);
+    font-family: var(--font); font-size: 0.85rem;
+    border-left: 2px solid transparent;
+    transition: background 0.12s, border-left-color 0.12s, color 0.12s;
+  }
+  .outline-list a:hover {
+    background: var(--paper-2);
+    color: var(--accent);
+  }
+  .outline-list a.is-current {
+    border-left-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .outline-num {
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+    color: var(--text-soft);
+    width: 1.5rem; flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .outline-list a.is-current .outline-num { color: var(--accent); }
+  .outline-divider {
+    padding: 0.55rem 1rem 0.25rem;
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-soft);
+    border-top: 1px solid var(--hairline);
+    margin-top: 0.25rem;
+  }
+  .outline-divider:first-of-type {
+    border-top: none; margin-top: 0;
+  }
+
   /* === HERO === */
   .hero {
     min-height: 70vh;
@@ -1461,7 +1533,29 @@
     <span class="topnav-brand-text">Airbus for AI</span>
   </a>
   <div class="topnav-links">
+    <button class="topnav-link outline-toggle" id="outlineToggle" aria-haspopup="true" aria-expanded="false" aria-controls="outlineMenu">Outline</button>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
+  </div>
+  <div class="outline-menu" id="outlineMenu" role="menu" aria-labelledby="outlineToggle" hidden>
+    <ol class="outline-list">
+      <li><a role="menuitem" href="#top" data-section="top"><span class="outline-num">&middot;</span><span class="outline-label">Top</span></a></li>
+      <li><a role="menuitem" href="#briefing" data-section="briefing"><span class="outline-num">&middot;</span><span class="outline-label">Briefing</span></a></li>
+      <li class="outline-divider" aria-hidden="true">Story</li>
+      <li><a role="menuitem" href="#scene-dublin-apr" data-section="scene-dublin-apr"><span class="outline-num">01</span><span class="outline-label">Dublin &middot; Apr 2026</span></a></li>
+      <li><a role="menuitem" href="#scene-berlin" data-section="scene-berlin"><span class="outline-num">02</span><span class="outline-label">Berlin</span></a></li>
+      <li><a role="menuitem" href="#scene-brussels" data-section="scene-brussels"><span class="outline-num">03</span><span class="outline-label">Brussels</span></a></li>
+      <li><a role="menuitem" href="#scene-tokyo" data-section="scene-tokyo"><span class="outline-num">04</span><span class="outline-label">Tokyo</span></a></li>
+      <li><a role="menuitem" href="#scene-stockholm" data-section="scene-stockholm"><span class="outline-num">05</span><span class="outline-label">Stockholm</span></a></li>
+      <li><a role="menuitem" href="#scene-monroe" data-section="scene-monroe"><span class="outline-num">06</span><span class="outline-label">Monroe, LA</span></a></li>
+      <li><a role="menuitem" href="#scene-ottawa" data-section="scene-ottawa"><span class="outline-num">07</span><span class="outline-label">Ottawa</span></a></li>
+      <li><a role="menuitem" href="#scene-paris" data-section="scene-paris"><span class="outline-num">08</span><span class="outline-label">Paris</span></a></li>
+      <li><a role="menuitem" href="#scene-dublin-jan" data-section="scene-dublin-jan"><span class="outline-num">09</span><span class="outline-label">Dublin &middot; Jan 2026</span></a></li>
+      <li><a role="menuitem" href="#scene-whitehouse" data-section="scene-whitehouse"><span class="outline-num">10</span><span class="outline-label">The White House</span></a></li>
+      <li><a role="menuitem" href="#scene-ether" data-section="scene-ether"><span class="outline-num">11</span><span class="outline-label">The Ether</span></a></li>
+      <li class="outline-divider" aria-hidden="true">Wrap-up</li>
+      <li><a role="menuitem" href="#outcome" data-section="outcome"><span class="outline-num">&middot;</span><span class="outline-label">Your Coalition</span></a></li>
+      <li><a role="menuitem" href="#signon" data-section="signon"><span class="outline-num">&middot;</span><span class="outline-label">Sign on</span></a></li>
+    </ol>
   </div>
 </nav>
 
@@ -2889,6 +2983,69 @@
   // the user reaches it. Picks are inline inside each section now.
   if (outcome) {
     renderCoalitionDesign();
+  }
+})();
+
+// ============================================================
+// OUTLINE DROPDOWN — chapter / section jump menu in the topnav
+// ============================================================
+(function(){
+  const toggle = document.getElementById('outlineToggle');
+  const menu = document.getElementById('outlineMenu');
+  if (!toggle || !menu) return;
+
+  function open(){
+    menu.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+  function close(){
+    menu.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (menu.hidden) open(); else close();
+  });
+  // Click a chapter / section: jump and close.
+  menu.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (a) close();
+  });
+  // Click outside or Escape closes.
+  document.addEventListener('click', (e) => {
+    if (menu.hidden) return;
+    if (!menu.contains(e.target) && e.target !== toggle) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) close();
+  });
+
+  // Highlight whichever section is currently in view.
+  const items = Array.from(menu.querySelectorAll('a[data-section]'));
+  const targets = items.map(a => document.getElementById(a.dataset.section)).filter(Boolean);
+  if ('IntersectionObserver' in window && targets.length) {
+    const idToItem = new Map();
+    items.forEach(a => idToItem.set(a.dataset.section, a));
+    const visible = new Set();
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) visible.add(e.target.id);
+        else visible.delete(e.target.id);
+      });
+      // Pick the topmost visible target as "current"
+      let bestId = null, bestTop = Infinity;
+      visible.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const t = el.getBoundingClientRect().top;
+        if (t < bestTop) { bestTop = t; bestId = id; }
+      });
+      items.forEach(a => a.classList.remove('is-current'));
+      if (bestId && idToItem.has(bestId)) {
+        idToItem.get(bestId).classList.add('is-current');
+      }
+    }, { rootMargin: '-72px 0px -55% 0px', threshold: [0, 0.1, 0.5] });
+    targets.forEach(el => obs.observe(el));
   }
 })();
 
