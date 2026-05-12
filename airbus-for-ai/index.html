@@ -932,6 +932,27 @@
     padding-top: 0.55rem;
     margin-top: 0.55rem;
   }
+  .design-derivation-list {
+    list-style: none;
+    margin: 0.35rem 0 0.65rem;
+    padding: 0;
+    display: grid; gap: 0.25rem;
+  }
+  .design-derivation-list li {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--text-soft);
+    display: flex; gap: 0.5rem; align-items: baseline;
+  }
+  .design-derivation-list li span:first-child {
+    font-weight: 700; color: var(--text);
+  }
+  .design-derivation-list li[data-active="true"] {
+    color: var(--accent);
+  }
+  .design-derivation-list li[data-active="true"] span:first-child {
+    color: var(--accent);
+  }
+  .design-derivation-list em { font-style: normal; font-weight: 700; }
 
   /* Summary section: list of "Component  ·  resolved value" rows in the right
      column. */
@@ -1008,8 +1029,29 @@
   .design-card-tag {
     font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--accent); opacity: 0.85;
+    color: var(--text-soft); opacity: 0.85;
   }
+  .design-card.is-active .design-card-tag { color: var(--accent); opacity: 1; }
+  .design-card-gate {
+    margin-top: 0.55rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--hairline-strong);
+    font-family: var(--font); font-size: 0.72rem; line-height: 1.45;
+    color: var(--text-soft);
+  }
+  .design-card-gate em {
+    font-style: italic;
+    color: var(--text);
+  }
+  .design-card-gate strong {
+    font-family: var(--mono); font-weight: 700;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text);
+  }
+  .design-card.is-active .design-card-gate { color: var(--text); }
+  .design-card.is-active .design-card-gate em,
+  .design-card.is-active .design-card-gate strong { color: var(--accent); }
   .design-card-entity {
     font-family: var(--mono); font-size: 0.68rem;
     color: var(--text-soft);
@@ -2424,10 +2466,26 @@
   ];
 
   const COALITION_LABS = [
-    { name: 'Mistral',  country: 'France',  type: 'Private champion', evidence: '~€400M ARR (Jan 2026); €1.7B Sept 2025 raise.' },
-    { name: 'Cohere',   country: 'Canada',  type: 'Private champion', evidence: '~$240M ARR; AMD-backed Series E.' },
-    { name: 'BSC',      country: 'Spain',   type: 'Public lab',       evidence: 'Salamandra family; MareNostrum 5; €90M AI upgrade.' },
-    { name: 'RIKEN',    country: 'Japan',   type: 'Public lab',       evidence: 'Fugaku compute; METI-backed sovereign LLM.' },
+    {
+      name: 'Mistral',  country: 'France',  type: 'Private champion',
+      evidence: '~€400M ARR (Jan 2026); €1.7B Sept 2025 raise.',
+      gate: 'In when France is in. Activated by <strong>Paris</strong> = <em>co-leads</em> or <em>leads</em>, or <strong>Brussels</strong> = <em>EU coalition</em> / <em>EU + allies</em>.',
+    },
+    {
+      name: 'Cohere',   country: 'Canada',  type: 'Private champion',
+      evidence: '~$240M ARR; AMD-backed Series E.',
+      gate: 'In when Canada is in. Activated by <strong>Ottawa</strong> = <em>EU + Canada</em> or <em>EU + Five Eyes</em>.',
+    },
+    {
+      name: 'BSC',      country: 'Spain',   type: 'Public lab',
+      evidence: 'Salamandra family; MareNostrum 5; €90M AI upgrade.',
+      gate: 'In when Spain is in. Activated by <strong>Brussels</strong> = <em>EU coalition</em> or <em>EU + allies</em>.',
+    },
+    {
+      name: 'RIKEN',    country: 'Japan',   type: 'Public lab',
+      evidence: 'Fugaku compute; METI-backed sovereign LLM.',
+      gate: 'In when Japan is in. Activated by <strong>Brussels</strong> = <em>EU + allies</em>, or <strong>Tokyo</strong> = <em>Coalition model</em>.',
+    },
   ];
 
   const GOVERNANCE = [
@@ -2571,10 +2629,11 @@
         <div class="design-card is-anchor ${active ? 'is-active' : ''}">
           <div class="design-card-name">
             ${l.name}
-            ${active ? '<span class="design-card-tag">anchor</span>' : ''}
+            <span class="design-card-tag">${active ? 'anchor in' : 'not in'}</span>
           </div>
           <div class="design-card-entity">${l.country}  ·  ${l.type}</div>
           <div class="design-card-brings">${l.evidence}</div>
+          <div class="design-card-gate" data-active="${active}">${l.gate}</div>
         </div>`;
     }).join('');
 
@@ -2624,9 +2683,12 @@
         <p class="design-section-note">Two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). The anchors follow from the member picks above.</p>
         <div class="design-split-body">
           <div class="design-derivation">
-            <span class="design-derivation-label">Derivation</span>
-            <p>A lab is &ldquo;in&rdquo; when its host state is &ldquo;in.&rdquo; That means anchors are downstream of which states you bring under <em>Who joins</em>.</p>
-            <p>Currently <strong>${shape.labs.size} of 4</strong> anchor labs active.</p>
+            <span class="design-derivation-label">How an anchor enters</span>
+            <p>A lab is &ldquo;in&rdquo; when its host state is &ldquo;in,&rdquo; so anchors are downstream of the four <em>Who joins</em> picks. Each card on the right shows exactly which decision and which option activates it.</p>
+            <p>Currently <strong>${shape.labs.size} of 4</strong> anchor labs active:</p>
+            <ul class="design-derivation-list">
+              ${COALITION_LABS.map(l => `<li data-active="${shape.labs.has(l.name)}"><span>${l.name}</span> &middot; ${l.country} ${shape.labs.has(l.name) ? '<em>in</em>' : '<em>out</em>'}</li>`).join('')}
+            </ul>
             <p class="design-derivation-quote">&ldquo;Start small: four labs, not twenty.&rdquo; &mdash; Bennett brief, p. 7.</p>
           </div>
           <div class="design-grid">${labsHtml}</div>
