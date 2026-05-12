@@ -627,6 +627,13 @@
     .story,
     .story.dock-collapsed,
     .story.dock-full { padding-bottom: 5rem; }
+    /* Shift only the chapter column left so it doesn't sit under the dock.
+       Hero, briefing, outcome, signon, outro stay centered (they live outside
+       .story). margin-left stays auto so the column finds a natural offset
+       in the remaining viewport width. */
+    .story {
+      margin-right: calc(var(--dock-panel-width) + var(--dock-panel-gap) * 2 + 1.5rem);
+    }
     /* Allow the pane to scroll vertically when chart + explainer don't fit. */
     .viz-pane {
       padding: 1rem 1.15rem;
