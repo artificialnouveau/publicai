@@ -2999,8 +2999,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
   function draw(){
-    ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
+    ctx.clearRect(0,0,W,H);
     const fs=Math.max(7, Math.min(9, W*0.025));
     const lfs=Math.max(8, Math.min(11, W*0.03));
     ctx.font=fs+'px Inter, sans-serif';ctx.textAlign='center';
@@ -3049,7 +3049,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
-    ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
+    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
+    ctx.clearRect(0,0,W,H);
     // Reserve at least ~140px on each side for the labels; widen the flow
     // region on roomy canvases.
     const insetPx = 140;
@@ -3133,8 +3134,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function dateToX(d){ return (d - X_MIN) / (X_MAX - X_MIN); }
   let grown=reduceMotion?1:0;
   function draw(){
-    ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
+    ctx.clearRect(0,0,W,H);
     const pad={l:54,r:64,t:30,b:42};
     const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
     grown=Math.min(grown+0.015,1);
@@ -3250,8 +3251,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
     const pad = { l: 90, r: 18, t: 20, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     grown = Math.min(grown + 0.025, 1);
@@ -3387,8 +3388,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
     grown = Math.min(grown + 0.022, 1);
 
     // Header
@@ -3532,8 +3533,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
     const pad = { l: 8, r: 10, t: 22, b: 8 };
     const dateColW = 48;
     const pillW = 64;
@@ -3665,8 +3666,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
     const pad = { l: 96, r: 26, t: 28, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     grown = Math.min(grown + 0.025, 1);
@@ -3772,8 +3773,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
+    ctx.clearRect(0, 0, W, H);
     const pad = { l: 38, r: 16, t: 22, b: 26 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
     grown = Math.min(grown + 0.018, 1);
