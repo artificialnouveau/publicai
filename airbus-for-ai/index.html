@@ -2536,8 +2536,14 @@
     panes.forEach(p => p.classList.toggle('is-active', p.dataset.viz === vizId));
     const activePane = panes.find(p => p.dataset.viz === vizId);
     if (activePane && titleEl) titleEl.innerHTML = activePane.dataset.title || '';
-    // Decisions now live in the outcome section, not in the dock.
-    window.dispatchEvent(new Event('resize'));
+    // Defer the resize one frame so layout reflects the new active pane
+    // (its canvas's clientWidth is 0 until the display:block takes effect).
+    // Fire twice — once on next paint, once a beat later — to cover slow
+    // mobile layout (iOS Safari especially).
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new Event('resize'));
+      requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+    });
   }
 
   function lockIfDecide(sceneId){
