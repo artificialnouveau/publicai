@@ -3165,7 +3165,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0,0,W,H);
     const fs=Math.max(7, Math.min(9, W*0.025));
     const lfs=Math.max(8, Math.min(11, W*0.03));
@@ -3222,7 +3222,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0,0,W,H);
     // Reserve at least ~140px on each side for the labels; widen the flow
     // region on roomy canvases.
@@ -3314,7 +3314,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown=reduceMotion?1:0;
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0,0,W,H);
     const pad={l:54,r:64,t:30,b:42};
     const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
@@ -3389,7 +3389,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font='10px Inter, sans-serif';ctx.textAlign='left';
       ctx.fillText(s.name,lx+8,ly+4);
     });
-    if(grown<1)requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -3438,7 +3438,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 90, r: 18, t: 20, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -3533,7 +3533,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       }
     });
 
-    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -3582,7 +3582,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0, 0, W, H);
     grown = Math.min(grown + 0.022, 1);
 
@@ -3680,7 +3680,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.fillText('"Start small: four labs, not twenty."', cx, H - 6);
     }
 
-    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -3734,7 +3734,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 8, r: 10, t: 22, b: 8 };
     const dateColW = 48;
@@ -3818,7 +3818,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       }
     });
 
-    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -3874,7 +3874,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 96, r: 26, t: 28, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -3941,7 +3941,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       }
     });
 
-    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -3988,7 +3988,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { resize(); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 38, r: 16, t: 22, b: 26 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -4086,7 +4086,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       }
     });
 
-    if (grown < 1 && !reduceMotion) requestAnimationFrame(draw);
+    if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
 })();
