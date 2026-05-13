@@ -3140,6 +3140,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.5));
     const bufW = Math.round(cssW * dpr);
@@ -3196,6 +3200,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx=canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.6));
     const bufW = Math.round(cssW * dpr);
@@ -3260,6 +3268,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx=canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.55));
     const bufW = Math.round(cssW * dpr);
@@ -3389,6 +3401,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (260);
     const bufW = Math.round(cssW * dpr);
@@ -3529,6 +3545,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (280);
     const bufW = Math.round(cssW * dpr);
@@ -3672,6 +3692,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (320);
     const bufW = Math.round(cssW * dpr);
@@ -3806,6 +3830,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (260);
     const bufW = Math.round(cssW * dpr);
@@ -3925,6 +3953,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
+    // Clear inline sizing first so CSS layout can re-measure (otherwise
+    // a previous '0px' inline width from a hidden-pane init sticks).
+    canvas.style.width = '';
+    canvas.style.height = '';
     const cssW = canvas.clientWidth || canvas.parentElement.clientWidth;
     const cssH = canvas.clientHeight || (260);
     const bufW = Math.round(cssW * dpr);
