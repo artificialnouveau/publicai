@@ -3180,8 +3180,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
-  const educated=[{label:'EU-West (FR, DE, NL)',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East (PL, CZ, RO)',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / Switzerland',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US (domestic)',y:0.84,col:'#1a6cd4',pct:'18%'}];
-  const working=[{label:'Work in US (~60%)',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU (~15%)',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'Work in UK/CH (~10%)',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'Work in China (~10%)',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Work elsewhere (~5%)',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
+  const educated=[{label:'EU-West',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / CH',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US',y:0.84,col:'#1a6cd4',pct:'18%'}];
+  const working=[{label:'Work in US',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'China',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
@@ -3189,10 +3189,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
-    // Reserve at least ~140px on each side for the labels; widen the flow
-    // region on roomy canvases.
-    const insetPx = 140;
-    const LX = Math.max(0.20, insetPx / W);
+    // Reserve room for the (now short) labels on each side; flow region
+    // gets most of the width.
+    const insetPx = W < 380 ? 78 : 110;
+    const LX = Math.max(0.18, insetPx / W);
     const RX = 1 - LX;
     const tfs=Math.max(7, Math.min(9, W*0.022));
     const lfs=Math.max(8, Math.min(11, W*0.026));
