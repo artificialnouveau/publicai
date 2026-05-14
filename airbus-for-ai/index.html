@@ -2536,15 +2536,9 @@
     panes.forEach(p => p.classList.toggle('is-active', p.dataset.viz === vizId));
     const activePane = panes.find(p => p.dataset.viz === vizId);
     if (activePane && titleEl) titleEl.innerHTML = activePane.dataset.title || '';
-    // Force the active pane's canvas to re-measure. Layered triggers cover
-    // every stage at which mobile Safari might finish laying out the now-
-    // visible pane.
-    const fire = () => window.dispatchEvent(new Event('resize'));
-    fire();
-    requestAnimationFrame(fire);
-    requestAnimationFrame(() => requestAnimationFrame(fire));
-    setTimeout(fire, 120);
-    setTimeout(fire, 400);
+    // One resize on the next frame so the newly-visible pane's canvas gets
+    // measured. Each chart's own rAF loop picks the new size up from there.
+    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
   }
 
   function lockIfDecide(sceneId){
@@ -2591,22 +2585,6 @@
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     update();
-  }
-
-  // Keep canvas charts in sync with dock width changes (e.g., desktop panel resize).
-  if (typeof ResizeObserver !== 'undefined') {
-    const wraps = document.querySelectorAll('.viz-canvas-wrap');
-    if (wraps.length) {
-      let rafId = 0;
-      const ro = new ResizeObserver(() => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(() => {
-          rafId = 0;
-          window.dispatchEvent(new Event('resize'));
-        });
-      });
-      wraps.forEach(w => ro.observe(w));
-    }
   }
 
   // Track which scenes are intersecting; the topmost one drives activation.
@@ -3169,7 +3147,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
     const fs=Math.max(7, Math.min(9, W*0.025));
     const lfs=Math.max(8, Math.min(11, W*0.03));
@@ -3229,7 +3207,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
     // Reserve at least ~140px on each side for the labels; widen the flow
     // region on roomy canvases.
@@ -3324,7 +3302,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown=reduceMotion?1:0;
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
     const pad={l:54,r:64,t:30,b:42};
     const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
@@ -3451,7 +3429,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 90, r: 18, t: 20, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -3598,7 +3576,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
     grown = Math.min(grown + 0.022, 1);
 
@@ -3753,7 +3731,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 8, r: 10, t: 22, b: 8 };
     const dateColW = 48;
@@ -3896,7 +3874,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 96, r: 26, t: 28, b: 10 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -4013,7 +3991,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let grown = reduceMotion ? 1 : 0;
   function draw(){
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { resize(); requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
     const pad = { l: 38, r: 16, t: 22, b: 26 };
     const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
