@@ -675,13 +675,13 @@
     --db-aurora: #6c3aa8;
     --data-text-muted: var(--text-soft);
   }
+  /* Fixed canvas size: predictable on every screen, no flex/100% guessing. */
   .viz-canvas-wrap > canvas {
-    flex: 1;
-    width: 100% !important;
-    height: 100% !important;
+    width: 100%;
+    height: 300px;
     display: block;
-    min-height: 0;
   }
+  .viz-canvas-wrap[data-tall] > canvas { height: 360px; }
 
   /* Compute Map (HTML, not canvas — three big stat rows with bars). */
   .compute-stats-wrap { padding: 1rem; }
@@ -797,14 +797,12 @@
        separation; relative + z-index + solid bg prevents any visual overlap
        with the scrolling explainer text above. */
     .viz-canvas-wrap {
-      min-height: 260px;
       flex: 0 0 auto;
       margin-top: 1rem;
       position: relative;
       z-index: 1;
       background: var(--paper-2);
     }
-    .viz-canvas-wrap > canvas { height: 260px !important; min-height: 260px; }
     /* Decision strip becomes narrower; stack meta + options */
     .decision-strip { padding: 0.7rem 1.1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
@@ -2073,7 +2071,7 @@
             <li>57% of European AI professionals did their undergrad outside Europe; in the US that figure is 38%. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
           </ol></details>
         </div>
-        <div class="viz-canvas-wrap">
+        <div class="viz-canvas-wrap" data-tall>
           <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
         </div>
       </div>
@@ -2192,7 +2190,7 @@
             <li>OECD AI Principles, updated 2024 (47 adherents). <a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener">OECD.AI</a>.</li>
           </ol></details>
         </div>
-        <div class="viz-canvas-wrap">
+        <div class="viz-canvas-wrap" data-tall>
           <canvas id="dbCoalitionBlocsCanvas" role="img" aria-label="AI policy bloc membership by country: Canada and Western allies central, India / Brazil / UAE / Saudi Arabia present in summits but absent from standards bodies"></canvas>
         </div>
       </div>
@@ -2267,7 +2265,7 @@
             <li>Jan 14 2026 Section 232 25% semiconductor tariff. <a href="https://www.pillsburylaw.com/en/news-and-insights/trump-advanced-ai-semiconductors-actions.html" target="_blank" rel="noopener">Pillsbury</a>.</li>
           </ol></details>
         </div>
-        <div class="viz-canvas-wrap">
+        <div class="viz-canvas-wrap" data-tall>
           <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
         </div>
       </div>
@@ -3119,21 +3117,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.5));
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize(); window.addEventListener('resize',resize);
@@ -3182,21 +3171,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx=canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.6));
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
@@ -3253,25 +3233,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx=canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (Math.min(360, canvas.parentElement.clientWidth*0.55));
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    // Re-draw after a resize so the chart re-appears at the new size, since
-    // draw() halts its rAF loop once the entrance animation finishes.
-    requestAnimationFrame(()=>draw());
   }
   resize();window.addEventListener('resize',resize);
   // Real-time axis: points carry an absolute date (year + month/12) so all
@@ -3389,23 +3357,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (260);
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    requestAnimationFrame(()=>draw());
   }
   resize();
   window.addEventListener('resize', resize);
@@ -3536,23 +3494,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (280);
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    requestAnimationFrame(()=>draw());
   }
   resize();
   window.addEventListener('resize', resize);
@@ -3686,23 +3634,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (320);
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    requestAnimationFrame(()=>draw());
   }
   resize();
   window.addEventListener('resize', resize);
@@ -3827,23 +3765,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (260);
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    requestAnimationFrame(()=>draw());
   }
   resize();
   window.addEventListener('resize', resize);
@@ -3953,23 +3881,13 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const ctx = canvas.getContext('2d');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
-    // Clear inline sizing first so CSS layout can re-measure (otherwise
-    // a previous '0px' inline width from a hidden-pane init sticks).
-    canvas.style.width = '';
-    canvas.style.height = '';
-    const cssW = canvas.clientWidth
-      || canvas.parentElement.clientWidth
-      || (canvas.parentElement.getBoundingClientRect && Math.floor(canvas.parentElement.getBoundingClientRect().width - 32))
-      || 0;
-    const cssH = canvas.clientHeight || (260);
-    const bufW = Math.round(cssW * dpr);
-    const bufH = Math.round(cssH * dpr);
-    canvas.width = bufW;
-    canvas.height = bufH;
-    canvas.style.width = (bufW / dpr) + 'px';
-    canvas.style.height = (bufH / dpr) + 'px';
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    requestAnimationFrame(()=>draw());
   }
   resize();
   window.addEventListener('resize', resize);
