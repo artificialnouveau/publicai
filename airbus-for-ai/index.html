@@ -2528,15 +2528,25 @@
   const scenes = Array.from(document.querySelectorAll('.scene[data-viz]'));
   const panes = Array.from(document.querySelectorAll('.viz-pane[data-viz]'));
   const titleEl = document.getElementById('dockTitle');
+  let currentVizId = null;
 
   function activate(sceneEl){
     const vizId = sceneEl.dataset.viz;
+    // No-op if this chart is already the active one — prevents stacking a
+    // second rAF loop onto an already-running chart.
+    if (vizId === currentVizId) return;
+    currentVizId = vizId;
     panes.forEach(p => p.classList.toggle('is-active', p.dataset.viz === vizId));
     const activePane = panes.find(p => p.dataset.viz === vizId);
     if (activePane && titleEl) titleEl.innerHTML = activePane.dataset.title || '';
-    // One resize on the next frame so the newly-visible pane's canvas gets
-    // measured. Each chart's own rAF loop picks the new size up from there.
-    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+    // On the next frame (after the is-active class has taken layout effect),
+    // kick the newly-visible chart: it re-measures and restarts its own rAF
+    // loop. Only the active chart's loop runs — every other chart's draw()
+    // bails out on the visibility guard, so the dock costs one chart, not 8.
+    if (activePane) {
+      const c = activePane.querySelector('canvas');
+      if (c) requestAnimationFrame(() => c.dispatchEvent(new CustomEvent('viz:show')));
+    }
   }
 
   function lockIfDecide(sceneId){
@@ -3115,6 +3125,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbCapitalFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3126,6 +3137,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize(); window.addEventListener('resize',resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
   const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#ff3333'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0fa37a'},{label:'Diluted / lost',x:0.93,y:0.80,col:'rgba(10,10,10,0.45)'}];
@@ -3135,6 +3147,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
@@ -3169,6 +3182,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas=document.getElementById('dbTalentChordCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3180,12 +3194,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
   const educated=[{label:'EU-West',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / CH',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US',y:0.84,col:'#1a6cd4',pct:'18%'}];
   const working=[{label:'Work in US',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'China',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
@@ -3231,6 +3247,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas=document.getElementById('dbGrowthChart');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3242,6 +3259,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
   // Real-time axis: points carry an absolute date (year + month/12) so all
   // three series share one timeline.
   const X_MIN = 2023.0;
@@ -3269,6 +3287,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function dateToX(d){ return (d - X_MIN) / (X_MAX - X_MIN); }
   let grown=reduceMotion?1:0;
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
@@ -3355,6 +3374,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbEuCapexCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3367,6 +3387,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // State-committed public AI funding, in €B. Sorted descending.
   // `asp` = aspirational/private-pipeline pledge typically quoted alongside.
@@ -3386,6 +3407,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
@@ -3492,6 +3514,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbBennettBaselineCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3504,6 +3527,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // Bennett brief first-cohort members (p. 4). `entity` = named anchor lab.
   // `anchor: true` = one of the four "start small" labs.
@@ -3523,6 +3547,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
@@ -3632,6 +3657,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbExportControlsCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3644,6 +3670,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // status: 'force' (red/green dot), 'rescinded' (gray), 'reversed' (orange), 'suspended' (orange)
   const events = [
@@ -3668,6 +3695,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
@@ -3763,6 +3791,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbCoalitionBlocsCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3775,6 +3804,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // std = INAISI + OECD-AI + Five Eyes + EU AI Act seats (0-4)
   // sum = Bletchley + Seoul Min. + Hiroshima AI Process + G7 seats (0-4)
@@ -3801,6 +3831,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
@@ -3879,6 +3910,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbTalentTimelineCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const pane = canvas.closest('.viz-pane');
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3891,6 +3923,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
+  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // Quarterly trend, interpolated between MacroPolo (2022 anchor) and Atomico
   // (2023-24 anchors). 2019 baseline is the upper reference line.
@@ -3908,6 +3941,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
+    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
