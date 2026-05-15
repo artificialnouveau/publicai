@@ -1582,26 +1582,6 @@
     <a class="topnav-link topnav-link-cta" href="#outcome">Your Coalition</a>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
-  <div class="outline-menu" id="outlineMenu" role="menu" aria-labelledby="outlineToggle" hidden>
-    <ol class="outline-list">
-      <li><a role="menuitem" href="#top" data-section="top"><span class="outline-num">&middot;</span><span class="outline-label">Top</span></a></li>
-      <li class="outline-divider" aria-hidden="true">Story</li>
-      <li><a role="menuitem" href="#scene-dublin-apr" data-section="scene-dublin-apr"><span class="outline-num">01</span><span class="outline-label">Dublin &middot; Apr 2026</span></a></li>
-      <li><a role="menuitem" href="#scene-berlin" data-section="scene-berlin"><span class="outline-num">02</span><span class="outline-label">Berlin</span></a></li>
-      <li><a role="menuitem" href="#scene-brussels" data-section="scene-brussels"><span class="outline-num">03</span><span class="outline-label">Brussels</span></a></li>
-      <li><a role="menuitem" href="#scene-tokyo" data-section="scene-tokyo"><span class="outline-num">04</span><span class="outline-label">Tokyo</span></a></li>
-      <li><a role="menuitem" href="#scene-stockholm" data-section="scene-stockholm"><span class="outline-num">05</span><span class="outline-label">Stockholm</span></a></li>
-      <li><a role="menuitem" href="#scene-monroe" data-section="scene-monroe"><span class="outline-num">06</span><span class="outline-label">Monroe, LA</span></a></li>
-      <li><a role="menuitem" href="#scene-ottawa" data-section="scene-ottawa"><span class="outline-num">07</span><span class="outline-label">Ottawa</span></a></li>
-      <li><a role="menuitem" href="#scene-paris" data-section="scene-paris"><span class="outline-num">08</span><span class="outline-label">Paris</span></a></li>
-      <li><a role="menuitem" href="#scene-dublin-jan" data-section="scene-dublin-jan"><span class="outline-num">09</span><span class="outline-label">Dublin &middot; Jan 2026</span></a></li>
-      <li><a role="menuitem" href="#scene-whitehouse" data-section="scene-whitehouse"><span class="outline-num">10</span><span class="outline-label">The White House</span></a></li>
-      <li><a role="menuitem" href="#scene-ether" data-section="scene-ether"><span class="outline-num">11</span><span class="outline-label">The Ether</span></a></li>
-      <li class="outline-divider" aria-hidden="true">Wrap-up</li>
-      <li><a role="menuitem" href="#outcome" data-section="outcome"><span class="outline-num">&middot;</span><span class="outline-label">Your Coalition</span></a></li>
-      <li><a role="menuitem" href="#signon" data-section="signon"><span class="outline-num">&middot;</span><span class="outline-label">Sign on</span></a></li>
-    </ol>
-  </div>
 </nav>
 
 <main id="main">
@@ -1956,42 +1936,29 @@
 
 </article>
 
-<!-- VIZ DOCK -->
-<aside class="viz-dock" id="vizDock" data-state="peek" aria-label="Data visualization dock">
-  <header class="dock-header">
-    <div class="dock-title-wrap">
-      <span class="dock-kicker">Live data</span>
-      <span class="dock-title" id="dockTitle">Capital flow</span>
-    </div>
-    <div class="dock-controls" role="radiogroup" aria-label="Dock size">
-      <button class="dock-btn" data-dock-state="collapsed" role="radio" aria-checked="false" aria-label="Collapse dock" title="Collapse">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6 L8 11 L13 6"/></svg>
-      </button>
-      <button class="dock-btn is-active" data-dock-state="peek" role="radio" aria-checked="true" aria-label="Peek dock (default)" title="Peek">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><line x1="3" y1="8" x2="13" y2="8"/></svg>
-      </button>
-      <button class="dock-btn" data-dock-state="full" role="radio" aria-checked="false" aria-label="Expand dock to full screen" title="Full screen">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 11 L8 6 L13 11"/></svg>
-      </button>
-    </div>
-  </header>
-  <div class="dock-body" id="dockBody">
 
-    <!-- DECISION STRIP (in-dock simulation; populated by JS) -->
-    <div class="decision-strip" id="decisionStrip" role="region" aria-live="polite" aria-label="Coalition decision">
-      <div class="decision-strip-inner">
-        <div class="decision-strip-meta">
-          <span class="decision-strip-counter" id="decisionCounter">DECISION 1 OF 7</span>
-          <span class="decision-strip-purpose">You&rsquo;re shaping the coalition. Picks across chapters tally into one of three endings.</span>
-          <span class="decision-strip-question" id="decisionQuestion"></span>
-        </div>
-        <div class="decision-strip-options" id="decisionOptions" role="radiogroup"></div>
-        <span class="decision-strip-status" id="decisionStatus"></span>
+
+</div>
+</div>
+
+
+<!-- OUTCOME (populated by JS once user reaches it) -->
+<section class="outcome" id="outcome" aria-labelledby="outcomeTitle">
+  <div class="outcome-inner">
+    <div class="outcome-kicker">Your Coalition</div>
+    <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
+    <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above. See <a href="summary.html">Summary</a> and <a href="research.html">Research</a> for the underlying proposal.</p>
+
+    <div class="coalition-design" id="coalitionDesign"></div>
+
+    <!-- Supporting data: the live charts that inform each coalition decision -->
+    <div class="supporting-data">
+      <div class="supporting-data-header">
+        <h3 class="supporting-data-title">Live data</h3>
+        <p class="supporting-data-note">Live data on the state of European AI, organized to complement the coalition design above.</p>
       </div>
-    </div>
-
     <!-- VIZ: Capital Flow -->
-    <div class="viz-pane is-active" data-viz="capital-flow" data-title="Capital flow">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2011,7 +1978,7 @@
     </div>
 
     <!-- VIZ: Talent Migration -->
-    <div class="viz-pane" data-viz="talent-migration" data-title="Talent migration">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2032,7 +1999,7 @@
     </div>
 
     <!-- VIZ: Language Heatmap -->
-    <div class="viz-pane" data-viz="lang-heatmap" data-title="Language coverage">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2058,7 +2025,7 @@
     </div>
 
     <!-- VIZ: Coalition Revenue -->
-    <div class="viz-pane" data-viz="coalition-revenue" data-title="Coalition revenue">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2079,7 +2046,7 @@
     </div>
 
     <!-- VIZ: EU Public AI Capex (Paris) -->
-    <div class="viz-pane" data-viz="eu-public-capex" data-title="Public AI commitments">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2102,7 +2069,7 @@
     </div>
 
     <!-- VIZ: Talent Timeline (Dublin Jan) -->
-    <div class="viz-pane" data-viz="talent-timeline" data-title="Brain drain timeline">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2125,7 +2092,7 @@
     </div>
 
     <!-- VIZ: Export Controls (White House) -->
-    <div class="viz-pane" data-viz="export-controls" data-title="US export controls">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2152,7 +2119,7 @@
     </div>
 
     <!-- VIZ: Compute Map -->
-    <div class="viz-pane" data-viz="compute-map" data-title="Compute infrastructure">
+    <div class="viz-card">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
@@ -2193,22 +2160,8 @@
         </div>
       </div>
     </div>
+    </div>
 
-  </div>
-</aside>
-
-</div>
-</div>
-
-
-<!-- OUTCOME (populated by JS once user reaches it) -->
-<section class="outcome" id="outcome" aria-labelledby="outcomeTitle">
-  <div class="outcome-inner">
-    <div class="outcome-kicker">Your Coalition</div>
-    <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
-    <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above. See <a href="summary.html">Summary</a> and <a href="research.html">Research</a> for the underlying proposal.</p>
-
-    <div class="coalition-design" id="coalitionDesign"></div>
   </div>
 </section>
 
@@ -2260,49 +2213,6 @@
 </main>
 
 <script>
-// ============================================================
-// VIZ DOCK CONTROLS
-// ============================================================
-(function(){
-  const dock = document.getElementById('vizDock');
-  const story = document.querySelector('.story');
-  const titleEl = document.getElementById('dockTitle');
-  const buttons = document.querySelectorAll('.dock-btn[data-dock-state]');
-
-  function setState(state){
-    if (!['collapsed','peek','full'].includes(state)) return;
-    dock.dataset.state = state;
-    buttons.forEach(b => {
-      const on = b.dataset.dockState === state;
-      b.classList.toggle('is-active', on);
-      b.setAttribute('aria-checked', on ? 'true' : 'false');
-    });
-    if (story) {
-      story.classList.remove('dock-collapsed','dock-peek','dock-full');
-      story.classList.add('dock-' + state);
-    }
-    // Trigger resize so canvas charts redraw at new viewport
-    window.dispatchEvent(new Event('resize'));
-  }
-  buttons.forEach(b => b.addEventListener('click', () => setState(b.dataset.dockState)));
-
-  // Click on the dock header (when collapsed) to expand to peek
-  dock.querySelector('.dock-header').addEventListener('click', (e) => {
-    if (e.target.closest('.dock-btn')) return;
-    if (dock.dataset.state === 'collapsed') setState('peek');
-  });
-
-  // ESC key collapses if full, otherwise toggles to peek
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    if (dock.dataset.state === 'full') setState('peek');
-    else if (dock.dataset.state === 'peek') setState('collapsed');
-  });
-
-  // Expose setState for the scroll observer
-  window._setDockState = setState;
-})();
-
 // ============================================================
 // SCROLL OBSERVER + SIMULATION — bind scenes to viz pane and sim state
 // ============================================================
@@ -2400,165 +2310,6 @@
     return null;
   }
 
-  // Strip refs
-  const strip = document.getElementById('decisionStrip');
-  const stripCounter = document.getElementById('decisionCounter');
-  const stripQuestion = document.getElementById('decisionQuestion');
-  const stripOptions = document.getElementById('decisionOptions');
-  const stripStatus = document.getElementById('decisionStatus');
-  const dockBody = document.getElementById('dockBody');
-
-  function renderStrip(sceneId){
-    if (!strip || !sceneId) return;
-    const cfg = SIM[sceneId];
-    if (!cfg) {
-      strip.classList.remove('is-active');
-      if (dockBody) dockBody.classList.remove('has-strip');
-      return;
-    }
-    strip.dataset.type = cfg.type;
-    strip.dataset.locked = lockedSet.has(sceneId) ? 'true' : 'false';
-
-    if (cfg.type === 'decide') {
-      const dIdx = decisionOrder.indexOf(sceneId);
-      stripCounter.textContent = `Decision ${dIdx + 1} of ${totalDecisions}`;
-      stripQuestion.textContent = cfg.question;
-      const pick = getPick(sceneId);
-      stripOptions.innerHTML = cfg.options.map(o => {
-        const cls = ['decision-option'];
-        if (o.id === pick) cls.push('is-picked');
-        if (o.default) cls.push('is-default');
-        return `<button type="button" class="${cls.join(' ')}" data-pick="${o.id}" role="radio" aria-checked="${o.id === pick}">
-          <span>${o.label}</span>
-          </button>`;
-      }).join('');
-      stripOptions.querySelectorAll('button').forEach(b => {
-        b.addEventListener('click', () => {
-          if (lockedSet.has(sceneId)) return;
-          simState[sceneId] = b.dataset.pick;
-          saveState();
-          renderStrip(sceneId);
-        });
-      });
-      stripStatus.textContent = '';
-    } else {
-      stripCounter.textContent = 'Observing';
-      stripQuestion.textContent = cfg.label || '';
-      stripOptions.innerHTML = '';
-      stripStatus.textContent = '';
-    }
-    strip.classList.add('is-active');
-    if (dockBody) dockBody.classList.add('has-strip');
-    measureStrip();
-  }
-
-  // Keep the viz-pane's top padding in sync with the strip's actual height
-  // so wrapped option chips never crop the chart/explainer underneath.
-  function measureStrip(){
-    if (!strip || !dockBody) return;
-    requestAnimationFrame(() => {
-      const h = strip.getBoundingClientRect().height;
-      if (h > 0) dockBody.style.setProperty('--strip-h', h + 'px');
-    });
-  }
-  if (typeof ResizeObserver !== 'undefined' && strip) {
-    new ResizeObserver(measureStrip).observe(strip);
-  }
-  window.addEventListener('resize', measureStrip);
-
-  // Viz panes
-  const scenes = Array.from(document.querySelectorAll('.scene[data-viz]'));
-  const panes = Array.from(document.querySelectorAll('.viz-pane[data-viz]'));
-  const titleEl = document.getElementById('dockTitle');
-  let currentVizId = null;
-
-  function activate(sceneEl){
-    const vizId = sceneEl.dataset.viz;
-    // No-op if this chart is already the active one — prevents stacking a
-    // second rAF loop onto an already-running chart.
-    if (vizId === currentVizId) return;
-    currentVizId = vizId;
-    panes.forEach(p => p.classList.toggle('is-active', p.dataset.viz === vizId));
-    const activePane = panes.find(p => p.dataset.viz === vizId);
-    if (activePane && titleEl) titleEl.innerHTML = activePane.dataset.title || '';
-    // On the next frame (after the is-active class has taken layout effect),
-    // kick the newly-visible chart: it re-measures and restarts its own rAF
-    // loop. Only the active chart's loop runs — every other chart's draw()
-    // bails out on the visibility guard, so the dock costs one chart, not 8.
-    if (activePane) {
-      const c = activePane.querySelector('canvas');
-      if (c) requestAnimationFrame(() => c.dispatchEvent(new CustomEvent('viz:show')));
-    }
-  }
-
-  function lockIfDecide(sceneId){
-    const cfg = SIM[sceneId];
-    if (!cfg || cfg.type !== 'decide') return;
-    if (lockedSet.has(sceneId)) return;
-    if (!simState[sceneId]) {
-      const def = cfg.options.find(o => o.default);
-      if (def) simState[sceneId] = def.id;
-    }
-    lockedSet.add(sceneId);
-    saveState();
-  }
-
-  // Reveal the whole viz dock once chapter 1 reaches the top of the viewport,
-  // and hide it again once the outcome section reaches the top (story is over).
-  const firstScene = document.getElementById('scene-dublin-apr');
-  const outcomeEl = document.getElementById('outcome');
-  const dockEl = document.getElementById('vizDock');
-  if (firstScene && dockEl) {
-    let scheduled = false;
-    const update = () => {
-      scheduled = false;
-      const wasLive = dockEl.classList.contains('is-live');
-      const top = firstScene.getBoundingClientRect().top;
-      // Reveal a little above chapter 1: when its top is ~30vh from the viewport top.
-      const threshold = Math.max(200, window.innerHeight * 0.3);
-      const pastEnd = outcomeEl && outcomeEl.getBoundingClientRect().top <= threshold;
-      if (top <= threshold && !pastEnd) {
-        dockEl.classList.add('is-live');
-        if (!wasLive) {
-          // First reveal: size canvas charts to the now-visible dock.
-          requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
-        }
-      } else {
-        dockEl.classList.remove('is-live');
-      }
-    };
-    const schedule = () => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    update();
-  }
-
-  // Track which scenes are intersecting; the topmost one drives activation.
-  const visible = new Map();
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        visible.set(e.target.id, e.target);
-      } else {
-        // Note: scenes no longer auto-lock on scroll-past. Picks remain editable
-        // until the outcome section appears (see outObs below).
-        visible.delete(e.target.id);
-      }
-    });
-    if (visible.size === 0) return;
-    let best = null, bestScore = -Infinity;
-    for (const [, el] of visible) {
-      const top = el.getBoundingClientRect().top;
-      const score = top <= 80 ? top : -1000 - (top - 80);
-      if (score > bestScore) { bestScore = score; best = el; }
-    }
-    if (best) activate(best);
-  }, { rootMargin: '-15% 0px -55% 0px', threshold: [0, 0.1, 0.5, 0.9] });
-  scenes.forEach(s => obs.observe(s));
 
   // ===== Outcome rendering =====
   const outcome = document.getElementById('outcome');
@@ -2922,69 +2673,6 @@
 })();
 
 // ============================================================
-// OUTLINE DROPDOWN — chapter / section jump menu in the topnav
-// ============================================================
-(function(){
-  const toggle = document.getElementById('outlineToggle');
-  const menu = document.getElementById('outlineMenu');
-  if (!toggle || !menu) return;
-
-  function open(){
-    menu.hidden = false;
-    toggle.setAttribute('aria-expanded', 'true');
-  }
-  function close(){
-    menu.hidden = true;
-    toggle.setAttribute('aria-expanded', 'false');
-  }
-  toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (menu.hidden) open(); else close();
-  });
-  // Click a chapter / section: jump and close.
-  menu.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]');
-    if (a) close();
-  });
-  // Click outside or Escape closes.
-  document.addEventListener('click', (e) => {
-    if (menu.hidden) return;
-    if (!menu.contains(e.target) && e.target !== toggle) close();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !menu.hidden) close();
-  });
-
-  // Highlight whichever section is currently in view.
-  const items = Array.from(menu.querySelectorAll('a[data-section]'));
-  const targets = items.map(a => document.getElementById(a.dataset.section)).filter(Boolean);
-  if ('IntersectionObserver' in window && targets.length) {
-    const idToItem = new Map();
-    items.forEach(a => idToItem.set(a.dataset.section, a));
-    const visible = new Set();
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) visible.add(e.target.id);
-        else visible.delete(e.target.id);
-      });
-      // Pick the topmost visible target as "current"
-      let bestId = null, bestTop = Infinity;
-      visible.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const t = el.getBoundingClientRect().top;
-        if (t < bestTop) { bestTop = t; bestId = id; }
-      });
-      items.forEach(a => a.classList.remove('is-current'));
-      if (bestId && idToItem.has(bestId)) {
-        idToItem.get(bestId).classList.add('is-current');
-      }
-    }, { rootMargin: '-72px 0px -55% 0px', threshold: [0, 0.1, 0.5] });
-    targets.forEach(el => obs.observe(el));
-  }
-})();
-
-// ============================================================
 // SIGN-ON FORM — mailto fallback if Formspree id is the placeholder
 // ============================================================
 (function(){
@@ -3067,7 +2755,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbCapitalFlowCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
+  // (pane visibility check removed; charts always render inline)
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3079,7 +2767,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize(); window.addEventListener('resize',resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
   const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#ff3333'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0fa37a'},{label:'Diluted / lost',x:0.93,y:0.80,col:'rgba(10,10,10,0.45)'}];
@@ -3089,7 +2776,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
   function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
@@ -3124,7 +2810,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas=document.getElementById('dbTalentChordCanvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
+  // (pane visibility check removed; charts always render inline)
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3136,14 +2822,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
   const educated=[{label:'EU-West',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / CH',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US',y:0.84,col:'#1a6cd4',pct:'18%'}];
   const working=[{label:'Work in US',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'China',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
@@ -3196,7 +2880,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas=document.getElementById('dbGrowthChart');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
+  // (pane visibility check removed; charts always render inline)
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3208,7 +2892,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
   // Real-time axis: points carry an absolute date (year + month/12) so all
   // three series share one timeline.
   const X_MIN = 2023.0;
@@ -3236,7 +2919,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   function dateToX(d){ return (d - X_MIN) / (X_MAX - X_MIN); }
   let grown=reduceMotion?1:0;
   function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
@@ -3323,7 +3005,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbEuCapexCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
+  // (pane visibility check removed; charts always render inline)
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3336,7 +3018,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // State-committed public AI funding, in €B. Sorted descending.
   // `asp` = aspirational/private-pipeline pledge typically quoted alongside.
@@ -3356,7 +3037,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
@@ -3463,7 +3143,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbExportControlsCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
+  // (pane visibility check removed; charts always render inline)
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3476,7 +3156,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // status: 'force' (red/green dot), 'rescinded' (gray), 'reversed' (orange), 'suspended' (orange)
   const events = [
@@ -3501,7 +3180,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
@@ -3597,7 +3275,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const canvas = document.getElementById('dbTalentTimelineCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
+  // (pane visibility check removed; charts always render inline)
   function resize(){
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -3610,7 +3288,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   resize();
   window.addEventListener('resize', resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
   // Quarterly trend, interpolated between MacroPolo (2022 anchor) and Atomico
   // (2023-24 anchors). 2019 baseline is the upper reference line.
@@ -3628,7 +3305,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
     const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
