@@ -87,12 +87,6 @@
   .topnav-brand:focus-visible {
     outline-offset: 1px;
   }
-  .dock-btn:focus-visible {
-    outline-offset: -2px;
-  }
-  .decision-option:focus-visible {
-    outline-offset: 2px; outline-width: 2px;
-  }
   .signon-form input:focus,
   .signon-form textarea:focus { outline: none; } /* border colour change is the indicator */
   .signon-form input:focus-visible,
@@ -175,75 +169,9 @@
   }
 
   /* Outline dropdown: minimalist chapter index hung from the topnav. */
-  .outline-toggle {
-    background: transparent; border: 1px solid transparent;
-    font-family: var(--mono); cursor: pointer;
-  }
-  .outline-toggle::after {
-    content: ' \25BE'; opacity: 0.5; margin-left: 0.25rem;
-  }
-  .outline-toggle[aria-expanded="true"]::after { content: ' \25B4'; opacity: 1; }
-  .outline-menu {
-    position: absolute;
-    top: 56px; right: 0.5rem;
-    background: rgba(248,246,241,0.98);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--hairline-strong);
-    border-radius: 6px;
-    box-shadow: 0 12px 32px rgba(10,10,10,0.12);
-    min-width: 280px;
-    max-height: calc(100vh - 80px);
-    overflow-y: auto;
-    z-index: 60;
-    padding: 0.5rem 0;
-    animation: outlineMenuIn 0.18s ease-out;
-  }
-  .outline-menu[hidden] { display: none; }
   @keyframes outlineMenuIn {
     from { opacity: 0; transform: translateY(-6px); }
     to { opacity: 1; transform: translateY(0); }
-  }
-  .outline-list {
-    list-style: none; margin: 0; padding: 0;
-  }
-  .outline-list a {
-    display: flex; align-items: baseline;
-    gap: 0.75rem;
-    padding: 0.45rem 1rem;
-    text-decoration: none;
-    color: var(--text);
-    font-family: var(--font); font-size: 0.85rem;
-    border-left: 2px solid transparent;
-    transition: background 0.12s, border-left-color 0.12s, color 0.12s;
-  }
-  .outline-list a:hover {
-    background: var(--paper-2);
-    color: var(--accent);
-  }
-  .outline-list a.is-current {
-    border-left-color: var(--accent);
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .outline-num {
-    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
-    color: var(--text-soft);
-    width: 1.5rem; flex-shrink: 0;
-    letter-spacing: 0.05em;
-  }
-  .outline-list a.is-current .outline-num { color: var(--accent); }
-  .outline-divider {
-    padding: 0.55rem 1rem 0.25rem;
-    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--text-soft);
-    border-top: 1px solid var(--hairline);
-    margin-top: 0.25rem;
-  }
-  .outline-divider:first-of-type {
-    border-top: none; margin-top: 0;
   }
 
   /* === HERO === */
@@ -522,81 +450,10 @@
     text-decoration: none;
   }
 
-  /* === VIZ DOCK === */
-  .viz-dock {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-    background: var(--ink);
-    border-top: 1px solid var(--hairline-strong);
-    box-shadow: 0 -8px 24px rgba(10,10,10,0.06);
-    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s ease, transform 0.3s ease;
-    display: flex; flex-direction: column;
-    overflow: hidden;
-    opacity: 0; pointer-events: none;
-    transform: translateY(12px);
-  }
-  .viz-dock.is-live {
-    opacity: 1; pointer-events: auto;
-    transform: translateY(0);
-  }
-  .viz-dock[data-state="collapsed"] { height: var(--dock-collapsed); }
-  .viz-dock[data-state="peek"]      { height: var(--dock-peek); }
-  .viz-dock[data-state="full"]      { height: var(--dock-full); }
-
-  .dock-header {
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 1rem; height: var(--dock-collapsed);
-    border-bottom: 1px solid var(--hairline);
-    background: var(--ink);
-  }
-  .dock-title-wrap {
-    display: flex; align-items: center; gap: 0.65rem;
-    overflow: hidden;
-  }
-  .dock-kicker {
-    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--text-soft);
-    flex-shrink: 0;
-  }
-  .dock-title {
-    font-family: var(--font); font-size: 0.88rem; font-weight: 600;
-    color: var(--text);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .dock-controls {
-    display: flex; gap: 0.25rem;
-    flex-shrink: 0;
-  }
-  .dock-btn {
-    width: 40px; height: 40px;
-    display: inline-flex; align-items: center; justify-content: center;
-    background: transparent; border: 1px solid transparent; border-radius: 4px;
-    color: var(--text-muted); cursor: pointer;
-    font-family: var(--mono); font-size: 0.95rem;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-  }
-  .dock-btn:hover {
-    background: var(--paper-2); color: var(--text);
-  }
-  .dock-btn.is-active {
-    background: var(--accent-dim); color: var(--accent);
-    border-color: var(--accent);
-  }
-  .dock-btn svg { width: 14px; height: 14px; }
-
-  /* dock-body is the scroll container on mobile/tablet. Active pane is a
+/* dock-body is the scroll container on mobile/tablet. Active pane is a
      normal block child whose content can exceed the dock height — the dock-body
      scrolls. On desktop this is overridden to overflow: visible so the dock
      itself auto-sizes to content. */
-  .dock-body {
-    flex: 1; min-height: 0;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
   .viz-pane {
     display: none;
     padding: 1.25rem 1.5rem;
@@ -616,7 +473,6 @@
   /* In peek mode, hide the side explainer so the chart fills the dock. */
   /* Peek state always shows both the explainer and the chart; the dock body
      scrolls (mobile) or auto-sizes (desktop). */
-  .viz-dock[data-state="peek"] .viz-pane-inner { grid-template-columns: 1fr; }
   .viz-explainer {
     overflow-y: auto; min-height: 0;
   }
@@ -797,31 +653,8 @@
     }
     .story.dock-collapsed,
     .story.dock-full { padding-bottom: 5rem; }
-    .viz-dock {
-      position: sticky;
-      top: calc(56px + 0.5rem);
-      left: auto; right: auto; bottom: auto;
-      width: 100%;
-      border: 1px solid var(--hairline-strong);
-      border-radius: 10px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.12);
-      opacity: 0; pointer-events: none;
-      transform: none;
-    }
-    .viz-dock.is-live {
-      opacity: 1; pointer-events: auto;
-    }
-    .viz-dock[data-state="collapsed"] { height: var(--dock-collapsed); }
-    .viz-dock[data-state="peek"] {
-      height: auto;
-      max-height: var(--dock-full);
-    }
-    .viz-dock[data-state="full"] { height: var(--dock-full); }
-    .dock-body { overflow: visible; }
     .viz-pane { padding: 1rem 1.15rem; }
     .viz-pane-inner { grid-template-columns: 1fr; gap: 0.85rem; }
-    .viz-dock[data-state="full"] .viz-pane-inner,
-    .viz-dock[data-state="peek"] .viz-pane-inner { grid-template-columns: 1fr; }
     .viz-explainer { overflow: visible; }
     .viz-canvas-wrap {
       flex: 0 0 auto;
@@ -829,11 +662,6 @@
       position: relative;
       z-index: 1;
       background: var(--paper-2);
-    }
-    .decision-strip { padding: 0.7rem 1.1rem; }
-    .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
-    .dock-body.has-strip .viz-pane.is-active {
-      padding-top: calc(var(--strip-h, 9rem) + 0.5rem);
     }
   }
 
@@ -849,16 +677,6 @@
       display: block;
     }
     /* Mobile: keep bottom-fixed dock so charts stay visible while scrolling chapters */
-    .viz-dock {
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      width: auto;
-      margin-top: 0;
-      transform: translateY(12px);
-    }
-    .viz-dock.is-live {
-      transform: translateY(0);
-    }
   }
   @media (max-width: 900px) {
     :root {
@@ -870,93 +688,55 @@
     .viz-canvas-wrap { order: 1; }
   }
 
-  /* === DECISION STRIP (legacy in-dock; decisions now live in the outcome
-     section, but the markup is kept to avoid breaking event refs) === */
-  .decision-strip { display: none !important; }
-  .decision-strip-legacy {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-    background: var(--ink);
-    border-bottom: 1px solid var(--hairline-strong);
-    padding: 0.85rem 1.5rem;
-    transform: translateY(-100%); opacity: 0;
-    transition: transform 0.25s ease, opacity 0.2s ease;
-    pointer-events: none;
+/* Push the viz-pane content down when the decision strip is active */
+
+  /* === SUPPORTING DATA (Live data inside the outcome section) === */
+  .supporting-data {
+    margin: 3rem 0 0;
+    padding-top: 2.5rem;
+    border-top: 2px solid var(--accent);
+    display: grid;
+    gap: 1.5rem;
   }
-  .decision-strip.is-active {
-    transform: translateY(0); opacity: 1;
-    pointer-events: auto;
+  .supporting-data-header {
+    max-width: 60ch;
   }
-  .decision-strip-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 200px 1fr auto; gap: 1.25rem;
-    align-items: center;
-  }
-  .decision-strip-meta {
-    display: flex; flex-direction: column; gap: 0.15rem;
-  }
-  .decision-strip-counter {
-    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+  .supporting-data-title {
+    font-family: var(--mono);
+    font-size: 0.78rem; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--accent);
+    margin-bottom: 0.6rem;
   }
-  .decision-strip[data-type="observe"] .decision-strip-counter {
+  .supporting-data-note {
+    font-family: var(--font); font-size: 0.95rem; line-height: 1.6;
     color: var(--text-soft);
   }
-  .decision-strip-purpose {
-    font-family: var(--font); font-size: 0.72rem; font-weight: 500;
-    color: var(--text-soft); line-height: 1.4;
-    font-style: italic;
+  .viz-card {
+    background: var(--ink);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 1.25rem 1.5rem;
   }
-  .decision-strip[data-type="observe"] .decision-strip-purpose { display: none; }
-  .decision-strip-question {
-    font-family: var(--font); font-size: 0.85rem; font-weight: 600;
-    color: var(--text); line-height: 1.4;
+  .viz-card .viz-pane-inner {
+    display: block;
+    max-width: none;
   }
-  .decision-strip-options {
-    display: flex; gap: 0.4rem; flex-wrap: wrap;
+  .viz-card .viz-explainer {
+    margin-bottom: 1rem;
+    max-width: 70ch;
   }
-  .decision-option {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.55rem 0.85rem;
-    min-height: 40px;
-    background: var(--paper-2); color: var(--text);
-    border: 1px solid var(--hairline-strong); border-radius: 4px;
-    font-family: var(--font); font-size: 0.82rem; font-weight: 500;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
-  }
-  .decision-option:hover { border-color: var(--accent); color: var(--accent); }
-  .decision-option.is-default { border-style: dashed; }
-  .decision-option.is-picked {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-  .decision-option.is-picked.is-default {
-    background: var(--accent-dim); color: var(--accent);
-    border-style: solid;
-  }
-  .decision-option .option-tag {
-    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    opacity: 0.7;
-  }
-  .decision-strip-status {
-    font-family: var(--mono); font-size: 0.6rem; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-soft);
-    white-space: nowrap;
-  }
-  .decision-strip[data-locked="true"] {
+  .viz-card .viz-canvas-wrap {
     background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 0;
+    position: relative;
   }
-  .decision-strip[data-locked="true"] .decision-strip-status {
-    color: var(--accent);
-  }
-  .decision-strip[data-type="observe"] .decision-option { display: none; }
-  .decision-strip[data-type="observe"] .decision-strip-status { display: none; }
-
-  /* Push the viz-pane content down when the decision strip is active */
-  .dock-body.has-strip .viz-pane.is-active {
-    padding-top: 5.25rem;
+  @media (max-width: 700px) {
+    .viz-card { padding: 1rem 1.1rem; }
   }
 
   /* === OUTCOME SCREEN === */
@@ -1330,74 +1110,7 @@
     display: grid; gap: 1.1rem;
     margin: 0; padding: 0;
   }
-  .decision-card {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 0.95rem;
-    padding: 1rem 0;
-    border-top: 1px solid var(--hairline);
-  }
-  .decision-card-num {
-    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    padding-top: 2px;
-  }
-  .decision-card-question {
-    font-family: var(--font); font-size: 1.0rem; font-weight: 600;
-    color: var(--text); line-height: 1.4;
-    margin-bottom: 0.65rem;
-  }
-  .decision-card-options {
-    display: flex; flex-wrap: wrap; gap: 0.45rem;
-  }
-  .decision-card-option {
-    display: inline-flex; align-items: center; gap: 0.45rem;
-    padding: 0.55rem 0.85rem;
-    min-height: 38px;
-    background: var(--paper-2); color: var(--text);
-    border: 1px solid var(--hairline-strong); border-radius: 4px;
-    font-family: var(--font); font-size: 0.86rem; font-weight: 500;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
-  }
-  .decision-card-option:hover { border-color: var(--accent); color: var(--accent); }
-  .decision-card-option.is-picked {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-  .decision-card-option .option-tag {
-    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    opacity: 0.7;
-  }
-  .decision-card-impact {
-    margin-top: 0.85rem;
-    padding: 0.7rem 0.9rem;
-    border-left: 3px solid var(--hairline-strong);
-    background: var(--paper-2);
-    border-radius: 0 4px 4px 0;
-    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem;
-  }
-  .decision-card-impact[data-strength="active"]  { border-left-color: var(--accent); }
-  .decision-card-impact[data-strength="mid"]     { border-left-color: var(--gold); }
-  .decision-card-impact[data-strength="passive"] { border-left-color: var(--red); }
-  .decision-card-strength {
-    flex-shrink: 0;
-    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    padding: 2px 7px; border-radius: 3px;
-  }
-  .decision-card-strength[data-strength="active"]  { background: var(--accent-dim); color: var(--accent); }
-  .decision-card-strength[data-strength="mid"]     { background: rgba(138,90,0,0.12); color: var(--gold); }
-  .decision-card-strength[data-strength="passive"] { background: rgba(184,0,46,0.10); color: var(--red); }
-  .decision-card-impact-text {
-    font-family: var(--font); font-size: 0.88rem; line-height: 1.5;
-    color: var(--text);
-  }
   @media (max-width: 600px) {
-    .decision-card { grid-template-columns: 1fr; gap: 0.45rem; }
-    .decision-card-option { font-size: 0.82rem; min-height: 40px; }
-    .decision-card-impact { padding: 0.6rem 0.7rem; }
   }
   .outcome-row {
     display: grid; grid-template-columns: 160px 1fr auto; gap: 1rem;
@@ -1525,18 +1238,10 @@
     .scene-prose p { font-size: 1.04rem; }
     .scene-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
     .doc-inset { padding: 1.1rem 1.2rem; }
-    .dock-controls .dock-btn { width: 44px; height: 44px; }
-    .dock-kicker { display: none; }
-    .dock-title { font-size: 0.78rem; }
     .briefing { padding: 3rem 1.25rem; }
     .briefing-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
     .briefing-list li { padding: 0.9rem 0 0.9rem 2.6rem; font-size: 0.92rem; }
     .briefing-list li::before { font-size: 0.68rem; top: 1rem; }
-    .decision-strip { padding: 0.7rem 1rem; }
-    .decision-strip-inner { grid-template-columns: 1fr; gap: 0.5rem; }
-    .decision-strip-options { gap: 0.4rem; }
-    .decision-option { padding: 0.5rem 0.7rem; font-size: 0.78rem; min-height: 40px; }
-    .dock-body.has-strip .viz-pane.is-active { padding-top: 10rem; }
     .outcome { padding: 3rem 1.25rem; }
     .outcome-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
     .outcome-row { grid-template-columns: 1fr; gap: 0.2rem; padding: 0.6rem 0; }
@@ -1553,10 +1258,8 @@
     .outro { padding: 3rem 1.25rem 4rem; }
     .outro-actions .btn { flex: 1 1 200px; justify-content: center; }
     /* iOS notch: keep the dock above the home indicator */
-    .viz-dock { padding-bottom: env(safe-area-inset-bottom, 0px); }
   }
   @media print {
-    .topnav, .viz-dock, .hero-arrow { display: none !important; }
     .story { padding-bottom: 0 !important; max-width: 100%; }
     .scene { page-break-inside: avoid; }
   }
