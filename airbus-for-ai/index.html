@@ -3207,16 +3207,23 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.clearRect(0,0,W,H);
     // Reserve room for the (now short) labels on each side; flow region
     // gets most of the width.
-    const insetPx = W < 380 ? 78 : 110;
+    const insetPx = W < 380 ? 80 : 100;
     const LX = Math.max(0.18, insetPx / W);
     const RX = 1 - LX;
     const tfs=Math.max(7, Math.min(9, W*0.022));
     const lfs=Math.max(8, Math.min(11, W*0.026));
     const pfs=Math.max(7, Math.min(10, W*0.024));
     const dotR=Math.max(3, Math.min(5, W*0.012));
-    ctx.font=tfs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(10,10,10,0.4)';
-    ctx.fillText('EDUCATED IN',LX*W,14);ctx.fillText('NOW WORKING IN',RX*W,14);
-    ctx.fillStyle='rgba(10,10,10,0.10)';ctx.font='28px Inter, sans-serif';ctx.fillText('→',0.5*W,0.5*H);
+    // Headers sit ABOVE the columns, not at chart top, so they never
+    // collide with the first row of labels at narrow widths.
+    ctx.font=tfs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(10,10,10,0.42)';
+    ctx.fillText('EDUCATED IN', LX*W, 10);
+    ctx.fillText('NOW WORKING IN', RX*W, 10);
+    // Center arrow stays soft and tucked behind the bezier curves.
+    ctx.fillStyle='rgba(10,10,10,0.08)';
+    const arrowFs = Math.max(18, Math.min(28, W*0.06));
+    ctx.font=arrowFs+'px Inter, sans-serif';
+    ctx.fillText('→', 0.5*W, 0.5*H + arrowFs*0.15);
     flows.forEach((f,fi)=>{
       const src=educated[f.from],dst=working[f.to];const x1=LX*W+8,y1=src.y*H,x2=RX*W-8,y2=dst.y*H,thickness=f.w*H*0.6;
       ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=src.col+'12';ctx.lineWidth=thickness;ctx.stroke();
