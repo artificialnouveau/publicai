@@ -54,7 +54,6 @@
 <aside class="country-map" id="countryMap" aria-hidden="true">
   <div class="country-map-frame">
     <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="var(--paper)"/>
       <g id="countryMapGroup" fill="none" stroke="rgba(10,10,10,0.45)" stroke-width="0.4" stroke-linejoin="round" stroke-linecap="round"></g>
     </svg>
   </div>
@@ -406,12 +405,14 @@
   <div class="outcome-inner">
     <div class="outcome-kicker">Your Coalition</div>
     <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
-    <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above. See <a href="summary.html">Summary</a> and <a href="research.html">Research</a> for the underlying proposal.</p>
+    <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above.</p>
 
-    <div class="coalition-design" id="coalitionDesign"></div>
-
-    <!-- Supporting data: the live charts that inform each coalition decision -->
-    <div class="supporting-data">
+    <div class="outcome-split">
+      <div class="outcome-split-design">
+        <div class="coalition-design" id="coalitionDesign"></div>
+      </div>
+      <!-- Supporting data: the live charts that inform each coalition decision -->
+      <div class="supporting-data">
       <div class="supporting-data-header">
         <h3 class="supporting-data-title">Live data</h3>
         <p class="supporting-data-note">Live data on the state of European AI, organized to complement the coalition design above.</p>
@@ -619,7 +620,8 @@
         </div>
       </div>
     </div>
-    </div>
+    </div><!-- /supporting-data -->
+    </div><!-- /outcome-split -->
 
   </div>
 </section>
