@@ -699,20 +699,57 @@
     .experience-columns > .story { flex: 1 1 auto; min-width: 0; order: 1; }
   }
   .country-map-frame {
-    width: 200px; height: 200px;
+    width: 220px; height: 220px;
     margin: 0 auto;
-    background: var(--paper);
-    border: 1px solid var(--hairline);
-    border-radius: 6px;
-    box-shadow: 0 6px 18px rgba(10,10,10,0.06);
+    background: linear-gradient(160deg, #f3efe6 0%, #ece7da 100%);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(10,10,10,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
     overflow: hidden;
+    position: relative;
   }
-  .country-map-frame svg { display: block; width: 100%; height: 100%; }
-  .country-map .cm-country { transition: fill 0.4s ease, stroke 0.4s ease; }
+  .country-map-frame::after {
+    /* faint vignette so the map sits cleanly inside the frame */
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.08) 100%);
+    pointer-events: none;
+  }
+  .country-map-frame svg {
+    display: block;
+    width: 100%; height: 100%;
+  }
+
+  /* Land: a soft warm gray that reads against the paper background. */
+  .country-map .cm-country {
+    fill: rgba(10,10,10,0.10);
+    stroke: rgba(10,10,10,0.32);
+    stroke-width: 0.45;
+    transition: fill 0.5s ease, stroke 0.5s ease;
+  }
   .country-map .cm-country.is-active {
     fill: var(--accent);
-    stroke: var(--accent);
-    stroke-width: 0.6;
+    stroke: var(--navy-dark, #001540);
+    stroke-width: 0.7;
+    filter: drop-shadow(0 0 3px rgba(0,119,200,0.55));
+  }
+  /* Pulsing city dot for the active chapter. */
+  .country-map .cm-dot {
+    fill: var(--accent);
+    stroke: #fff;
+    stroke-width: 1;
+    transition: opacity 0.3s ease;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: cm-pulse 1.8s ease-in-out infinite;
+  }
+  .country-map .cm-dot.is-hidden { opacity: 0; animation: none; }
+  @keyframes cm-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.6); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .country-map .cm-dot { animation: none; }
   }
 
   /* === OUTCOME SPLIT: Your Coalition (left) + Live Data (right) side by side === */

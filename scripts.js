@@ -1203,14 +1203,19 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   if (!root || !group) return;
 
   // Fetch a compact world atlas (countries-110m, ~30KB) and project it into
-  // the 200×200 viewport via a simple equirectangular projection.
+  // the 200×200 viewport. Use a cropped equirectangular projection focused on
+  // the northern-hemisphere band where every chapter's country sits so the
+  // countries actually read at this scale.
   const ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+  const MIN_LNG = -135, MAX_LNG = 155;
+  const MIN_LAT = 18,  MAX_LAT = 75;
+  // Y-band inside the 200x200 viewbox, leaving small top/bottom margins.
+  const Y_TOP = 22, Y_BOT = 178;
 
   function project(lng, lat) {
-    return [
-      (lng + 180) / 360 * 200,
-      (90 - lat) / 180 * 200,
-    ];
+    const x = (lng - MIN_LNG) / (MAX_LNG - MIN_LNG) * 200;
+    const y = Y_TOP + (MAX_LAT - lat) / (MAX_LAT - MIN_LAT) * (Y_BOT - Y_TOP);
+    return [x, y];
   }
 
   function ringToPath(ring) {
@@ -1260,6 +1265,23 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     });
   }
 
+  // City coordinates per scene id. Used to drop a pulsing dot for the
+  // currently-active chapter on top of the highlighted country.
+  const CITY_COORDS = {
+    'scene-dublin-apr':  [-6.27, 53.35],
+    'scene-berlin':      [13.40, 52.52],
+    'scene-brussels':    [4.35, 50.85],
+    'scene-tokyo':       [139.69, 35.69],
+    'scene-stockholm':   [18.07, 59.33],
+    'scene-monroe':      [-92.11, 32.51],
+    'scene-ottawa':      [-75.69, 45.42],
+    'scene-paris':       [2.35, 48.86],
+    'scene-dublin-jan':  [-6.27, 53.35],
+    'scene-whitehouse':  [-77.04, 38.90],
+  };
+
+  let dotEl = null;
+
   fetch(ATLAS_URL)
     .then(r => r.json())
     .then(topology => {
@@ -1273,6 +1295,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         path.setAttribute('data-id', String(c.id));
         group.appendChild(path);
       });
+      // City dot (appended last so it sits on top of all country paths).
+      const svg = group.ownerSVGElement;
+      dotEl = document.createElementNS(NS, 'circle');
+      dotEl.setAttribute('class', 'cm-dot is-hidden');
+      dotEl.setAttribute('r', '2.6');
+      dotEl.setAttribute('cx', '0');
+      dotEl.setAttribute('cy', '0');
+      svg.appendChild(dotEl);
       setupHighlighter();
     })
     .catch(err => {
@@ -1283,13 +1313,31 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     const scenes = Array.from(document.querySelectorAll('.scene[data-country-id]'));
     if (!scenes.length || !('IntersectionObserver' in window)) return;
     let active = null;
-    function setActive(id) {
-      if (id === active) return;
+    function setActive(sceneEl) {
+      const id = sceneEl ? sceneEl.dataset.countryId : null;
+      if (id === active && sceneEl) {
+        // Same country — still update city dot for shared-country chapters.
+        positionDot(sceneEl);
+        return;
+      }
       active = id;
       group.querySelectorAll('.cm-country.is-active').forEach(p => p.classList.remove('is-active'));
-      if (!id) return;
+      if (!id) {
+        if (dotEl) dotEl.classList.add('is-hidden');
+        return;
+      }
       const path = group.querySelector('.cm-country[data-id="' + id + '"]');
       if (path) path.classList.add('is-active');
+      positionDot(sceneEl);
+    }
+    function positionDot(sceneEl) {
+      if (!dotEl || !sceneEl) return;
+      const coords = CITY_COORDS[sceneEl.id];
+      if (!coords) { dotEl.classList.add('is-hidden'); return; }
+      const [x, y] = project(coords[0], coords[1]);
+      dotEl.setAttribute('cx', x.toFixed(2));
+      dotEl.setAttribute('cy', y.toFixed(2));
+      dotEl.classList.remove('is-hidden');
     }
     const visible = new Map();
     const io = new IntersectionObserver(entries => {
@@ -1298,11 +1346,11 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         else visible.delete(e.target);
       });
       let best = null, bestY = Infinity;
-      visible.forEach((y, el) => {
+      visible.forEach((_, el) => {
         const t = el.getBoundingClientRect().top;
         if (t < bestY && t < window.innerHeight / 2) { bestY = t; best = el; }
       });
-      setActive(best ? best.dataset.countryId : null);
+      setActive(best);
     }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.25, 0.75] });
     scenes.forEach(s => io.observe(s));
   }
