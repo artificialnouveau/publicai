@@ -29,12 +29,36 @@ airbus-for-ai-v1/         Archived v1 of the story (kept for reference)
 
 No build step. All files are static HTML, CSS, and JavaScript served from the repo root. Hosting is GitHub Pages with the custom domain `artificialnouveau.com`.
 
-## Local preview
+## Run it locally
+
+No build, no dependencies. Just serve the repo root over HTTP.
 
 ```bash
+git clone git@github.com:artificialnouveau/publicai.git
+cd publicai
 python3 -m http.server 8000
 ```
-Then open `http://localhost:8000/airbus-for-ai/` (or the project of choice).
+
+Then open one of:
+
+- `http://localhost:8000/` (landing page)
+- `http://localhost:8000/airbus-for-ai/` (the story + interactive designer)
+- `http://localhost:8000/moreaiineedit/`
+- `http://localhost:8000/ai-governance-game/`
+- `http://localhost:8000/educational-resources/`
+
+Hit Ctrl-C in the terminal to stop the server.
+
+### Alternatives if you don't have Python 3
+
+```bash
+# Node (npm)
+npx http-server -p 8000
+
+# Or the VS Code "Live Server" extension: right-click index.html -> "Open with Live Server"
+```
+
+Hot reload isn't necessary because there's no build step; just refresh the browser after editing a file. The HuggingFace live-data chart will call the public HuggingFace API on first load and cache the result in `sessionStorage`, so it works offline after the first successful fetch.
 
 ## Credits
 
