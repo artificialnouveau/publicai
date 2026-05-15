@@ -149,6 +149,14 @@
   }
   .topnav-link:hover { color: var(--text); background: var(--paper-2); text-decoration: none; }
   .topnav-link[aria-current="page"] { color: var(--accent); background: var(--accent-dim); }
+  .topnav-link-cta {
+    background: var(--accent);
+    color: #fff !important;
+    border-radius: 4px;
+    padding: 0.55rem 0.85rem;
+    font-weight: 700;
+  }
+  .topnav-link-cta:hover { background: var(--accent); filter: brightness(1.1); color: #fff !important; }
   .topnav-link.is-external::after { content: ' \2197'; opacity: 0.5; }
   .topnav-link.is-placeholder {
     color: var(--text-soft);
@@ -1574,6 +1582,7 @@
     <a class="topnav-link" href="summary.html">Summary</a>
     <a class="topnav-link" href="research.html">Research</a>
     <button class="topnav-link outline-toggle" id="outlineToggle" aria-haspopup="true" aria-expanded="false" aria-controls="outlineMenu">Outline</button>
+    <a class="topnav-link topnav-link-cta" href="#outcome">Build Your Coalition &rarr;</a>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
   <div class="outline-menu" id="outlineMenu" role="menu" aria-labelledby="outlineToggle" hidden>
@@ -1761,7 +1770,7 @@
   </section>
 
   <!-- 4. Tokyo, February 2027 -->
-  <section class="scene" data-viz="hf-live" id="scene-tokyo">
+  <section class="scene" id="scene-tokyo">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 4</div>
       <span class="scene-dateline">
@@ -1854,7 +1863,7 @@
   </section>
 
   <!-- 7. Ottawa, April 2027 -->
-  <section class="scene" data-viz="coalition-blocs" id="scene-ottawa">
+  <section class="scene" id="scene-ottawa">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 7</div>
       <span class="scene-dateline">
@@ -1933,7 +1942,7 @@
   </section>
 
   <!-- 11. The Ether, April 2027 -->
-  <section class="scene" data-viz="coalition-baseline" id="scene-ether">
+  <section class="scene" id="scene-ether">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 11</div>
       <span class="scene-dateline">
@@ -2072,30 +2081,6 @@
       </div>
     </div>
 
-    <!-- VIZ: HF Live -->
-    <div class="viz-pane" data-viz="hf-live" data-title="HuggingFace live">
-      <div class="viz-pane-inner">
-        <div class="viz-explainer">
-          <h4>What it shows</h4>
-          <p>Live snapshot of the top 50 most-downloaded open AI models on HuggingFace, classified by the region of their host org. Refreshes on every page load.
-            <span id="hfBadge" style="font-size:0.6rem;font-family:var(--mono);color:var(--text-soft);display:inline-flex;align-items:center;gap:3px;margin-left:6px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--text-soft);"></span> LOADING</span>
-          </p>
-          <h4>Why it matters here</h4>
-          <p>Takaichi&rsquo;s sovereign model exists in a market that&rsquo;s already structured. When she reaches for off-the-shelf, she&rsquo;s reaching at this distribution.</p>
-          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
-            <li>Data is pulled live from the HuggingFace public models API, sorted by download count. <a href="https://huggingface.co/docs/hub/api" target="_blank" rel="noopener">HuggingFace Hub API</a>.</li>
-            <li>Region attribution is by host-org country mapping (e.g., <code>mistralai</code> &rarr; France, <code>meta-llama</code> &rarr; US). The mapping table is in this file&rsquo;s source.</li>
-            <li>Falls back to a historical snapshot if the API call fails or rate-limits.</li>
-            <li>Downloads measure repository pulls, not deployments &mdash; treat as a popularity proxy, not deployed inference volume.</li>
-          </ol></details>
-        </div>
-        <div class="viz-canvas-wrap">
-          <div class="hf-cards" id="hfRegionSummary"></div>
-          <div id="hfModelTable" style="font-size:0.72rem;font-family:var(--mono);"></div>
-        </div>
-      </div>
-    </div>
-
     <!-- VIZ: EU Public AI Capex (Paris) -->
     <div class="viz-pane" data-viz="eu-public-capex" data-title="Public AI commitments">
       <div class="viz-pane-inner">
@@ -2119,31 +2104,6 @@
       </div>
     </div>
 
-    <!-- VIZ: Coalition Blocs (Ottawa) -->
-    <div class="viz-pane" data-viz="coalition-blocs" data-title="AI policy blocs">
-      <div class="viz-pane-inner">
-        <div class="viz-explainer">
-          <h4>What it shows</h4>
-          <p>How many AI policy blocs each country sits in, split between <strong>standards bodies</strong> (INAISI, OECD-AI Principles, Five Eyes, EU AI Act) and <strong>summit declarations</strong> (Bletchley, Seoul Ministerial, Hiroshima AI Process, G7). Standards seats are where rules actually get written.</p>
-          <h4>Why it matters here</h4>
-          <p>Canada is the only country in all four Western standards bodies <em>and</em> the G7 leaders' table. India, Brazil, UAE, and Saudi Arabia show up at the summits but are largely absent from the technical layer &mdash; the gap a Canada-anchored coalition could plausibly bridge.</p>
-          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
-            <li>Bletchley Declaration, Nov 1 2023 (28 + EU). <a href="https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023" target="_blank" rel="noopener">GOV.UK</a>.</li>
-            <li>Seoul Ministerial Statement, May 22 2024 (27 + EU). <a href="https://www.mofa.go.jp/files/100672534.pdf" target="_blank" rel="noopener">MOFA Japan</a>.</li>
-            <li>Hiroshima AI Process Friends Group (G7-launched Oct 2023; ~66 countries by 2026). <a href="https://www.soumu.go.jp/hiroshimaaiprocess/en/supporters.html" target="_blank" rel="noopener">Japan MIC</a>.</li>
-            <li>International Network of AI Safety Institutes (founded Nov 2024). Founding members: AU, CA, FR, GB, JP, KE, KR, SG, US, EU. <a href="https://www.nist.gov/news-events/news/2024/11/fact-sheet-us-department-commerce-us-department-state-launch-international" target="_blank" rel="noopener">NIST</a>.</li>
-            <li>EU AI Act (in force Aug 1 2024, phased). <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">EUR-Lex</a>.</li>
-            <li>G7 (CA, FR, DE, IT, JP, GB, US + EU). <a href="https://www.consilium.europa.eu/en/press/press-releases/2024/06/14/g7-leaders-statement-on-ukraine/" target="_blank" rel="noopener">Apulia communique 2024</a>.</li>
-            <li>Five Eyes (AU, CA, NZ, GB, US). <a href="https://www.gchq.gov.uk/section/mission/our-partners" target="_blank" rel="noopener">UK GCHQ</a>.</li>
-            <li>OECD AI Principles, updated 2024 (47 adherents). <a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener">OECD.AI</a>.</li>
-          </ol></details>
-        </div>
-        <div class="viz-canvas-wrap" data-tall>
-          <canvas id="dbCoalitionBlocsCanvas" role="img" aria-label="AI policy bloc membership by country: Canada and Western allies central, India / Brazil / UAE / Saudi Arabia present in summits but absent from standards bodies"></canvas>
-        </div>
-      </div>
-    </div>
-
     <!-- VIZ: Talent Timeline (Dublin Jan) -->
     <div class="viz-pane" data-viz="talent-timeline" data-title="Brain drain timeline">
       <div class="viz-pane-inner">
@@ -2163,28 +2123,6 @@
         </div>
         <div class="viz-canvas-wrap">
           <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- VIZ: Proposed coalition (The Ether) -->
-    <div class="viz-pane" data-viz="coalition-baseline" data-title="Proposed coalition">
-      <div class="viz-pane-inner">
-        <div class="viz-explainer">
-          <h4>What it shows</h4>
-          <p>The proposed first-cohort coalition: ~10 middle-power member states unified into a Public AI Company. Anchor labs (filled) are the four named entities. The minimum viable product is deliberately small: a 10-person team, three months, ~100k GPU-hours, ~$150k.</p>
-          <h4>Why it matters here</h4>
-          <p>The proposal&rsquo;s explicit guidance is &ldquo;start small &mdash; four labs, not twenty.&rdquo; This isn&rsquo;t a $2B frontier-model bet on day one; it&rsquo;s the smallest credible coalition that can become one. The Ether moment is whether the room can agree to a shape this small to start.</p>
-          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
-            <li>Named members: Canada, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, France, the U.K., and other middle powers.</li>
-            <li>Named anchor labs: Mistral (FR), Cohere (CA), BSC (ES), RIKEN (JP). Also referenced: New Nordics AI, Swiss AI, OpenEuroLLM.</li>
-            <li>MVP scale: 10-person team, 3 months, ~100k GPU-hours (~$150k).</li>
-            <li>Market context: ChatGPT 79.8% global consumer chatbot share (Statcounter, July 2025); Mistral Le Chat &lt;4% French penetration.</li>
-            <li><a href="research.html">Full citation &amp; research &rarr;</a></li>
-          </ol></details>
-        </div>
-        <div class="viz-canvas-wrap">
-          <canvas id="dbCoalitionBaselineCanvas" role="img" aria-label="Proposed coalition: 10 member states unified into a Public AI Company, anchored by Mistral, Cohere, BSC, RIKEN"></canvas>
         </div>
       </div>
     </div>
@@ -3523,149 +3461,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   draw();
 })();
 
-// --- Proposed coalition (The Ether) ---
-(function(){
-  const canvas = document.getElementById('dbCoalitionBaselineCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
-
-  // First-cohort members. `entity` = named anchor lab.
-  // `anchor: true` = one of the four "start small" labs.
-  const members = [
-    { country: 'France',       entity: 'Mistral',      anchor: true  },
-    { country: 'Canada',       entity: 'Cohere',       anchor: true  },
-    { country: 'Spain',        entity: 'BSC',          anchor: true  },
-    { country: 'Japan',        entity: 'RIKEN',        anchor: true  },
-    { country: 'Switzerland',  entity: 'Swiss AI',     anchor: false },
-    { country: 'Sweden',       entity: 'Nordics AI',   anchor: false },
-    { country: 'Germany',      entity: '',             anchor: false },
-    { country: 'Singapore',    entity: '',             anchor: false },
-    { country: 'S. Korea',     entity: '',             anchor: false },
-    { country: 'UK',           entity: '',             anchor: false },
-  ];
-  const ACCENT = '#0077c8';
-
-  let grown = reduceMotion ? 1 : 0;
-  function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
-    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, W, H);
-    grown = Math.min(grown + 0.022, 1);
-
-    // Header
-    ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font = '8.5px JetBrains Mono, monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('PROPOSED COALITION  (2025)', 8, 12);
-
-    const cx = W / 2;
-    const cy = H / 2 + 6;
-    const r = Math.min(W, H) * 0.36;
-
-    // Connections (drawn first so they sit behind nodes)
-    ctx.strokeStyle = 'rgba(10,10,10,0.16)';
-    ctx.lineWidth = 0.7;
-    members.forEach((m, i) => {
-      const angle = -Math.PI / 2 + i * (2 * Math.PI / members.length);
-      const fade = Math.min(1, Math.max(0, (grown - i / members.length / 1.4) * 3));
-      const x = cx + Math.cos(angle) * r * fade;
-      const y = cy + Math.sin(angle) * r * fade;
-      ctx.globalAlpha = fade * 0.55;
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-    });
-    ctx.globalAlpha = 1;
-
-    // Central "Public AI Co" node
-    const centralR = 36;
-    ctx.beginPath();
-    ctx.arc(cx, cy, centralR, 0, Math.PI * 2);
-    ctx.fillStyle = ACCENT;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,119,200,0.4)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(cx, cy, centralR + 5, 0, Math.PI * 2);
-    ctx.stroke();
-    // Central labels
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 10px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Public AI Co.', cx, cy - 6);
-    ctx.font = '8px JetBrains Mono, monospace';
-    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.fillText('MVP: 10 ppl', cx, cy + 6);
-    ctx.fillText('100k GPU-h', cx, cy + 16);
-    ctx.fillText('$150k · 3 mo', cx, cy + 26);
-
-    // Member nodes
-    members.forEach((m, i) => {
-      const angle = -Math.PI / 2 + i * (2 * Math.PI / members.length);
-      const appear = Math.min(1, Math.max(0, (grown - i / members.length / 1.4) * 3));
-      if (appear <= 0) return;
-      const x = cx + Math.cos(angle) * r;
-      const y = cy + Math.sin(angle) * r;
-
-      // Node dot
-      ctx.beginPath();
-      ctx.arc(x, y, m.anchor ? 5.5 : 4, 0, Math.PI * 2);
-      ctx.fillStyle = m.anchor ? ACCENT : 'rgba(30,41,59,0.85)';
-      ctx.fill();
-      if (m.anchor) {
-        ctx.strokeStyle = 'rgba(0,119,200,0.35)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(x, y, 9, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      // Label position (push away from center)
-      const lx = cx + Math.cos(angle) * (r + 18);
-      const ly = cy + Math.sin(angle) * (r + 18);
-      const align = Math.cos(angle) > 0.2 ? 'left' : Math.cos(angle) < -0.2 ? 'right' : 'center';
-      ctx.textAlign = align;
-      ctx.fillStyle = m.anchor ? ACCENT : 'rgba(10,10,10,0.82)';
-      ctx.font = m.anchor ? 'bold 9.5px Inter, sans-serif' : '9.5px Inter, sans-serif';
-      ctx.globalAlpha = appear;
-      ctx.fillText(m.country, lx, ly);
-      if (m.entity) {
-        ctx.fillStyle = 'rgba(10,10,10,0.55)';
-        ctx.font = '8.5px JetBrains Mono, monospace';
-        ctx.fillText(m.entity, lx, ly + 10);
-      }
-      ctx.globalAlpha = 1;
-    });
-
-    // Bottom quote
-    if (grown > 0.85) {
-      ctx.fillStyle = 'rgba(10,10,10,0.55)';
-      ctx.font = 'italic 9px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('"Start small: four labs, not twenty."', cx, H - 6);
-    }
-
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
 // --- Export Controls Timeline (White House) ---
 (function(){
   const canvas = document.getElementById('dbExportControlsCanvas');
@@ -3792,125 +3587,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         ctx.moveTo(labelX, cy);
         ctx.lineTo(labelX + Math.min(labelMaxW, ctx.measureText(label).width), cy);
         ctx.stroke();
-      }
-    });
-
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// --- Coalition Blocs (Ottawa) ---
-(function(){
-  const canvas = document.getElementById('dbCoalitionBlocsCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const pane = canvas.closest('.viz-pane');
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  canvas.addEventListener('viz:show', function(){ resize(); draw(); });
-
-  // std = INAISI + OECD-AI + Five Eyes + EU AI Act seats (0-4)
-  // sum = Bletchley + Seoul Min. + Hiroshima AI Process + G7 seats (0-4)
-  const data = [
-    { name: 'Canada',       std: 3, sum: 4, highlight: true  },
-    { name: 'France',       std: 3, sum: 4, highlight: false },
-    { name: 'UK',           std: 3, sum: 4, highlight: false },
-    { name: 'US',           std: 3, sum: 4, highlight: false },
-    { name: 'Australia',    std: 3, sum: 3, highlight: false },
-    { name: 'Germany',      std: 2, sum: 4, highlight: false },
-    { name: 'Italy',        std: 2, sum: 4, highlight: false },
-    { name: 'Japan',        std: 2, sum: 4, highlight: false },
-    { name: 'Korea',        std: 2, sum: 3, highlight: false },
-    { name: 'Singapore',    std: 2, sum: 3, highlight: false },
-    { name: 'India',        std: 0, sum: 3, highlight: false },
-    { name: 'Brazil',       std: 1, sum: 2, highlight: false },
-    { name: 'UAE',          std: 0, sum: 3, highlight: false },
-    { name: 'Saudi Arabia', std: 0, sum: 3, highlight: false },
-  ];
-  const maxTotal = 8;
-  const ACCENT = '#0077c8';
-  const STD_COL = '#1e293b';
-  const SUM_COL = 'rgba(30,41,59,0.32)';
-
-  let grown = reduceMotion ? 1 : 0;
-  function draw(){
-    if (!pane || !pane.classList.contains('is-active')) return;
-    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, W, H);
-    const pad = { l: 96, r: 26, t: 28, b: 10 };
-    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-    grown = Math.min(grown + 0.025, 1);
-
-    // Header
-    ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font = '8.5px JetBrains Mono, monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('AI POLICY BLOC SEATS  (max 8)', pad.l, 12);
-
-    // Legend
-    const legY = 22;
-    ctx.fillStyle = STD_COL;
-    ctx.fillRect(pad.l, legY, 8, 8);
-    ctx.fillStyle = 'rgba(10,10,10,0.65)';
-    ctx.font = '8.5px Inter, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('Standards', pad.l + 12, legY + 7);
-    ctx.fillStyle = SUM_COL;
-    ctx.fillRect(pad.l + 70, legY, 8, 8);
-    ctx.fillStyle = 'rgba(10,10,10,0.65)';
-    ctx.fillText('Summits', pad.l + 82, legY + 7);
-
-    const rowH = (ch - 6) / data.length;
-    const barH = Math.min(13, rowH * 0.6);
-
-    data.forEach((d, i) => {
-      const y = pad.t + 6 + i * rowH;
-      const cy = y + rowH / 2;
-      const by = cy - barH / 2;
-
-      // Country label
-      ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.78)';
-      ctx.font = d.highlight ? 'bold 10px Inter, sans-serif' : '10px Inter, sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText(d.name, pad.l - 6, cy + 3);
-
-      // Standards segment (solid)
-      const stdW = (d.std / maxTotal) * cw * grown;
-      ctx.fillStyle = d.highlight ? ACCENT : STD_COL;
-      ctx.fillRect(pad.l, by, stdW, barH);
-
-      // Summits segment (light)
-      const sumW = (d.sum / maxTotal) * cw * grown;
-      ctx.fillStyle = d.highlight ? 'rgba(0,119,200,0.32)' : SUM_COL;
-      ctx.fillRect(pad.l + stdW, by, sumW, barH);
-
-      // Total label
-      if (grown > 0.55) {
-        const total = d.std + d.sum;
-        ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.62)';
-        ctx.font = 'bold 9.5px JetBrains Mono, monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(total + '/8', pad.l + stdW + sumW + 4, cy + 3);
-      }
-
-      // "Summit only" callout for the absent-from-standards countries
-      if (d.std === 0 && grown > 0.8) {
-        ctx.fillStyle = 'rgba(184,0,46,0.8)';
-        ctx.font = 'italic 8px Inter, sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText('summit only', pad.l + 2, cy + 3);
       }
     });
 
@@ -4060,131 +3736,6 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   draw();
 })();
 
-// --- HuggingFace Live Model Dominance ---
-const HF_ORG_REGION = {
-  'meta-llama':'US','meta':'US','facebook':'US','FacebookAI':'US','google':'US','google-bert':'US','openai':'US','openai-community':'US',
-  'microsoft':'US','stabilityai':'US','nvidia':'US','apple':'US','anthropic':'US','databricks':'US','salesforce':'US','huggingface':'US',
-  'EleutherAI':'US','CompVis':'US','runwayml':'US','NousResearch':'US','togethercomputer':'US','lmsys':'US',
-  'nomic-ai':'US','colbert-ir':'US','answerdotai':'US','hexgrad':'US','autogluon':'US','Comfy-Org':'US','amazon':'US',
-  'mistralai':'France','bigscience':'France','distilbert':'France','pyannote':'France',
-  'aleph-alpha':'Germany','deepset':'Germany','sentence-transformers':'Germany','cross-encoder':'Germany','laion':'Germany','dbmdz':'Germany',
-  'Helsinki-NLP':'Finland','Kijai':'Finland','camembert':'France','flaubert':'France',
-  'CohereForAI':'Canada',
-  'Qwen':'China','THUDM':'China','baichuan-inc':'China','deepseek-ai':'China','internlm':'China','BAAI':'China','01-ai':'China','alibaba':'China','tencent':'China','bytedance':'China','modelscope':'China','FlagAlpha':'China','omni-research':'China',
-  'Bingsu':'South Korea','timm':'Australia','Marqo':'Australia','Falconsai':'India','dima806':'Ukraine',
-  'tiiuae':'UAE','MBZUAI':'UAE','rinna':'Japan','cyberagent':'Japan','line-corporation':'Japan','ai21labs':'Israel'
-};
-function hfClassifyOrg(name){
-  if(!name)return 'Other';
-  const lower=name.toLowerCase();
-  for(const[key,region] of Object.entries(HF_ORG_REGION)){
-    if(lower===key.toLowerCase()||lower.includes(key.toLowerCase()))return region;
-  }
-  return 'Other';
-}
-function hfFormatDl(n){
-  if(n>=1e9)return(n/1e9).toFixed(1)+'B';
-  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
-  if(n>=1e3)return(n/1e3).toFixed(1)+'K';
-  return String(n);
-}
-async function fetchHFModels(retries=2){
-  const badge=document.getElementById('hfBadge');
-  const summary=document.getElementById('hfRegionSummary');
-  const table=document.getElementById('hfModelTable');
-  if(!badge||!summary||!table)return;
-  try{
-    let models;
-    const cached=sessionStorage.getItem('hf_models_cache_v2');
-    if(cached){
-      try{models=JSON.parse(cached);}catch(e){sessionStorage.removeItem('hf_models_cache_v2');}
-    }
-    if(!models){
-      let res,lastErr;
-      const controller=new AbortController();
-      const timeoutId=setTimeout(()=>controller.abort(),10000);
-      for(let attempt=0;attempt<=retries;attempt++){
-        try{
-          res=await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=50&full=false',{signal:controller.signal});
-          if(res.ok)break;
-          lastErr=new Error('HF API error '+res.status);
-        }catch(e){lastErr=e;if(e.name==='AbortError')break;}
-        if(attempt<retries)await new Promise(r=>setTimeout(r,1500*(attempt+1)));
-      }
-      clearTimeout(timeoutId);
-      if(!res||!res.ok)throw lastErr||new Error('HF API error');
-      models=await res.json();
-      try{sessionStorage.setItem('hf_models_cache_v2',JSON.stringify(models));}catch(e){}
-    }
-    const countryCounts={};
-    const rows=[];
-    models.forEach((m,i)=>{
-      const org=m.id?m.id.split('/')[0]:'';
-      const country=hfClassifyOrg(org);
-      countryCounts[country]=(countryCounts[country]||0)+1;
-      if(i<10)rows.push({rank:i+1,name:m.id||'Unknown',downloads:m.downloads||0,region:country});
-    });
-    const euCountries=['France','Germany','Finland','Netherlands','Sweden','Spain','Switzerland','UK'];
-    const displayGroups={};
-    let euTotal=0;
-    Object.entries(countryCounts).forEach(([c,n])=>{
-      if(c==='US'){displayGroups['United States']=n;}
-      else if(c==='China'){displayGroups['China']=n;}
-      else if(euCountries.includes(c)){euTotal+=n;}
-      else if(c==='Canada'){euTotal+=n;}
-      else if(c!=='Other'){displayGroups[c]=n;}
-      else{displayGroups['Other']=n;}
-    });
-    if(euTotal>0)displayGroups['Europe/Coalition']=euTotal;
-    const total=models.length;
-    const groupColors={'United States':'#b8002e','Europe/Coalition':'#006a8a','China':'#8a5a00',
-      'South Korea':'#7b6fd6','Australia':'#0a7d3d','India':'#f59e0b','Ukraine':'#06b6d4','UAE':'#c96a2b',
-      'Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(10,10,10,0.45)'};
-    summary.innerHTML=Object.entries(displayGroups).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([name,count])=>{
-      const pct=Math.round((count/total)*100);
-      const col=groupColors[name]||'rgba(10,10,10,0.45)';
-      return `<div style="padding:0.55rem 0.85rem;border-radius:8px;text-align:center;min-width:80px;">
-        <div style="font-family:var(--mono);font-size:1.25rem;font-weight:800;color:${col};line-height:1;">${pct}%</div>
-        <div style="font-size:0.6rem;color:var(--text-soft);margin-top:2px;">${name}</div>
-        <div style="font-size:0.5rem;color:var(--text-soft);font-family:var(--mono);">${count} of ${total}</div>
-      </div>`;
-    }).join('');
-    const rcols={'US':'#b8002e','France':'#006a8a','Germany':'#006a8a','Finland':'#006a8a','Canada':'#006a8a',
-      'China':'#8a5a00','South Korea':'#7b6fd6','Australia':'#0a7d3d','India':'#f59e0b','Ukraine':'#06b6d4',
-      'UAE':'#c96a2b','Japan':'#4a8ce4','Israel':'#8b5cf6','Other':'rgba(10,10,10,0.45)'};
-    table.innerHTML=`<div style="display:grid;grid-template-columns:24px 1fr 70px 80px;gap:4px 12px;align-items:center;">
-      <div style="font-size:0.6rem;color:var(--text-soft);font-weight:700;">#</div>
-      <div style="font-size:0.6rem;color:var(--text-soft);font-weight:700;">MODEL</div>
-      <div style="font-size:0.6rem;color:var(--text-soft);font-weight:700;">DOWNLOADS</div>
-      <div style="font-size:0.6rem;color:var(--text-soft);font-weight:700;">COUNTRY</div>
-      ${rows.map(r=>`
-        <div style="color:var(--text-soft);">${r.rank}</div>
-        <div style="color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.name}">${r.name}</div>
-        <div style="color:var(--text-soft);">${hfFormatDl(r.downloads)}</div>
-        <div style="color:${rcols[r.region]||'rgba(10,10,10,0.45)'};font-weight:600;font-size:0.7rem;">${r.region}</div>
-      `).join('')}
-    </div>`;
-    badge.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:#0a7d3d;"></span> LIVE';
-    badge.style.color='#0a7d3d';
-  }catch(e){
-    summary.innerHTML=[
-      {pct:'~44%',label:'United States',col:'#b8002e'},
-      {pct:'~20%',label:'China',col:'#8a5a00'},
-      {pct:'~16%',label:'Europe/Coalition',col:'#006a8a'},
-      {pct:'~4%',label:'South Korea',col:'#7b6fd6'},
-      {pct:'~4%',label:'Australia',col:'#0a7d3d'},
-      {pct:'~12%',label:'Other',col:'rgba(10,10,10,0.45)'}
-    ].map(g=>`<div style="padding:0.55rem 0.85rem;border-radius:8px;text-align:center;min-width:80px;">
-      <div style="font-family:var(--mono);font-size:1.25rem;font-weight:800;color:${g.col};line-height:1;">${g.pct}</div>
-      <div style="font-size:0.6rem;color:var(--text-soft);margin-top:2px;">${g.label}</div>
-      <div style="font-size:0.5rem;color:var(--text-soft);font-family:var(--mono);">estimated</div>
-    </div>`).join('');
-    table.innerHTML='<div style="color:var(--text-soft);font-size:0.75rem;">Could not load live data. Estimates based on historical HuggingFace analysis.</div>';
-    badge.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:var(--text-soft);"></span> OFFLINE';
-    badge.style.color='var(--text-soft)';
-  }
-}
-fetchHFModels();
 </script>
 
 </body>
