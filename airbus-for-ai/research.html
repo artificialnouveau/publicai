@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Research artifacts behind Airbus for AI — the Bennett School policy brief and citation.">
+<title>Research — Airbus for AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #F8F6F1;
+    --paper-2: #F0EDE7;
+    --hairline: rgba(10,10,10,0.10);
+    --hairline-strong: rgba(10,10,10,0.20);
+    --text: #1A1A1A;
+    --text-muted: #5B5B57;
+    --text-soft: #6E6E69;
+    --accent: #0057FF;
+    --accent-bright: #2a72ff;
+    --accent-dim: rgba(0,87,255,0.08);
+    --navy-1: #001540;
+    --navy-2: #00205b;
+    --navy-3: #0057FF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif: 'Spectral', Georgia, 'Times New Roman', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-bright); text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.5rem; height: 56px;
+    background: rgba(248,246,241,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .topnav-brand {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text);
+    text-decoration: none;
+  }
+  .topnav-brand svg { width: 22px; height: 22px; color: var(--accent); }
+  .topnav-links { display: flex; gap: 0.25rem; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav-link {
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0.5rem 0.8rem; border-radius: 4px;
+    text-decoration: none; transition: color 0.2s, background 0.2s;
+  }
+  .topnav-link:hover { color: var(--text); background: var(--paper-2); text-decoration: none; }
+  .topnav-link[aria-current="page"] { color: var(--accent); background: var(--accent-dim); }
+
+  .hero {
+    text-align: center; padding: 4rem 2rem 3rem;
+    background: linear-gradient(170deg, var(--navy-1) 0%, var(--navy-2) 40%, var(--navy-3) 100%);
+    color: #fff; border-bottom: 1px solid var(--hairline);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 1.08; margin-bottom: 1rem;
+  }
+  .hero-sub {
+    font-size: 1.05rem; color: rgba(255,255,255,0.78);
+    max-width: 52ch; margin: 0 auto 1.5rem; line-height: 1.65;
+  }
+  .hero-cta { display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; }
+
+  .content {
+    max-width: 720px; margin: 0 auto;
+    padding: 4rem 1.5rem 5rem;
+  }
+  .content-kicker {
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .content h2 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.15; margin-bottom: 1.5rem;
+  }
+
+  .artifact {
+    padding: 2rem;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 6px;
+  }
+  .artifact-type {
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft); margin-bottom: 0.75rem;
+  }
+  .artifact h3 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: 1.35rem; line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  .artifact-meta {
+    font-size: 0.95rem; color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+  .artifact-meta strong { color: var(--text); font-weight: 600; }
+  .artifact-links {
+    display: flex; flex-wrap: wrap; gap: 0.75rem;
+    margin-top: 1.5rem; padding-top: 1.25rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .artifact-doi {
+    font-family: var(--mono); font-size: 0.78rem;
+    color: var(--text-soft); margin-top: 0.75rem;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.85rem 1.6rem; border-radius: 4px;
+    font-family: var(--font); font-size: 0.9rem; font-weight: 600;
+    text-decoration: none; transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff; border: 1px solid var(--accent);
+  }
+  .btn-primary:hover {
+    background: var(--accent-bright); border-color: var(--accent-bright);
+    color: #fff; text-decoration: none;
+  }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--hairline-strong);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent); color: var(--accent);
+    text-decoration: none;
+  }
+  .hero .btn-ghost {
+    color: #fff; border-color: rgba(255,255,255,0.35);
+  }
+  .hero .btn-ghost:hover {
+    border-color: #fff; color: #fff;
+  }
+
+  .page-footer {
+    text-align: center; padding: 2.5rem 1.5rem;
+    font-size: 0.85rem; color: var(--text-soft);
+  }
+
+  @media (max-width: 768px) {
+    .topnav { padding: 0 0.85rem; }
+    .topnav-brand-text { display: none; }
+    .content { padding: 3rem 1.25rem; }
+    .artifact { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Site navigation">
+  <a href="index.html" class="topnav-brand" aria-label="Airbus for AI — home">
+    <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="topnav-brand-text">Airbus for AI</span>
+  </a>
+  <div class="topnav-links">
+    <a class="topnav-link" href="index.html">Story</a>
+    <a class="topnav-link" href="summary.html">Summary</a>
+    <a class="topnav-link" href="research.html" aria-current="page">Research</a>
+    <a class="topnav-link" href="index.html#signon">Sign on</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="hero">
+  <div class="hero-eyebrow">Sources &amp; artifacts</div>
+  <h1>Research</h1>
+  <p class="hero-sub">The policy paper and citations behind the Airbus for AI experience.</p>
+  <div class="hero-cta">
+    <a class="btn btn-ghost" href="summary.html">Read the summary &rarr;</a>
+  </div>
+</header>
+
+<section class="content">
+  <p class="content-kicker">Primary artifact</p>
+  <h2>Source material</h2>
+
+  <article class="artifact">
+    <p class="artifact-type">Policy brief &middot; September 2025</p>
+    <h3><em>Airbus for AI: A global strategy for public value creation</em></h3>
+    <p class="artifact-meta"><strong>Authors:</strong> Tan, Jackson, Berjon, Coyle</p>
+    <p class="artifact-meta"><strong>Institution:</strong> Bennett School of Public Policy, University of Cambridge</p>
+    <p class="artifact-doi">DOI: <a href="https://doi.org/10.17863/CAM.121150" target="_blank" rel="noopener">10.17863/CAM.121150</a></p>
+    <div class="artifact-links">
+      <a class="btn btn-primary" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Download PDF &rarr;</a>
+      <a class="btn btn-ghost" href="summary.html">Six-claim summary</a>
+    </div>
+  </article>
+</section>
+
+</main>
+
+<footer class="page-footer">
+  <p><a href="index.html">Back to Story</a> &middot; <a href="../">Public AI Fellowship</a></p>
+</footer>
+
+</body>
+</html>

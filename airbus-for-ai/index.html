@@ -148,6 +148,7 @@
     text-decoration: none; transition: color 0.2s, background 0.2s;
   }
   .topnav-link:hover { color: var(--text); background: var(--paper-2); text-decoration: none; }
+  .topnav-link[aria-current="page"] { color: var(--accent); background: var(--accent-dim); }
   .topnav-link.is-external::after { content: ' \2197'; opacity: 0.5; }
   .topnav-link.is-placeholder {
     color: var(--text-soft);
@@ -269,7 +270,18 @@
     color: rgba(255,255,255,0.78);
     max-width: 60ch;
     line-height: 1.65;
-    margin-bottom: 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-cta {
+    display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .hero .btn-ghost.hero-btn {
+    color: #fff; border-color: rgba(255,255,255,0.35);
+  }
+  .hero .btn-ghost.hero-btn:hover {
+    border-color: #fff; color: #fff; background: rgba(255,255,255,0.1);
+    text-decoration: none;
   }
   .hero-meta {
     display: flex; gap: 0.5rem 1.1rem; justify-content: center; flex-wrap: wrap;
@@ -300,10 +312,23 @@
   }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
+  /* === EXPERIENCE SHELL (story + viz as centered pair) === */
+  .experience-shell {
+    max-width: min(1280px, 94vw);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .experience-columns {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
   /* === STORY ARTICLE === */
   .story {
     max-width: 70ch; margin: 0 auto;
-    padding: 5rem 1.5rem var(--dock-peek);
+    padding: 5rem 0 var(--dock-peek);
+    width: 100%;
   }
   .story.dock-collapsed { padding-bottom: var(--dock-collapsed); }
   .story.dock-full { padding-bottom: var(--dock-full); }
@@ -746,56 +771,50 @@
     z-index: 0;
   }
 
-  /* === DESKTOP: dock moves from bottom strip to top-right panel === */
+  /* === DESKTOP: centered two-column — prose left, viz right === */
   @media (min-width: 1024px) {
     :root {
-      --dock-panel-width: clamp(400px, 32vw, 560px);
-      --dock-panel-top: 72px;
-      --dock-panel-gap: 16px;
-      --dock-peek: 64vh;
-      --dock-full: calc(100vh - var(--dock-panel-top) - var(--dock-panel-gap));
+      --dock-full: calc(100vh - 72px - 16px);
     }
+    .experience-columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+      align-items: start;
+    }
+    .story {
+      max-width: none;
+      margin: 0;
+      padding: 5rem 0 5rem;
+    }
+    .story.dock-collapsed,
+    .story.dock-full { padding-bottom: 5rem; }
     .viz-dock {
-      top: var(--dock-panel-top);
-      right: var(--dock-panel-gap);
-      bottom: auto;
-      left: auto;
-      width: var(--dock-panel-width);
+      position: sticky;
+      top: calc(56px + 0.5rem);
+      left: auto; right: auto; bottom: auto;
+      width: 100%;
       border: 1px solid var(--hairline-strong);
       border-radius: 10px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+      opacity: 0; pointer-events: none;
+      transform: none;
     }
-    /* Peek = auto-fit to content (no internal scrolling). Cap at the viewport
-       so a particularly long pane doesn't push past the screen. */
+    .viz-dock.is-live {
+      opacity: 1; pointer-events: auto;
+    }
+    .viz-dock[data-state="collapsed"] { height: var(--dock-collapsed); }
     .viz-dock[data-state="peek"] {
       height: auto;
       max-height: var(--dock-full);
     }
-    .dock-body {
-      overflow: visible;
-    }
-    .story,
-    .story.dock-collapsed,
-    .story.dock-full { padding-bottom: 5rem; }
-    /* Shift only the chapter column left so it doesn't sit under the dock.
-       Hero, briefing, outcome, signon, outro stay centered (they live outside
-       .story). margin-left stays auto so the column finds a natural offset
-       in the remaining viewport width. */
-    .story {
-      margin-right: calc(var(--dock-panel-width) + var(--dock-panel-gap) * 2 + 1.5rem);
-    }
-    /* No internal scrolling on desktop — the dock itself sizes to fit. */
-    .viz-pane {
-      padding: 1rem 1.15rem;
-    }
+    .viz-dock[data-state="full"] { height: var(--dock-full); }
+    .dock-body { overflow: visible; }
+    .viz-pane { padding: 1rem 1.15rem; }
     .viz-pane-inner { grid-template-columns: 1fr; gap: 0.85rem; }
-    .viz-dock[data-state="full"] .viz-pane-inner { grid-template-columns: 1fr; }
+    .viz-dock[data-state="full"] .viz-pane-inner,
     .viz-dock[data-state="peek"] .viz-pane-inner { grid-template-columns: 1fr; }
     .viz-explainer { overflow: visible; }
-    /* Give the chart a fixed-ish minimum height so it doesn't get squashed
-       when stacked under the explainer text. Margin-top creates clear
-       separation; relative + z-index + solid bg prevents any visual overlap
-       with the scrolling explainer text above. */
     .viz-canvas-wrap {
       flex: 0 0 auto;
       margin-top: 1rem;
@@ -803,16 +822,36 @@
       z-index: 1;
       background: var(--paper-2);
     }
-    /* Decision strip becomes narrower; stack meta + options */
     .decision-strip { padding: 0.7rem 1.1rem; }
     .decision-strip-inner { grid-template-columns: 1fr; gap: 0.45rem; }
-    /* Padding-top is now driven by JS measuring the strip; fallback is generous. */
     .dock-body.has-strip .viz-pane.is-active {
       padding-top: calc(var(--strip-h, 9rem) + 0.5rem);
     }
   }
 
   /* === RESPONSIVE === */
+  @media (max-width: 1023px) {
+    .experience-shell { padding: 0 1.25rem; }
+    .story {
+      max-width: 70ch;
+      margin: 0 auto;
+      padding: 4rem 0 var(--dock-peek);
+    }
+    .experience-columns {
+      display: block;
+    }
+    /* Mobile: keep bottom-fixed dock so charts stay visible while scrolling chapters */
+    .viz-dock {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      width: auto;
+      margin-top: 0;
+      transform: translateY(12px);
+    }
+    .viz-dock.is-live {
+      transform: translateY(0);
+    }
+  }
   @media (max-width: 900px) {
     :root {
       --dock-peek: 42vh;
@@ -1522,7 +1561,7 @@
 
 <!-- TOP NAV -->
 <nav class="topnav" aria-label="Site navigation">
-  <a href="#top" class="topnav-brand" aria-label="Airbus for AI &mdash; top of page">
+  <a href="index.html#top" class="topnav-brand" aria-label="Airbus for AI &mdash; home">
     <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
       <path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1531,13 +1570,15 @@
     <span class="topnav-brand-text">Airbus for AI</span>
   </a>
   <div class="topnav-links">
+    <a class="topnav-link" href="index.html" aria-current="page">Story</a>
+    <a class="topnav-link" href="summary.html">Summary</a>
+    <a class="topnav-link" href="research.html">Research</a>
     <button class="topnav-link outline-toggle" id="outlineToggle" aria-haspopup="true" aria-expanded="false" aria-controls="outlineMenu">Outline</button>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
   <div class="outline-menu" id="outlineMenu" role="menu" aria-labelledby="outlineToggle" hidden>
     <ol class="outline-list">
       <li><a role="menuitem" href="#top" data-section="top"><span class="outline-num">&middot;</span><span class="outline-label">Top</span></a></li>
-      <li><a role="menuitem" href="#briefing" data-section="briefing"><span class="outline-num">&middot;</span><span class="outline-label">Briefing</span></a></li>
       <li class="outline-divider" aria-hidden="true">Story</li>
       <li><a role="menuitem" href="#scene-dublin-apr" data-section="scene-dublin-apr"><span class="outline-num">01</span><span class="outline-label">Dublin &middot; Apr 2026</span></a></li>
       <li><a role="menuitem" href="#scene-berlin" data-section="scene-berlin"><span class="outline-num">02</span><span class="outline-label">Berlin</span></a></li>
@@ -1564,50 +1605,15 @@
   <div class="hero-eyebrow"><span class="dot"></span> A near-future scenario</div>
   <h1>The Airbus for AI Story</h1>
   <p class="hero-sub">Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab. France&rsquo;s flagship, Mistral, holds under 4% of its home market. The Airbus for AI proposal sketches what middle powers might build if they pooled their labs, compute, and people into one public AI company. The story below traces how that coalition would form, across eleven chapters and five capitals.</p>
+  <div class="hero-cta">
+    <a class="btn btn-ghost hero-btn" href="summary.html">Read the summary &rarr;</a>
+  </div>
   <div class="hero-arrow" aria-hidden="true">&darr;</div>
 </section>
 
-<!-- AIRBUS FOR AI (executive summary; sits before the story) -->
-<section class="briefing" id="briefing">
-  <div class="briefing-inner">
-    <h2 class="briefing-title">Airbus for AI</h2>
-    <p class="briefing-lede">Six load-bearing claims from the Tan, Jackson, Berjon &amp; Coyle brief (Sept 2025). The story underneath puts each of them in motion, in a specific room with specific people.</p>
-
-    <ol class="briefing-list">
-      <li>
-        <strong>The problem is structural, not incidental.</strong>
-        A handful of US corporations decide which governments can access frontier AI, what languages it speaks, and whose laws it follows. The compute, capital, and talent pipelines all run one way.
-      </li>
-      <li>
-        <strong>National responses don&rsquo;t scale.</strong>
-        No single European or middle-power country has the capital pool, talent depth, or compute footprint to compete with US labs. Sovereign-AI projects keep arriving late, underfunded, and trained on too little.
-      </li>
-      <li>
-        <strong>A consortium does.</strong>
-        Pool the existing labs (Mistral, Cohere, Aleph Alpha, DeepL, Helsing, Salamandra, and others) into one entity. Give it anchor labs, regional contributors, and shared sovereign compute. Run it like Airbus: a transnational, public-private vehicle owned by member states.
-      </li>
-      <li>
-        <strong>Three tiers, three jobs.</strong>
-        Tier 1 anchor labs do the frontier training. Tier 2 regional labs adapt models to local languages, law, and sectors. Tier 3 is shared sovereign compute (EuroHPC plus AI Factory sites) so none of the work has to live on AWS, Azure, or GCP by default.
-      </li>
-      <li>
-        <strong>Financing is the lever.</strong>
-        Three vehicles already exist as templates: NATO Innovation Fund (defense-aligned), EuroHPC JU (compute), and a member-state cap-table (commercial). $20&ndash;30B over five years is the rough order of magnitude. That is achievable.
-      </li>
-      <li>
-        <strong>It can start now.</strong>
-        A 10-person team and three months gets you a minimum viable entity. Then the Airbus parallel: anchor lab + first joint model + first sovereign compute MOU within 18 months.
-      </li>
-    </ol>
-
-    <div class="briefing-cta">
-      <a class="btn btn-primary" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Read the full Bennett brief (PDF) &rarr;</a>
-    </div>
-    <p class="briefing-credit">Tan, Jackson, Berjon, Coyle. <em>Airbus for AI: A global strategy for public value creation.</em> Bennett School of Public Policy, September 2025.</p>
-  </div>
-</section>
-
-<!-- STORY -->
+<!-- STORY + VIZ (centered two-column experience) -->
+<div class="experience-shell" id="experience">
+<div class="experience-columns">
 <article class="story" id="story">
 
   <!-- 1. Dublin, April 2026 -->
@@ -1927,7 +1933,7 @@
   </section>
 
   <!-- 11. The Ether, April 2027 -->
-  <section class="scene" data-viz="bennett-baseline" id="scene-ether">
+  <section class="scene" data-viz="coalition-baseline" id="scene-ether">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 11</div>
       <span class="scene-dateline">
@@ -1943,64 +1949,6 @@
   </section>
 
 </article>
-
-<!-- OUTCOME (populated by JS once user reaches it) -->
-<section class="outcome" id="outcome" aria-labelledby="outcomeTitle">
-  <div class="outcome-inner">
-    <div class="outcome-kicker">Your Coalition</div>
-    <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
-    <p class="outcome-synthesis">An interactive brief: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Sourced from Tan, Jackson, Berjon &amp; Coyle (2025) and the story above.</p>
-
-    <div class="coalition-design" id="coalitionDesign"></div>
-  </div>
-</section>
-
-
-<!-- SIGN-ON -->
-<section class="signon" id="signon">
-  <div class="signon-inner">
-    <div class="signon-kicker">Sign on</div>
-    <h2 class="signon-title">Add your name.</h2>
-    <p class="signon-lede">If you&rsquo;d back an Airbus for AI &mdash; in policy, capital, research, or just on principle &mdash; tell us. We&rsquo;ll add your name to a public roll of supporters and keep you posted on what comes next.</p>
-    <form class="signon-form" id="signonForm" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID" method="POST" novalidate>
-      <div>
-        <label for="signonName">Name</label>
-        <input type="text" id="signonName" name="name" autocomplete="name" required>
-      </div>
-      <div>
-        <label for="signonEmail">Email</label>
-        <input type="email" id="signonEmail" name="email" autocomplete="email" required>
-      </div>
-      <div class="field-full">
-        <label for="signonOrg">Organisation &amp; role <span style="text-transform:none;color:var(--text-soft);font-weight:500;">(optional)</span></label>
-        <input type="text" id="signonOrg" name="org" autocomplete="organization">
-      </div>
-      <div class="field-full">
-        <label for="signonReason">Why you&rsquo;re signing on <span style="text-transform:none;color:var(--text-soft);font-weight:500;">(optional)</span></label>
-        <textarea id="signonReason" name="reason" rows="3" placeholder="One or two sentences."></textarea>
-      </div>
-      <input type="hidden" name="outcome" id="signonOutcome" value="">
-      <input type="hidden" name="_subject" value="Airbus for AI &mdash; new sign-on">
-      <div class="signon-actions">
-        <button class="btn btn-primary" type="submit">Sign on</button>
-        <span class="signon-fallback">Or email <a href="mailto:hello@publicai.co?subject=Airbus%20for%20AI%20%E2%80%94%20sign-on">hello@publicai.co</a></span>
-      </div>
-      <div class="signon-success" id="signonSuccess" role="status">
-        <strong>Thanks &mdash; you&rsquo;re on the list.</strong> We&rsquo;ll be in touch when there&rsquo;s something to share.
-      </div>
-    </form>
-  </div>
-</section>
-
-<!-- OUTRO -->
-<section class="outro">
-  <p class="outro-line">Eleven chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
-  <div class="outro-actions">
-    <a class="btn btn-ghost" href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">Read the brief (PDF)</a>
-  </div>
-</section>
-
-</main>
 
 <!-- VIZ DOCK -->
 <aside class="viz-dock" id="vizDock" data-state="peek" aria-label="Data visualization dock">
@@ -2219,27 +2167,24 @@
       </div>
     </div>
 
-    <!-- VIZ: Bennett Baseline (The Ether) -->
-    <div class="viz-pane" data-viz="bennett-baseline" data-title="Bennett baseline">
+    <!-- VIZ: Proposed coalition (The Ether) -->
+    <div class="viz-pane" data-viz="coalition-baseline" data-title="Proposed coalition">
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
-          <p>The proposed first-cohort coalition from the Bennett &ldquo;Airbus for AI&rdquo; brief: ~10 middle-power member states unified into a Public AI Company. Anchor labs (filled) are the four named entities. The minimum viable product is deliberately small: a 10-person team, three months, ~100k GPU-hours, ~$150k.</p>
+          <p>The proposed first-cohort coalition: ~10 middle-power member states unified into a Public AI Company. Anchor labs (filled) are the four named entities. The minimum viable product is deliberately small: a 10-person team, three months, ~100k GPU-hours, ~$150k.</p>
           <h4>Why it matters here</h4>
-          <p>The brief&rsquo;s explicit guidance is &ldquo;start small &mdash; four labs, not twenty.&rdquo; This isn&rsquo;t a $2B frontier-model bet on day one; it&rsquo;s the smallest credible coalition that can become one. The Ether moment is whether the room can agree to a shape this small to start.</p>
+          <p>The proposal&rsquo;s explicit guidance is &ldquo;start small &mdash; four labs, not twenty.&rdquo; This isn&rsquo;t a $2B frontier-model bet on day one; it&rsquo;s the smallest credible coalition that can become one. The Ether moment is whether the room can agree to a shape this small to start.</p>
           <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
-            <li>Tan, J., Jackson, B., Berjon, R. &amp; Coyle, D. (2025). <em>Airbus for AI: A global strategy for public value creation.</em> Bennett School of Public Policy, University of Cambridge. <a href="https://publicai.co/airbus-for-ai.pdf" target="_blank" rel="noopener">PDF</a> &middot; DOI: 10.17863/CAM.121150.</li>
-            <li>Named members (p. 4): &ldquo;Canada, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, France, the U.K., and other middle powers.&rdquo;</li>
-            <li>Named anchor labs/entities (p. 4, 8): Mistral (FR, private), Cohere (CA, private), BSC (ES, public), RIKEN (JP, public). Also referenced: New Nordics AI, Swiss AI, OpenEuroLLM.</li>
-            <li>MVP scale (p. 8): &ldquo;A 10-person team working for 3 months, building on existing collaborations and open-source models, and supplied with about 100k GPU-hours (~150k USD), can deliver a minimum viable product.&rdquo;</li>
-            <li>Cohort guidance (p. 7): &ldquo;start small: four labs, not twenty.&rdquo;</li>
-            <li>Anti-target (p. 6): &ldquo;training a $2 billion 'leading frontier model' is not the minimum viable product.&rdquo;</li>
-            <li>Market context cited in the brief (p. 2): ChatGPT 79.8% global consumer chatbot share (Statcounter, July 2025); Mistral Le Chat &lt;4% French penetration.</li>
-            <li>Airbus historical parallel (p. 3): division of labor mapped country-to-component (FR avionics &amp; assembly, DE fuselage, UK wings, ES tail) &mdash; the brief proposes pre-training / evaluation / fine-tuning / inference as the AI equivalent.</li>
+            <li>Named members: Canada, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, France, the U.K., and other middle powers.</li>
+            <li>Named anchor labs: Mistral (FR), Cohere (CA), BSC (ES), RIKEN (JP). Also referenced: New Nordics AI, Swiss AI, OpenEuroLLM.</li>
+            <li>MVP scale: 10-person team, 3 months, ~100k GPU-hours (~$150k).</li>
+            <li>Market context: ChatGPT 79.8% global consumer chatbot share (Statcounter, July 2025); Mistral Le Chat &lt;4% French penetration.</li>
+            <li><a href="research.html">Full citation &amp; research &rarr;</a></li>
           </ol></details>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbBennettBaselineCanvas" role="img" aria-label="Bennett brief coalition: 10 member states unified into a Public AI Company, anchored by Mistral, Cohere, BSC, RIKEN"></canvas>
+          <canvas id="dbCoalitionBaselineCanvas" role="img" aria-label="Proposed coalition: 10 member states unified into a Public AI Company, anchored by Mistral, Cohere, BSC, RIKEN"></canvas>
         </div>
       </div>
     </div>
@@ -2316,6 +2261,68 @@
 
   </div>
 </aside>
+
+</div>
+</div>
+
+
+<!-- OUTCOME (populated by JS once user reaches it) -->
+<section class="outcome" id="outcome" aria-labelledby="outcomeTitle">
+  <div class="outcome-inner">
+    <div class="outcome-kicker">Your Coalition</div>
+    <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
+    <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above. See <a href="summary.html">Summary</a> and <a href="research.html">Research</a> for the underlying proposal.</p>
+
+    <div class="coalition-design" id="coalitionDesign"></div>
+  </div>
+</section>
+
+
+<!-- SIGN-ON -->
+<section class="signon" id="signon">
+  <div class="signon-inner">
+    <div class="signon-kicker">Sign on</div>
+    <h2 class="signon-title">Add your name.</h2>
+    <p class="signon-lede">If you&rsquo;d back an Airbus for AI &mdash; in policy, capital, research, or just on principle &mdash; tell us. We&rsquo;ll add your name to a public roll of supporters and keep you posted on what comes next.</p>
+    <form class="signon-form" id="signonForm" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID" method="POST" novalidate>
+      <div>
+        <label for="signonName">Name</label>
+        <input type="text" id="signonName" name="name" autocomplete="name" required>
+      </div>
+      <div>
+        <label for="signonEmail">Email</label>
+        <input type="email" id="signonEmail" name="email" autocomplete="email" required>
+      </div>
+      <div class="field-full">
+        <label for="signonOrg">Organisation &amp; role <span style="text-transform:none;color:var(--text-soft);font-weight:500;">(optional)</span></label>
+        <input type="text" id="signonOrg" name="org" autocomplete="organization">
+      </div>
+      <div class="field-full">
+        <label for="signonReason">Why you&rsquo;re signing on <span style="text-transform:none;color:var(--text-soft);font-weight:500;">(optional)</span></label>
+        <textarea id="signonReason" name="reason" rows="3" placeholder="One or two sentences."></textarea>
+      </div>
+      <input type="hidden" name="outcome" id="signonOutcome" value="">
+      <input type="hidden" name="_subject" value="Airbus for AI &mdash; new sign-on">
+      <div class="signon-actions">
+        <button class="btn btn-primary" type="submit">Sign on</button>
+        <span class="signon-fallback">Or email <a href="mailto:hello@publicai.co?subject=Airbus%20for%20AI%20%E2%80%94%20sign-on">hello@publicai.co</a></span>
+      </div>
+      <div class="signon-success" id="signonSuccess" role="status">
+        <strong>Thanks &mdash; you&rsquo;re on the list.</strong> We&rsquo;ll be in touch when there&rsquo;s something to share.
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- OUTRO -->
+<section class="outro">
+  <p class="outro-line">Eleven chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
+  <div class="outro-actions">
+    <a class="btn btn-ghost" href="research.html">Research &amp; sources</a>
+  </div>
+</section>
+
+</main>
 
 <script>
 // ============================================================
@@ -2399,7 +2406,7 @@
       { id:'defense-commercial', label:'Defense + commercial', strength:'mid',  score:1,
         impact:'Two product lines fund each other. Governance gets harder; the political base broadens.' },
       { id:'full-stack',    label:'Full sovereign stack',    strength:'active', score:2,
-        impact:'Models, compute, deployment, language tooling. Closer to the Bennett brief’s frontier-and-APIs scope.' }
+        impact:'Models, compute, deployment, language tooling. Closer to the proposal\'s frontier-and-APIs scope.' }
     ] },
     'scene-monroe':     { type:'observe', label:'The other side keeps building.' },
     'scene-ottawa':     { type:'decide', question:'Coalition with whom?', options:[
@@ -2426,7 +2433,7 @@
       { id:'hybrid',        label:'Hybrid path',             strength:'mid',     score:1,
         impact:'You operate inside the DLA for now and build outside it in parallel. Two stacks for a while.' },
       { id:'form-entity',   label:'Form coalition entity',   strength:'active',  score:2,
-        impact:'A legal entity is incorporated, joint compute and IP get signed, an MVP ships inside Bennett’s 3-month frame.' }
+        impact:'A legal entity is incorporated, joint compute and IP get signed, an MVP ships inside the coalition\'s 3-month frame.' }
     ] }
   };
 
@@ -2622,7 +2629,7 @@
   const outcome = document.getElementById('outcome');
   // =====================================================================
   // COALITION DESIGN PANEL
-  // The components the Bennett brief actually names. Each section shows the
+  // Coalition design components derived from story picks. Each section shows the
   // universe of options; the user's picks (from the seven calls) highlight
   // which slice the story takes. No tier, no score.
   // =====================================================================
@@ -2665,7 +2672,7 @@
 
   const GOVERNANCE = [
     { id: 'state-led',  name: 'State-led merger',          desc: 'Pure Airbus model: member states own equity, slow to form, strong sovereignty.' },
-    { id: 'ppp',        name: 'Public-private partnership', desc: "The brief's preferred shape. Member contributes one national entity; consortium coordinates pre-training, compute, market." },
+    { id: 'ppp',        name: 'Public-private partnership', desc: "The proposal's preferred shape. Member contributes one national entity; consortium coordinates pre-training, compute, market." },
     { id: 'foundation', name: 'Foundation / non-profit',   desc: 'Mozilla / Linux Foundation style. Open by default; harder to capitalize at frontier scale.' },
     { id: 'federated',  name: 'Federated co-op',           desc: 'Visa-like consortium of autonomous members. Easy to start, weak central capacity.' },
   ];
@@ -2673,7 +2680,7 @@
   const SCOPE = [
     { id: 'defense-only',       name: 'Defense only',          desc: 'Helsing-anchored. Saleable to security ministries; civilian models stay US-dependent.' },
     { id: 'defense-commercial', name: 'Defense + commercial',  desc: 'Two product lines fund each other. Broader political base, harder governance.' },
-    { id: 'full-stack',         name: 'Full sovereign stack',  desc: "The brief's scope: models, compute, deployment, language tooling, APIs." },
+    { id: 'full-stack',         name: 'Full sovereign stack',  desc: "The proposal's scope: models, compute, deployment, language tooling, APIs." },
   ];
 
   // Map the user's picks onto each design dimension.
@@ -2836,9 +2843,9 @@
 
     root.innerHTML = `
       <div class="design-section">
-        <div class="design-section-kicker">Member states (10 named in the brief)</div>
+        <div class="design-section-kicker">Member states (10 in the proposal)</div>
         <h3 class="design-section-title">Who joins</h3>
-        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025) name France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada as the first-cohort middle powers. Four picks on the left decide which of them are eligible on the right.</p>
+        <p class="design-section-note">France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada are the first-cohort middle powers. Four picks on the left decide which of them are eligible on the right.</p>
         <div class="design-split-body">
           <div class="design-picks">
             ${pickHtml('scene-brussels')}
@@ -2851,7 +2858,7 @@
       </div>
 
       <div class="design-section">
-        <div class="design-section-kicker">Anchor labs (the brief says four, not twenty)</div>
+        <div class="design-section-kicker">Anchor labs (four, not twenty)</div>
         <h3 class="design-section-title">Who anchors</h3>
         <p class="design-section-note">Two private champions (Mistral, Cohere), two public labs (BSC, RIKEN). The anchors follow from the member picks above.</p>
         <div class="design-split-body">
@@ -2862,7 +2869,7 @@
             <ul class="design-derivation-list">
               ${COALITION_LABS.map(l => `<li data-active="${shape.labs.has(l.name)}"><span>${l.name}</span> &middot; ${l.country} ${shape.labs.has(l.name) ? '<em>in</em>' : '<em>out</em>'}</li>`).join('')}
             </ul>
-            <p class="design-derivation-quote">&ldquo;Start small: four labs, not twenty.&rdquo; &mdash; Bennett brief, p. 7.</p>
+            <p class="design-derivation-quote">&ldquo;Start small: four labs, not twenty.&rdquo;</p>
           </div>
           <div class="design-grid">${labsHtml}</div>
         </div>
@@ -2871,7 +2878,7 @@
       <div class="design-section">
         <div class="design-section-kicker">Governance shape</div>
         <h3 class="design-section-title">How it&rsquo;s held together</h3>
-        <p class="design-section-note">The brief proposes a public-private partnership (p. 4) but leaves room for &ldquo;most likely something bespoke.&rdquo; The picks on the left decide which archetype it lands as.</p>
+        <p class="design-section-note">The proposal favors a public-private partnership but leaves room for &ldquo;most likely something bespoke.&rdquo; The picks on the left decide which archetype it lands as.</p>
         <div class="design-split-body">
           <div class="design-picks">
             ${pickHtml('scene-berlin')}
@@ -2884,7 +2891,7 @@
       <div class="design-section">
         <div class="design-section-kicker">Scope</div>
         <h3 class="design-section-title">What the coalition covers</h3>
-        <p class="design-section-note">The brief&rsquo;s preferred end-state is the full stack; the entry point can be narrower.</p>
+        <p class="design-section-note">The proposal&rsquo;s preferred end-state is the full stack; the entry point can be narrower.</p>
         <div class="design-split-body">
           <div class="design-picks">
             ${pickHtml('scene-stockholm')}
@@ -2894,15 +2901,15 @@
       </div>
 
       <div class="design-section">
-        <div class="design-section-kicker">MVP target (the brief&rsquo;s floor)</div>
+        <div class="design-section-kicker">MVP target (the floor)</div>
         <h3 class="design-section-title">How small the first version can be</h3>
-        <p class="design-section-note">Tan, Jackson, Berjon &amp; Coyle (2025), p. 8: the smallest credible coalition that can grow into a frontier programme. Independent of the shape above.</p>
+        <p class="design-section-note">The smallest credible coalition that can grow into a frontier programme. Independent of the shape above.</p>
         <div class="design-split-body">
           <div class="design-derivation">
             <span class="design-derivation-label">Why this small</span>
             <p>The MVP is deliberately tiny: small enough to ship before politics catches up, big enough to demonstrate the concept.</p>
-            <p>The headline number for a frontier training run today is roughly $2B (p. 15). The brief is explicit that this is <em>not</em> what the MVP should aim at.</p>
-            <p class="design-derivation-quote">&ldquo;Training a $2 billion &lsquo;leading frontier model&rsquo; is not the minimum viable product.&rdquo; &mdash; p. 6.</p>
+            <p>The headline number for a frontier training run today is roughly $2B. The proposal is explicit that this is <em>not</em> what the MVP should aim at.</p>
+            <p class="design-derivation-quote">&ldquo;Training a $2 billion &lsquo;leading frontier model&rsquo; is not the minimum viable product.&rdquo;</p>
           </div>
           <div class="design-mvp">
             <div class="design-mvp-stats">
@@ -3516,9 +3523,9 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   draw();
 })();
 
-// --- Bennett Baseline (The Ether) ---
+// --- Proposed coalition (The Ether) ---
 (function(){
-  const canvas = document.getElementById('dbBennettBaselineCanvas');
+  const canvas = document.getElementById('dbCoalitionBaselineCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const pane = canvas.closest('.viz-pane');
@@ -3536,7 +3543,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   window.addEventListener('resize', resize);
   canvas.addEventListener('viz:show', function(){ resize(); draw(); });
 
-  // Bennett brief first-cohort members (p. 4). `entity` = named anchor lab.
+  // First-cohort members. `entity` = named anchor lab.
   // `anchor: true` = one of the four "start small" labs.
   const members = [
     { country: 'France',       entity: 'Mistral',      anchor: true  },
@@ -3564,7 +3571,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.fillStyle = 'rgba(10,10,10,0.42)';
     ctx.font = '8.5px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
-    ctx.fillText('BENNETT BASELINE COALITION  (Sept 2025)', 8, 12);
+    ctx.fillText('PROPOSED COALITION  (2025)', 8, 12);
 
     const cx = W / 2;
     const cy = H / 2 + 6;
