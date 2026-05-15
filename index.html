@@ -2,245 +2,676 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Public AI Creative Fellowship — Ahnjili ZhuParris</title>
-<meta name="description" content="Interactive digital experiences exploring AI as public infrastructure — by Ahnjili ZhuParris, Creative Technologist Fellow at MetaGov.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="The Slow Boil: a near-future scenario in five capitals about who controls AI, with the data underneath each scene.">
+<meta property="og:title" content="The Slow Boil — Airbus for AI">
+<meta property="og:description" content="A near-future scenario in five capitals. The data is docked at the bottom and changes with the story.">
+<meta property="og:type" content="article">
+<title>The Slow Boil — Airbus for AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="/logo.jpg">
-
-<meta property="og:title" content="Public AI Creative Fellowship" />
-<meta property="og:description" content="Interactive digital experiences exploring AI as public infrastructure — by Ahnjili ZhuParris, Creative Technologist Fellow at MetaGov." />
-<meta property="og:url" content="https://www.artificialnouveau.com/publicai/" />
-<meta property="og:site_name" content="Ahnjili ZhuParris" />
-<meta property="og:type" content="website" />
-
-<style>
-:root {
-  --white: #ffffff;
-  --off-white: #f7f8fa;
-  --light-gray: #eef0f4;
-  --mid-gray: #c8cdd6;
-  --dark-gray: #6b7280;
-  --navy: #00205b;
-  --navy-light: #1a3a7a;
-  --navy-dark: #001540;
-  --sky: #0077c8;
-  --sky-light: #4da6e8;
-  --cyan: #00b4d8;
-  --gold: #f0a500;
-  --red: #e63946;
-  --green: #2ec4b6;
-  --purple: #7c3aed;
-  --text: #1a1a2e;
-  --text-secondary: #4a5568;
-  --text-muted: #9ca3af;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: 'JetBrains Mono', monospace;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-  --radius: 12px;
-  --radius-lg: 20px;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: var(--font); color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
-
-/* === NAV === */
-.topnav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--light-gray);
-  padding: 0 2rem; height: 64px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.topnav-brand {
-  font-weight: 800; font-size: 1.1rem; color: var(--navy);
-  letter-spacing: -0.02em; text-decoration: none;
-}
-.topnav-links { display: flex; gap: 1.5rem; }
-.topnav-links a { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
-.topnav-links a:hover { color: var(--navy); }
-
-/* === HERO === */
-.hero {
-  min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-  text-align: center; padding: 8rem 2rem 4rem;
-  background: linear-gradient(170deg, var(--navy-dark) 0%, var(--navy) 40%, var(--sky) 100%);
-  color: white;
-}
-.hero-eyebrow {
-  font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;
-}
-.hero h1 {
-  font-size: clamp(2.4rem, 5vw, 4.5rem); font-weight: 900;
-  line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1rem;
-}
-.hero-sub {
-  font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(255,255,255,0.75);
-  max-width: 640px; margin: 0 auto 2rem; line-height: 1.7;
-}
-.hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-.btn {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.85rem 2rem; border-radius: 8px;
-  font-family: var(--font); font-size: 0.95rem; font-weight: 600;
-  cursor: pointer; border: none; text-decoration: none; transition: all 0.25s;
-}
-.btn-primary { background: var(--white); color: var(--navy); }
-.btn-primary:hover { background: var(--off-white); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
-.btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
-
-/* === SECTIONS === */
-.section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
-.section + .section { border-top: 1px solid var(--light-gray); }
-
-.section-eyebrow {
-  font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--sky);
-  margin-bottom: 0.75rem;
-}
-.section-title {
-  font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800;
-  letter-spacing: -0.02em; margin-bottom: 0.75rem; color: var(--navy);
-}
-.section-desc {
-  font-size: 1.1rem; color: var(--text-secondary); line-height: 1.8;
-  max-width: 700px; margin-bottom: 2.5rem;
-}
-.section-desc a { color: var(--sky); }
-
-/* === PROJECT GRID === */
-.project-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.25rem;
-}
-.project-card {
-  display: block; padding: 2rem; background: var(--white);
-  border: 1px solid var(--light-gray); border-radius: var(--radius);
-  text-decoration: none; color: var(--text); transition: all 0.25s;
-}
-.project-card:hover {
-  border-color: var(--sky); transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-}
-.project-card h3 {
-  font-size: 1.1rem; font-weight: 700; color: var(--navy);
-  margin-bottom: 0.6rem; letter-spacing: -0.01em;
-}
-.project-card p {
-  font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;
-  margin-bottom: 0.75rem;
-}
-.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.tag {
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
-  padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
-  letter-spacing: 0.05em; background: #e0f2fe; color: var(--sky);
-}
-
-/* === FOOTER === */
-.page-footer {
-  text-align: center; padding: 3rem 2rem;
-  border-top: 1px solid var(--light-gray);
-  color: var(--text-muted); font-size: 0.85rem;
-}
-.page-footer a { color: var(--sky); text-decoration: none; font-weight: 500; }
-.page-footer a:hover { text-decoration: underline; }
-
-@media (max-width: 768px) {
-  .project-grid { grid-template-columns: 1fr; }
-  .project-card { padding: 1.5rem; }
-  .section { padding: 3rem 1.25rem; }
-  .topnav-links { display: none; }
-}
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="topnav">
+<!-- SKIP LINK -->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- TOP NAV -->
+<nav class="topnav" aria-label="Site navigation">
+  <a href="index.html#top" class="topnav-brand" aria-label="Airbus for AI &mdash; home">
+    <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="topnav-brand-text">Airbus for AI</span>
+  </a>
   <div class="topnav-links">
-    <a href="#about">About</a>
-    <a href="#projects">Projects</a>
+    <a class="topnav-link" href="#top" aria-current="page">Story</a>
+    <a class="topnav-link topnav-link-cta" href="#outcome">Your Coalition</a>
+    <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
 </nav>
 
+<main id="main">
+
 <!-- HERO -->
-<header class="hero">
-  <div class="hero-eyebrow">MetaGov &mdash; Creative Technologist Fellow &mdash; 2025&ndash;2026</div>
-  <h1>Public AI Creative Fellowship</h1>
-  <p class="hero-sub">Interactive digital experiences exploring AI as public infrastructure &mdash; games, simulators, satirical websites, and surveys that ask who should control AI and for whose benefit.</p>
+<section class="hero" id="top">
+  <div class="hero-eyebrow"><span class="dot"></span> A near-future scenario</div>
+  <h1>The Airbus for AI Story</h1>
+  <p class="hero-sub">Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab. France&rsquo;s flagship, Mistral, holds under 4% of its home market. The Airbus for AI proposal sketches what middle powers might build if they pooled their labs, compute, and people into one public AI company. The story below traces how that coalition would form, across eleven chapters and five capitals.</p>
   <div class="hero-cta">
-    <a href="#projects" class="btn btn-primary">View Projects</a>
-    <a href="/publicai/educational-resources/" class="btn btn-outline">Educational Resources</a>
+    <a class="btn btn-ghost hero-btn" href="summary.html">Read the summary &rarr;</a>
   </div>
-</header>
-
-<!-- ABOUT -->
-<section class="section" id="about">
-  <div class="section-eyebrow">About the Fellowship</div>
-  <h2 class="section-title">Making the Case for AI as Public Infrastructure</h2>
-  <p class="section-desc">The <a href="https://metagov.org/join/jobs/public-ai-creative-fellowship" target="_blank" rel="noopener">Public AI Creative Fellowship</a> is a six-month initiative by <a href="https://metagov.org" target="_blank" rel="noopener">MetaGov</a> that brings together creative professionals to develop cultural narratives around public AI &mdash; systems that are open, democratically governed, and accountable to the communities they affect.</p>
-  <p class="section-desc">The fellowship recruited three fellows &mdash; a Video Creator, a Creative Technologist, and a Writer &mdash; to produce work that makes the case for AI as public infrastructure. The first phase focused on experimentation with formats and collaborative exploration of narratives. The second phase refined these explorations into interactive, public-facing experiences for broader engagement.</p>
-  <p class="section-desc">As the Creative Technologist fellow, I developed interactive digital experiences &mdash; games, simulators, satirical websites, and surveys &mdash; that explore what it means for AI to be publicly owned, governed, and accountable. Each project below takes a different angle on the question of who should control AI and for whose benefit.</p>
+  <div class="hero-arrow" aria-hidden="true">&darr;</div>
 </section>
 
-<!-- PROJECTS -->
-<section class="section" id="projects">
-  <div class="section-eyebrow">Fellowship Projects</div>
-  <h2 class="section-title">Projects</h2>
-  <p class="section-desc">Interactive experiences built during the fellowship, each exploring a different facet of public AI.</p>
+<!-- STORY + VIZ (centered two-column experience) -->
+<div class="experience-shell" id="experience">
+<div class="experience-columns">
+<aside class="country-map" id="countryMap" aria-hidden="true">
+  <div class="country-map-frame">
+    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" fill="var(--paper)"/>
+      <g id="countryMapGroup" fill="none" stroke="rgba(10,10,10,0.45)" stroke-width="0.4" stroke-linejoin="round" stroke-linecap="round"></g>
+    </svg>
+  </div>
+</aside>
+<article class="story" id="story">
 
-  <div class="project-grid">
+  <!-- 1. Dublin, April 2026 -->
+  <section class="scene" data-viz="talent-migration" id="scene-dublin-apr" data-country-id="372" data-country-iso="IE">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 1</div>
+      <span class="scene-dateline">
+        Apr.23.2026<br>
+        Dublin, Ireland<br>
+        OpenAI Offices
+      </span>
+      <h2 class="scene-title">Dublin</h2>
+    </header>
+    <div class="scene-prose">
+      <p>&ldquo;I don&rsquo;t even think they gave him time to clean out his office.&rdquo;</p>
+      <p>Aaron cut a defeated figure. Wracked with the same posture and bent vertebrae as the rest of the crowd milling about to say their goodbyes, Aaron stood amongst them, brown cardboard box in hand, half-full with the family photos and the office tchotchkes that one amasses unwittingly over a seven-year-long career at the firm.</p>
+      <p>One of the Americans to come over when Open AI opened its doors to Dublin, Aaron was an advisor on the policy team. A lawyer by training and by disposition, He&rsquo;d been entrusted to make sure that the legal and ethical output of Open AI&rsquo;s actions in Europe were in line with EU regulations.</p>
+      <p>I met Aaron exactly one year before he was fired. I&rsquo;d moved to Dublin from the San Francisco office as a researcher, and had trouble adjusting to a new life on a different continent in a country whose sense of humor reserved a special sting for the American invaders. Aaron had taken pity on me rather quickly and invited me over to his house for dinner a few times where the three of us: myself, Aaron, and Aaron&rsquo;s wife Laura, would get properly drunk and gossip about friends we knew back in the states. I&rsquo;d walk back to my own unadorned flat unsteady but happy.</p>
+      <p>The rounds of layoffs were happening swiftly. I had learned that morning I was safe. &ldquo;Congrats&rdquo; my supervisor said, &ldquo;you live to fight another day.&rdquo;</p>
+      <p>The official stance taken by the company was a consolidation towards its major revenue-generating operations in the US, and further investment in American datacenters. The other EU offices in Munich, Paris and Brussels were similarly decimated, I had heard.</p>
+      <p>Aaron was walking out the door. Last chance to say goodbye. I pushed my way through a crowd of fellow well-wishers for the other recently unemployed and intercepted Aaron at the door. I told him that they were bastards. That this was a huge mistake. That they&rsquo;ll come to their senses. Or that he&rsquo;ll land a better gig somewhere else. He nodded wearily, his eyes fixed on the ground.</p>
+      <p>Once I was done with the platitudes, he pulled me aside and said in a low whisper as we huddled together: &ldquo;look, I&rsquo;ve been working on something for a few weeks. It could be nothing. But could you do me a favor?&rdquo;</p>
+      <p>&ldquo;Of course.&rdquo;</p>
+      <p>&ldquo;Just take a look at this,&rdquo; he handed me a hard drive. &ldquo;Not on your work computer.&rdquo;</p>
+      <p>&ldquo;What is it?&rdquo;</p>
+      <p>&ldquo;Could be nothing. Just take a look.&rdquo;</p>
+      <p>At that, he was continued on his way out the door by security who had decided that it was time for everyone to get back to work.</p>
+      <p>The now empty seats stared at us accusatorily: why us? Why them?</p>
+    </div>
+  </section>
 
-    <a href="/publicai/moreaiineedit/index.html" class="project-card">
-      <h3>MORE AI! I NEED IT! PLEASE!</h3>
-      <p>A satirical catalog of the most absurd, questionable, and bewilderingly real AI products flooding the market. Part consumer guide, part cultural critique &mdash; featuring tiered pricing models, a usefulness-vs-desirability rating chart, and a mystery box that randomly assigns you an AI service.</p>
-      <div class="tag-row">
-        <span class="tag">Satire</span>
-        <span class="tag">Interactive</span>
+  <!-- 2. Berlin, April 2027 -->
+  <section class="scene" data-viz="compute-map" id="scene-berlin" data-country-id="276" data-country-iso="DE">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 2</div>
+      <span class="scene-dateline">
+        Apr.16.2027<br>
+        Berlin, Germany<br>
+        NAME OF CHANCELLOR HOUSE
+      </span>
+      <h2 class="scene-title">Berlin</h2>
+    </header>
+    <div class="scene-prose">
+      <p>&ldquo;I&rsquo;m sorry but no one has been able to get through to Washington. It looks like they&rsquo;ve cut off comms until the dust settles.&rdquo; Friedrich Merz liked his advisors to be honest, including about his own failures. And their own.</p>
+      <p>&ldquo;Pieter, are you trying to tell me that there is not a single person in the White House we can speak to? At this point, I&rsquo;d take an intern.&rdquo; Merz&rsquo;s lengthy frame coiled in exasperation. &ldquo;I&rsquo;ve stood by these assholes, put my reputation on the line, been called a &lsquo;puppet&rsquo; for them. And what do I get for it? A cold shoulder? A place in the back of the line?&rdquo; he thought, mostly outloud, to himself.</p>
+      <p>He re-read the President&rsquo;s statement again, an hourly ritual ever since it was issued at midnight on a Friday.</p>
+
+      <div class="doc-inset">
+        <h4>The Digital Liberty Act</h4>
+        <p class="doc-subtitle">The United States of America has declared that, in the interest of the continued safety of our digital infrastructure, we are mandating that any and all access to Amercian-based frontier AI technologies is dependent on the full and unmitigated acceptance of The Digital Libery Act the pillars of which are the following:</p>
+        <ul class="doc-bullets">
+          <li>It is the policy of the United States to ensure that access by foreign persons to advanced U.S. artificial intelligence models, model weights, and large-scale cloud compute capacity occurs only in jurisdictions that maintain technology security measures substantially comparable to those of the United States with respect to the People&rsquo;s Republic of China</li>
+          <li>Jurisdictional access is defined as the following:
+            <ul>
+              <li><strong>Aligned Jurisdictions:</strong> full access to specified frontier model APIs, cloud training clusters, and advanced model-weight transfers, subject to compliance rules.</li>
+              <li><strong>Managed-access Jurisdictions:</strong> Limited access, slower approvals, inference-only access in some cases, no export of certain weights, no dedicated reserved compute beyond a threshold.</li>
+              <li><strong>Restricted Jurisdictions:</strong> full denial of access.</li>
+            </ul>
+          </li>
+          <li>The establishment of the Authority for General AI Aligned Countries (AGAIC) defines &ldquo;alignment&rdquo; as: exports, reexports, or transfers (in-country) of controlled advanced closed-weight AI model weights, or access to covered training or fine-tuning capacity using covered advanced computing integrated circuits, are authorized only for entities located in jurisdictions designated by the Secretary of Commerce, in consultation with the Secretary of State and the Secretary of the Treasury, as Aligned AI Security Jurisdictions.</li>
+          <li>To be considered &ldquo;Aligned&rdquo; a participating nation needs to meet the following criteria:
+            <ul>
+              <li><strong>China Technology Controls:</strong> member states seeking Tier 1 status, must adopt measures &ldquo;substantially comparable&rdquo; to the US on:
+                <ul>
+                  <li>outbound investment screening or restrictions for AI, semiconductor, and quantum sectors involving China</li>
+                  <li>advanced semiconductor export controls</li>
+                  <li>restrictions on support for PRC military-intelligence end uses</li>
+                  <li>restrictions on transfers of advanced model weights or large-scale compute to PRC-linked entities</li>
+                </ul>
+              </li>
+              <li><strong>Public-sector and Critical-infrastructure Exclusion</strong>
+                <ul>
+                  <li>No public authority, state-owned enterprise, operator of critical infrastructure, defense contractor, or publicly funded health or education system within the applicant jurisdiction shall procure, host, fine-tune, or operationally rely upon covered cloud, AI, or telecommunications services provided by entities organized under the laws of, headquartered in, or effectively controlled by the People&rsquo;s Republic of China.</li>
+                </ul>
+              </li>
+              <li><strong>Audit and Compliance:</strong> to remain continually compliant the following processes would need to occur on a regular basis which already comply with US IaaS rules.
+                <ul>
+                  <li>annual government certification</li>
+                  <li>designated national enforcement authority</li>
+                  <li>audit rights or compliance data sharing</li>
+                  <li>mandatory reporting of violations</li>
+                  <li>cloud customer identification and beneficial ownership checks for high-end AI usage</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>Snapback Provisions</strong>
+            <ul>
+              <li>The Secretary may suspend, modify, or revoke Aligned AI Security Jurisdiction status upon a determination that the jurisdiction no longer maintains substantially comparable measures, or that entities within the jurisdiction materially support the acquisition, training, deployment, or operationalization of covered artificial intelligence capabilities by a country of concern.</li>
+            </ul>
+          </li>
+        </ul>
       </div>
-    </a>
 
-    <a href="/publicai/airbus-for-ai/index.html" class="project-card">
-      <h3>Airbus for AI</h3>
-      <p>What if middle powers merged their sovereign AI companies into a Public AI Company? An interactive story and simulator that lets you assemble national AI champions, make coalition decisions, and explore a publicly governed AI mega-corporation. See Research on the project site for source material.</p>
-      <div class="tag-row">
-        <span class="tag">Simulator</span>
-        <span class="tag">Policy</span>
-      </div>
-    </a>
+      <p>The attached document came with a warning: Germany was being moved from Aligned to Managed Access.</p>
+      <p>Merz rubbed his eyelids. The clock on his laptop hit 5am. He was tired. He turned towards Pieter who had melted into the couch in the stately office where the atmosphere had turned thick and bilious with anxiety.</p>
+      <p>&ldquo;Can you tell me how exposed we are? What&rsquo;s the risk in saying no?&rdquo;</p>
+      <p>Pieter was scrolling on his laptop. It was a long time before either man said anything.</p>
+      <p>&ldquo;It&rsquo;s difficult to say. We have some hedges so we won&rsquo;t go dark overnight, but even the things we advertise as sovereign are built on top of Microsoft or Google&rsquo;s technology.&rdquo;</p>
+      <p>&ldquo;What about the other stuff. Hospitals, universities, our own ministiries that are supposed to be on the cutting edge?&rdquo;</p>
+      <p>&ldquo;I just don&rsquo;t know. Any pause, any price increase, or limits to access would cause a massive panic. I don&rsquo;t think anyone has the full picture of who&rsquo;s using what.&rdquo;</p>
+      <p>&ldquo;This is insane&hellip;&rdquo;</p>
+      <p>Pieter tried to interrupt before Channcellor Merz held his hand up: &ldquo;this would be signing off our death warrant. China gives us our motor parts, our chemicals, our incudstrial equipment. Besides: how could anyone build a profitable company in Germany if they can&rsquo;t do business with China? No. We can&rsquo;t do it. This bullying. I&rsquo;m calling the bluff. I&rsquo;m not signing off on anything.&rdquo;</p>
+      <p>&ldquo;Pieter?&rdquo; Chancellor Merz said after a long pause.</p>
+      <p>&ldquo;Yes Chancellor?&rdquo;</p>
+      <p>&ldquo;I need a large cup of coffee and to be on the phone with Macron in 15 minutes.&rdquo;</p>
+      <p>Pieter, never one to disobey orders, lifted his tired legs and hurried out the door.</p>
+      <p>Chancellor Merz sat on his chair, a miracle of the ingenuity of German engineering, and rubbed his temples. His head hurt. Hands folded, he stared up at the ceiling, a decorative fir finish sourced from the Black Forest with a crystalline chandelier that hung lazily in the middle of the room. Chancellor Merz noticed the chandelier had a light that&rsquo;d been broken. He hadn&rsquo;t the faintest of clues when that happened.</p>
+    </div>
+  </section>
 
-    <a href="/publicai/ai-perspectives-survey.html" class="project-card">
-      <h3>AI Perspectives Survey</h3>
-      <p>An interactive survey that maps your views on AI onto an archetype spectrum &mdash; from AI accelerationists who want to hit the gas pedal, to cautious optimists tapping the brakes, to those who see AI as an existential threat. See how your perspective compares to others.</p>
-      <div class="tag-row">
-        <span class="tag">Survey</span>
-        <span class="tag">Interactive</span>
-      </div>
-    </a>
+  <!-- 3. Brussels, June 2026 -->
+  <section class="scene" data-viz="lang-heatmap" id="scene-brussels" data-country-id="56" data-country-iso="BE">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 3</div>
+      <span class="scene-dateline">
+        Jun.03.2026<br>
+        Brussels, Belgium<br>
+        Office of the European Commission
+      </span>
+      <h2 class="scene-title">Brussels</h2>
+    </header>
+    <div class="scene-prose">
+      <p>Henna Virkkunnen paced impatiently back and forth behind the stage that had been set up for the weekend&rsquo;s final presentation. Tech bureaucrats talking about tech bureaucracy while America is using AI models to start wars. At some point foreign policy jumps off the page, hops on a bomb, and lands somewhere in Iran, algorithmically positioned to explode with the most killing force. At some point, Virkunnen thought to herself, we need to consider the idea that these frontier labs moonlight as defense contractors. The US Department of Defense always did have deep pockets.</p>
+      <p>Virkkunnen had a speech planned. It would mention the policies, the plans, the initiatives. But she tossed it out this morning in favor of something much more like an invective. We sleptwalked through two entire decades of infrastructure planning, our somnolence rewarded with a sovereignty so far indebted to the Americans and the Chinese that she would hesitate to even use that word: sovereignty.</p>
+      <p>The Finnish politician took her place at the podium, consulted briefly with the kindly AV crewmember who showed her how to change her now-useless slides using the remote, and then waited as the crowd piled in for the keynote address.</p>
+      <p>&ldquo;Advanced artificial intelligence algorithms created 37,000 bombing targets in the first few weeks of the Israel-Gaza conflict. I&rsquo;ll be the first to profess&hellip; I don&rsquo;t know what to do with that information. Our EU AI act exempts military use cases because we believe that the international humanitarian courts are better places for these issues to be adjudicated. But&rdquo; and here Henna stumbled a bit, &ldquo;I suppose I wanted to bring that up because these American AI companies are not just stumbling into American warfare, they&rsquo;re actively courting it. This is a new class of defense manufacturers that use technology we rely on, but over which we have no control.</p>
+      <p>The means we have to protect ourselves? Not ours. No one is saying we are going to war with the United States, but what happens if they decide to do something decidedly against the interest of the European people? Because it&rsquo;s not just our military ladies and gentlemen. Our entire digital chain is being controlled by outside forces. How can I stand in front of you and talk about sovereignty when this is the case? How can I pretend the situation is anything other than it is?&rdquo;</p>
+      <p>The crowd began to shift uneasily in their seats, exchanging furtive glances with each other after days spent in optimistic conversations about the Continent Action Plan, the Gigafactories, data unions. Furious dreams of policies enacted and ground broken for new infrastructure.</p>
+      <p>Virkkunen continued: &ldquo;I had a different speech prepared. But I look around and see a lot of back-pattting and laziness. We are, in our wildest dreams, still years behind the United States and China in every perceivable metric that matters for our digital future. We have wagered our future on American and Chinese technology and we have lost it.&rdquo;</p>
+      <p>The Finn paused. &ldquo;The situation might not seem so dire to those of us whose job isn&rsquo;t to plan for contingencies, but what if I were to put it to you this way? We control almost none of our own frontier-scale compute. We cannot reliably train, fine-tune, or deploy any sort of frontier model at scale using what we have today. Our public services are hosted on cloud layers supplied by American companies that run on datacenters we don&rsquo;t have. Our capital pools are diluted. Every week I hear of a new European startup that relocates to the US because they don&rsquo;t have the resources to grow here. Where is our Silicon Valley? Where are our innovation hubs? We are too fragmented, our efforts too aimless. So we end up as toothless regulators over technology that doesn&rsquo;t even belong to us.</p>
+      <p>Some of the crowd walked out. Others stayed, rapt by what might come next.</p>
+      <p>&ldquo;I look at this and I worry. But this is a worry that must reinforce a shared collective interest. As individual nations, none of us have the resources to compete with the US or China. But if we were to come together? If we were to pool our resources, play to each other&rsquo;s strengths? Then these policy proposals stop looking like a particularly fanciful child&rsquo;s dream book. We must be realists. We cannot afford to be anything else. We must set aside any sense of pride or sense of competitiveness we might have with each other, and form a whole that&rsquo;s greater than the sum of its parts. Otherwise we will continue to burn through money on projects that, when compared to what we&rsquo;re up against, are merely bait fish in a sea of sharks. My plea, if you could call it that, is to join me on a path forged by collaborative advantage.</p>
+      <p>This is because AI is not like other technologies. It requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary. As a fragmented group of countries who speak different languages, have different goals, are bound by local customs, this might prove to be our greatest challenge yet. How can we move in lockstep? How can we work as one? If we can&rsquo;t answer that question, there&rsquo;s no use in maintaining the illusion of our sovereignty. It becomes just another word we use to hide the fact that we failed to come together to control our own future. That we let petty differences and inactivity push our own powers of self-determination to the side.&rdquo;</p>
+      <p>Virkkunen strode off the stage to scattered applause. Her assistant ran up to her with a bottle of water, &ldquo;that was fantastic! Much more stirring than the other speech.&rdquo;</p>
+      <p>Virkkunen unscrewed the cap and noisily chugged all of the bottle&rsquo;s liquids. She noticed her knees were still shaking.</p>
+      <p>&ldquo;We&rsquo;ll see if they listen this time.&rdquo;</p>
+      <p>&ldquo;Oh come on. They&rsquo;d be fools not to. Especially after what you said up there.&rdquo;</p>
+      <p>Virkkunen sat on the floor against a wall. The concrete was cool against the back of her neck. &ldquo;You want to know why it sounded rehearsed?&rdquo;</p>
+      <p>&ldquo;Why?&rdquo;</p>
+      <p>&ldquo;Because apart from the whole war part, I gave the same speech six months ago.&rdquo;</p>
+      <p>&ldquo;Well what happened?&rdquo;</p>
+      <p>&ldquo;That&rsquo;s what worries me. Nothing&rdquo;</p>
+    </div>
+  </section>
 
-    <a href="/publicai/ai-governance-game/index.html" class="project-card">
-      <h3>AI Governance Simulator</h3>
-      <p>A retro-styled strategy game where you navigate the complexities of AI governance. Make policy decisions, balance competing interests, and see how your choices shape the future of AI regulation and public accountability.</p>
-      <div class="tag-row">
-        <span class="tag">Game</span>
-        <span class="tag">Governance</span>
+  <!-- 4. Tokyo, February 2027 -->
+  <section class="scene" id="scene-tokyo" data-country-id="392" data-country-iso="JP">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 4</div>
+      <span class="scene-dateline">
+        Feb.19.2027<br>
+        <span lang="ja-Latn">Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda</span>, Tokyo<br>
+        Office of the Prime Minister, Her Excellency Sanae Takaichi
+      </span>
+      <h2 class="scene-title">Tokyo</h2>
+    </header>
+    <div class="scene-prose">
+      <p>China is the thorn in my side. For godssake it&rsquo;s the burden we&rsquo;ve all inherited. If people still think I&rsquo;m smarting from Xi&rsquo;s childish election gambit, they are blind to the fact that ruthlessness isn&rsquo;t a scarce resource. I can play the game, too. The &ldquo;dirty neck that lunges?.&rdquo; Obscene. Utterly obscene.</p>
+      <p>Thirty researchers filed into the conference room. No cameras were allowed. Status updates, the numbers: give me something I can give to the public. I have a year and a half and no one seems to understand that this is a snap of your fingers in politics. A blink of an eye.</p>
+      <p>They were afraid to make eye contact. &ldquo;Someone explain this to me like I&rsquo;m in elementary school, like I&rsquo;m in <span lang="ja-Latn">Sh&#333;gakk&#333;</span>. Can you do that?&rdquo;</p>
+      <p>Nervous shuffling. It was the kind of silence you could see if you squinted hard enough. A quicksilver haze choking them all to passionately avoid being the one to admit that a $6.7bn investment shattered into a market sell-off and geopolitical tensions of which none of the frontier model researchers quite understood.</p>
+      <p>After Prime Minister Takaichi indicated that she wouldn&rsquo;t say a word until someone else did, the head of the sovereign model project stepped forward, eyes glued to his shoes.</p>
+      <p>&ldquo;Our model hallucinated.&rdquo;</p>
+      <p>Prime Minister Takaichi was unimpressed. &ldquo;Say more.&rdquo;</p>
+      <p>&ldquo;Well, the way an AI system like ours works is that it trains on large sets of data. Without getting too deep into the details, what happens is that the model generates words based on what is likely to come next. Again, given the given context before it.&rdquo;</p>
+      <p>Stern and impassive, Prime Minister Takaichi nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo; &ldquo;Yes, <span lang="ja-Latn">Takaichi Shush&#333;</span>. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
+      <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasnt&rsquo; good enough?&rdquo;</p>
+      <p>The head of the program started to mumble something before Prime Minister Takaichi cut him off. &ldquo;This model, the one I promised all of our citizens would be imbued with traditional Japanese values. Technology they could trust. And you&rsquo;re telling me I lied to them? That I broke their trust?&rdquo;</p>
+      <p>&ldquo;No&hellip; no&rdquo; stammered the program head.</p>
+      <p>&ldquo;Why would no one tell me this before we integrated into all of our ministries? Or push it out to our major industries? Are we naive? Are we blind? Are we over-confident?&rdquo; A pause hung in the air before she continued with a different tenor in her voice, one that was slower and more poisonous. &ldquo;I just want to know what I&rsquo;m missing because I have to go on television in twenty minutes and explain why we can&rsquo;t make cars because China won&rsquo;t trade with us anymore.&rdquo;</p>
+      <p>Realizing that he and the rest of his team would, in all likelihood be fired in a few minutes, he decided to lay bare the real reason that an executive briefing falsely concluded that, from a shipping-risk assessment, China looked to squeeze export restrictions on the trade of rare earth minerals.</p>
+      <p>&ldquo;<span lang="ja-Latn">Takaichi Shush&#333;</span>: the model hallucinated, yes, because its training data might not have been robust. But it simply wasn&rsquo;t ready to analyze something as complicated as global trade. The timeline was too aggressive. It works fine for administrative work, but when we were asked to integrate it into larger, more complex systems we did send a warning that it wasn&rsquo;t ready.&rdquo;</p>
+      <p>Prime Minister Takaichi snapped her fingers to summon one of her aides. &ldquo;Find me that request.&rdquo;</p>
+      <p>She gestured around the room to the research team: &ldquo;get comfortable, you&rsquo;re in this now, too.&rdquo;</p>
+      <p>Surveying the damage, Prime Minister Takaichi made a mental list of how to allocate blame. This was part of politics; any of those cliches about being the first through the breach had come from people who never won elections.</p>
+      <p>One of her aides appeared by her side, handing over the dossier the program head mentioned, in addition to a few other, more recent summaries of the state of the market. She skimmed the first document. It confirmed what the program head had told her. Fine. Somehow it didn&rsquo;t make it to her. She turned back toward her aide, &ldquo;get me an answer as to why this never made it to my desk.&rdquo;</p>
+      <p>She had long ago put her phone on silent after the incident. It was too much for one person to handle. The sovereign model they had poured money into building lied and said China was planning to tighten controls on exports. This was shocking news, all of this time they had spent in a fragile peace being undermined so Japanese firms could make less cars? It didn&rsquo;t make much sense, but a response needed to follow. Even before they could launch an official statement, the trading houses and banks hedged violently. Soon, the story leaked and everything was in a freefall. They had to strengthen their position and talk tough. They wouldn&rsquo;t be bullied.</p>
+      <p>China was unhappy, especially at what they saw as a broken tacit agreement about shipping lanes through the East China Sea. Restrictions followed, angier words were exchanged, and now we were in a market sell-off and a possible trade war.</p>
+      <p>Everyone treated this as information that was acted on because it was true. Soon, she&rsquo;d have to face a nation and admit that this project they&rsquo;d invested so much money in, this dream of technological freedom and parity, had caused a major national crisis by simply being wrong. Nothing malicious, no hacking, no interference. Just misplaced confidence in a few misfiring words.</p>
+      <p>The problem, apparently, was that it drew conclusions it had no right to draw. But the entire ministerial system was reconfigured to run on this model. Prime Minister Takaichi shuddered to think of all of the other times it might have hallucinated. How many potential crises lay waiting in a model that wasn&rsquo;t fit for purpose, that was modeled to match the confidence the politicians that built it displayed. Confidence that, now, had vanished from Prime Minister Takaichi as she tried to come to grips with the consequences of a technology few seemed to understand, but upon which they all relied. Would she blame the hallucination and try to temper the blowback? Or doubledown and use this as an opportunity to hammer China? The path ahead was unclear and full of pitfalls. She needed to tread carefully. Don&rsquo;t lie, but don&rsquo;t tell the truth. Hallucinate. She allowed herself a laugh. The TV crew would be there any minute. Time to address a reeling nation. Time to play politics.</p>
+    </div>
+  </section>
+
+  <!-- 5. Stockholm, December 2026 -->
+  <section class="scene" data-viz="coalition-revenue" id="scene-stockholm" data-country-id="752" data-country-iso="SE">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 5</div>
+      <span class="scene-dateline">
+        Dec.07.2026<br>
+        Prima Materia Office<br>
+        Box 8114104 20 Stockholm, Sweden
+      </span>
+      <h2 class="scene-title">Stockholm</h2>
+    </header>
+    <div class="scene-prose">
+      <p>Daniel Ek has long been accustomed to &ldquo;founder speak.&rdquo; The practiced staccato of a personality that fits between the beginning and end of a slide deck, the nervous changes in vocal registers when any sort of dissonant question is asked, the silent remuneration that mimics thinking on an answer long decided.</p>
+      <p>The truth is, no matter how much money he might give to any one of these founders looking to accelerate their path to market, the first thing they&rsquo;d need to do to have any chance of success would be to move to Silicon Valley. Ek had done it himself. The same pitching rounds, rejections, failures, practicing in the mirror to hit the right notes at the right time &ndash; all that comes from being an entrepreneur. Although he liked to remember with a bit of a smirk that raising money in 2008 was a much different proposition than in 2026.</p>
+      <p>He wasn&rsquo;t hearing any pitches today. Ek&rsquo;s worries had grown as his own company and fortune amassed. It wasn&rsquo;t from an especially philanthropic part of his heart that this urge originated, but moreso from a matter of Scandanavian common sense: how likely is it that Stockholm will remain the type of place Ek wants to continue to live in if all the founders and the builders and the technologists need to move to California? It was in this firmament of state-sanctioned computer access and ideological alignment that his own aspirations were built. He wasn&rsquo;t so narrow minded as to think his was a unique case. In a dark room in his soul he harbored that same feeling that we all have, though none of us particularly like to admit to its existence, even as it provides a sustenance we can&rsquo;t live without, that he was special, that circumstances could have never blocked his path. In Silicion Valley or in Stockholm.</p>
+      <p>But this was not a feeling he was proud of (none of us are), so he&rsquo;d called an assembly of minds to plan through an approach to combat the magnetic pull of Silicon Valley capital and talent.</p>
+      <p>He had Shakil, his Prima Materia cofounder and confidante, Pia Michel, his Head of Science Translation, Nikklas Zennstr&ouml;m, former founder of Skype and now a VC, and Taavet Hinrikus, the co-founder of Wise, one of the first Estonian billionaires, and now also a VC who backs European startups.</p>
+      <p>The office was sleek and sanitary, overlooking the Baltic Sea which was a dark maelstrom of frozen ice caps frothing around in the violent windswept waves framed only by the Christmas lights of the city&rsquo;s downtown that hung above it, the sun having set long ago.</p>
+      <p>&ldquo;The U.S. firms are leaving. I&rsquo;m sure you all saw what happened with OpenAI&rsquo;s European offices, but there are rumors of something bigger happening,&rdquo; Ek began.</p>
+      <p>&ldquo;Is this the time to make the regulatory push? I&rsquo;m hearing from founders every single day that it&rsquo;s impossible for them to scale if they stay in Europe. Maybe we doubledown. Jobs are at risk. The atmosphere is too heavy. It suffocates anything that tries to grow,&rdquo; Hinrikus responded.</p>
+      <p>Zennstr&ouml;m, the oldest in the group, was more blunt with one of his earliest employees. &ldquo;You know what Daniel is talking about, Taavet. The Americans are leaving because they are about to drop a bomb on us. Actually: a bomb would be preferable to what they&rsquo;re going to do.&rdquo;</p>
+      <p>&ldquo;What? You don&rsquo;t seriously think they&rsquo;d shut off access like that? We&rsquo;re a huge market&hellip;&rdquo;</p>
+      <p>&ldquo;Not as big as the U.S. government&rdquo; Shakil interrupted. &ldquo;Why are we kidding ourselves here? OpenAI, Anthropic, Gemini&hellip; they&rsquo;re just startegic assets for the US to turn on and off when the time is right. You want to know the best way to make money in America? Get a defense contract. All of a sudden those annoying questions about profitability&hellip; vanish&rdquo; and Shakil wove his hands outwards to punctuate his point.</p>
+      <p>&ldquo;What I&rsquo;m saying&rdquo; Ek continued, &ldquo;is that we haven&rsquo;t been very good citizens of Europe. Of course, we all did what we had to do to make money so we could enjoy views like this. But we have aided and abetted the gutting of Europe&rsquo;s technology ecosystem by letting Silicon Valley do whatever they want. And now, it looks like we&rsquo;re all going to reap the consequences.&rdquo;</p>
+      <p>Pia passed around a piece of paper to each of the four men.</p>
+      <p>&ldquo;What is this?&rdquo; Zennst&ouml;m asked, looking down through his thickly framed glasses.</p>
+      <p>&ldquo;A liferaft,&rdquo; Pia responded.</p>
+      <p>Ek stood up: &ldquo;We cannot be caught flat-footed when the shoe finally drops and the Americans force us to choose between them or the Chinese. It&rsquo;s a farce that it&rsquo;s even come to this. What I&rsquo;m proposing here is that we pool our collective capital and accelerate the development of Helsing into a multilateral defense company for the entire EU.&rdquo;</p>
+      <p>&ldquo;Your pet drone venture you mean?&rdquo; Hinrikus said.</p>
+      <p>&ldquo;If we demonstrate a broad coalition of AI-first defense capabilities, it shows that we&rsquo;re not relying on Department of War technology that we don&rsquo;t even own. It&rsquo;s proof of concept that with private capital we at least have the capabilities to build companies that matter. Not just consumer tech.&rdquo;</p>
+      <p>There was a long drawn out discussion about the structure of the company: who would pay for what, which markets they&rsquo;d target, how they&rsquo;d market themselves to nations with their own standing armies. But a broad consensus was reached. They would try it.</p>
+      <p>They would raise money and then take Helsing public, stay in Europe, and make sure no one is hiding behind the walls of their own borders. When the day would finally come for an American blockade on technical infrastructure, Helsing would be there as evidence that key strategic capabilities could be built in house. It would soften the blow. But to Ek, who had been bemoaning the regulatory atmosphere of the EU for decades, it would still need to hurt. He wanted to make his point. They will need to back us because they won&rsquo;t have any other option. A transnational AI-first defense company. This buys them time. No one likes to look weak. And when the compute shutoff happens, everyone is going to look very weak. But Helsing could prove that the EU could bite back right where the Americans invest the most.</p>
+      <p>The room cleared and Ek was left with Michels and Khan. They had thirty minutes before they courted their next round of suitors. Outside, the sea continued to rage while underneath it the data communication cables sat ferrying pulses back and forth between continents. You cut one of those cables and it&rsquo;s an act of war. Such a thin, fragile thing. It&rsquo;s easy to forget that the world exists perpetually on an axis between aggression and cooperation. That at some point the symbolism of words like &ldquo;sovereignty&rdquo; or &ldquo;independence&rdquo; meet their real world referent under a freezing sea where lasers propel data down fiber optic cables at the speed of light. Someone surely is trying to control the subsea infrastructure. But, looking at the undulating frozen wildness of the Baltic, one must assume a limit to what can be bought, controlled, and coerced without a response in kind.</p>
+    </div>
+  </section>
+
+  <!-- 6. Monroe LA, September 2026 -->
+  <section class="scene" data-viz="capital-flow" id="scene-monroe" data-country-id="840" data-country-iso="US">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 6</div>
+      <span class="scene-dateline">
+        Sep.04.2026<br>
+        IBEW Data Center<br>
+        Monroe, LA
+      </span>
+      <h2 class="scene-title">Monroe, LA</h2>
+    </header>
+    <div class="scene-prose">
+      <p>Finally beginning to cool down. Jesus what a summer. Standing all day in this sticky heat with the highlighter yellow vest shouting at HVAC technicians. Boss riding on me all the time, shouting about deadlines. Yeah, I heard you the first time, man. Foreman for a project like this is bound to be an asshole. Usually some guy they bring in from outside who hangs his degree in his A/C cooled trailer while we&rsquo;re out here sweating in the goddamn Louisiana summertime dodging thunderstorms and wiring switchgears.</p>
+      <p>You know I&rsquo;ve been on this project for two years, right? It pays well, so I can&rsquo;t complain too much. But they tried to bring in some non-union guys at one point and we had to throw some muscle around to make sure we weren&rsquo;t being pushed out of our own backyard.</p>
+      <p>Who&rsquo;s they? Shit man: I don&rsquo;t know. This is where the work is, though. Costs something like $27 billion to build. They&rsquo;re calling it &ldquo;Hyperion.&rdquo; Funny name. Usually the work is a little less, let&rsquo;s say, grandiose than this. But sometimes just getting to where you need to go is a maze. I was almost late to a shift because I got stuck behind a bunch of guys laying concrete. It&rsquo;s a mess. Guess that&rsquo;s what happens when you hire a few thousand guys to build a big, complicated building that&rsquo;s pulling a lot of megawatts.</p>
+      <p>It&rsquo;s a steady job, man, I can&rsquo;t complain. It&rsquo;s where the work is right now. I&rsquo;m getting paid. Hey if I weren&rsquo;t you think I&rsquo;d be in the middle of nowhere Louisiana, man? Hell no. I&rsquo;d probably be installing wiring at some apartment complex in Dallas. I go where the money is. A leaf in the wind, man. I figure I got another few months of this gig before moving onto another one of these data centers. We&rsquo;ll see if the grid can handle it. I&rsquo;ve been seeing some stuff I&rsquo;ve never seen tried before. I keep my mouth shut. That way the paycheck keeps coming. If it breaks, hey, maybe they&rsquo;ll call us back to fix it.</p>
+    </div>
+  </section>
+
+  <!-- 7. Ottawa, April 2027 -->
+  <section class="scene" id="scene-ottawa" data-country-id="124" data-country-iso="CA">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 7</div>
+      <span class="scene-dateline">
+        Apr.17.2027<br>
+        Ottawa, Canada<br>
+        24 Sussex Drive
+      </span>
+      <h2 class="scene-title">Ottawa</h2>
+    </header>
+    <div class="scene-prose">
+      <p>&ldquo;Yeah I read it, do you think he&rsquo;s read it yet?&rdquo;</p>
+      <p>&ldquo;No. Not a chance. His phone hasn&rsquo;t stopped ringing since midnight.&rdquo;</p>
+      <p>Evan Solomon and Mona Nemer were huddled together in the main foyer of the Prime Minister&rsquo;s residence, postures broken by the weight of the day&rsquo;s news, frantic in a way that a mix of sleeplessness and necessity seem to produce while every word to growa in size and importance as a crisis brews and answers aren&rsquo;t arriving fast.</p>
+      <p>&ldquo;Who do you think is going to get fired first: you or me?&rdquo; Solomon wondered aloud.</p>
+      <p>&ldquo;You.&rdquo; Nemer responded in a blunted, tonally flat response. &ldquo;Isn&rsquo;t your job to look out for this kind of thing?&rdquo;</p>
+      <p>It was true, Solomon, with his newscaster jawline and molded look that arrived after a career in the political arena, is the Minister of Artificial Development and Digital Innovation. But more comfortable being the one asking the questions, than answering them, it was difficult to come to any other conclusion that he&rsquo;d been caught flat-footed, and Nemer, a sharply cut, no-nonsense Lebanese chemist and one of Canada&rsquo;s Chief Science Officers, was in no position to let Solomon off the hook after frequently bringing up AI safety concerns as early as 2025.</p>
+      <p>Solomon let the question linger. If there was one thing he knew as an interviewer was the power of saying absolutely nothing. Most people find silence so unbearable that they begin to backtrack. Not Solomon. He was fine to sit in the discomfort.</p>
+      <p>Nemer couldn&rsquo;t take it anymore; a scientist by training she was grounded in the empirical backings of things that could be measured, responsibilities that could be held. &ldquo;2 billion dollars we&rsquo;ve spent through ISED to try and solve our infrastructure problem. Where has that money gone? It&rsquo;s a derelection of duty, Evan.&rdquo;</p>
+      <p>At this, Solomon snapped. &ldquo;$2 billion is pocket change! It&rsquo;s hard enough to get a bunch of bureaucrats to agree on something they already understand: I&rsquo;m dealing with a bunch of career politicians who don&rsquo;t know what &lsquo;LLM&rsquo; stands for. That money is being pissed away on different pet projects for people trying to get re-elected for data centers they know we don&rsquo;t have the money to build. But hey: they can say &lsquo;not our problem, we were told we had cash on hand to make these.&rsquo;&rdquo;</p>
+      <p>&ldquo;Okay, how much would these limits compromise the integrity of the models we use?&rdquo;</p>
+      <p>&ldquo;I&rsquo;ve no idea. If our model weights become restricted then all of the supercomputing facilities we want to build become useless. And from a business point of view? It would severely damage any Canadian startup&rsquo;s ability to grow if they can&rsquo;t use American AI systems. I&rsquo;m not a doomsday prophet, but it could be bad. And I mean really bad.&rdquo;</p>
+      <p>Nemer&rsquo;s watch beeped. It was 6am and the two of them shuffled into a conference room where they sat around a huge mahogany table, framed against the backdrop of deeply lacquered wood finishes, landscape paintings of the Canadian outdoors, and a reminder of the modern world that sat, wires and all, in the middle of the table. A Cisco telephone that was about to call together the AI Strategy Taskforce. Solomon and Nemer looked small in the tableau of the room, its mis-en-scene framing them unnaturally against the table&rsquo;s empty depth of field.</p>
+      <p>Marc-Andr&eacute; Blanchard, the PM&rsquo;s Chief of Staf, was the first to speak. &ldquo;I would like to formally and emphatically underline the fact that we have signed 21 bilateral agreements with China as recently as January of last year. So before we get into the technical speak, I have to stay that is in our best interest as a country that we cannot stab one of our biggest allies in the fucking back. An ally that, might I remind you, has actually reduced tariffs on steel and aluminum, and invested heavily in our manufacturing sectors. And on the other side we have our neighbors who keep trying to negotiate trade deals that will catch us with our pants down. I&rsquo;m not signing off on this. End of discussion. We&rsquo;ll double down with China if we need to. I don&rsquo;t care. This is an unprecedented act of aggression against us.&rdquo;</p>
+      <p>His voice was tinny and loud, the telephone catching the high octaves of his near-shouting vocal range. A chorus of different voices immediately jumped in after and there was a moment of polyphonic chaos before Solomon had to step in and loudly shout &ldquo;one at a time, please.&rdquo; Please. Of course: he is Canadian, after all.</p>
+      <p>&ldquo;Do we even know what our public systems rely on?&rdquo; one of the voices replied.</p>
+      <p>&ldquo;Of course not, there&rsquo;s no top-down mandate on which tools to use. If someone wanted to build their hospital tech</p>
+    </div>
+  </section>
+
+  <!-- 8. Paris, April 2027 -->
+  <section class="scene" data-viz="eu-public-capex" id="scene-paris" data-country-id="250" data-country-iso="FR">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 8</div>
+      <span class="scene-dateline">
+        Apr.17.2027<br>
+        Paris, France<br>
+        H&ocirc;tel Matignon, 57 Rue de Varenne
+      </span>
+      <h2 class="scene-title">Paris</h2>
+    </header>
+    <div class="scene-prose">
+      <p class="tktk">TKTK</p>
+    </div>
+  </section>
+
+  <!-- 9. Dublin, January 2026 -->
+  <section class="scene" data-viz="talent-timeline" id="scene-dublin-jan" data-country-id="372" data-country-iso="IE">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 9</div>
+      <span class="scene-dateline">
+        Jan.12.2026<br>
+        Dublin, Ireland<br>
+        OpenAI Offices
+      </span>
+      <h2 class="scene-title">Dublin</h2>
+    </header>
+    <div class="scene-prose">
+      <p class="tktk">Aaron finding defense contractor info</p>
+    </div>
+  </section>
+
+  <!-- 10. The White House, April 2027 -->
+  <section class="scene" data-viz="export-controls" id="scene-whitehouse" data-country-id="840" data-country-iso="US">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 10</div>
+      <span class="scene-dateline">
+        Apr.18.2027<br>
+        The White House<br>
+        1600 Pennsylvania Avenue
+      </span>
+      <h2 class="scene-title">The White House</h2>
+    </header>
+    <div class="scene-prose">
+      <p class="tktk">TKTK</p>
+    </div>
+  </section>
+
+  <!-- 11. The Ether, April 2027 -->
+  <section class="scene" id="scene-ether" data-country-id="" data-country-iso="">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 11</div>
+      <span class="scene-dateline">
+        Apr.25.2027<br>
+        The Ether<br>
+        Conference Call
+      </span>
+      <h2 class="scene-title">The Ether</h2>
+    </header>
+    <div class="scene-prose">
+      <p class="tktk">TKTK</p>
+    </div>
+  </section>
+
+</article>
+
+
+
+</div>
+</div>
+
+
+<!-- OUTCOME (populated by JS once user reaches it) -->
+<section class="outcome" id="outcome" aria-labelledby="outcomeTitle">
+  <div class="outcome-inner">
+    <div class="outcome-kicker">Your Coalition</div>
+    <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
+    <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above. See <a href="summary.html">Summary</a> and <a href="research.html">Research</a> for the underlying proposal.</p>
+
+    <div class="coalition-design" id="coalitionDesign"></div>
+
+    <!-- Supporting data: the live charts that inform each coalition decision -->
+    <div class="supporting-data">
+      <div class="supporting-data-header">
+        <h3 class="supporting-data-title">Live data</h3>
+        <p class="supporting-data-note">Live data on the state of European AI, organized to complement the coalition design above.</p>
       </div>
-    </a>
+    <!-- VIZ: Capital Flow -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>The funding pipeline. EU AI investment ($14B) vs the US&rsquo;s $109B in 2024, plus where European founders go after raising at home: 57% relocate westward.</p>
+          <h4>Why it matters here</h4>
+          <p>Capital that gets built in Europe doesn&rsquo;t stay there. Every EU success story becomes a US tax win, a US workforce, US-controlled IP.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>$109B US private AI investment vs $14B EU in 2024. <a href="https://aiindex.stanford.edu/report/" target="_blank" rel="noopener">Stanford AI Index 2025</a>, ch. 4 (Economy).</li>
+            <li>57% of EU founders who relocate go to the US; net tech-talent inflow collapsed 52k (2022) &rarr; 26k (2024). <a href="https://www.stateofeuropeantech.com/" target="_blank" rel="noopener">Atomico State of European Tech 2024/2025</a>.</li>
+            <li>Flow weights between blocs are stylised; treat the direction of the asymmetry, not the magnitude of any single arrow, as the load-bearing claim.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Talent Migration -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>Top-tier AI researchers (NeurIPS authors) tracked from education to current employer. The arrows mostly point one way.</p>
+          <h4>Why it matters here</h4>
+          <p>Aaron and the rest of the Dublin policy team are downstream of this. Europe trains world-class researchers, then exports them. Public universities subsidise US private hiring.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>Top 2% of AI researchers by NeurIPS authorship: 57% work in the US (latest annual sample). <a href="https://archivemacropolo.org/interactive/digital-projects/the-global-ai-talent-tracker/" target="_blank" rel="noopener">MacroPolo Global AI Talent Tracker 3.0</a>.</li>
+            <li>Within US labs, US- and Chinese-origin researchers are now 75% of top-tier talent (up from 58% in 2019). <a href="https://www.paulsoninstitute.org/press_release/study-finds-us-remains-a-magnet-for-worlds-best-and-brightest-ai-talent-but-more-global-talent-are-staying-home-instead-of-going-abroad/" target="_blank" rel="noopener">Paulson Institute / MacroPolo</a>.</li>
+            <li>LinkedIn data shows US employs ~2x as many AI-skilled professionals as the EU. <a href="https://economicgraph.linkedin.com/en-us/research/ai-talent-in-the-eu" target="_blank" rel="noopener">LinkedIn Economic Graph</a>.</li>
+            <li>57% of European AI professionals did their undergrad outside Europe; in the US that figure is 38%. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap" data-tall>
+          <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Language Heatmap -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>Of 24 official EU languages, frontier models support 3 well (English, French, Spanish). 8 get partial coverage. 13+ are at risk of digital extinction.</p>
+          <h4>Why it matters here</h4>
+          <p>Virkkunen is talking about sovereignty, but the most everyday version of it is which languages your tools understand. When AI doesn&rsquo;t speak your language, your culture goes invisible online.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>24 official EU languages: established under EU Council Regulation 1/1958, as amended. <a href="https://eur-lex.europa.eu/eli/reg/1958/1(1)/oj" target="_blank" rel="noopener">EUR-Lex Reg 1/1958</a>.</li>
+            <li>Frontier model coverage is strongest for English, French, Spanish; the European Language Equality project assesses 12+ EU languages as having &ldquo;weak&rdquo; or &ldquo;fragmentary&rdquo; LT support, putting them at digital-extinction risk. <a href="https://european-language-equality.eu/results/" target="_blank" rel="noopener">ELE Strategic Research Agenda</a>; <a href="https://aclanthology.org/2024.findings-acl.595/" target="_blank" rel="noopener">Joshi et al., ACL 2024</a>.</li>
+            <li>Native-speaker counts shown on cells: standard demographic estimates (Eurostat &amp; Ethnologue, ranges).</li>
+            <li>Strong / Moderate / Weak buckets are simplified from the ELE multidimensional readiness scoring; specific scores per language are published in the ELE country deliverables.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap">
+          <div id="dbLangHeatmap" style="margin-bottom:0.5rem;"></div>
+          <div style="display:flex;gap:0.85rem;font-family:var(--mono);font-size:0.6rem;color:var(--text-soft);margin-top:0.5rem;">
+            <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:9px;height:9px;border-radius:2px;background:#0fa37a;"></span>Strong</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:9px;height:9px;border-radius:2px;background:#c96a2b;"></span>Moderate</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:9px;height:9px;border-radius:2px;background:#ff3333;"></span>Weak</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Coalition Revenue -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>Mistral 20x to $400M ARR, Cohere 11x to $240M, DeepL up to $185M. The European labs that exist today are growing fast &mdash; just not coordinated.</p>
+          <h4>Why it matters here</h4>
+          <p>This is the raw material Ek and Zennstr&ouml;m are looking at. The companies are real, the revenue is real. The missing piece is the entity that lets them act as one.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>Mistral ARR ~$20M (Jan 2025) &rarr; ~$400M (Jan 2026), per reporting around the Series C and the &euro;1.7B June 2025 raise. <a href="https://www.theinformation.com/articles/mistrals-revenue-jumps-as-it-pursues-mega-funding" target="_blank" rel="noopener">The Information</a>; <a href="https://www.reuters.com/technology/artificial-intelligence/mistral-ai-raises-17-billion-euros-led-asml-2025-09-09/" target="_blank" rel="noopener">Reuters, 2025</a>.</li>
+            <li>Cohere ARR climb to ~$240M by early 2026, per company disclosures around the Series E round. <a href="https://cohere.com/blog/cohere-series-e" target="_blank" rel="noopener">Cohere announcement</a>; <a href="https://www.bloomberg.com/news/articles/2025-08-14/cohere-reaches-6-8-billion-valuation-with-funding-from-amd-radical-ventures" target="_blank" rel="noopener">Bloomberg, Aug 2025</a>.</li>
+            <li>DeepL revenue ~&euro;141M (2023) &rarr; ~&euro;185M (2024), per company financials and reporting. <a href="https://sifted.eu/articles/deepl-revenue-growth-2024" target="_blank" rel="noopener">Sifted</a>.</li>
+            <li>Animation is the entrance only; absolute ARR values are nominal USD / EUR converted at ~1:1 for visual comparability.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbGrowthChart" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: EU Public AI Capex (Paris) -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>State-committed public AI funding (solid bars, in &euro;B) for the major European economies plus the EU level. Hashed extension flags the &ldquo;mobilisation&rdquo; or private-pipeline pledge often quoted alongside.</p>
+          <h4>Why it matters here</h4>
+          <p>This is what France actually controls. Macron&rsquo;s &euro;109B Paris-summit headline is mostly private money (UAE/MGX, Brookfield, Apollo) &mdash; the state line item is &euro;2.5B. Whether the coalition has weight depends on what other capitals will put alongside it.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>France &euro;2.5B: France 2030 AI envelope plus 2024 Action Plan. <a href="https://www.elysee.fr/admin/upload/default/0001/17/d9c1462e7337d353f918aac7d654b896b77c5349.pdf" target="_blank" rel="noopener">&Eacute;lys&eacute;e Feb 2025</a>.</li>
+            <li>France &euro;107B aspirational: Paris AI Summit pledge pipeline, predominantly private (MGX ~&euro;50B, Brookfield ~&euro;20B, Apollo, Amazon). <a href="https://www.campusfrance.org/en/intelligence-artificielle-plan-macron-Ai-for-humanity" target="_blank" rel="noopener">Campus France</a>.</li>
+            <li>EU InvestAI &euro;20B (new public fund, Feb 2025); &euro;200B figure is a mobilisation target, not committed money. <a href="https://ec.europa.eu/commission/presscorner/detail/en/ip_25_467" target="_blank" rel="noopener">EC IP_25_467</a>.</li>
+            <li>Germany &euro;5B cumulative through 2025 (BMBF KI-Aktionsplan). <a href="https://www.plattform-lernende-systeme.de/ki-indikatoren-include-elemente-en.html" target="_blank" rel="noopener">Plattform Lernende Systeme</a>.</li>
+            <li>UK &euro;2.4B (&pound;2B): AI Opportunities Action Plan, Clifford, Jan 2025. <a href="https://assets.publishing.service.gov.uk/media/67851771f0528401055d2329/ai_opportunities_action_plan.pdf" target="_blank" rel="noopener">UK Gov</a>.</li>
+            <li>Spain &euro;2.1B (ENIA 2024-25); Italy &euro;1B (CDP AI fund, 5-yr); Netherlands &euro;204M (AiNed); Nordics ~&euro;0.35B aggregate. Sources: <a href="https://www.lamoncloa.gob.es/lang/en/gobierno/councilministers/paginas/2024/20240514-council-press-conference.aspx" target="_blank" rel="noopener">La Moncloa</a>, <a href="https://decode39.com/8856/rome-unveils-billion-fund-boost-italian-ai/" target="_blank" rel="noopener">Decode39</a>, <a href="https://www.nwo.nl/en/researchprogrammes/national-growth-fund/ained" target="_blank" rel="noopener">NWO AiNed</a>, <a href="https://www.sigma2.no/news/2024/new-chapter-lumi-ai" target="_blank" rel="noopener">Sigma2</a>.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Talent Timeline (Dublin Jan) -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>The share of EU-trained AI researchers still working in the EU, quarter by quarter Q4 2024 through Q1 2026. The 2019 baseline (~50%) and the 2022 MacroPolo anchor (~43%) are reference lines.</p>
+          <h4>Why it matters here</h4>
+          <p>This is the chart Aaron is staring at. Annual snapshots already told the story; the quarterly trend turned it from a slow drift into a visible acceleration. By Q1 2026 the EU is around 40% &mdash; the policy team in Dublin is looking at a graph that hasn&rsquo;t bottomed out.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>Baseline 2019 (~50%) and 2022 anchor (~43%): MacroPolo Global AI Talent Tracker 3.0, top 2% of NeurIPS-author AI researchers by country of work. <a href="https://archivemacropolo.org/interactive/digital-projects/the-global-ai-talent-tracker/" target="_blank" rel="noopener">MacroPolo</a>.</li>
+            <li>Net tech-talent inflow to Europe collapsed from ~52k (2022) to ~26k (2024); EU lost a net 492 technical workers to the US in 2023. <a href="https://www.stateofeuropeantech.com/" target="_blank" rel="noopener">Atomico State of European Tech 2024</a>, <a href="https://sifted.eu/articles/state-european-tech-report-2025" target="_blank" rel="noopener">SoET 2025</a>.</li>
+            <li>US employs ~2x as many AI-skilled professionals as the EU. 57% of European AI professionals did their undergrad outside Europe. <a href="https://economicgraph.linkedin.com/en-us/research/ai-talent-in-the-eu" target="_blank" rel="noopener">LinkedIn Economic Graph</a>.</li>
+            <li>US AI salaries 30&ndash;70% higher than EU equivalents. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
+            <li>Q1 2026 directional read: &ldquo;European countries are losing significant AI talent.&rdquo; <a href="https://www.euronews.com/my-europe/2026/01/29/the-ai-brain-drain-why-europe-cant-keep-the-talent-it-trains" target="_blank" rel="noopener">Euronews, Jan 2026</a>.</li>
+            <li>Quarterly points Q4 2024 &ndash; Q1 2026 are interpolated between MacroPolo and Atomico annual anchors; treat the line shape (decline, not bottoming) as the load-bearing claim.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap">
+          <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Export Controls (White House) -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>The US chip / AI export-control timeline from Oct 2022 to early 2026, with each action marked &ldquo;in force&rdquo; or &ldquo;rescinded.&rdquo; The headline shift is the AI Diffusion Rule: published Jan 2025, rescinded May 2025; the H20 license requirement reversed two months later.</p>
+          <h4>Why it matters here</h4>
+          <p>The US tightens, the US loosens, then the US tightens again. The whole point of an Airbus for AI is that allies can&rsquo;t plan five-year capex around something that can flip with an administration. The Diffusion Rule&rsquo;s rescinded tier list is the explicit version of that risk.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>Oct 7 2022 BIS Interim Final Rule — ECCN 3A090, supercomputer end-use, 28 PRC entities listed. <a href="https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor" target="_blank" rel="noopener">87 FR 62186</a>.</li>
+            <li>Oct 17 2023 update — closed A800/H800 loophole, added performance-density metric, HBM density threshold, 40+ country FDPR. <a href="https://www.federalregister.gov/documents/2023/10/25/2023-23055/implementation-of-additional-export-controls-certain-advanced-computing-items-supercomputer-and" target="_blank" rel="noopener">88 FR 73458</a>.</li>
+            <li>Dec 2 2024 &ldquo;third package&rdquo; — ECCN 3A090.c on all production HBM, 140 entities added. <a href="https://www.bis.gov/press-release/commerce-strengthens-export-controls-restrict-chinas-capability-produce-advanced-semiconductors-military" target="_blank" rel="noopener">BIS</a>.</li>
+            <li>Jan 13 2025 AI Diffusion Framework — three-tier country system; closed-weight model controls (ECCN 4E091); per-country compute cap ~50k H100-eq through 2027. <a href="https://www.federalregister.gov/documents/2025/01/15/2025-00636/framework-for-artificial-intelligence-diffusion" target="_blank" rel="noopener">90 FR 4544</a>; <a href="https://www.rand.org/pubs/perspectives/PEA3776-1.html" target="_blank" rel="noopener">RAND PEA3776-1</a>.</li>
+            <li>Apr 15 2025 H20/MI308 license requirement — Nvidia $5.5B inventory charge. <a href="https://www.bis.gov/press-release/department-commerce-revises-license-review-policy-semiconductors-exported-china" target="_blank" rel="noopener">BIS</a>.</li>
+            <li>May 13 2025 rescission of AI Diffusion Rule. <a href="https://media.bis.gov/press-release/department-commerce-rescinds-biden-era-artificial-intelligence-diffusion-rule-strengthens-chip-related" target="_blank" rel="noopener">BIS press release</a>.</li>
+            <li>Jul 2025 H20 reversal — Trump Commerce allowed shipments to resume. <a href="https://builtin.com/articles/trump-lifts-ai-chip-ban-china-nvidia" target="_blank" rel="noopener">Built In summary</a>.</li>
+            <li>Sep 29 2025 &ldquo;50% Affiliates Rule&rdquo; (suspended Nov 10 for 1 year). <a href="https://www.sidley.com/en/insights/newsupdates/2025/10/us-commerce-department-bureau-of-industry-and-security-adopts-50-percent-rule-for-export-controls" target="_blank" rel="noopener">Sidley</a>.</li>
+            <li>Jan 13 2026 H200 / MI325X case-by-case license posture. <a href="https://www.mayerbrown.com/en/insights/publications/2026/01/administration-policies-on-advanced-ai-chips-codified" target="_blank" rel="noopener">Mayer Brown</a>.</li>
+            <li>Jan 14 2026 Section 232 25% semiconductor tariff. <a href="https://www.pillsburylaw.com/en/news-and-insights/trump-advanced-ai-semiconductors-actions.html" target="_blank" rel="noopener">Pillsbury</a>.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap" data-tall>
+          <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Compute Map -->
+    <div class="viz-card">
+      <div class="viz-pane-inner">
+        <div class="viz-explainer">
+          <h4>What it shows</h4>
+          <p>11 EuroHPC supercomputers and 12 planned AI Factory sites against 1,136+ global hyperscale data centres (US owns the majority).</p>
+          <h4>Why it matters here</h4>
+          <p>This is what Merz means when he says he doesn&rsquo;t know how exposed Germany is. Even &ldquo;sovereign&rdquo; European stacks run on top of AWS, Azure, or Google. Every prompt is a US-routed transaction.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>11 operational EuroHPC supercomputers (LUMI, Leonardo, MareNostrum 5, JUPITER, Discoverer, Karolina, Vega, Meluxina, Deucalion, Daedalus, Levente). <a href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank" rel="noopener">EuroHPC JU</a>.</li>
+            <li>12 EuroHPC AI Factory host sites confirmed across the 2024-2025 selection rounds. <a href="https://www.eurohpc-ju.europa.eu/eurohpc-joint-undertaking-launches-ai-factories-calls-boost-european-leadership-trustworthy-ai-2024-09-10_en" target="_blank" rel="noopener">EuroHPC AI Factories call</a>.</li>
+            <li>1,136+ global hyperscale data centres at end-2024, with the US holding the majority. <a href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank" rel="noopener">Synergy Research</a>.</li>
+            <li>JUPITER (J&uuml;lich): &euro;500M total, half EU / half Germany; first European exascale system, designated AI Factory host. <a href="https://www.eurohpc-ju.europa.eu/new-jupiter-module-strengthens-leading-position-europes-upcoming-exascale-supercomputer-2024-11-18_en" target="_blank" rel="noopener">EuroHPC</a>.</li>
+          </ol></details>
+        </div>
+        <div class="viz-canvas-wrap compute-stats-wrap" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs 1,136+ global hyperscale data centres">
+          <div class="compute-stats">
+            <div class="compute-stat" data-tone="blue">
+              <div class="compute-stat-number">11</div>
+              <div class="compute-stat-body">
+                <div class="compute-stat-label">EuroHPC sovereign supercomputers (operational)</div>
+                <div class="compute-stat-sub">LUMI, JUPITER, Leonardo, MareNostrum 5, Discoverer, Karolina, Vega, MeluXina, Deucalion, Daedalus, EHPC-PL</div>
+              </div>
+            </div>
+            <div class="compute-stat" data-tone="green">
+              <div class="compute-stat-number">12</div>
+              <div class="compute-stat-body">
+                <div class="compute-stat-label">Planned EuroHPC AI Factory sites</div>
+                <div class="compute-stat-sub">2024-2025 selection rounds (DE, FR, IT, ES, FI, SE, GR, PL, LU, BG, AT, IE)</div>
+              </div>
+            </div>
+            <div class="compute-stat" data-tone="red">
+              <div class="compute-stat-number">1,136+</div>
+              <div class="compute-stat-body">
+                <div class="compute-stat-label">Global hyperscale data centres (end-2024)</div>
+                <div class="compute-stat-sub">US holds the majority share. 8 EU metros host AWS / Azure / Google capacity (Dublin, Frankfurt, Amsterdam, Paris, London, Stockholm, Milan, Zurich).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
 
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="page-footer">
-  <p><a href="https://github.com/artificialnouveau/publicai" target="_blank" rel="noopener">View source on GitHub</a> &middot; <a href="/">Back to Home</a></p>
-</footer>
+
+<!-- SIGN-ON -->
+<section class="signon" id="signon">
+  <div class="signon-inner">
+    <div class="signon-kicker">Sign on</div>
+    <h2 class="signon-title">Add your name.</h2>
+    <p class="signon-lede">If you&rsquo;d back an Airbus for AI &mdash; in policy, capital, research, or just on principle &mdash; tell us. We&rsquo;ll add your name to a public roll of supporters and keep you posted on what comes next.</p>
+    <form class="signon-form" id="signonForm" action="https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID" method="POST" novalidate>
+      <div>
+        <label for="signonName">Name</label>
+        <input type="text" id="signonName" name="name" autocomplete="name" required>
+      </div>
+      <div>
+        <label for="signonEmail">Email</label>
+        <input type="email" id="signonEmail" name="email" autocomplete="email" required>
+      </div>
+      <div class="field-full">
+        <label for="signonOrg">Organisation &amp; role <span style="text-transform:none;color:var(--text-soft);font-weight:500;">(optional)</span></label>
+        <input type="text" id="signonOrg" name="org" autocomplete="organization">
+      </div>
+      <div class="field-full">
+        <label for="signonReason">Why you&rsquo;re signing on <span style="text-transform:none;color:var(--text-soft);font-weight:500;">(optional)</span></label>
+        <textarea id="signonReason" name="reason" rows="3" placeholder="One or two sentences."></textarea>
+      </div>
+      <input type="hidden" name="outcome" id="signonOutcome" value="">
+      <input type="hidden" name="_subject" value="Airbus for AI &mdash; new sign-on">
+      <div class="signon-actions">
+        <button class="btn btn-primary" type="submit">Sign on</button>
+        <span class="signon-fallback">Or email <a href="mailto:hello@publicai.co?subject=Airbus%20for%20AI%20%E2%80%94%20sign-on">hello@publicai.co</a></span>
+      </div>
+      <div class="signon-success" id="signonSuccess" role="status">
+        <strong>Thanks &mdash; you&rsquo;re on the list.</strong> We&rsquo;ll be in touch when there&rsquo;s something to share.
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- OUTRO -->
+<section class="outro">
+  <p class="outro-line">Eleven chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
+  <div class="outro-actions">
+    <a class="btn btn-ghost" href="research.html">Research &amp; sources</a>
+  </div>
+</section>
+
+</main>
+
+<script src="scripts.js" defer></script>
 
 </body>
 </html>
