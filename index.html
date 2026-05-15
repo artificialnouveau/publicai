@@ -51,10 +51,18 @@
 <!-- STORY + VIZ (centered two-column experience) -->
 <div class="experience-shell" id="experience">
 <div class="experience-columns">
+<aside class="country-map" id="countryMap" aria-hidden="true">
+  <div class="country-map-frame">
+    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" fill="var(--paper)"/>
+      <g id="countryMapGroup" fill="none" stroke="rgba(10,10,10,0.45)" stroke-width="0.4" stroke-linejoin="round" stroke-linecap="round"></g>
+    </svg>
+  </div>
+</aside>
 <article class="story" id="story">
 
   <!-- 1. Dublin, April 2026 -->
-  <section class="scene" data-viz="talent-migration" id="scene-dublin-apr">
+  <section class="scene" data-viz="talent-migration" id="scene-dublin-apr" data-country-id="372" data-country-iso="IE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 1</div>
       <span class="scene-dateline">
@@ -83,7 +91,7 @@
   </section>
 
   <!-- 2. Berlin, April 2027 -->
-  <section class="scene" data-viz="compute-map" id="scene-berlin">
+  <section class="scene" data-viz="compute-map" id="scene-berlin" data-country-id="276" data-country-iso="DE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 2</div>
       <span class="scene-dateline">
@@ -163,7 +171,7 @@
   </section>
 
   <!-- 3. Brussels, June 2026 -->
-  <section class="scene" data-viz="lang-heatmap" id="scene-brussels">
+  <section class="scene" data-viz="lang-heatmap" id="scene-brussels" data-country-id="56" data-country-iso="BE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 3</div>
       <span class="scene-dateline">
@@ -198,7 +206,7 @@
   </section>
 
   <!-- 4. Tokyo, February 2027 -->
-  <section class="scene" id="scene-tokyo">
+  <section class="scene" id="scene-tokyo" data-country-id="392" data-country-iso="JP">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 4</div>
       <span class="scene-dateline">
@@ -236,7 +244,7 @@
   </section>
 
   <!-- 5. Stockholm, December 2026 -->
-  <section class="scene" data-viz="coalition-revenue" id="scene-stockholm">
+  <section class="scene" data-viz="coalition-revenue" id="scene-stockholm" data-country-id="752" data-country-iso="SE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 5</div>
       <span class="scene-dateline">
@@ -272,7 +280,7 @@
   </section>
 
   <!-- 6. Monroe LA, September 2026 -->
-  <section class="scene" data-viz="capital-flow" id="scene-monroe">
+  <section class="scene" data-viz="capital-flow" id="scene-monroe" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 6</div>
       <span class="scene-dateline">
@@ -291,7 +299,7 @@
   </section>
 
   <!-- 7. Ottawa, April 2027 -->
-  <section class="scene" id="scene-ottawa">
+  <section class="scene" id="scene-ottawa" data-country-id="124" data-country-iso="CA">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 7</div>
       <span class="scene-dateline">
@@ -322,7 +330,7 @@
   </section>
 
   <!-- 8. Paris, April 2027 -->
-  <section class="scene" data-viz="eu-public-capex" id="scene-paris">
+  <section class="scene" data-viz="eu-public-capex" id="scene-paris" data-country-id="250" data-country-iso="FR">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 8</div>
       <span class="scene-dateline">
@@ -338,7 +346,7 @@
   </section>
 
   <!-- 9. Dublin, January 2026 -->
-  <section class="scene" data-viz="talent-timeline" id="scene-dublin-jan">
+  <section class="scene" data-viz="talent-timeline" id="scene-dublin-jan" data-country-id="372" data-country-iso="IE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 9</div>
       <span class="scene-dateline">
@@ -354,7 +362,7 @@
   </section>
 
   <!-- 10. The White House, April 2027 -->
-  <section class="scene" data-viz="export-controls" id="scene-whitehouse">
+  <section class="scene" data-viz="export-controls" id="scene-whitehouse" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 10</div>
       <span class="scene-dateline">
@@ -370,7 +378,7 @@
   </section>
 
   <!-- 11. The Ether, April 2027 -->
-  <section class="scene" id="scene-ether">
+  <section class="scene" id="scene-ether" data-country-id="" data-country-iso="">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 11</div>
       <span class="scene-dateline">

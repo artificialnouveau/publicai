@@ -1193,3 +1193,117 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   draw();
 })();
+
+// ============================================================
+// COUNTRY MAP — sticky right-side widget that highlights the chapter's country
+// ============================================================
+(function(){
+  const root = document.getElementById('countryMap');
+  const group = document.getElementById('countryMapGroup');
+  if (!root || !group) return;
+
+  // Fetch a compact world atlas (countries-110m, ~30KB) and project it into
+  // the 200×200 viewport via a simple equirectangular projection.
+  const ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+
+  function project(lng, lat) {
+    return [
+      (lng + 180) / 360 * 200,
+      (90 - lat) / 180 * 200,
+    ];
+  }
+
+  function ringToPath(ring) {
+    let d = '';
+    for (let i = 0; i < ring.length; i++) {
+      const [x, y] = project(ring[i][0], ring[i][1]);
+      d += (i === 0 ? 'M' : 'L') + x.toFixed(2) + ',' + y.toFixed(2);
+    }
+    return d + 'Z';
+  }
+
+  function geometryToPath(geom, arcs) {
+    // Reconstruct rings from arc indices (TopoJSON format).
+    function decodeArc(idx) {
+      const reverse = idx < 0;
+      const a = reverse ? ~idx : idx;
+      const points = arcs[a].slice();
+      return reverse ? points.slice().reverse() : points;
+    }
+    function toAbsolute(arcRefs) {
+      // Concatenate arcs; first arc as-is, subsequent skip first point.
+      const ring = [];
+      arcRefs.forEach((idx, i) => {
+        const pts = decodeArc(idx);
+        if (i === 0) ring.push(...pts);
+        else ring.push(...pts.slice(1));
+      });
+      return ring;
+    }
+    if (geom.type === 'Polygon') {
+      return geom.arcs.map(toAbsolute).map(ringToPath).join(' ');
+    } else if (geom.type === 'MultiPolygon') {
+      return geom.arcs.flatMap(p => p.map(toAbsolute).map(ringToPath)).join(' ');
+    }
+    return '';
+  }
+
+  // Decode TopoJSON arcs to lng/lat using transform.
+  function decodeTopojson(topology) {
+    const { scale, translate } = topology.transform;
+    return topology.arcs.map(arc => {
+      let x = 0, y = 0;
+      return arc.map(([dx, dy]) => {
+        x += dx; y += dy;
+        return [x * scale[0] + translate[0], y * scale[1] + translate[1]];
+      });
+    });
+  }
+
+  fetch(ATLAS_URL)
+    .then(r => r.json())
+    .then(topology => {
+      const arcs = decodeTopojson(topology);
+      const countries = topology.objects.countries.geometries;
+      const NS = 'http://www.w3.org/2000/svg';
+      countries.forEach(c => {
+        const path = document.createElementNS(NS, 'path');
+        path.setAttribute('d', geometryToPath(c, arcs));
+        path.setAttribute('class', 'cm-country');
+        path.setAttribute('data-id', String(c.id));
+        group.appendChild(path);
+      });
+      setupHighlighter();
+    })
+    .catch(err => {
+      console.warn('Country map failed to load', err);
+    });
+
+  function setupHighlighter() {
+    const scenes = Array.from(document.querySelectorAll('.scene[data-country-id]'));
+    if (!scenes.length || !('IntersectionObserver' in window)) return;
+    let active = null;
+    function setActive(id) {
+      if (id === active) return;
+      active = id;
+      group.querySelectorAll('.cm-country.is-active').forEach(p => p.classList.remove('is-active'));
+      if (!id) return;
+      const path = group.querySelector('.cm-country[data-id="' + id + '"]');
+      if (path) path.classList.add('is-active');
+    }
+    const visible = new Map();
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) visible.set(e.target, e.target.getBoundingClientRect().top);
+        else visible.delete(e.target);
+      });
+      let best = null, bestY = Infinity;
+      visible.forEach((y, el) => {
+        const t = el.getBoundingClientRect().top;
+        if (t < bestY && t < window.innerHeight / 2) { bestY = t; best = el; }
+      });
+      setActive(best ? best.dataset.countryId : null);
+    }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.25, 0.75] });
+    scenes.forEach(s => io.observe(s));
+  }
+})();

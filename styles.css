@@ -676,6 +676,45 @@
 
 /* Push the viz-pane content down when the decision strip is active */
 
+  /* === COUNTRY MAP (sticky right-side widget that tracks the active chapter) === */
+  .country-map { display: none; }
+  @media (min-width: 1024px) {
+    .country-map {
+      display: block;
+      position: sticky;
+      top: calc(56px + 1.5rem);
+      align-self: start;
+      width: 220px;
+      flex-shrink: 0;
+      order: 2;
+      margin-left: clamp(1rem, 3vw, 2rem);
+    }
+    /* Override the old grid: lay story + map side-by-side. */
+    .experience-columns {
+      display: flex !important;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: clamp(1rem, 3vw, 2.5rem);
+    }
+    .experience-columns > .story { flex: 1 1 auto; min-width: 0; order: 1; }
+  }
+  .country-map-frame {
+    width: 200px; height: 200px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(10,10,10,0.06);
+    overflow: hidden;
+  }
+  .country-map-frame svg { display: block; width: 100%; height: 100%; }
+  .country-map .cm-country { transition: fill 0.4s ease, stroke 0.4s ease; }
+  .country-map .cm-country.is-active {
+    fill: var(--accent);
+    stroke: var(--accent);
+    stroke-width: 0.6;
+  }
+
   /* === SUPPORTING DATA (Live data inside the outcome section) === */
   .supporting-data {
     margin: 3rem 0 0;
