@@ -522,7 +522,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     {name:'Irish',code:'GA',level:'weak',speakers:'~0.2M'},
     {name:'Maltese',code:'MT',level:'weak',speakers:'~0.5M'}
   ];
-  const colorMap = {strong:'#0fa37a',moderate:'#c96a2b',weak:'#ff3333'};
+  const colorMap = {strong:'#0057FF',moderate:'#6E6E69',weak:'#b8002e'};
   languages.forEach(lang => {
     const cell = document.createElement('div');
     cell.style.cssText = `padding:8px 6px;border-radius:6px;border:0.5px solid ${colorMap[lang.level]}30;background:${colorMap[lang.level]}0a;text-align:center;`;
@@ -552,9 +552,9 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize(); window.addEventListener('resize',resize);
-  const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0fa37a'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0fa37a'},{label:'Southern EU',x:0.07,y:0.62,col:'#0fa37a'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0fa37a'}];
-  const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#ff3333'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#1a6cd4'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#4a8ce4'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7b6fd6'}];
-  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#ff3333'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0fa37a'},{label:'Diluted / lost',x:0.93,y:0.80,col:'rgba(10,10,10,0.45)'}];
+  const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0057FF'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0057FF'},{label:'Southern EU',x:0.07,y:0.62,col:'#0057FF'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0057FF'}];
+  const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#b8002e'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#4a4a4a'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#8e8e8e'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7a7a7a'}];
+  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#b8002e'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0057FF'},{label:'Diluted / lost',x:0.93,y:0.80,col:'#666666'}];
   const allNodes=[colA,colB,colC];
   const colHeaders=[{label:'EU FUNDING SOURCES',x:0.07},{label:'WHERE FOUNDERS GO',x:0.50},{label:'ECONOMIC RESULT',x:0.93}];
   const flows=[{from:[0,0],to:[1,0],w:0.22},{from:[0,1],to:[1,0],w:0.18},{from:[0,1],to:[1,1],w:0.12},{from:[0,2],to:[1,1],w:0.10},{from:[0,2],to:[1,2],w:0.08},{from:[0,3],to:[1,2],w:0.05},{from:[0,3],to:[1,3],w:0.06},{from:[1,0],to:[2,0],w:0.30},{from:[1,1],to:[2,1],w:0.15},{from:[1,2],to:[2,1],w:0.08},{from:[1,3],to:[2,2],w:0.06}];
@@ -607,8 +607,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
-  const educated=[{label:'EU-West',y:0.14,col:'#0fa37a',pct:'22%'},{label:'EU-East',y:0.28,col:'#0fa37a',pct:'8%'},{label:'UK / CH',y:0.42,col:'#4a8ce4',pct:'12%'},{label:'China',y:0.56,col:'#c96a2b',pct:'29%'},{label:'India',y:0.70,col:'#7b6fd6',pct:'11%'},{label:'US',y:0.84,col:'#1a6cd4',pct:'18%'}];
-  const working=[{label:'Work in US',y:0.20,col:'#1a6cd4',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0fa37a',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#4a8ce4',pct:'~10%'},{label:'China',y:0.74,col:'#c96a2b',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'rgba(10,10,10,0.55)',pct:'~5%'}];
+  const educated=[{label:'EU-West',y:0.14,col:'#0057FF',pct:'22%'},{label:'EU-East',y:0.28,col:'#0057FF',pct:'8%'},{label:'UK / CH',y:0.42,col:'#8e8e8e',pct:'12%'},{label:'China',y:0.56,col:'#6a6a6a',pct:'29%'},{label:'India',y:0.70,col:'#7a7a7a',pct:'11%'},{label:'US',y:0.84,col:'#4a4a4a',pct:'18%'}];
+  const working=[{label:'Work in US',y:0.20,col:'#4a4a4a',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0057FF',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#8e8e8e',pct:'~10%'},{label:'China',y:0.74,col:'#6a6a6a',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'#7a7a7a',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
@@ -682,20 +682,20 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   const X_MIN = 2023.0;
   const X_MAX = 2026.25;
   const series=[
-    {name:'Mistral AI',color:'#3b82f6',points:[
+    {name:'Mistral AI',color:'#0057FF',points:[
       {date:2025.0,  y:20,  label:'Jan 2025'},
       {date:2025.25, y:50},
       {date:2025.5,  y:150},
       {date:2025.92, y:312, label:'Dec 2025'},
       {date:2026.0,  y:400, label:'Jan 2026'},
     ]},
-    {name:'Cohere',color:'#ef4444',points:[
+    {name:'Cohere',color:'rgba(10,10,10,0.35)',points:[
       {date:2024.17, y:22,  label:'Mar 2024'},
       {date:2025.33, y:100, label:'May 2025'},
       {date:2025.75, y:150, label:'Oct 2025'},
       {date:2026.08, y:240, label:'Feb 2026'},
     ]},
-    {name:'DeepL',color:'#06b6d4',points:[
+    {name:'DeepL',color:'rgba(10,10,10,0.55)',points:[
       {date:2023.5, y:141, label:'2023'},
       {date:2024.5, y:185, label:'2024'},
     ]}
@@ -817,7 +817,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     { name: 'Netherlands',    state:  0.2, asp: 0,   highlight: false, aspNote: '' },
   ];
   const maxState = 22; // scale max — EU at 20€B is the largest committed
-  const ACCENT = '#0077c8';
+  const ACCENT = '#0057FF';
   const BAR = 'rgba(10,10,10,0.7)';
 
   let grown = reduceMotion ? 1 : 0;
@@ -879,7 +879,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
           ctx.rect(pad.l + stateW, by, aspW, barH);
           ctx.clip();
           // Diagonal hatch pattern
-          ctx.strokeStyle = d.highlight ? 'rgba(0,119,200,0.35)' : 'rgba(10,10,10,0.28)';
+          ctx.strokeStyle = d.highlight ? 'rgba(0,87,255,0.35)' : 'rgba(10,10,10,0.28)';
           ctx.lineWidth = 1;
           for (let x = -barH; x < aspW + barH; x += 5) {
             ctx.beginPath();
@@ -911,7 +911,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
       // Aspirational note above the bar
       if (d.asp > 0 && grown > 0.85) {
-        ctx.fillStyle = d.highlight ? 'rgba(0,119,200,0.7)' : 'rgba(10,10,10,0.45)';
+        ctx.fillStyle = d.highlight ? 'rgba(0,87,255,0.7)' : 'rgba(10,10,10,0.45)';
         ctx.font = 'italic 8px Inter, sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
@@ -957,10 +957,10 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   ];
 
   const colors = {
-    force:     '#0a7d3d',
+    force:     '#0057FF',
     rescinded: 'rgba(10,10,10,0.40)',
-    reversed:  '#c96a2b',
-    suspended: '#c96a2b',
+    reversed:  'rgba(10,10,10,0.45)',
+    suspended: 'rgba(10,10,10,0.45)',
   };
 
   let grown = reduceMotion ? 1 : 0;
@@ -1122,14 +1122,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     const baseY = pad.t + ch - ((baseline2019 - yMin) / (yMax - yMin)) * ch;
     ctx.save();
     ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = 'rgba(10,125,61,0.55)';
+    ctx.strokeStyle = 'rgba(0,87,255,0.55)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(pad.l, baseY);
     ctx.lineTo(pad.l + cw, baseY);
     ctx.stroke();
     ctx.restore();
-    ctx.fillStyle = 'rgba(10,125,61,0.7)';
+    ctx.fillStyle = 'rgba(0,87,255,0.7)';
     ctx.font = 'italic 8.5px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('2019 baseline', pad.l + 4, baseY - 4);

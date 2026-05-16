@@ -592,62 +592,33 @@
     .compute-stat-number { font-size: 1.25rem; }
   }
 
-  /* Compute pool: today's scattered EuroHPC systems vs pooled + US benchmark. */
-  .compute-pool-wrap { padding: 1.25rem 1.4rem; }
-  .compute-pool {
-    display: grid;
-    gap: 1.1rem;
+  /* Compute constellation: 11 EuroHPC systems streaming into a pooled core. */
+  .compute-pool-wrap { padding: 0.4rem; }
+  .compute-constellation {
+    display: block;
+    width: 100%;
+    height: 150px;
   }
-  .cp-stage { display: grid; gap: 0.45rem; }
-  .cp-stage-label {
-    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--text-soft);
+  .compute-constellation .cc-frontier-label,
+  .compute-constellation .cc-side-label {
+    font-family: var(--mono); font-size: 6.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    fill: var(--text-soft);
   }
-  .cp-dots {
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    padding: 0.55rem 0;
+  .compute-constellation .cc-frontier-label { fill: #b8002e; opacity: 0.85; }
+  .compute-constellation .cc-pool-value {
+    font-family: var(--mono); font-size: 14px; font-weight: 700;
+    fill: #fff;
   }
-  .cp-dot {
-    display: inline-block;
-    width: var(--w); height: var(--w);
-    background: #1a6cd4;
-    border-radius: 50%;
-    opacity: 0.78;
+  .compute-constellation .cc-pool-label {
+    font-family: var(--mono); font-size: 6.5px; font-weight: 700;
+    letter-spacing: 0.16em;
+    fill: rgba(255,255,255,0.85);
   }
-  .cp-bar {
-    position: relative;
-    height: 18px; border-radius: 4px;
-    background: rgba(10,10,10,0.06);
+  @media (prefers-reduced-motion: reduce) {
+    .compute-constellation .cc-particles { display: none; }
+    .compute-constellation .cc-pool circle:nth-child(2) { animation: none; }
   }
-  .cp-bar::before {
-    content: ''; display: block;
-    width: var(--w); height: 100%;
-    border-radius: 4px;
-  }
-  .cp-bar-pool::before { background: #0a7d3d; }
-  .cp-bar-ref::before  { background: rgba(184,0,46,0.65); }
-  .cp-bar-num {
-    position: absolute; top: 50%;
-    left: calc(var(--w) + 8px);
-    transform: translateY(-50%);
-    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
-    color: var(--text);
-  }
-  .cp-bar-ref .cp-bar-num { color: rgba(184,0,46,0.95); }
-  .cp-bar-pool .cp-bar-num { color: #0a7d3d; }
-  .cp-arrow {
-    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent);
-    padding: 0.25rem 0;
-  }
-  .cp-figure {
-    font-family: var(--font); font-size: 0.78rem; line-height: 1.5;
-    color: var(--text-soft);
-  }
-  .cp-figure strong { color: var(--text); font-weight: 600; }
-  .cp-stage-ref .cp-stage-label { color: rgba(184,0,46,0.85); }
 
   /* HF live cards */
   .hf-cards {
@@ -658,11 +629,21 @@
     border: 0.5px solid var(--hairline-strong) !important;
   }
 
-  /* Lang heatmap inside dock */
+  /* Lang heatmap inside dense bento tile */
   .viz-canvas-wrap #dbLangHeatmap {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)) !important;
-    gap: 4px;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 2px;
+  }
+  .viz-canvas-wrap #dbLangHeatmap > div {
+    padding: 3px 2px !important;
+  }
+  .viz-canvas-wrap #dbLangHeatmap > div > div:nth-child(1) {
+    font-size: 0.58rem !important;
+  }
+  .viz-canvas-wrap #dbLangHeatmap > div > div:nth-child(2),
+  .viz-canvas-wrap #dbLangHeatmap > div > div:nth-child(3) {
+    display: none !important;
   }
 
   /* Fade scroll padding inside dock body when peeked. Kept as pointer-events:
@@ -758,19 +739,9 @@
   .country-map-frame {
     width: 220px; height: 220px;
     margin: 0 auto;
-    background: linear-gradient(160deg, #f3efe6 0%, #ece7da 100%);
-    border: 1px solid var(--hairline-strong);
-    border-radius: 10px;
-    box-shadow: 0 10px 24px rgba(10,10,10,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
-    overflow: hidden;
+    background: transparent;
+    overflow: visible;
     position: relative;
-  }
-  .country-map-frame::after {
-    /* faint vignette so the map sits cleanly inside the frame */
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.08) 100%);
-    pointer-events: none;
   }
   .country-map-frame svg {
     display: block;
@@ -823,31 +794,60 @@
     .country-map .cm-dot.is-visible { animation: none; }
   }
 
-  /* === OUTCOME SPLIT: Your Coalition (left) + Live Data (right) side by side === */
+  /* === OUTCOME SPLIT: Your Coalition + Live Data, stacked full-width === */
   .outcome-split {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
+    display: block;
     margin-top: 2rem;
-    align-items: start;
   }
-  @media (min-width: 1100px) {
-    .outcome-split {
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-      gap: 3rem;
-    }
-    .outcome-split-design { position: sticky; top: calc(56px + 1rem); }
-  }
-  .outcome-split-design { min-width: 0; }
+  .outcome-split-design { min-width: 0; margin-bottom: 3rem; }
 
-  /* === SUPPORTING DATA (Live data inside the outcome section) === */
+  /* === SUPPORTING DATA (Live data: dense bento grid of all 8 charts) === */
   .supporting-data {
     padding-top: 0;
     border-top: 0;
-    display: grid;
-    gap: 1.25rem;
     min-width: 0;
   }
+  .supporting-data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-top: 1rem;
+    counter-reset: viz;
+  }
+  /* Bento at 6-col grid: every row totals 6, exactly 2 rows for all 8 tiles. */
+  @media (min-width: 1100px) {
+    .supporting-data-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-auto-rows: minmax(0, auto);
+    }
+    /* Row 1 sums to 6: 2+2+1+1 */
+    .supporting-data-grid > :nth-child(1) { grid-column: span 2; }
+    .supporting-data-grid > :nth-child(2) { grid-column: span 2; }
+    .supporting-data-grid > :nth-child(3) { grid-column: span 1; }
+    .supporting-data-grid > :nth-child(4) { grid-column: span 1; }
+    /* Row 2 sums to 6: 1+1+2+2 */
+    .supporting-data-grid > :nth-child(5) { grid-column: span 1; }
+    .supporting-data-grid > :nth-child(6) { grid-column: span 1; }
+    .supporting-data-grid > :nth-child(7) { grid-column: span 2; }
+    .supporting-data-grid > :nth-child(8) { grid-column: span 2; }
+  }
+  /* Intermediate: 4-col compact grid (still pretty dense). */
+  @media (min-width: 700px) and (max-width: 1099px) {
+    .supporting-data-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .supporting-data-grid > :nth-child(1),
+    .supporting-data-grid > :nth-child(2),
+    .supporting-data-grid > :nth-child(7),
+    .supporting-data-grid > :nth-child(8) { grid-column: span 2; }
+  }
+  @media (max-width: 600px) {
+    .supporting-data-grid { grid-template-columns: 1fr; gap: 0.55rem; }
+  }
+  /* Section title compressed */
+  .supporting-data-header { margin-bottom: 0.25rem; }
+  .supporting-data-title { font-size: 0.7rem; margin-bottom: 0.35rem; }
+  .supporting-data-note { font-size: 0.78rem; line-height: 1.4; }
   .supporting-data-header {
     max-width: 60ch;
   }
@@ -862,31 +862,129 @@
     font-family: var(--font); font-size: 0.95rem; line-height: 1.6;
     color: var(--text-soft);
   }
+  /* Dense bento tile: no borders, just hairlines between cells via gap + outer frame. */
   .viz-card {
+    counter-increment: viz;
     background: var(--ink);
-    border: 1px solid var(--hairline-strong);
-    border-radius: 8px;
-    overflow: hidden;
-    padding: 1.25rem 1.5rem;
-  }
-  .viz-card .viz-pane-inner {
-    display: block;
-    max-width: none;
-  }
-  .viz-card .viz-explainer {
-    margin-bottom: 1rem;
-    max-width: 70ch;
-  }
-  .viz-card .viz-canvas-wrap {
-    background: var(--paper-2);
     border: 1px solid var(--hairline);
-    border-radius: 6px;
-    padding: 1rem;
-    margin-top: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 0.65rem 0.75rem 0.55rem;
+    display: flex;
+    flex-direction: column;
     position: relative;
   }
-  @media (max-width: 700px) {
-    .viz-card { padding: 1rem 1.1rem; }
+  .viz-card::before {
+    content: counter(viz, decimal-leading-zero);
+    position: absolute;
+    top: 0.55rem; right: 0.6rem;
+    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-soft);
+    opacity: 0.55;
+  }
+  .viz-card .viz-pane-inner {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    max-width: none;
+    min-width: 0;
+  }
+  /* Hide the long story-side explainer in the dense grid. */
+  .viz-card .viz-explainer > h4,
+  .viz-card .viz-explainer > p { display: none; }
+  .viz-card .viz-explainer {
+    margin: 0;
+    max-width: none;
+  }
+  .viz-card .viz-explainer details.viz-sources { display: none; }
+  .viz-card .viz-canvas-wrap {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0.15rem 0;
+    margin-top: 0;
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .viz-card .viz-canvas-wrap canvas {
+    width: 100%;
+    height: 120px;
+    display: block;
+  }
+  .viz-card .viz-canvas-wrap[data-tall] canvas { height: 140px; }
+  /* Wide bento tiles (chord, timeline, constellation) get more chart height. */
+  .supporting-data-grid > :nth-child(1) .viz-canvas-wrap canvas,
+  .supporting-data-grid > :nth-child(2) .viz-canvas-wrap canvas,
+  .supporting-data-grid > :nth-child(7) .viz-canvas-wrap canvas,
+  .supporting-data-grid > :nth-child(8) .viz-canvas-wrap canvas {
+    height: 150px;
+  }
+  .supporting-data-grid > :nth-child(8) .compute-constellation { height: 150px; }
+
+  /* Compact header: date pill + name on a single tight row */
+  .viz-card .viz-header {
+    display: flex; align-items: center; gap: 0.4rem;
+    margin: 0 0 0.4rem;
+    padding-right: 1.4rem; /* leave room for the counter */
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  .viz-date-pill {
+    display: inline-flex; align-items: center;
+    padding: 0.14rem 0.4rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 2px;
+    font-family: var(--mono); font-size: 0.52rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .viz-name {
+    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--text-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Footer: single line of micro-stats, separated by hairlines */
+  .viz-card .viz-footer {
+    display: flex;
+    gap: 0.45rem;
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--hairline);
+    min-width: 0;
+  }
+  .viz-mini-stat {
+    display: flex; flex-direction: column; gap: 0.05rem;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .viz-mini-stat + .viz-mini-stat {
+    border-left: 1px solid var(--hairline);
+    padding-left: 0.45rem;
+  }
+  .viz-mini-value {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .viz-mini-label {
+    font-family: var(--mono); font-size: 0.42rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-soft);
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* === OUTCOME SCREEN === */
