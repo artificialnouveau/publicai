@@ -54,7 +54,33 @@
 <aside class="country-map" id="countryMap" aria-hidden="true">
   <div class="country-map-frame">
     <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <g id="countryMapGroup" fill="none" stroke="rgba(10,10,10,0.45)" stroke-width="0.4" stroke-linejoin="round" stroke-linecap="round"></g>
+      <defs>
+        <clipPath id="globeClip"><circle cx="100" cy="100" r="78"/></clipPath>
+      </defs>
+      <!-- Whirl: subtle, continuously rotating decoration around the globe -->
+      <g class="cm-whirl" aria-hidden="true">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="rgba(10,10,10,0.18)" stroke-width="0.4" stroke-dasharray="2 5"/>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(10,10,10,0.08)" stroke-width="0.35" stroke-dasharray="1 9"/>
+        <!-- four cardinal tick marks -->
+        <line x1="100" y1="2"  x2="100" y2="8"  stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+        <line x1="100" y1="192" x2="100" y2="198" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+        <line x1="2"  y1="100" x2="8"  y2="100" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+        <line x1="192" y1="100" x2="198" y2="100" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+      </g>
+      <!-- Globe: ocean disc -->
+      <circle class="cm-ocean" cx="100" cy="100" r="78" fill="#ece6d8" stroke="rgba(10,10,10,0.4)" stroke-width="0.6"/>
+      <!-- Latitude/longitude graticule, faint -->
+      <g class="cm-graticule" clip-path="url(#globeClip)" fill="none" stroke="rgba(10,10,10,0.10)" stroke-width="0.3" stroke-dasharray="1 2">
+        <ellipse cx="100" cy="100" rx="78" ry="20"/>
+        <ellipse cx="100" cy="100" rx="78" ry="40"/>
+        <ellipse cx="100" cy="100" rx="78" ry="60"/>
+        <ellipse cx="100" cy="100" rx="20" ry="78"/>
+        <ellipse cx="100" cy="100" rx="40" ry="78"/>
+        <ellipse cx="100" cy="100" rx="60" ry="78"/>
+      </g>
+      <g id="countryMapGroup" clip-path="url(#globeClip)"></g>
+      <!-- Outer rim ring drawn on top for crisp edge -->
+      <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(10,10,10,0.5)" stroke-width="0.7"/>
     </svg>
   </div>
 </aside>

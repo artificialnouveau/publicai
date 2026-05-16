@@ -1195,65 +1195,23 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 })();
 
 // ============================================================
-// COUNTRY MAP — sticky right-side widget that highlights the chapter's country
+// COUNTRY MAP — orthographic globe; spins to the chapter's country on scroll
 // ============================================================
 (function(){
   const root = document.getElementById('countryMap');
   const group = document.getElementById('countryMapGroup');
   if (!root || !group) return;
 
-  // Fetch a compact world atlas (countries-110m, ~30KB) and project it into
-  // the 200×200 viewport. Use a cropped equirectangular projection focused on
-  // the northern-hemisphere band where every chapter's country sits so the
-  // countries actually read at this scale.
   const ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
-  const MIN_LNG = -135, MAX_LNG = 155;
-  const MIN_LAT = 18,  MAX_LAT = 75;
-  // Y-band inside the 200x200 viewbox, leaving small top/bottom margins.
-  const Y_TOP = 22, Y_BOT = 178;
+  const R = 78;          // globe radius in viewport units
+  const CX = 100, CY = 100;
+  const DEG = Math.PI / 180;
 
-  function project(lng, lat) {
-    const x = (lng - MIN_LNG) / (MAX_LNG - MIN_LNG) * 200;
-    const y = Y_TOP + (MAX_LAT - lat) / (MAX_LAT - MIN_LAT) * (Y_BOT - Y_TOP);
-    return [x, y];
-  }
+  // Current view (defaults to a sensible Europe-leaning Atlantic view).
+  let viewLng = 0;
+  let viewLat = 35;
 
-  function ringToPath(ring) {
-    let d = '';
-    for (let i = 0; i < ring.length; i++) {
-      const [x, y] = project(ring[i][0], ring[i][1]);
-      d += (i === 0 ? 'M' : 'L') + x.toFixed(2) + ',' + y.toFixed(2);
-    }
-    return d + 'Z';
-  }
-
-  function geometryToPath(geom, arcs) {
-    // Reconstruct rings from arc indices (TopoJSON format).
-    function decodeArc(idx) {
-      const reverse = idx < 0;
-      const a = reverse ? ~idx : idx;
-      const points = arcs[a].slice();
-      return reverse ? points.slice().reverse() : points;
-    }
-    function toAbsolute(arcRefs) {
-      // Concatenate arcs; first arc as-is, subsequent skip first point.
-      const ring = [];
-      arcRefs.forEach((idx, i) => {
-        const pts = decodeArc(idx);
-        if (i === 0) ring.push(...pts);
-        else ring.push(...pts.slice(1));
-      });
-      return ring;
-    }
-    if (geom.type === 'Polygon') {
-      return geom.arcs.map(toAbsolute).map(ringToPath).join(' ');
-    } else if (geom.type === 'MultiPolygon') {
-      return geom.arcs.flatMap(p => p.map(toAbsolute).map(ringToPath)).join(' ');
-    }
-    return '';
-  }
-
-  // Decode TopoJSON arcs to lng/lat using transform.
+  // Decode TopoJSON arcs to lng/lat using the transform.
   function decodeTopojson(topology) {
     const { scale, translate } = topology.transform;
     return topology.arcs.map(arc => {
@@ -1265,8 +1223,23 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     });
   }
 
+  // Orthographic projection of (lng, lat) given the current view (lng0, lat0).
+  // Returns [x, y, visible].
+  function project(lng, lat) {
+    const dl = (lng - viewLng) * DEG;
+    const phi = lat * DEG;
+    const phi0 = viewLat * DEG;
+    const sinPhi = Math.sin(phi), cosPhi = Math.cos(phi);
+    const sinP0 = Math.sin(phi0), cosP0 = Math.cos(phi0);
+    const cosDl = Math.cos(dl), sinDl = Math.sin(dl);
+    const cosC = sinP0 * sinPhi + cosP0 * cosPhi * cosDl;
+    const x = cosPhi * sinDl;
+    const y = cosP0 * sinPhi - sinP0 * cosPhi * cosDl;
+    return [CX + x * R, CY - y * R, cosC > 0];
+  }
+
   // City coordinates per scene id. Used to drop a pulsing dot for the
-  // currently-active chapter on top of the highlighted country.
+  // currently-active chapter and to set the rotation target.
   const CITY_COORDS = {
     'scene-dublin-apr':  [-6.27, 53.35],
     'scene-berlin':      [13.40, 52.52],
@@ -1281,33 +1254,142 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   };
 
   let dotEl = null;
+  let countryData = [];
+
+  // Expand a country geometry into a list of rings, where each ring is a
+  // list of [lng, lat] points.
+  function expandRings(geom, arcs) {
+    function decodeArc(idx) {
+      const reverse = idx < 0;
+      const a = reverse ? ~idx : idx;
+      const pts = arcs[a].slice();
+      return reverse ? pts.reverse() : pts;
+    }
+    function toAbsolute(arcRefs) {
+      const ring = [];
+      arcRefs.forEach((idx, i) => {
+        const pts = decodeArc(idx);
+        if (i === 0) ring.push(...pts);
+        else ring.push(...pts.slice(1));
+      });
+      return ring;
+    }
+    if (geom.type === 'Polygon') return geom.arcs.map(toAbsolute);
+    if (geom.type === 'MultiPolygon') return geom.arcs.flatMap(p => p.map(toAbsolute));
+    return [];
+  }
+
+  // Cheap centroid: average lng/lat of first ring (used for back-side culling).
+  function approxCentroid(rings) {
+    if (!rings.length) return [0, 0];
+    const r = rings[0];
+    let lx = 0, ly = 0;
+    r.forEach(([a,b]) => { lx += a; ly += b; });
+    return [lx / r.length, ly / r.length];
+  }
+
+  // Project one ring with visibility-aware path breaks. Returns a path
+  // fragment (zero or more subpaths, each closed with Z) for the visible
+  // portion of the ring.
+  function projectRing(ring) {
+    let d = '';
+    let inSub = false;
+    for (let i = 0; i < ring.length; i++) {
+      const [x, y, vis] = project(ring[i][0], ring[i][1]);
+      if (vis) {
+        d += (inSub ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
+        inSub = true;
+      } else if (inSub) {
+        d += 'Z';
+        inSub = false;
+      }
+    }
+    if (inSub) d += 'Z';
+    return d;
+  }
+
+  function redraw() {
+    countryData.forEach(c => {
+      // Back-side culling: skip countries whose centroid isn't on the visible
+      // hemisphere. Cheap test that avoids weirdly mirrored geometry.
+      const [clng, clat] = c.centroid;
+      const dl = (clng - viewLng) * DEG;
+      const cosC = Math.sin(viewLat * DEG) * Math.sin(clat * DEG)
+                 + Math.cos(viewLat * DEG) * Math.cos(clat * DEG) * Math.cos(dl);
+      if (cosC < -0.15) { c.el.setAttribute('d', ''); return; }
+      let d = '';
+      c.rings.forEach(r => { d += projectRing(r); });
+      c.el.setAttribute('d', d);
+    });
+    if (dotEl && dotEl._sceneEl) positionDotNow(dotEl._sceneEl);
+  }
+
+  // Tween rotation from (viewLng, viewLat) to (targetLng, targetLat).
+  let tweenStart = 0, tweenDur = 900;
+  let fromLng = 0, fromLat = 0, toLng = 0, toLat = 0;
+  let animating = false;
+  function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+  function tick(ts) {
+    if (!tweenStart) tweenStart = ts;
+    const t = Math.min((ts - tweenStart) / tweenDur, 1);
+    const e = easeInOut(t);
+    viewLng = fromLng + (toLng - fromLng) * e;
+    viewLat = fromLat + (toLat - fromLat) * e;
+    redraw();
+    if (t < 1) requestAnimationFrame(tick);
+    else { animating = false; tweenStart = 0; }
+  }
+  function spinTo(lng, lat) {
+    // Shortest-path longitude tween: wrap so the diff is in [-180, 180].
+    let d = lng - viewLng;
+    while (d > 180)  d -= 360;
+    while (d < -180) d += 360;
+    fromLng = viewLng; fromLat = viewLat;
+    toLng = viewLng + d; toLat = lat;
+    tweenStart = 0;
+    if (!animating) { animating = true; requestAnimationFrame(tick); }
+  }
+
+  function positionDotNow(sceneEl) {
+    if (!dotEl || !sceneEl) return;
+    const coords = CITY_COORDS[sceneEl.id];
+    if (!coords) { dotEl.classList.remove('is-visible'); dotEl.classList.add('is-hidden'); return; }
+    const [x, y, vis] = project(coords[0], coords[1]);
+    dotEl.setAttribute('cx', x.toFixed(2));
+    dotEl.setAttribute('cy', y.toFixed(2));
+    if (vis) {
+      dotEl.classList.remove('is-hidden');
+      dotEl.classList.add('is-visible');
+    } else {
+      dotEl.classList.add('is-hidden');
+      dotEl.classList.remove('is-visible');
+    }
+  }
 
   fetch(ATLAS_URL)
     .then(r => r.json())
     .then(topology => {
       const arcs = decodeTopojson(topology);
-      const countries = topology.objects.countries.geometries;
       const NS = 'http://www.w3.org/2000/svg';
-      countries.forEach(c => {
-        const path = document.createElementNS(NS, 'path');
-        path.setAttribute('d', geometryToPath(c, arcs));
-        path.setAttribute('class', 'cm-country');
-        path.setAttribute('data-id', String(c.id));
-        group.appendChild(path);
+      countryData = topology.objects.countries.geometries.map(g => {
+        const rings = expandRings(g, arcs);
+        const el = document.createElementNS(NS, 'path');
+        el.setAttribute('class', 'cm-country');
+        el.setAttribute('data-id', String(g.id));
+        group.appendChild(el);
+        return { id: String(g.id), rings, centroid: approxCentroid(rings), el };
       });
-      // City dot (appended last so it sits on top of all country paths).
       const svg = group.ownerSVGElement;
       dotEl = document.createElementNS(NS, 'circle');
       dotEl.setAttribute('class', 'cm-dot is-hidden');
-      dotEl.setAttribute('r', '2.6');
+      dotEl.setAttribute('r', '2.8');
       dotEl.setAttribute('cx', '0');
       dotEl.setAttribute('cy', '0');
       svg.appendChild(dotEl);
+      redraw();
       setupHighlighter();
     })
-    .catch(err => {
-      console.warn('Country map failed to load', err);
-    });
+    .catch(err => { console.warn('Country map failed to load', err); });
 
   function setupHighlighter() {
     const scenes = Array.from(document.querySelectorAll('.scene[data-country-id]'));
@@ -1315,34 +1397,27 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     let active = null;
     function setActive(sceneEl) {
       const id = sceneEl ? sceneEl.dataset.countryId : null;
-      if (id === active && sceneEl) {
-        // Same country — still update city dot for shared-country chapters.
-        positionDot(sceneEl);
-        return;
-      }
-      active = id;
       group.querySelectorAll('.cm-country.is-active').forEach(p => p.classList.remove('is-active'));
-      if (!id) {
-        if (dotEl) dotEl.classList.add('is-hidden');
+      if (!sceneEl || !id) {
+        if (dotEl) {
+          dotEl.classList.add('is-hidden');
+          dotEl.classList.remove('is-visible');
+          dotEl._sceneEl = null;
+        }
+        active = null;
         return;
       }
       const path = group.querySelector('.cm-country[data-id="' + id + '"]');
       if (path) path.classList.add('is-active');
-      positionDot(sceneEl);
-    }
-    function positionDot(sceneEl) {
-      if (!dotEl || !sceneEl) return;
+      if (dotEl) dotEl._sceneEl = sceneEl;
+      active = id;
       const coords = CITY_COORDS[sceneEl.id];
-      if (!coords) { dotEl.classList.add('is-hidden'); return; }
-      const [x, y] = project(coords[0], coords[1]);
-      dotEl.setAttribute('cx', x.toFixed(2));
-      dotEl.setAttribute('cy', y.toFixed(2));
-      dotEl.classList.remove('is-hidden');
+      if (coords) spinTo(coords[0], coords[1]);
     }
     const visible = new Map();
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) visible.set(e.target, e.target.getBoundingClientRect().top);
+        if (e.isIntersecting) visible.set(e.target, true);
         else visible.delete(e.target);
       });
       let best = null, bestY = Infinity;
