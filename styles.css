@@ -676,6 +676,72 @@
 
 /* Push the viz-pane content down when the decision strip is active */
 
+  /* === LIVE DATA PANEL (sticky right-side panel, swaps charts per chapter) === */
+  .live-data-panel { display: none; }
+  @media (min-width: 1024px) {
+    .live-data-panel {
+      display: block;
+      position: sticky;
+      top: calc(56px + 1rem);
+      align-self: start;
+      width: 360px;
+      flex-shrink: 0;
+      order: 2;
+      margin-left: clamp(1rem, 3vw, 2.5rem);
+    }
+    .experience-columns {
+      display: flex !important;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: clamp(1rem, 3vw, 2.5rem);
+    }
+    .experience-columns > .story { flex: 1 1 auto; min-width: 0; order: 1; }
+  }
+  .live-data-frame {
+    background: var(--ink);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(10,10,10,0.10);
+    overflow: hidden;
+  }
+  .live-data-header {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--hairline);
+    display: flex; align-items: baseline; gap: 0.55rem;
+  }
+  .live-data-kicker {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-soft);
+  }
+  .live-data-title {
+    font-family: var(--font); font-size: 0.88rem; font-weight: 600;
+    color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .live-data-body {
+    position: relative;
+    min-height: 280px;
+    padding: 0.85rem 1rem 1rem;
+  }
+  .live-data-pane {
+    display: none;
+  }
+  .live-data-pane.is-active { display: block; }
+  .live-data-pane > canvas {
+    display: block; width: 100%; height: 320px;
+  }
+  .live-data-pane > div[id^="dbCompute"],
+  .live-data-pane > div[id^="dbLang"] {
+    display: block; min-height: 280px;
+  }
+  /* Compact lang heatmap variant for the sticky panel */
+  .lang-heatmap-mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+    gap: 3px;
+  }
+
   /* === COUNTRY MAP (sticky right-side widget that tracks the active chapter) === */
   .country-map { display: none; }
   @media (min-width: 1024px) {
