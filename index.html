@@ -609,9 +609,9 @@
       <div class="viz-pane-inner">
         <div class="viz-explainer">
           <h4>What it shows</h4>
-          <p>11 EuroHPC supercomputers and 12 planned AI Factory sites against 1,136+ global hyperscale data centres (US owns the majority).</p>
+          <p>Each EuroHPC supercomputer today runs separately under its host state. Pooled into one coalition cluster, the combined ~2 exaFLOPS approaches frontier training scale &mdash; in the same order of magnitude as the largest US hyperscaler training clusters.</p>
           <h4>Why it matters here</h4>
-          <p>The <strong>Scope</strong> choice depends on compute. EuroHPC&rsquo;s 11 supercomputers and 12 planned AI Factories are what a full-stack coalition runs on. Without them, scope shrinks to whatever the coalition can rent from AWS, Azure, or Google.</p>
+          <p>The <strong>Scope</strong> choice depends on whether Europe&rsquo;s compute is coordinated. The hardware already exists; the coordination doesn&rsquo;t. A coalition that pools EuroHPC compute is the only path to running full-stack training without renting from AWS, Azure, or Google.</p>
           <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
             <li>11 operational EuroHPC supercomputers (LUMI, Leonardo, MareNostrum 5, JUPITER, Discoverer, Karolina, Vega, Meluxina, Deucalion, Daedalus, Levente). <a href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank" rel="noopener">EuroHPC JU</a>.</li>
             <li>12 EuroHPC AI Factory host sites confirmed across the 2024-2025 selection rounds. <a href="https://www.eurohpc-ju.europa.eu/eurohpc-joint-undertaking-launches-ai-factories-calls-boost-european-leadership-trustworthy-ai-2024-09-10_en" target="_blank" rel="noopener">EuroHPC AI Factories call</a>.</li>
@@ -619,28 +619,35 @@
             <li>JUPITER (J&uuml;lich): &euro;500M total, half EU / half Germany; first European exascale system, designated AI Factory host. <a href="https://www.eurohpc-ju.europa.eu/new-jupiter-module-strengthens-leading-position-europes-upcoming-exascale-supercomputer-2024-11-18_en" target="_blank" rel="noopener">EuroHPC</a>.</li>
           </ol></details>
         </div>
-        <div class="viz-canvas-wrap compute-stats-wrap" role="img" aria-label="European compute map: 11 EuroHPC supercomputers vs 1,136+ global hyperscale data centres">
-          <div class="compute-stats">
-            <div class="compute-stat" data-tone="blue">
-              <div class="compute-stat-number">11</div>
-              <div class="compute-stat-body">
-                <div class="compute-stat-label">EuroHPC sovereign supercomputers (operational)</div>
-                <div class="compute-stat-sub">LUMI, JUPITER, Leonardo, MareNostrum 5, Discoverer, Karolina, Vega, MeluXina, Deucalion, Daedalus, EHPC-PL</div>
+        <div class="viz-canvas-wrap compute-pool-wrap" role="img" aria-label="If EuroHPC pooled into one coalition cluster, combined compute approaches frontier scale">
+          <div class="compute-pool">
+            <div class="cp-stage">
+              <div class="cp-stage-label">Today &middot; 11 systems run separately</div>
+              <div class="cp-dots">
+                <span class="cp-dot" style="--w:32px" title="JUPITER ~1 EFLOPS"></span>
+                <span class="cp-dot" style="--w:18px" title="LUMI 380 PF"></span>
+                <span class="cp-dot" style="--w:14px" title="MareNostrum 5 314 PF"></span>
+                <span class="cp-dot" style="--w:12px" title="Leonardo 250 PF"></span>
+                <span class="cp-dot" style="--w:7px"  title="Daedalus 62 PF"></span>
+                <span class="cp-dot" style="--w:5px"  title="MeluXina 12 PF"></span>
+                <span class="cp-dot" style="--w:5px"  title="Vega 10 PF"></span>
+                <span class="cp-dot" style="--w:5px"  title="Deucalion 10 PF"></span>
+                <span class="cp-dot" style="--w:5px"  title="Karolina 9.6 PF"></span>
+                <span class="cp-dot" style="--w:4px"  title="Discoverer 6 PF"></span>
+                <span class="cp-dot" style="--w:4px"  title="EHPC-PL"></span>
               </div>
+              <div class="cp-figure"><strong>~2 EF</strong> total, but split across 11 governing boards.</div>
             </div>
-            <div class="compute-stat" data-tone="green">
-              <div class="compute-stat-number">12</div>
-              <div class="compute-stat-body">
-                <div class="compute-stat-label">Planned EuroHPC AI Factory sites</div>
-                <div class="compute-stat-sub">2024-2025 selection rounds (DE, FR, IT, ES, FI, SE, GR, PL, LU, BG, AT, IE)</div>
-              </div>
+            <div class="cp-arrow" aria-hidden="true">&darr;  if pooled into one coalition cluster</div>
+            <div class="cp-stage">
+              <div class="cp-stage-label">Pooled &middot; one coalition cluster</div>
+              <div class="cp-bar cp-bar-pool" style="--w:30%"><span class="cp-bar-num">~2 EF</span></div>
+              <div class="cp-figure">Combined ~2 exaFLOPS. Enough capacity for a frontier-class training run, today.</div>
             </div>
-            <div class="compute-stat" data-tone="red">
-              <div class="compute-stat-number">1,136+</div>
-              <div class="compute-stat-body">
-                <div class="compute-stat-label">Global hyperscale data centres (end-2024)</div>
-                <div class="compute-stat-sub">US holds the majority share. 8 EU metros host AWS / Azure / Google capacity (Dublin, Frankfurt, Amsterdam, Paris, London, Stockholm, Milan, Zurich).</div>
-              </div>
+            <div class="cp-stage cp-stage-ref">
+              <div class="cp-stage-label">Reference &middot; top US training cluster (est.)</div>
+              <div class="cp-bar cp-bar-ref" style="--w:78%"><span class="cp-bar-num">~5 EF</span></div>
+              <div class="cp-figure">Meta H100/H200, Microsoft/OpenAI, xAI Colossus &mdash; each ~5+ EFLOPS for frontier training.</div>
             </div>
           </div>
         </div>
