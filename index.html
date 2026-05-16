@@ -51,22 +51,37 @@
 <!-- STORY + VIZ (centered two-column experience) -->
 <div class="experience-shell" id="experience">
 <div class="experience-columns">
-<aside class="live-data-panel" id="liveDataPanel" aria-hidden="false">
-  <div class="live-data-frame">
-    <div class="live-data-header">
-      <span class="live-data-kicker">Live data</span>
-      <span class="live-data-title" id="liveDataTitle">&mdash;</span>
-    </div>
-    <div class="live-data-body" id="liveDataBody">
-      <div class="live-data-pane" data-viz="talent-migration" data-title="Talent migration"><canvas data-chart="talent-migration" id="dbTalentChordCanvasA"></canvas></div>
-      <div class="live-data-pane" data-viz="compute-map" data-title="Compute infrastructure"><div data-chart="compute-map" id="dbComputeStatsA"></div></div>
-      <div class="live-data-pane" data-viz="lang-heatmap" data-title="Language coverage"><div data-chart="lang-heatmap" id="dbLangHeatmapA" class="lang-heatmap-mini"></div></div>
-      <div class="live-data-pane" data-viz="coalition-revenue" data-title="Coalition revenue"><canvas data-chart="coalition-revenue" id="dbGrowthChartA"></canvas></div>
-      <div class="live-data-pane" data-viz="capital-flow" data-title="Capital flow"><canvas data-chart="capital-flow" id="dbCapitalFlowCanvasA"></canvas></div>
-      <div class="live-data-pane" data-viz="eu-public-capex" data-title="Public AI commitments"><canvas data-chart="eu-public-capex" id="dbEuCapexCanvasA"></canvas></div>
-      <div class="live-data-pane" data-viz="talent-timeline" data-title="Brain drain timeline"><canvas data-chart="talent-timeline" id="dbTalentTimelineCanvasA"></canvas></div>
-      <div class="live-data-pane" data-viz="export-controls" data-title="US export controls"><canvas data-chart="export-controls" id="dbExportControlsCanvasA"></canvas></div>
-    </div>
+<aside class="country-map" id="countryMap" aria-hidden="true">
+  <div class="country-map-frame">
+    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="globeClip"><circle cx="100" cy="100" r="78"/></clipPath>
+      </defs>
+      <!-- Whirl: subtle, continuously rotating decoration around the globe -->
+      <g class="cm-whirl" aria-hidden="true">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="rgba(10,10,10,0.18)" stroke-width="0.4" stroke-dasharray="2 5"/>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(10,10,10,0.08)" stroke-width="0.35" stroke-dasharray="1 9"/>
+        <!-- four cardinal tick marks -->
+        <line x1="100" y1="2"  x2="100" y2="8"  stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+        <line x1="100" y1="192" x2="100" y2="198" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+        <line x1="2"  y1="100" x2="8"  y2="100" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+        <line x1="192" y1="100" x2="198" y2="100" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
+      </g>
+      <!-- Globe: ocean disc -->
+      <circle class="cm-ocean" cx="100" cy="100" r="78" fill="#ece6d8" stroke="rgba(10,10,10,0.4)" stroke-width="0.6"/>
+      <!-- Latitude/longitude graticule, faint -->
+      <g class="cm-graticule" clip-path="url(#globeClip)" fill="none" stroke="rgba(10,10,10,0.10)" stroke-width="0.3" stroke-dasharray="1 2">
+        <ellipse cx="100" cy="100" rx="78" ry="20"/>
+        <ellipse cx="100" cy="100" rx="78" ry="40"/>
+        <ellipse cx="100" cy="100" rx="78" ry="60"/>
+        <ellipse cx="100" cy="100" rx="20" ry="78"/>
+        <ellipse cx="100" cy="100" rx="40" ry="78"/>
+        <ellipse cx="100" cy="100" rx="60" ry="78"/>
+      </g>
+      <g id="countryMapGroup" clip-path="url(#globeClip)"></g>
+      <!-- Outer rim ring drawn on top for crisp edge -->
+      <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(10,10,10,0.5)" stroke-width="0.7"/>
+    </svg>
   </div>
 </aside>
 <article class="story" id="story">
@@ -443,7 +458,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbCapitalFlowCanvas" data-chart="capital-flow" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
+          <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
         </div>
       </div>
     </div>
@@ -464,7 +479,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap" data-tall>
-          <canvas id="dbTalentChordCanvas" data-chart="talent-migration" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
+          <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
         </div>
       </div>
     </div>
@@ -485,7 +500,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap">
-          <div id="dbLangHeatmap" data-chart="lang-heatmap" style="margin-bottom:0.5rem;"></div>
+          <div id="dbLangHeatmap" style="margin-bottom:0.5rem;"></div>
           <div style="display:flex;gap:0.85rem;font-family:var(--mono);font-size:0.6rem;color:var(--text-soft);margin-top:0.5rem;">
             <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:9px;height:9px;border-radius:2px;background:#0fa37a;"></span>Strong</span>
             <span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:9px;height:9px;border-radius:2px;background:#c96a2b;"></span>Moderate</span>
@@ -511,7 +526,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbGrowthChart" data-chart="coalition-revenue" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
+          <canvas id="dbGrowthChart" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
         </div>
       </div>
     </div>
@@ -534,7 +549,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbEuCapexCanvas" data-chart="eu-public-capex" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
+          <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
         </div>
       </div>
     </div>
@@ -557,7 +572,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap">
-          <canvas id="dbTalentTimelineCanvas" data-chart="talent-timeline" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
+          <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
         </div>
       </div>
     </div>
@@ -584,7 +599,7 @@
           </ol></details>
         </div>
         <div class="viz-canvas-wrap" data-tall>
-          <canvas id="dbExportControlsCanvas" data-chart="export-controls" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
+          <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
         </div>
       </div>
     </div>

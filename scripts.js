@@ -494,10 +494,8 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
 // --- Language Heatmap ---
 (function(){
-  const containers = Array.from(document.querySelectorAll('[data-chart="lang-heatmap"]'));
-  if (!containers.length) return;
-  containers.forEach(container => {
-    container.innerHTML = '';
+  const container = document.getElementById('dbLangHeatmap');
+  if (!container) return;
   const languages = [
     {name:'English',code:'EN',level:'strong',speakers:'~450M'},
     {name:'French',code:'FR',level:'strong',speakers:'~77M'},
@@ -535,13 +533,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     `;
     container.appendChild(cell);
   });
-  });
 })();
 
 // --- Capital Flow Sankey ---
 (function(){
-  const _list_dbCapitalFlowCanvas = Array.from(document.querySelectorAll('[data-chart="capital-flow"]'));
-  _list_dbCapitalFlowCanvas.forEach(canvas => {
+  const canvas = document.getElementById('dbCapitalFlowCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   // (pane visibility check removed; charts always render inline)
   function resize(){
@@ -591,13 +588,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
   }
   // Always draw — the dock is fixed so visibility is controlled separately
   draw();
-  });
 })();
 
 // --- Talent Migration ---
 (function(){
-  const _list_dbTalentChordCanvas = Array.from(document.querySelectorAll('[data-chart="talent-migration"]'));
-  _list_dbTalentChordCanvas.forEach(canvas => {
+  const canvas=document.getElementById('dbTalentChordCanvas');
+  if(!canvas)return;
   const ctx=canvas.getContext('2d');
   // (pane visibility check removed; charts always render inline)
   function resize(){
@@ -660,15 +656,14 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
-  });
 })();
 
 // --- Compute Map: now rendered as static HTML (see .compute-stats markup) ---
 
 // --- Coalition Revenue Growth ---
 (function(){
-  const _list_dbGrowthChart = Array.from(document.querySelectorAll('[data-chart="coalition-revenue"]'));
-  _list_dbGrowthChart.forEach(canvas => {
+  const canvas=document.getElementById('dbGrowthChart');
+  if(!canvas)return;
   const ctx=canvas.getContext('2d');
   // (pane visibility check removed; charts always render inline)
   function resize(){
@@ -788,13 +783,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
-  });
 })();
 
 // --- EU Public AI Capex (Paris) ---
 (function(){
-  const _list_dbEuCapexCanvas = Array.from(document.querySelectorAll('[data-chart="eu-public-capex"]'));
-  _list_dbEuCapexCanvas.forEach(canvas => {
+  const canvas = document.getElementById('dbEuCapexCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   // (pane visibility check removed; charts always render inline)
   function resize(){
@@ -927,13 +921,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
-  });
 })();
 
 // --- Export Controls Timeline (White House) ---
 (function(){
-  const _list_dbExportControlsCanvas = Array.from(document.querySelectorAll('[data-chart="export-controls"]'));
-  _list_dbExportControlsCanvas.forEach(canvas => {
+  const canvas = document.getElementById('dbExportControlsCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   // (pane visibility check removed; charts always render inline)
   function resize(){
@@ -1060,13 +1053,12 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
-  });
 })();
 
 // --- Talent Brain Drain Timeline (Dublin Jan) ---
 (function(){
-  const _list_dbTalentTimelineCanvas = Array.from(document.querySelectorAll('[data-chart="talent-timeline"]'));
-  _list_dbTalentTimelineCanvas.forEach(canvas => {
+  const canvas = document.getElementById('dbTalentTimelineCanvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   // (pane visibility check removed; charts always render inline)
   function resize(){
@@ -1200,64 +1192,241 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (!reduceMotion) requestAnimationFrame(draw);
   }
   draw();
-  });
 })();
 
 // ============================================================
-// LIVE DATA PANEL — swaps the visible chart pane based on the active chapter
+// COUNTRY MAP — orthographic globe; spins to the chapter's country on scroll
 // ============================================================
 (function(){
-  const panel = document.getElementById('liveDataPanel');
-  const titleEl = document.getElementById('liveDataTitle');
-  if (!panel) return;
-  const panes = Array.from(panel.querySelectorAll('.live-data-pane'));
-  if (!panes.length) return;
+  const root = document.getElementById('countryMap');
+  const group = document.getElementById('countryMapGroup');
+  if (!root || !group) return;
 
-  // Copy the static compute-map HTML from the supporting-data section into
-  // the matching sticky panel slot so it renders in both places without
-  // duplicating markup in index.html.
-  const sourceCompute = document.querySelector('.viz-card .compute-stats');
-  const mirrorCompute = document.querySelector('.live-data-pane[data-viz="compute-map"]');
-  if (sourceCompute && mirrorCompute) {
-    mirrorCompute.innerHTML = '';
-    mirrorCompute.appendChild(sourceCompute.cloneNode(true));
+  const ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+  const R = 78;          // globe radius in viewport units
+  const CX = 100, CY = 100;
+  const DEG = Math.PI / 180;
+
+  // Current view (defaults to a sensible Europe-leaning Atlantic view).
+  let viewLng = 0;
+  let viewLat = 35;
+
+  // Decode TopoJSON arcs to lng/lat using the transform.
+  function decodeTopojson(topology) {
+    const { scale, translate } = topology.transform;
+    return topology.arcs.map(arc => {
+      let x = 0, y = 0;
+      return arc.map(([dx, dy]) => {
+        x += dx; y += dy;
+        return [x * scale[0] + translate[0], y * scale[1] + translate[1]];
+      });
+    });
   }
 
-  function activate(vizId) {
-    let title = '';
-    panes.forEach(p => {
-      const on = p.dataset.viz === vizId;
-      p.classList.toggle('is-active', on);
-      if (on) title = p.dataset.title || '';
-    });
-    if (titleEl) titleEl.textContent = title || '—';
+  // Orthographic projection of (lng, lat) given the current view (lng0, lat0).
+  // Returns [x, y, visible].
+  function project(lng, lat) {
+    const dl = (lng - viewLng) * DEG;
+    const phi = lat * DEG;
+    const phi0 = viewLat * DEG;
+    const sinPhi = Math.sin(phi), cosPhi = Math.cos(phi);
+    const sinP0 = Math.sin(phi0), cosP0 = Math.cos(phi0);
+    const cosDl = Math.cos(dl), sinDl = Math.sin(dl);
+    const cosC = sinP0 * sinPhi + cosP0 * cosPhi * cosDl;
+    const x = cosPhi * sinDl;
+    const y = cosP0 * sinPhi - sinP0 * cosPhi * cosDl;
+    return [CX + x * R, CY - y * R, cosC > 0];
   }
 
-  // Default to the first chart visible.
-  const firstScene = document.querySelector('.scene[data-viz]');
-  if (firstScene) activate(firstScene.dataset.viz);
+  // City coordinates per scene id. Used to drop a pulsing dot for the
+  // currently-active chapter and to set the rotation target.
+  const CITY_COORDS = {
+    'scene-dublin-apr':  [-6.27, 53.35],
+    'scene-berlin':      [13.40, 52.52],
+    'scene-brussels':    [4.35, 50.85],
+    'scene-tokyo':       [139.69, 35.69],
+    'scene-stockholm':   [18.07, 59.33],
+    'scene-monroe':      [-92.11, 32.51],
+    'scene-ottawa':      [-75.69, 45.42],
+    'scene-paris':       [2.35, 48.86],
+    'scene-dublin-jan':  [-6.27, 53.35],
+    'scene-whitehouse':  [-77.04, 38.90],
+  };
 
-  const scenes = Array.from(document.querySelectorAll('.scene[data-viz]'));
-  if (!scenes.length || !('IntersectionObserver' in window)) return;
-  const visible = new Map();
-  let currentViz = null;
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) visible.set(e.target, true);
-      else visible.delete(e.target);
-    });
-    let best = null, bestY = Infinity;
-    visible.forEach((_, el) => {
-      const t = el.getBoundingClientRect().top;
-      if (t < bestY && t < window.innerHeight / 2) { bestY = t; best = el; }
-    });
-    if (best && best.dataset.viz !== currentViz) {
-      currentViz = best.dataset.viz;
-      activate(currentViz);
-      // Dispatch a resize so the now-visible canvas redraws at the panel size.
-      window.dispatchEvent(new Event('resize'));
+  let dotEl = null;
+  let countryData = [];
+
+  // Expand a country geometry into a list of rings, where each ring is a
+  // list of [lng, lat] points.
+  function expandRings(geom, arcs) {
+    function decodeArc(idx) {
+      const reverse = idx < 0;
+      const a = reverse ? ~idx : idx;
+      const pts = arcs[a].slice();
+      return reverse ? pts.reverse() : pts;
     }
-  }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.25, 0.75] });
-  scenes.forEach(s => io.observe(s));
-})();
+    function toAbsolute(arcRefs) {
+      const ring = [];
+      arcRefs.forEach((idx, i) => {
+        const pts = decodeArc(idx);
+        if (i === 0) ring.push(...pts);
+        else ring.push(...pts.slice(1));
+      });
+      return ring;
+    }
+    if (geom.type === 'Polygon') return geom.arcs.map(toAbsolute);
+    if (geom.type === 'MultiPolygon') return geom.arcs.flatMap(p => p.map(toAbsolute));
+    return [];
+  }
 
+  // Cheap centroid: average lng/lat of first ring (used for back-side culling).
+  function approxCentroid(rings) {
+    if (!rings.length) return [0, 0];
+    const r = rings[0];
+    let lx = 0, ly = 0;
+    r.forEach(([a,b]) => { lx += a; ly += b; });
+    return [lx / r.length, ly / r.length];
+  }
+
+  // Project one ring with visibility-aware path breaks. Returns a path
+  // fragment (zero or more subpaths, each closed with Z) for the visible
+  // portion of the ring.
+  function projectRing(ring) {
+    let d = '';
+    let inSub = false;
+    for (let i = 0; i < ring.length; i++) {
+      const [x, y, vis] = project(ring[i][0], ring[i][1]);
+      if (vis) {
+        d += (inSub ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
+        inSub = true;
+      } else if (inSub) {
+        d += 'Z';
+        inSub = false;
+      }
+    }
+    if (inSub) d += 'Z';
+    return d;
+  }
+
+  function redraw() {
+    countryData.forEach(c => {
+      // Back-side culling: skip countries whose centroid isn't on the visible
+      // hemisphere. Cheap test that avoids weirdly mirrored geometry.
+      const [clng, clat] = c.centroid;
+      const dl = (clng - viewLng) * DEG;
+      const cosC = Math.sin(viewLat * DEG) * Math.sin(clat * DEG)
+                 + Math.cos(viewLat * DEG) * Math.cos(clat * DEG) * Math.cos(dl);
+      if (cosC < -0.15) { c.el.setAttribute('d', ''); return; }
+      let d = '';
+      c.rings.forEach(r => { d += projectRing(r); });
+      c.el.setAttribute('d', d);
+    });
+    if (dotEl && dotEl._sceneEl) positionDotNow(dotEl._sceneEl);
+  }
+
+  // Tween rotation from (viewLng, viewLat) to (targetLng, targetLat).
+  let tweenStart = 0, tweenDur = 900;
+  let fromLng = 0, fromLat = 0, toLng = 0, toLat = 0;
+  let animating = false;
+  function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+  function tick(ts) {
+    if (!tweenStart) tweenStart = ts;
+    const t = Math.min((ts - tweenStart) / tweenDur, 1);
+    const e = easeInOut(t);
+    viewLng = fromLng + (toLng - fromLng) * e;
+    viewLat = fromLat + (toLat - fromLat) * e;
+    redraw();
+    if (t < 1) requestAnimationFrame(tick);
+    else { animating = false; tweenStart = 0; }
+  }
+  function spinTo(lng, lat) {
+    // Shortest-path longitude tween: wrap so the diff is in [-180, 180].
+    let d = lng - viewLng;
+    while (d > 180)  d -= 360;
+    while (d < -180) d += 360;
+    fromLng = viewLng; fromLat = viewLat;
+    toLng = viewLng + d; toLat = lat;
+    tweenStart = 0;
+    if (!animating) { animating = true; requestAnimationFrame(tick); }
+  }
+
+  function positionDotNow(sceneEl) {
+    if (!dotEl || !sceneEl) return;
+    const coords = CITY_COORDS[sceneEl.id];
+    if (!coords) { dotEl.classList.remove('is-visible'); dotEl.classList.add('is-hidden'); return; }
+    const [x, y, vis] = project(coords[0], coords[1]);
+    dotEl.setAttribute('cx', x.toFixed(2));
+    dotEl.setAttribute('cy', y.toFixed(2));
+    if (vis) {
+      dotEl.classList.remove('is-hidden');
+      dotEl.classList.add('is-visible');
+    } else {
+      dotEl.classList.add('is-hidden');
+      dotEl.classList.remove('is-visible');
+    }
+  }
+
+  fetch(ATLAS_URL)
+    .then(r => r.json())
+    .then(topology => {
+      const arcs = decodeTopojson(topology);
+      const NS = 'http://www.w3.org/2000/svg';
+      countryData = topology.objects.countries.geometries.map(g => {
+        const rings = expandRings(g, arcs);
+        const el = document.createElementNS(NS, 'path');
+        el.setAttribute('class', 'cm-country');
+        el.setAttribute('data-id', String(g.id));
+        group.appendChild(el);
+        return { id: String(g.id), rings, centroid: approxCentroid(rings), el };
+      });
+      const svg = group.ownerSVGElement;
+      dotEl = document.createElementNS(NS, 'circle');
+      dotEl.setAttribute('class', 'cm-dot is-hidden');
+      dotEl.setAttribute('r', '2.8');
+      dotEl.setAttribute('cx', '0');
+      dotEl.setAttribute('cy', '0');
+      svg.appendChild(dotEl);
+      redraw();
+      setupHighlighter();
+    })
+    .catch(err => { console.warn('Country map failed to load', err); });
+
+  function setupHighlighter() {
+    const scenes = Array.from(document.querySelectorAll('.scene[data-country-id]'));
+    if (!scenes.length || !('IntersectionObserver' in window)) return;
+    let active = null;
+    function setActive(sceneEl) {
+      const id = sceneEl ? sceneEl.dataset.countryId : null;
+      group.querySelectorAll('.cm-country.is-active').forEach(p => p.classList.remove('is-active'));
+      if (!sceneEl || !id) {
+        if (dotEl) {
+          dotEl.classList.add('is-hidden');
+          dotEl.classList.remove('is-visible');
+          dotEl._sceneEl = null;
+        }
+        active = null;
+        return;
+      }
+      const path = group.querySelector('.cm-country[data-id="' + id + '"]');
+      if (path) path.classList.add('is-active');
+      if (dotEl) dotEl._sceneEl = sceneEl;
+      active = id;
+      const coords = CITY_COORDS[sceneEl.id];
+      if (coords) spinTo(coords[0], coords[1]);
+    }
+    const visible = new Map();
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) visible.set(e.target, true);
+        else visible.delete(e.target);
+      });
+      let best = null, bestY = Infinity;
+      visible.forEach((_, el) => {
+        const t = el.getBoundingClientRect().top;
+        if (t < bestY && t < window.innerHeight / 2) { bestY = t; best = el; }
+      });
+      setActive(best);
+    }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.25, 0.75] });
+    scenes.forEach(s => io.observe(s));
+  }
+})();
