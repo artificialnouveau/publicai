@@ -629,21 +629,9 @@
     border: 0.5px solid var(--hairline-strong) !important;
   }
 
-  /* Lang heatmap inside dense bento tile */
+  /* Lang chart: three stacked bars, segments sized by speaker count */
   .viz-canvas-wrap #dbLangHeatmap {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 2px;
-  }
-  .viz-canvas-wrap #dbLangHeatmap > div {
-    padding: 3px 2px !important;
-  }
-  .viz-canvas-wrap #dbLangHeatmap > div > div:nth-child(1) {
-    font-size: 0.58rem !important;
-  }
-  .viz-canvas-wrap #dbLangHeatmap > div > div:nth-child(2),
-  .viz-canvas-wrap #dbLangHeatmap > div > div:nth-child(3) {
-    display: none !important;
+    width: 100%;
   }
 
   /* Fade scroll padding inside dock body when peeked. Kept as pointer-events:
@@ -897,6 +885,7 @@
     pointer-events: auto;
     position: absolute;
     top: 0.45rem; right: 0.45rem;
+    z-index: 5; /* always sits above viz-info-body so it stays clickable */
     list-style: none;
     cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;

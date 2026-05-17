@@ -523,15 +523,39 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     {name:'Maltese',code:'MT',level:'weak',speakers:'~0.5M'}
   ];
   const colorMap = {strong:'#0057FF',moderate:'#6E6E69',weak:'#b8002e'};
-  languages.forEach(lang => {
-    const cell = document.createElement('div');
-    cell.style.cssText = `padding:8px 6px;border-radius:6px;border:0.5px solid ${colorMap[lang.level]}30;background:${colorMap[lang.level]}0a;text-align:center;`;
-    cell.innerHTML = `
-      <div style="font-family:var(--mono);font-size:0.78rem;font-weight:500;color:${colorMap[lang.level]};">${lang.code}</div>
-      <div style="font-size:0.56rem;color:var(--text-soft);margin-top:2px;">${lang.name}</div>
-      <div style="font-size:0.52rem;color:${colorMap[lang.level]}90;margin-top:1px;">${lang.speakers}</div>
-    `;
-    container.appendChild(cell);
+  const labelMap = {strong:'Strong', moderate:'Partial', weak:'At risk'};
+  const speakersM = s => parseFloat(String(s).replace(/[^0-9.]/g,'')) || 1;
+  // Group languages by support level, sort each group by speakers desc so the
+  // dominant segment leads each row and you can read the long tail at a glance.
+  const order = ['strong','moderate','weak'];
+  container.innerHTML = '';
+  container.style.cssText = 'display:flex; flex-direction:column; gap:6px;';
+  order.forEach(level => {
+    const langs = languages.filter(l => l.level === level)
+                           .sort((a,b) => speakersM(b.speakers) - speakersM(a.speakers));
+    const totalM = langs.reduce((s,l) => s + speakersM(l.speakers), 0);
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex; align-items:center; gap:8px; min-width:0;';
+
+    const label = document.createElement('div');
+    label.style.cssText = 'flex:0 0 78px; font-family:var(--mono); font-size:0.55rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-soft); line-height:1.2;';
+    label.innerHTML = `<div style="color:${colorMap[level]};">${labelMap[level]}</div><div style="font-size:0.5rem; opacity:0.7;">${langs.length} langs &middot; ${Math.round(totalM)}M</div>`;
+    row.appendChild(label);
+
+    const bar = document.createElement('div');
+    bar.style.cssText = 'flex:1 1 auto; display:flex; height:30px; border-radius:3px; overflow:hidden; min-width:0; gap:1px;';
+
+    langs.forEach(l => {
+      const cell = document.createElement('div');
+      const m = speakersM(l.speakers);
+      cell.style.cssText = `flex:${m} 1 0; min-width:14px; background:${colorMap[level]}; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:0.52rem; font-weight:700; color:#fff; cursor:default; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding: 0 2px;`;
+      cell.title = `${l.name} ~${l.speakers.replace(/[~]/g,'')} native speakers`;
+      cell.textContent = l.code;
+      bar.appendChild(cell);
+    });
+    row.appendChild(bar);
+    container.appendChild(row);
   });
 })();
 
@@ -963,94 +987,105 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     suspended: 'rgba(10,10,10,0.45)',
   };
 
+  // Bucket events by year and by "currently in force" vs "retracted/reversed".
+  const yearOf = e => '20' + e.date.split(' ')[1].replace("'", '');
+  const years = ['2022','2023','2024','2025','2026'];
+  const byYear = years.map(y => {
+    const yEvents = events.filter(e => yearOf(e) === y);
+    return {
+      year: y,
+      force: yEvents.filter(e => e.status === 'force').length,
+      retracted: yEvents.filter(e => e.status !== 'force').length,
+      total: yEvents.length,
+    };
+  });
+  const yMax = Math.max(...byYear.map(d => d.total), 5);
+
   let grown = reduceMotion ? 1 : 0;
   function draw(){
-    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
+    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = canvas.width / dpr, H = canvas.height / dpr;
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
-    const pad = { l: 8, r: 10, t: 22, b: 8 };
-    const dateColW = 48;
-    const pillW = 64;
-
-    grown = Math.min(grown + 0.025, 1);
+    const pad = { l: 30, r: 12, t: 20, b: 30 };
+    grown = Math.min(grown + 0.03, 1);
 
     // Header
-    ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font='10.5px JetBrains Mono, monospace';
+    ctx.fillStyle = 'rgba(10,10,10,0.55)';
+    ctx.font = '10px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
-    ctx.fillText('US AI EXPORT-CONTROL ACTIONS (2022–2026)', pad.l, 12);
+    ctx.fillText('US AI EXPORT ACTIONS / YEAR', pad.l, 12);
 
-    const usableH = H - pad.t - pad.b;
-    const rowH = Math.min(24, usableH / events.length);
-    const labelX = pad.l + dateColW + 14;
-    const labelMaxW = W - labelX - pillW - 12 - pad.r;
-
-    // Vertical timeline rail
-    const railX = pad.l + dateColW + 4;
-    ctx.strokeStyle = 'rgba(10,10,10,0.12)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(railX, pad.t);
-    ctx.lineTo(railX, pad.t + rowH * events.length);
-    ctx.stroke();
-
-    const drawTo = Math.max(1, Math.floor(events.length * grown));
-    events.forEach((e, i) => {
-      if (i >= drawTo) return;
-      const y = pad.t + i * rowH;
-      const cy = y + rowH / 2;
-
-      // Date
-      ctx.fillStyle = 'rgba(10,10,10,0.6)';
-      ctx.font='bold 10.5px JetBrains Mono, monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(e.date, pad.l, cy + 3);
-
-      // Marker dot
-      ctx.beginPath();
-      ctx.arc(railX, cy, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = colors[e.status] || '#1e293b';
-      ctx.fill();
-
-      // Label
-      ctx.fillStyle = e.status === 'rescinded' ? 'rgba(10,10,10,0.5)' : 'rgba(10,10,10,0.85)';
-      ctx.font = '10px Inter, sans-serif';
-      ctx.textAlign = 'left';
-      // Truncate label if too long
-      let label = e.label;
-      while (ctx.measureText(label).width > labelMaxW && label.length > 4) {
-        label = label.slice(0, -2);
-      }
-      if (label !== e.label) label = label.slice(0, -1) + '…';
-      ctx.fillText(label, labelX, cy + 3);
-
-      // Status pill
-      const pillX = W - pad.r - pillW;
-      const pillY = cy - 7;
-      ctx.fillStyle = colors[e.status] || '#1e293b';
-      ctx.globalAlpha = 0.18;
-      ctx.fillRect(pillX, pillY, pillW, 14);
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = colors[e.status] || '#1e293b';
-      ctx.lineWidth = 0.7;
-      ctx.strokeRect(pillX + 0.5, pillY + 0.5, pillW - 1, 13);
-      ctx.fillStyle = colors[e.status] || '#1e293b';
+    // Legend on the right
+    const legendY = 12;
+    const legendItems = [
+      { label: 'IN FORCE', color: '#0057FF' },
+      { label: 'RETRACTED', color: 'rgba(10,10,10,0.4)' },
+    ];
+    let lx = W - pad.r;
+    legendItems.slice().reverse().forEach(item => {
       ctx.font='bold 10px JetBrains Mono, monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(e.pill.toUpperCase(), pillX + pillW / 2, cy + 3);
+      const tw = ctx.measureText(item.label).width;
+      lx -= tw + 16;
+      ctx.fillStyle = item.color;
+      ctx.fillRect(lx, legendY - 7, 8, 8);
+      ctx.fillStyle = 'rgba(10,10,10,0.65)';
+      ctx.fillText(item.label, lx + 12, legendY);
+      lx -= 6;
+    });
 
-      // Strike-through for rescinded
-      if (e.status === 'rescinded') {
-        ctx.strokeStyle = 'rgba(10,10,10,0.35)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(labelX, cy);
-        ctx.lineTo(labelX + Math.min(labelMaxW, ctx.measureText(label).width), cy);
-        ctx.stroke();
+    const ch = H - pad.t - pad.b;
+    const cw = W - pad.l - pad.r;
+
+    // Y-axis ticks (0, peak)
+    ctx.strokeStyle = 'rgba(10,10,10,0.08)';
+    ctx.lineWidth = 0.5;
+    for (let v = 0; v <= yMax; v += 1) {
+      const y = pad.t + ch - (v / yMax) * ch;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(10,10,10,0.45)';
+    ctx.font='10px JetBrains Mono, monospace';
+    ctx.textAlign = 'right';
+    [0, Math.ceil(yMax / 2), yMax].forEach(v => {
+      const y = pad.t + ch - (v / yMax) * ch;
+      ctx.fillText(String(v), pad.l - 6, y + 3);
+    });
+
+    // Bars
+    const bw = Math.min(46, cw / byYear.length * 0.62);
+    const gap = cw / byYear.length;
+    byYear.forEach((d, i) => {
+      const cx = pad.l + gap * (i + 0.5);
+      const bx = cx - bw / 2;
+      const fH = (d.force / yMax) * ch * grown;
+      const rH = (d.retracted / yMax) * ch * grown;
+      // In-force segment (bottom)
+      ctx.fillStyle = '#0057FF';
+      ctx.fillRect(bx, pad.t + ch - fH, bw, fH);
+      // Retracted segment (stacked on top)
+      ctx.fillStyle = 'rgba(10,10,10,0.4)';
+      ctx.fillRect(bx, pad.t + ch - fH - rH, bw, rH);
+      // X-axis year label
+      ctx.fillStyle = 'rgba(10,10,10,0.7)';
+      ctx.font='bold 10.5px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.year, cx, pad.t + ch + 14);
+      // Total label above the bar
+      if (d.total > 0 && grown > 0.85) {
+        ctx.fillStyle = 'rgba(10,10,10,0.7)';
+        ctx.font='bold 10px JetBrains Mono, monospace';
+        ctx.fillText(String(d.total), cx, pad.t + ch - fH - rH - 4);
       }
     });
 
-    if (!reduceMotion) requestAnimationFrame(draw);
+    // Caption under x-axis
+    ctx.fillStyle = 'rgba(10,10,10,0.5)';
+    ctx.font='italic 10px Inter, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('2025: peak volatility (rules added and rescinded).', pad.l, pad.t + ch + 26);
+
+    if (!reduceMotion && grown < 1) requestAnimationFrame(draw);
   }
   draw();
 })();
@@ -1429,4 +1464,17 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.25, 0.75] });
     scenes.forEach(s => io.observe(s));
   }
+})();
+
+// --- viz-info overlay: close on outside click or Escape ---
+(function(){
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('details.viz-info[open]').forEach(d => {
+      if (!d.contains(e.target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('details.viz-info[open]').forEach(d => d.removeAttribute('open'));
+  });
 })();
