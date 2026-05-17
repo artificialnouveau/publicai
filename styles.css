@@ -601,17 +601,17 @@
   }
   .compute-constellation .cc-frontier-label,
   .compute-constellation .cc-side-label {
-    font-family: var(--mono); font-size: 6.5px; font-weight: 700;
+    font-family: var(--mono); font-size: 8px; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
     fill: var(--text-soft);
   }
   .compute-constellation .cc-frontier-label { fill: #b8002e; opacity: 0.85; }
   .compute-constellation .cc-pool-value {
-    font-family: var(--mono); font-size: 14px; font-weight: 700;
+    font-family: var(--mono); font-size: 16px; font-weight: 700;
     fill: #fff;
   }
   .compute-constellation .cc-pool-label {
-    font-family: var(--mono); font-size: 6.5px; font-weight: 700;
+    font-family: var(--mono); font-size: 8px; font-weight: 700;
     letter-spacing: 0.16em;
     fill: rgba(255,255,255,0.85);
   }
@@ -794,12 +794,21 @@
     .country-map .cm-dot.is-visible { animation: none; }
   }
 
-  /* === OUTCOME SPLIT: Your Coalition + Live Data, stacked full-width === */
+  /* === OUTCOME SPLIT: Your Coalition (left) + Live Data (right) side by side === */
   .outcome-split {
     display: block;
     margin-top: 2rem;
   }
-  .outcome-split-design { min-width: 0; margin-bottom: 3rem; }
+  .outcome-split-design { min-width: 0; margin-bottom: 2rem; }
+  @media (min-width: 1200px) {
+    .outcome-split {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 2.25rem;
+      align-items: start;
+    }
+    .outcome-split-design { margin-bottom: 0; }
+  }
 
   /* === SUPPORTING DATA (Live data: dense bento grid of all 8 charts) === */
   .supporting-data {
@@ -814,25 +823,25 @@
     margin-top: 1rem;
     counter-reset: viz;
   }
-  /* Bento at 6-col grid: every row totals 6, exactly 2 rows for all 8 tiles. */
-  @media (min-width: 1100px) {
+  /* Side-by-side (>=1200px): 2-col grid in the right column.
+     Wide charts (chord, timeline, constellation) span both cols. */
+  @media (min-width: 1200px) {
     .supporting-data-grid {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-auto-rows: minmax(0, auto);
+      gap: 0.7rem;
     }
-    /* Row 1 sums to 6: 2+2+1+1 */
     .supporting-data-grid > :nth-child(1) { grid-column: span 2; }
     .supporting-data-grid > :nth-child(2) { grid-column: span 2; }
     .supporting-data-grid > :nth-child(3) { grid-column: span 1; }
     .supporting-data-grid > :nth-child(4) { grid-column: span 1; }
-    /* Row 2 sums to 6: 1+1+2+2 */
     .supporting-data-grid > :nth-child(5) { grid-column: span 1; }
     .supporting-data-grid > :nth-child(6) { grid-column: span 1; }
     .supporting-data-grid > :nth-child(7) { grid-column: span 2; }
     .supporting-data-grid > :nth-child(8) { grid-column: span 2; }
   }
-  /* Intermediate: 4-col compact grid (still pretty dense). */
-  @media (min-width: 700px) and (max-width: 1099px) {
+  /* Intermediate (stacked below coalition): 4-col compact grid. */
+  @media (min-width: 700px) and (max-width: 1199px) {
     .supporting-data-grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
@@ -862,14 +871,14 @@
     font-family: var(--font); font-size: 0.95rem; line-height: 1.6;
     color: var(--text-soft);
   }
-  /* Dense bento tile: no borders, just hairlines between cells via gap + outer frame. */
+  /* Bento tile: clean frame, breathing room, numbered ID in the corner. */
   .viz-card {
     counter-increment: viz;
     background: var(--ink);
     border: 1px solid var(--hairline);
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
-    padding: 0.65rem 0.75rem 0.55rem;
+    padding: 0.85rem 1rem 0.75rem;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -877,11 +886,11 @@
   .viz-card::before {
     content: counter(viz, decimal-leading-zero);
     position: absolute;
-    top: 0.55rem; right: 0.6rem;
+    top: 0.6rem; right: 0.75rem;
     font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
     letter-spacing: 0.12em;
     color: var(--text-soft);
-    opacity: 0.55;
+    opacity: 0.45;
   }
   .viz-card .viz-pane-inner {
     display: flex;
@@ -910,66 +919,67 @@
   }
   .viz-card .viz-canvas-wrap canvas {
     width: 100%;
-    height: 120px;
+    height: 170px;
     display: block;
   }
-  .viz-card .viz-canvas-wrap[data-tall] canvas { height: 140px; }
+  .viz-card .viz-canvas-wrap[data-tall] canvas { height: 190px; }
   /* Wide bento tiles (chord, timeline, constellation) get more chart height. */
   .supporting-data-grid > :nth-child(1) .viz-canvas-wrap canvas,
   .supporting-data-grid > :nth-child(2) .viz-canvas-wrap canvas,
   .supporting-data-grid > :nth-child(7) .viz-canvas-wrap canvas,
   .supporting-data-grid > :nth-child(8) .viz-canvas-wrap canvas {
-    height: 150px;
+    height: 210px;
   }
-  .supporting-data-grid > :nth-child(8) .compute-constellation { height: 150px; }
+  .supporting-data-grid > :nth-child(8) .compute-constellation { height: 200px; }
+  .compute-constellation { height: 180px; }
 
-  /* Compact header: date pill + name on a single tight row */
+  /* Header: date pill + name on a single row, room reserved for the corner counter */
   .viz-card .viz-header {
-    display: flex; align-items: center; gap: 0.4rem;
-    margin: 0 0 0.4rem;
-    padding-right: 1.4rem; /* leave room for the counter */
+    display: flex; align-items: center; gap: 0.55rem;
+    margin: 0 0 0.65rem;
+    padding-right: 1.6rem;
     flex-wrap: nowrap;
     min-width: 0;
   }
   .viz-date-pill {
     display: inline-flex; align-items: center;
-    padding: 0.14rem 0.4rem;
+    padding: 0.2rem 0.5rem;
     background: var(--accent);
     color: #fff;
-    border-radius: 2px;
-    font-family: var(--mono); font-size: 0.52rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: 3px;
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.13em; text-transform: uppercase;
     flex-shrink: 0;
   }
   .viz-name {
-    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
-    letter-spacing: 0.13em; text-transform: uppercase;
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--text-soft);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  /* Footer: single line of micro-stats, separated by hairlines */
+  /* Footer: single line of mini-stats, separated by hairlines */
   .viz-card .viz-footer {
     display: flex;
-    gap: 0.45rem;
-    margin-top: 0.4rem;
-    padding-top: 0.4rem;
+    gap: 0.65rem;
+    margin-top: 0.65rem;
+    padding-top: 0.55rem;
     border-top: 1px solid var(--hairline);
     min-width: 0;
   }
   .viz-mini-stat {
-    display: flex; flex-direction: column; gap: 0.05rem;
+    display: flex; flex-direction: column; gap: 0.1rem;
     flex: 1 1 0;
     min-width: 0;
     overflow: hidden;
   }
   .viz-mini-stat + .viz-mini-stat {
     border-left: 1px solid var(--hairline);
-    padding-left: 0.45rem;
+    padding-left: 0.65rem;
   }
   .viz-mini-value {
-    font-family: var(--mono); font-size: 0.72rem; font-weight: 700;
+    font-family: var(--mono); font-size: 0.92rem; font-weight: 700;
     color: var(--accent);
     letter-spacing: -0.01em;
     line-height: 1.1;
@@ -978,10 +988,10 @@
     white-space: nowrap;
   }
   .viz-mini-label {
-    font-family: var(--mono); font-size: 0.42rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: var(--mono); font-size: 0.5rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--text-soft);
-    line-height: 1.2;
+    line-height: 1.25;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

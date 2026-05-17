@@ -565,7 +565,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0,0,W,H);
     const fs=Math.max(7, Math.min(9, W*0.025));
-    const lfs=Math.max(8, Math.min(11, W*0.03));
+    const lfs=Math.max(10, Math.min(13, W*0.03));
     ctx.font=fs+'px Inter, sans-serif';ctx.textAlign='center';
     colHeaders.forEach(ch=>{ctx.fillStyle='rgba(10,10,10,0.4)';ctx.fillText(ch.label,ch.x*W,12);});
     flows.forEach((f,fi)=>{
@@ -621,9 +621,9 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     const insetPx = W < 380 ? 80 : 100;
     const LX = Math.max(0.18, insetPx / W);
     const RX = 1 - LX;
-    const tfs=Math.max(7, Math.min(9, W*0.022));
-    const lfs=Math.max(8, Math.min(11, W*0.026));
-    const pfs=Math.max(7, Math.min(10, W*0.024));
+    const tfs=Math.max(9, Math.min(11, W*0.022));
+    const lfs=Math.max(10, Math.min(13, W*0.026));
+    const pfs=Math.max(9, Math.min(12, W*0.024));
     const dotR=Math.max(3, Math.min(5, W*0.012));
     // Headers sit ABOVE the columns, not at chart top, so they never
     // collide with the first row of labels at narrow widths.
@@ -720,7 +720,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.fillText('$'+v+'M',pad.l-8,y+4);
     }
     // Y-axis title
-    ctx.save();ctx.translate(14,pad.t+ch/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='rgba(10,10,10,0.35)';ctx.font='9px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('ARR ($M)',0,0);ctx.restore();
+    ctx.save();ctx.translate(14,pad.t+ch/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='rgba(10,10,10,0.35)';ctx.font='10px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('ARR ($M)',0,0);ctx.restore();
 
     // X-axis baseline + year ticks
     ctx.strokeStyle='rgba(10,10,10,0.25)';ctx.lineWidth=0.8;
@@ -756,7 +756,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
         const y=pad.t+ch-(Math.min(p.y*grown,p.y)/maxY)*ch;
         ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
         if(p.label&&grown>0.8){
-          ctx.fillStyle='rgba(10,10,10,0.55)';ctx.font='8px Inter, sans-serif';ctx.textAlign='center';
+          ctx.fillStyle='rgba(10,10,10,0.55)';ctx.font='10px Inter, sans-serif';ctx.textAlign='center';
           ctx.fillText(p.label,x,y>pad.t+30?y-10:y+16);
         }
       });
@@ -831,7 +831,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
     // Header label
     ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.font='10.5px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
     ctx.fillText('PUBLIC AI COMMITMENT — €B (STATE)', pad.l, 11);
 
@@ -848,7 +848,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.lineTo(x, pad.t + ch);
       ctx.stroke();
       ctx.fillStyle = 'rgba(10,10,10,0.30)';
-      ctx.font = '8px JetBrains Mono, monospace';
+      ctx.font='10px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
       ctx.fillText('€' + v, x, pad.t + ch + 8);
     });
@@ -902,7 +902,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       // State value label (right of solid bar)
       if (grown > 0.5) {
         ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.68)';
-        ctx.font = 'bold 9.5px JetBrains Mono, monospace';
+        ctx.font='bold 10.5px JetBrains Mono, monospace';
         ctx.textAlign = 'left';
         const labelX = Math.min(pad.l + stateW + 5, pad.l + cw - 38);
         const val = d.state >= 1 ? d.state.toFixed(1) : d.state.toFixed(2);
@@ -912,7 +912,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       // Aspirational note above the bar
       if (d.asp > 0 && grown > 0.85) {
         ctx.fillStyle = d.highlight ? 'rgba(0,87,255,0.7)' : 'rgba(10,10,10,0.45)';
-        ctx.font = 'italic 8px Inter, sans-serif';
+        ctx.font='italic 10px Inter, sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
       }
@@ -976,7 +976,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
     // Header
     ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.font='10.5px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
     ctx.fillText('US AI EXPORT-CONTROL ACTIONS (2022–2026)', pad.l, 12);
 
@@ -1002,7 +1002,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
       // Date
       ctx.fillStyle = 'rgba(10,10,10,0.6)';
-      ctx.font = 'bold 9px JetBrains Mono, monospace';
+      ctx.font='bold 10.5px JetBrains Mono, monospace';
       ctx.textAlign = 'left';
       ctx.fillText(e.date, pad.l, cy + 3);
 
@@ -1035,7 +1035,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       ctx.lineWidth = 0.7;
       ctx.strokeRect(pillX + 0.5, pillY + 0.5, pillW - 1, 13);
       ctx.fillStyle = colors[e.status] || '#1e293b';
-      ctx.font = 'bold 8px JetBrains Mono, monospace';
+      ctx.font='bold 10px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(e.pill.toUpperCase(), pillX + pillW / 2, cy + 3);
 
@@ -1099,7 +1099,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
     // Header
     ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.font='10.5px JetBrains Mono, monospace';
     ctx.textAlign = 'left';
     ctx.fillText('% OF EU-TRAINED AI RESEARCHERS WORKING IN EU', pad.l, 12);
 
@@ -1107,7 +1107,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.strokeStyle = 'rgba(10,10,10,0.07)';
     ctx.lineWidth = 0.5;
     ctx.fillStyle = 'rgba(10,10,10,0.4)';
-    ctx.font = '8.5px JetBrains Mono, monospace';
+    ctx.font='10.5px JetBrains Mono, monospace';
     ctx.textAlign = 'right';
     [40, 45, 50].forEach(v => {
       const y = pad.t + ch - ((v - yMin) / (yMax - yMin)) * ch;
@@ -1130,7 +1130,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     ctx.stroke();
     ctx.restore();
     ctx.fillStyle = 'rgba(0,87,255,0.7)';
-    ctx.font = 'italic 8.5px Inter, sans-serif';
+    ctx.font='italic 10.5px Inter, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('2019 baseline', pad.l + 4, baseY - 4);
 
@@ -1174,7 +1174,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
 
       // X-axis quarter label
       ctx.fillStyle = 'rgba(10,10,10,0.5)';
-      ctx.font = '8.5px JetBrains Mono, monospace';
+      ctx.font='10.5px JetBrains Mono, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(pt.p.q, pt.x, pad.t + ch + 14);
 
@@ -1183,7 +1183,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       const isEndpoint = i === 0 || i === xy.length - 1;
       if ((isAnchor || isEndpoint) && grown > 0.75) {
         ctx.fillStyle = '#b8002e';
-        ctx.font = 'bold 9.5px JetBrains Mono, monospace';
+        ctx.font='bold 10.5px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(pt.p.v.toFixed(1) + '%', pt.x, pt.y - 8);
       }
