@@ -447,7 +447,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Sep 2026</span><span class="viz-name">Capital flow</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>The funding pipeline. EU AI investment ($14B) vs the US&rsquo;s $109B in 2024, plus where European founders go after raising at home: 57% relocate westward.</p>
           <h4>Why it matters here</h4>
@@ -457,7 +457,7 @@
             <li>57% of EU founders who relocate go to the US; net tech-talent inflow collapsed 52k (2022) &rarr; 26k (2024). <a href="https://www.stateofeuropeantech.com/" target="_blank" rel="noopener">Atomico State of European Tech 2024/2025</a>.</li>
             <li>Flow weights between blocs are stylised; treat the direction of the asymmetry, not the magnitude of any single arrow, as the load-bearing claim.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap">
           <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
         </div>
@@ -473,7 +473,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Apr 2026</span><span class="viz-name">Talent migration</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>Top-tier AI researchers (NeurIPS authors) tracked from education to current employer. The arrows mostly point one way.</p>
           <h4>Why it matters here</h4>
@@ -484,7 +484,7 @@
             <li>LinkedIn data shows US employs ~2x as many AI-skilled professionals as the EU. <a href="https://economicgraph.linkedin.com/en-us/research/ai-talent-in-the-eu" target="_blank" rel="noopener">LinkedIn Economic Graph</a>.</li>
             <li>57% of European AI professionals did their undergrad outside Europe; in the US that figure is 38%. <a href="https://hai.stanford.edu/assets/files/hai_ai-index-report-2025_chapter4_final.pdf" target="_blank" rel="noopener">Stanford AI Index 2025 ch. 4</a>.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap" data-tall>
           <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
         </div>
@@ -500,7 +500,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Jun 2026</span><span class="viz-name">Language coverage</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>Of 24 official EU languages, frontier models support 3 well (English, French, Spanish). 8 get partial coverage. 13+ are at risk of digital extinction.</p>
           <h4>Why it matters here</h4>
@@ -511,7 +511,7 @@
             <li>Native-speaker counts shown on cells: standard demographic estimates (Eurostat &amp; Ethnologue, ranges).</li>
             <li>Strong / Moderate / Weak buckets are simplified from the ELE multidimensional readiness scoring; specific scores per language are published in the ELE country deliverables.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap">
           <div id="dbLangHeatmap"></div>
         </div>
@@ -527,7 +527,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Dec 2026</span><span class="viz-name">Coalition revenue</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>Mistral 20x to $400M ARR, Cohere 11x to $240M, DeepL up to $185M. The European labs that exist today are growing fast &mdash; just not coordinated.</p>
           <h4>Why it matters here</h4>
@@ -538,7 +538,7 @@
             <li>DeepL revenue ~&euro;141M (2023) &rarr; ~&euro;185M (2024), per company financials and reporting. <a href="https://sifted.eu/articles/deepl-revenue-growth-2024" target="_blank" rel="noopener">Sifted</a>.</li>
             <li>Animation is the entrance only; absolute ARR values are nominal USD / EUR converted at ~1:1 for visual comparability.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap">
           <canvas id="dbGrowthChart" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
         </div>
@@ -554,7 +554,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Apr 2027</span><span class="viz-name">Public AI capex</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>State-committed public AI funding (solid bars, in &euro;B) for the major European economies plus the EU level. Hashed extension flags the &ldquo;mobilisation&rdquo; or private-pipeline pledge often quoted alongside.</p>
           <h4>Why it matters here</h4>
@@ -567,7 +567,7 @@
             <li>UK &euro;2.4B (&pound;2B): AI Opportunities Action Plan, Clifford, Jan 2025. <a href="https://assets.publishing.service.gov.uk/media/67851771f0528401055d2329/ai_opportunities_action_plan.pdf" target="_blank" rel="noopener">UK Gov</a>.</li>
             <li>Spain &euro;2.1B (ENIA 2024-25); Italy &euro;1B (CDP AI fund, 5-yr); Netherlands &euro;204M (AiNed); Nordics ~&euro;0.35B aggregate. Sources: <a href="https://www.lamoncloa.gob.es/lang/en/gobierno/councilministers/paginas/2024/20240514-council-press-conference.aspx" target="_blank" rel="noopener">La Moncloa</a>, <a href="https://decode39.com/8856/rome-unveils-billion-fund-boost-italian-ai/" target="_blank" rel="noopener">Decode39</a>, <a href="https://www.nwo.nl/en/researchprogrammes/national-growth-fund/ained" target="_blank" rel="noopener">NWO AiNed</a>, <a href="https://www.sigma2.no/news/2024/new-chapter-lumi-ai" target="_blank" rel="noopener">Sigma2</a>.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap">
           <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
         </div>
@@ -583,7 +583,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Jan 2026</span><span class="viz-name">Brain drain timeline</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>The share of EU-trained AI researchers still working in the EU, quarter by quarter Q4 2024 through Q1 2026. The 2019 baseline (~50%) and the 2022 MacroPolo anchor (~43%) are reference lines.</p>
           <h4>Why it matters here</h4>
@@ -596,7 +596,7 @@
             <li>Q1 2026 directional read: &ldquo;European countries are losing significant AI talent.&rdquo; <a href="https://www.euronews.com/my-europe/2026/01/29/the-ai-brain-drain-why-europe-cant-keep-the-talent-it-trains" target="_blank" rel="noopener">Euronews, Jan 2026</a>.</li>
             <li>Quarterly points Q4 2024 &ndash; Q1 2026 are interpolated between MacroPolo and Atomico annual anchors; treat the line shape (decline, not bottoming) as the load-bearing claim.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap">
           <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
         </div>
@@ -612,7 +612,7 @@
     <div class="viz-card">
       <div class="viz-header"><span class="viz-date-pill">Apr 2027</span><span class="viz-name">US export controls</span></div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>The US chip / AI export-control timeline from Oct 2022 to early 2026, with each action marked &ldquo;in force&rdquo; or &ldquo;rescinded.&rdquo; The headline shift is the AI Diffusion Rule: published Jan 2025, rescinded May 2025; the H20 license requirement reversed two months later.</p>
           <h4>Why it matters here</h4>
@@ -629,7 +629,7 @@
             <li>Jan 13 2026 H200 / MI325X case-by-case license posture. <a href="https://www.mayerbrown.com/en/insights/publications/2026/01/administration-policies-on-advanced-ai-chips-codified" target="_blank" rel="noopener">Mayer Brown</a>.</li>
             <li>Jan 14 2026 Section 232 25% semiconductor tariff. <a href="https://www.pillsburylaw.com/en/news-and-insights/trump-advanced-ai-semiconductors-actions.html" target="_blank" rel="noopener">Pillsbury</a>.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap" data-tall>
           <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
         </div>
@@ -648,7 +648,7 @@
         <span class="viz-name">Compute infrastructure</span>
       </div>
       <div class="viz-pane-inner">
-        <div class="viz-explainer">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
           <h4>What it shows</h4>
           <p>Each EuroHPC supercomputer today runs separately under its host state. Pooled into one coalition cluster, the combined ~2 exaFLOPS approaches frontier training scale &mdash; in the same order of magnitude as the largest US hyperscaler training clusters.</p>
           <h4>Why it matters here</h4>
@@ -659,7 +659,7 @@
             <li>1,136+ global hyperscale data centres at end-2024, with the US holding the majority. <a href="https://www.srgresearch.com/articles/hyperscale-data-center-count-hits-1136" target="_blank" rel="noopener">Synergy Research</a>.</li>
             <li>JUPITER (J&uuml;lich): &euro;500M total, half EU / half Germany; first European exascale system, designated AI Factory host. <a href="https://www.eurohpc-ju.europa.eu/new-jupiter-module-strengthens-leading-position-europes-upcoming-exascale-supercomputer-2024-11-18_en" target="_blank" rel="noopener">EuroHPC</a>.</li>
           </ol></details>
-        </div>
+        </div></details>
         <div class="viz-canvas-wrap compute-pool-wrap" role="img" aria-label="If EuroHPC pooled into one coalition cluster, combined compute approaches frontier scale">
           <svg class="compute-constellation" viewBox="0 0 360 170" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>

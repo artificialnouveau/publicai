@@ -819,8 +819,8 @@
   .supporting-data-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.45rem;
-    margin-top: 1rem;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
     counter-reset: viz;
   }
   /* Side-by-side (>=1200px): 2-col grid in the right column.
@@ -853,44 +853,30 @@
   @media (max-width: 600px) {
     .supporting-data-grid { grid-template-columns: 1fr; gap: 0.55rem; }
   }
-  /* Section title compressed */
-  .supporting-data-header { margin-bottom: 0.25rem; }
-  .supporting-data-title { font-size: 0.7rem; margin-bottom: 0.35rem; }
-  .supporting-data-note { font-size: 0.78rem; line-height: 1.4; }
+  /* Section title compressed to a single thin line */
   .supporting-data-header {
+    margin-bottom: 0.1rem;
     max-width: 60ch;
   }
   .supporting-data-title {
     font-family: var(--mono);
-    font-size: 0.78rem; font-weight: 700;
+    font-size: 0.6rem; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-  }
-  .supporting-data-note {
-    font-family: var(--font); font-size: 0.95rem; line-height: 1.6;
     color: var(--text-soft);
+    margin-bottom: 0;
   }
-  /* Bento tile: clean frame, breathing room, numbered ID in the corner. */
+  .supporting-data-note { display: none; }
+  /* Bento tile: clean frame, info button in the top-right corner. */
   .viz-card {
     counter-increment: viz;
     background: var(--ink);
     border: 1px solid var(--hairline);
     border-radius: 5px;
     overflow: hidden;
-    padding: 0.85rem 1rem 0.75rem;
+    padding: 0.7rem 0.85rem 0.6rem;
     display: flex;
     flex-direction: column;
     position: relative;
-  }
-  .viz-card::before {
-    content: counter(viz, decimal-leading-zero);
-    position: absolute;
-    top: 0.6rem; right: 0.75rem;
-    font-family: var(--mono); font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--text-soft);
-    opacity: 0.45;
   }
   .viz-card .viz-pane-inner {
     display: flex;
@@ -899,14 +885,99 @@
     max-width: none;
     min-width: 0;
   }
-  /* Hide the long story-side explainer in the dense grid. */
-  .viz-card .viz-explainer > h4,
-  .viz-card .viz-explainer > p { display: none; }
-  .viz-card .viz-explainer {
-    margin: 0;
-    max-width: none;
+
+  /* Info button: tiny "i" in the top-right; opens an overlay with explainer + sources. */
+  .viz-info {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
   }
-  .viz-card .viz-explainer details.viz-sources { display: none; }
+  .viz-info > summary.viz-info-btn {
+    pointer-events: auto;
+    position: absolute;
+    top: 0.45rem; right: 0.45rem;
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px;
+    background: var(--ink);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 50%;
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+    font-style: italic;
+    color: var(--text-soft);
+    line-height: 1;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .viz-info > summary.viz-info-btn::-webkit-details-marker { display: none; }
+  .viz-info > summary.viz-info-btn::marker { content: ''; }
+  .viz-info > summary.viz-info-btn:hover {
+    background: var(--paper-2);
+    color: var(--text);
+    border-color: var(--text-soft);
+  }
+  .viz-info[open] > summary.viz-info-btn {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .viz-info[open] > summary.viz-info-btn::before {
+    content: '\00d7'; /* multiplication sign as a "close" affordance */
+    font-style: normal;
+    font-size: 0.95rem;
+  }
+  .viz-info[open] > summary.viz-info-btn { font-size: 0; }
+
+  /* Overlay body: covers the card, scrollable. */
+  .viz-info-body {
+    pointer-events: auto;
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    padding: 2.5rem 1rem 1rem;
+    overflow-y: auto;
+    font-family: var(--font);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--text);
+    border-radius: inherit;
+  }
+  .viz-info-body h4 {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0.7rem 0 0.25rem;
+  }
+  .viz-info-body h4:first-child { margin-top: 0; }
+  .viz-info-body p { margin: 0 0 0.55rem; }
+  .viz-info-body details.viz-sources {
+    margin-top: 0.65rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .viz-info-body details.viz-sources > summary {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    cursor: pointer;
+    list-style: revert;
+    margin-bottom: 0.4rem;
+  }
+  .viz-info-body .viz-footnotes {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.7rem;
+    color: var(--text-soft);
+  }
+  .viz-info-body .viz-footnotes li { margin-bottom: 0.35rem; line-height: 1.4; }
+  .viz-info-body .viz-footnotes a { color: var(--accent); text-decoration: underline; }
   .viz-card .viz-canvas-wrap {
     background: transparent;
     border: 0;
@@ -933,11 +1004,11 @@
   .supporting-data-grid > :nth-child(8) .compute-constellation { height: 200px; }
   .compute-constellation { height: 180px; }
 
-  /* Header: date pill + name on a single row, room reserved for the corner counter */
+  /* Header: date pill + name on a single row, room reserved for the info button */
   .viz-card .viz-header {
-    display: flex; align-items: center; gap: 0.55rem;
-    margin: 0 0 0.65rem;
-    padding-right: 1.6rem;
+    display: flex; align-items: center; gap: 0.45rem;
+    margin: 0 0 0.5rem;
+    padding-right: 2rem;
     flex-wrap: nowrap;
     min-width: 0;
   }
