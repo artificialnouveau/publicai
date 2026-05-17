@@ -592,32 +592,46 @@
     .compute-stat-number { font-size: 1.25rem; }
   }
 
-  /* Compute constellation: 11 EuroHPC systems streaming into a pooled core. */
+  /* Compute stack: 11 named EuroHPC contributors as one stacked bar,
+     compared with a single US frontier cluster reference bar below it. */
   .compute-pool-wrap { padding: 0.4rem; }
-  .compute-constellation {
+  .compute-stack {
     display: block;
     width: 100%;
-    height: 150px;
+    height: 100%;
   }
-  .compute-constellation .cc-frontier-label,
-  .compute-constellation .cc-side-label {
-    font-family: var(--mono); font-size: 8px; font-weight: 700;
+  .compute-stack .cs-title {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
     fill: var(--text-soft);
   }
-  .compute-constellation .cc-frontier-label { fill: #b8002e; opacity: 0.85; }
-  .compute-constellation .cc-pool-value {
-    font-family: var(--mono); font-size: 16px; font-weight: 700;
+  .compute-stack .cs-row-label {
+    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    fill: rgba(10,10,10,0.7);
+  }
+  .compute-stack .cs-code {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
     fill: #fff;
   }
-  .compute-constellation .cc-pool-label {
-    font-family: var(--mono); font-size: 8px; font-weight: 700;
-    letter-spacing: 0.16em;
-    fill: rgba(255,255,255,0.85);
+  .compute-stack .cs-code-sm {
+    font-size: 7.5px;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .compute-constellation .cc-particles { display: none; }
-    .compute-constellation .cc-pool circle:nth-child(2) { animation: none; }
+  .compute-stack .cs-total {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    fill: var(--accent);
+  }
+  .compute-stack .cs-frontier-label {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    fill: #b8002e;
+  }
+  .compute-stack .cs-axis {
+    font-family: var(--mono); font-size: 8.5px; font-weight: 600;
+    fill: rgba(10,10,10,0.5);
+  }
+  .compute-stack .cs-legend {
+    font-family: var(--font); font-size: 8.5px;
+    fill: rgba(10,10,10,0.65);
   }
 
   /* HF live cards */
@@ -983,15 +997,14 @@
     display: block;
   }
   .viz-card .viz-canvas-wrap[data-tall] canvas { height: 190px; }
-  /* Wide bento tiles (chord, timeline, constellation) get more chart height. */
+  /* Wide bento tiles (chord, timeline, compute) get more chart height. */
   .supporting-data-grid > :nth-child(1) .viz-canvas-wrap canvas,
   .supporting-data-grid > :nth-child(2) .viz-canvas-wrap canvas,
   .supporting-data-grid > :nth-child(7) .viz-canvas-wrap canvas,
   .supporting-data-grid > :nth-child(8) .viz-canvas-wrap canvas {
     height: 210px;
   }
-  .supporting-data-grid > :nth-child(8) .compute-constellation { height: 200px; }
-  .compute-constellation { height: 180px; }
+  .compute-stack { height: 210px; }
 
   /* Header: date pill + name on a single row, room reserved for the info button */
   .viz-card .viz-header {
