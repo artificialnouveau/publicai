@@ -839,9 +839,11 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
-      "cap tal"
+      "cap cap"
+      "tal tal"
       "lan lan"
-      "def nrg"
+      "def def"
+      "nrg nrg"
       "brn brn"
       "exp exp"
       "clo tok"
@@ -867,7 +869,11 @@
   .supporting-data-grid > :nth-child(13) { grid-area: dfn; } /* defence-AI (Stockholm) */
   .supporting-data-grid > :nth-child(14) { grid-area: egy; } /* France energy (Paris) */
   /* Keep the full-width bands large but not blown up. */
+  .supporting-data-grid > :nth-child(1) .mn-chart,
+  .supporting-data-grid > :nth-child(2) .mn-chart,
   .supporting-data-grid > :nth-child(3) .mn-chart,
+  .supporting-data-grid > :nth-child(4) .mn-chart,
+  .supporting-data-grid > :nth-child(5) .mn-chart,
   .supporting-data-grid > :nth-child(6) .mn-chart,
   .supporting-data-grid > :nth-child(7) .mn-chart,
   .supporting-data-grid > :nth-child(14) .mn-chart { max-width: 480px; margin: 0 auto; }
