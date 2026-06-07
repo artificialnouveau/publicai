@@ -838,8 +838,12 @@
       align-items: start;
       transition: grid-template-columns 0.35s ease;
     }
-    .outcome-split.split-data   { grid-template-columns: minmax(0, 0.5fr) minmax(0, 1.75fr); }
-    .outcome-split.split-design { grid-template-columns: minmax(380px, 1.75fr) minmax(0, 0.5fr); }
+    /* Maximize one side: hide the other entirely. */
+    .outcome-split.split-design { grid-template-columns: 1fr; }
+    .outcome-split.split-design .supporting-data { display: none; }
+    .outcome-split.split-data { grid-template-columns: 1fr; }
+    .outcome-split.split-data .outcome-split-design { display: none; }
+    .outcome-split.split-data .supporting-data { border-left: 0; padding-left: 0; }
     .outcome-split-design { margin-bottom: 0; position: sticky; top: calc(56px + 1rem); }
     /* Dotted seam hinting that the left decisions and right data belong together. */
     .supporting-data {
