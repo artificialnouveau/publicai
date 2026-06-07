@@ -881,24 +881,26 @@
   .supporting-data-grid > .story-act { margin-left: 44px; }
   .supporting-data-grid .mn-chart,
   .supporting-data-grid canvas { max-width: 520px; margin-left: auto; margin-right: auto; }
-  /* Narrative order: each beat followed by the charts that make its point. */
+  /* Order so each decision's linked chart runs in the SAME top-to-bottom
+     sequence as the decisions (Who joins -> Who anchors -> held together ->
+     covers -> MVP), keeping the connector lines short and non-crossing. */
   .supporting-data-grid > :nth-child(15) { order: 1; }  /* Act 1 */
-  .supporting-data-grid > :nth-child(1)  { order: 2; }  /* capital flow */
-  .supporting-data-grid > :nth-child(2)  { order: 3; }  /* talent */
-  .supporting-data-grid > :nth-child(6)  { order: 4; }  /* brain drain */
+  .supporting-data-grid > :nth-child(10) { order: 2; }  /* why pool      <- Who joins */
+  .supporting-data-grid > :nth-child(1)  { order: 3; }  /* capital flow */
+  .supporting-data-grid > :nth-child(2)  { order: 4; }  /* talent */
   .supporting-data-grid > :nth-child(3)  { order: 5; }  /* languages */
-  .supporting-data-grid > :nth-child(16) { order: 6; }  /* Act 2 */
-  .supporting-data-grid > :nth-child(12) { order: 7; }  /* cloud */
-  .supporting-data-grid > :nth-child(7)  { order: 8; }  /* export controls */
-  .supporting-data-grid > :nth-child(8)  { order: 9; }  /* compute */
-  .supporting-data-grid > :nth-child(17) { order: 10; } /* Act 3 */
-  .supporting-data-grid > :nth-child(10) { order: 11; } /* why pool */
-  .supporting-data-grid > :nth-child(9)  { order: 12; } /* tokyo */
-  .supporting-data-grid > :nth-child(13) { order: 13; } /* defence-AI */
-  .supporting-data-grid > :nth-child(5)  { order: 14; } /* capex */
-  .supporting-data-grid > :nth-child(14) { order: 15; } /* france energy */
-  .supporting-data-grid > :nth-child(4)  { order: 16; } /* revenue */
-  .supporting-data-grid > :nth-child(11) { order: 17; } /* pooled vs alone */
+  .supporting-data-grid > :nth-child(6)  { order: 6; }  /* brain drain */
+  .supporting-data-grid > :nth-child(16) { order: 7; }  /* Act 2 */
+  .supporting-data-grid > :nth-child(4)  { order: 8; }  /* revenue       <- Who anchors */
+  .supporting-data-grid > :nth-child(7)  { order: 9; }  /* export controls <- held together */
+  .supporting-data-grid > :nth-child(12) { order: 10; } /* cloud */
+  .supporting-data-grid > :nth-child(17) { order: 11; } /* Act 3 */
+  .supporting-data-grid > :nth-child(13) { order: 12; } /* defence-AI    <- covers */
+  .supporting-data-grid > :nth-child(8)  { order: 13; } /* compute       <- MVP */
+  .supporting-data-grid > :nth-child(11) { order: 14; } /* pooled vs alone */
+  .supporting-data-grid > :nth-child(5)  { order: 15; } /* capex */
+  .supporting-data-grid > :nth-child(9)  { order: 16; } /* tokyo */
+  .supporting-data-grid > :nth-child(14) { order: 17; } /* france energy */
   /* Story-beat markers sitting on the spine. */
   .story-act { position: relative; }
   .story-act-num {
@@ -1809,11 +1811,15 @@
 
 /* Live coalition readout above the decisions (makes member-linked data visible). */
 .coalition-live {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 6;
   background: var(--paper, #fff);
   border: 1px solid var(--hairline-strong, rgba(10,10,10,0.18));
   border-radius: 10px;
   padding: 0.85rem 1rem;
   margin: 0 0 1.25rem;
+  box-shadow: 0 6px 18px -10px rgba(10,10,10,0.35);
 }
 .coalition-live-title {
   display: block;
@@ -1835,3 +1841,13 @@
 }
 .viz-pulse { animation: vizPulse 0.9s ease-out; border-radius: 10px; }
 @media (prefers-reduced-motion: reduce) { .viz-pulse { animation: none; } }
+
+/* Data-only view: let the canvas (raster) charts use the extra width cleanly. */
+.outcome-split.split-data .viz-card .viz-canvas-wrap canvas { max-width: 760px; height: 260px; }
+
+/* Scroll-scrubbed line charts: the JS controls the line reveal + frontier dot,
+   so suppress the static dots, ghost the area, and disable the CSS draw-in. */
+.is-scrub .mn-line { animation: none !important; }
+.is-scrub .ci-dot { opacity: 0; }
+.is-scrub .mn-area { opacity: 0.1; }
+.is-scrub .ci-end { transition: cx 0.08s linear, cy 0.08s linear; }

@@ -995,6 +995,9 @@
     if (mode === 'data') split.classList.add('split-data');
     else if (mode === 'design') split.classList.add('split-design');
     btns.forEach(x => x.classList.toggle('is-active', x === b));
+    // The canvas charts size their backing store to the panel width; after the
+    // panel resizes, tell them to redraw so they don't stretch and pixelate.
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 400);
   }));
 })();
 
@@ -1197,6 +1200,8 @@
   function fmt(n, dec){ return dec > 0 ? n.toFixed(dec) : Math.round(n).toString(); }
   function animate(el){
     if (el.dataset.counted) return;
+    // Scroll-scrubbed charts own their own value label; don't count-up over it.
+    if (el.closest('[data-scrub]')) return;
     const raw = el.textContent;
     const m = raw.trim().match(/^([^\d-]*)(-?\d+(?:\.\d+)?)(.*)$/);
     if (!m) return;
@@ -1421,4 +1426,67 @@
   // The designer renders (and first broadcasts) before this listener binds,
   // so run once now from the persisted state.
   update();
+})();
+
+// ============================================================
+// SCROLL-SCRUBBED TIME-SERIES: the line draws and its value ticks as you
+// scroll the chart through the viewport (reversible), in the ai-2027 style.
+// Charts opt in with data-scrub + a y->value mapping on the <svg>.
+// ============================================================
+(function(){
+  const charts = Array.from(document.querySelectorAll('.viz-card .mn-chart[data-scrub]'));
+  if (!charts.length) return;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const items = charts.map(svg => {
+    const line = svg.querySelector('.mn-line');
+    if (!line) return null;
+    const card = svg.closest('.viz-card');
+    card.classList.add('is-scrub');
+    let len = 0;
+    try { len = line.getTotalLength(); } catch(e) { len = 0; }
+    line.style.strokeDasharray = len;
+    return {
+      line, card, len,
+      end:  svg.querySelector('.ci-end'),
+      emph: svg.querySelector('.ci-emph'),
+      y0:+svg.dataset.y0, v0:+svg.dataset.v0,
+      y1:+svg.dataset.y1, v1:+svg.dataset.v1,
+      pre: svg.dataset.pre || '', suf: svg.dataset.suf || '',
+      round:+(svg.dataset.round || 1)
+    };
+  }).filter(Boolean);
+
+  function apply(it, p){
+    it.line.style.strokeDashoffset = it.len * (1 - p);
+    let pt; try { pt = it.line.getPointAtLength(it.len * p); } catch(e){ return; }
+    if (it.end){ it.end.setAttribute('cx', pt.x); it.end.setAttribute('cy', pt.y); }
+    if (it.emph){
+      const v = it.v0 + (pt.y - it.y0) * (it.v1 - it.v0) / (it.y1 - it.y0);
+      const r = Math.round(v / it.round) * it.round;
+      it.emph.textContent = it.pre + r + it.suf;
+    }
+  }
+
+  if (reduce){ items.forEach(it => apply(it, 1)); return; } // no scrubbing: show full
+
+  let ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      items.forEach(it => {
+        const rect = it.card.getBoundingClientRect();
+        // p = 0 as the card enters (top at 85% vh) -> 1 once it reaches 35% vh.
+        let p = (vh * 0.85 - rect.top) / (vh * 0.5);
+        p = Math.max(0, Math.min(1, p));
+        apply(it, p);
+      });
+      ticking = false;
+    });
+  }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
 })();
