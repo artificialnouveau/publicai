@@ -1851,3 +1851,20 @@
 .is-scrub .ci-dot { opacity: 0; }
 .is-scrub .mn-area { opacity: 0.1; }
 .is-scrub .ci-end { transition: cx 0.08s linear, cy 0.08s linear; }
+
+/* Decision scorecard: coalition vs US benchmark bars + scenario presets. */
+.coalition-live-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.7rem; gap: 1rem; }
+.coalition-live-head .coalition-live-title { margin: 0; }
+.cl-members { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-soft); white-space: nowrap; }
+.cl-members b { font-size: 0.95rem; color: var(--accent); }
+.cl-scorecard { display: flex; flex-direction: column; gap: 0.5rem; }
+.cl-row { display: grid; grid-template-columns: 68px 1fr auto; align-items: center; gap: 0.65rem; }
+.cl-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft); }
+.cl-track { height: 7px; background: rgba(10,10,10,0.09); border-radius: 4px; overflow: hidden; }
+.cl-track i { display: block; height: 100%; width: 2%; background: var(--accent); border-radius: 4px; transition: width 0.55s cubic-bezier(0.22,1,0.36,1); }
+.cl-val { font-family: var(--mono); font-size: 0.66rem; color: var(--text); white-space: nowrap; }
+.cl-scenarios { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.8rem; }
+.cl-scenarios-label { font-family: var(--serif); font-style: italic; font-size: 0.78rem; color: var(--text-soft); margin-right: 0.15rem; }
+.cl-scenario { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.03em; padding: 0.28rem 0.55rem; border: 1px solid var(--hairline-strong); border-radius: 999px; background: transparent; color: var(--text); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+.cl-scenario:hover { border-color: var(--accent); color: var(--accent); }
+.cl-scenario-reset { color: var(--text-soft); }

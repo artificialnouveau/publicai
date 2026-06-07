@@ -463,14 +463,23 @@
     <div class="outcome-split" id="outcomeSplit">
       <div class="outcome-split-design">
         <div class="coalition-live" id="coalitionLiveSummary" aria-live="polite">
-          <span class="coalition-live-title">Your coalition, live</span>
-          <div class="coalition-live-stats">
-            <span class="cl-stat"><b id="clMembers">0</b><i>states</i></span>
-            <span class="cl-stat"><b id="clCompute">~2.0</b><i>EF compute</i></span>
-            <span class="cl-stat"><b id="clInvest">$14B</b><i>AI investment</i></span>
-            <span class="cl-stat"><b id="clLangs">3</b><i>of 24 languages</i></span>
+          <div class="coalition-live-head">
+            <span class="coalition-live-title">Your coalition vs the US</span>
+            <span class="cl-members"><b id="clMembers">0</b> states in</span>
           </div>
-          <span class="coalition-live-hint">Change a decision below (or hover an option) and watch the live data on the right.</span>
+          <div class="cl-scorecard">
+            <div class="cl-row"><span class="cl-label">Compute</span><span class="cl-track"><i id="clBarCompute"></i></span><span class="cl-val" id="clCompute">~2.0 / 5 EF</span></div>
+            <div class="cl-row"><span class="cl-label">Capital</span><span class="cl-track"><i id="clBarCapital"></i></span><span class="cl-val" id="clCapital">$14 / 109B</span></div>
+            <div class="cl-row"><span class="cl-label">Talent</span><span class="cl-track"><i id="clBarTalent"></i></span><span class="cl-val" id="clTalent">0 / 60k</span></div>
+            <div class="cl-row"><span class="cl-label">Languages</span><span class="cl-track"><i id="clBarLangs"></i></span><span class="cl-val" id="clLangs">3 / 24</span></div>
+          </div>
+          <div class="cl-scenarios">
+            <span class="cl-scenarios-label">Try a coalition:</span>
+            <button type="button" class="cl-scenario" data-scenario="eu">EU only</button>
+            <button type="button" class="cl-scenario" data-scenario="fiveeyes">+ Five Eyes</button>
+            <button type="button" class="cl-scenario" data-scenario="allies">+ Asia allies</button>
+            <button type="button" class="cl-scenario cl-scenario-reset" data-scenario="reset">Reset</button>
+          </div>
         </div>
         <div class="coalition-design" id="coalitionDesign"></div>
       </div>
@@ -1207,7 +1216,7 @@
 
 </main>
 
-<script src="scripts.js?v=14" defer></script>
+<script src="scripts.js?v=15" defer></script>
 
 </body>
 </html>

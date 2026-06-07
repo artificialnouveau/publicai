@@ -469,6 +469,24 @@
   // working; it now just re-renders the design panel.
   function renderOutcome(){ renderCoalitionDesign(); }
 
+  // Scenario presets in the scorecard: set the membership decisions in one tap
+  // so visitors can A/B whole coalitions instead of toggling four picks.
+  const SCENARIOS = {
+    eu:       { 'scene-brussels':'eu-coalition', 'scene-ottawa':'eu-only',            'scene-tokyo':'off-the-shelf',   'scene-paris':'co-leads' },
+    fiveeyes: { 'scene-brussels':'eu-coalition', 'scene-ottawa':'five-eyes-minus-us', 'scene-tokyo':'off-the-shelf',   'scene-paris':'co-leads' },
+    allies:   { 'scene-brussels':'eu-allies',    'scene-ottawa':'five-eyes-minus-us', 'scene-tokyo':'coalition-model', 'scene-paris':'co-leads' },
+    reset:    { 'scene-brussels':'national',     'scene-ottawa':'eu-only',            'scene-tokyo':'off-the-shelf',   'scene-paris':'defers' }
+  };
+  document.querySelectorAll('.cl-scenario').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const preset = SCENARIOS[btn.dataset.scenario];
+      if (!preset) return;
+      Object.keys(preset).forEach(k => { simState[k] = preset[k]; });
+      saveState();
+      renderCoalitionDesign();
+    });
+  });
+
   // Render the design panel on load so the outcome section is ready whenever
   // the user reaches it. Picks are inline inside each section now.
   if (outcome) {
@@ -1270,6 +1288,11 @@
     CA:{ name:'Cohere',  arr:240 },
     DE:{ name:'DeepL',   arr:185 }
   };
+  // Top-tier AI researchers each member brings, in thousands (illustrative).
+  const MEMBER_TALENT = {
+    DE:12, FR:10, GB:14, CA:8, ES:4,
+    SE:3, CH:5, JP:9, KR:6, SG:3
+  };
 
   const $ = (sel) => document.querySelector(sel);
   function setText(sel, txt){ const el = $(sel); if (el) el.textContent = txt; }
@@ -1385,16 +1408,25 @@
       : 'No anchor labs in yet. Mistral ARR shown for scale');
   }
 
+  function setBar(sel, frac){
+    const el = $(sel);
+    if (el) el.style.width = Math.max(2, Math.min(100, frac * 100)) + '%';
+  }
+  // The scorecard: coalition totals against the US/target benchmark (the full
+  // track = the benchmark, the fill = how far the coalition closes the gap).
   function renderSummary(members){
     const n = members.size;
-    let ef = 0;  members.forEach(m => { ef  += (MEMBER_COMPUTE[m] || 0); }); if (!n) ef  = 2.0;
-    let inv = 0; members.forEach(m => { inv += (MEMBER_INVEST[m]  || 0); }); if (!n) inv = 14;
+    let ef  = 0; members.forEach(m => { ef  += (MEMBER_COMPUTE[m] || 0); }); if (!n) ef  = 2.0;
+    let cap = 0; members.forEach(m => { cap += (MEMBER_INVEST[m]  || 0); }); if (!n) cap = 14;
+    let tal = 0; members.forEach(m => { tal += (MEMBER_TALENT[m]  || 0); });
     const strong = new Set(BASE_STRONG);
     members.forEach(m => (MEMBER_LANGS[m] || []).forEach(l => strong.add(l)));
+    const langs = strong.size;
     countTo($('#clMembers'), n, '', '', 0);
-    countTo($('#clCompute'), ef, '~', '', 1);
-    countTo($('#clInvest'), Math.round(inv), '$', 'B', 0);
-    countTo($('#clLangs'), strong.size, '', '', 0);
+    setBar('#clBarCompute', ef / 5);    setText('#clCompute', '~' + ef.toFixed(1) + ' / 5 EF');
+    setBar('#clBarCapital', cap / 109);  setText('#clCapital', '$' + Math.round(cap) + ' / 109B');
+    setBar('#clBarTalent',  tal / 60);   setText('#clTalent',  Math.round(tal) + ' / 60k');
+    setBar('#clBarLangs',   langs / 24);  setText('#clLangs',   langs + ' / 24');
   }
 
   const PULSE_CARDS = ['viz-language','viz-compute','viz-ottawa','viz-capex','viz-revenue'];
