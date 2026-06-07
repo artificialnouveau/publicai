@@ -1447,6 +1447,11 @@
     padding-top: 1.75rem;
     border-top: 1px solid var(--hairline);
   }
+  /* First section starts flush at the top so "Member states" lines up with "Live data". */
+  .coalition-design > .design-section:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
   .design-section-kicker {
     font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase;
