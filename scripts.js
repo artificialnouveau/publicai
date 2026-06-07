@@ -978,3 +978,120 @@
     btns.forEach(x => x.classList.toggle('is-active', x === b));
   }));
 })();
+
+// --- Capital Flow Sankey (restored) ---
+(function(){
+  const canvas = document.getElementById('dbCapitalFlowCanvas');
+  if (!canvas) return;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize(); window.addEventListener('resize',resize);
+  const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0057FF'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0057FF'},{label:'Southern EU',x:0.07,y:0.62,col:'#0057FF'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0057FF'}];
+  const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#b8002e'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#4a4a4a'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#8e8e8e'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7a7a7a'}];
+  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#b8002e'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0057FF'},{label:'Diluted / lost',x:0.93,y:0.80,col:'#666666'}];
+  const allNodes=[colA,colB,colC];
+  const colHeaders=[{label:'EU FUNDING SOURCES',x:0.07},{label:'WHERE FOUNDERS GO',x:0.50},{label:'ECONOMIC RESULT',x:0.93}];
+  const flows=[{from:[0,0],to:[1,0],w:0.22},{from:[0,1],to:[1,0],w:0.18},{from:[0,1],to:[1,1],w:0.12},{from:[0,2],to:[1,1],w:0.10},{from:[0,2],to:[1,2],w:0.08},{from:[0,3],to:[1,2],w:0.05},{from:[0,3],to:[1,3],w:0.06},{from:[1,0],to:[2,0],w:0.30},{from:[1,1],to:[2,1],w:0.15},{from:[1,2],to:[2,1],w:0.08},{from:[1,3],to:[2,2],w:0.06}];
+  let particles=flows.map(()=>Math.random());
+  function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
+  function draw(){
+    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    ctx.clearRect(0,0,W,H);
+    const fs=Math.max(8, Math.min(11, W*0.024));
+    const lfs=Math.max(11, Math.min(14, W*0.03));
+    ctx.font=fs+'px JetBrains Mono, monospace';ctx.textAlign='center';
+    colHeaders.forEach(ch=>{ctx.fillStyle='rgba(10,10,10,0.45)';ctx.fillText(ch.label,ch.x*W,12);});
+    flows.forEach((f,fi)=>{
+      const n1=allNodes[f.from[0]][f.from[1]],n2=allNodes[f.to[0]][f.to[1]];
+      const x1=n1.x*W,y1=n1.y*H,x2=n2.x*W,y2=n2.y*H,thickness=f.w*H*0.7;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.4,y1,x1+(x2-x1)*0.6,y2,x2,y2);ctx.strokeStyle=n1.col+'18';ctx.lineWidth=thickness;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.4,y1,x1+(x2-x1)*0.6,y2,x2,y2);ctx.strokeStyle=n2.col+'50';ctx.lineWidth=0.8;ctx.stroke();
+      particles[fi]=(particles[fi]+0.004)%1;const s=particles[fi];
+      const bx=bezPt(x1,x1+(x2-x1)*0.4,x1+(x2-x1)*0.6,x2,s),by=bezPt(y1,y1,y2,y2,s);
+      ctx.beginPath();ctx.arc(bx,by,2.5,0,Math.PI*2);ctx.fillStyle=n2.col;ctx.fill();
+    });
+    allNodes.forEach((col,ci)=>{col.forEach(n=>{
+      ctx.beginPath();ctx.arc(n.x*W,n.y*H,Math.max(3,5*W/500),0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
+      ctx.fillStyle='rgba(10,10,10,0.8)';ctx.font=lfs+'px Inter, sans-serif';
+      ctx.textAlign=ci===0?'left':ci===2?'right':'center';
+      const labelX=ci===0?n.x*W+12:ci===2?n.x*W-12:n.x*W;
+      ctx.fillText(n.label,labelX,n.y*H-10);
+    });});
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// --- Talent Migration flow (restored) ---
+(function(){
+  const canvas=document.getElementById('dbTalentChordCanvas');
+  if(!canvas)return;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ctx=canvas.getContext('2d');
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const cssW = rect.width, cssH = rect.height;
+    if (cssW < 4 || cssH < 4) return;
+    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
+    if (canvas.width !== bw) canvas.width = bw;
+    if (canvas.height !== bh) canvas.height = bh;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();window.addEventListener('resize',resize);
+  const educated=[{label:'EU-West',y:0.14,col:'#0057FF',pct:'22%'},{label:'EU-East',y:0.28,col:'#0057FF',pct:'8%'},{label:'UK / CH',y:0.42,col:'#8e8e8e',pct:'12%'},{label:'China',y:0.56,col:'#6a6a6a',pct:'29%'},{label:'India',y:0.70,col:'#7a7a7a',pct:'11%'},{label:'US',y:0.84,col:'#4a4a4a',pct:'18%'}];
+  const working=[{label:'Work in US',y:0.20,col:'#b8002e',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0057FF',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#8e8e8e',pct:'~10%'},{label:'China',y:0.74,col:'#6a6a6a',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'#7a7a7a',pct:'~5%'}];
+  const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
+  let particles=flows.map(()=>Math.random());
+  function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
+  function draw(){
+    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
+    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    ctx.clearRect(0,0,W,H);
+    const insetPx = W < 380 ? 80 : 100;
+    const LX = Math.max(0.18, insetPx / W);
+    const RX = 1 - LX;
+    const tfs=Math.max(9, Math.min(11, W*0.022));
+    const lfs=Math.max(11, Math.min(14, W*0.027));
+    const pfs=Math.max(10, Math.min(13, W*0.025));
+    const dotR=Math.max(3, Math.min(5, W*0.012));
+    ctx.font=tfs+'px JetBrains Mono, monospace';ctx.textAlign='center';ctx.fillStyle='rgba(10,10,10,0.45)';
+    ctx.fillText('EDUCATED IN', LX*W, 10);
+    ctx.fillText('NOW WORKING IN', RX*W, 10);
+    ctx.fillStyle='rgba(10,10,10,0.08)';
+    const arrowFs = Math.max(18, Math.min(28, W*0.06));
+    ctx.font=arrowFs+'px Inter, sans-serif';
+    ctx.fillText('→', 0.5*W, 0.5*H + arrowFs*0.15);
+    flows.forEach((f,fi)=>{
+      const src=educated[f.from],dst=working[f.to];const x1=LX*W+8,y1=src.y*H,x2=RX*W-8,y2=dst.y*H,thickness=f.w*H*0.6;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=src.col+'12';ctx.lineWidth=thickness;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=dst.col+'40';ctx.lineWidth=0.7;ctx.stroke();
+      particles[fi]=(particles[fi]+0.003+f.w*0.005)%1;const s=particles[fi];
+      const bx=bezPt(x1,x1+(x2-x1)*0.35,x1+(x2-x1)*0.65,x2,s),by=bezPt(y1,y1,y2,y2,s);
+      ctx.beginPath();ctx.arc(bx,by,2,0,Math.PI*2);ctx.fillStyle=dst.col;ctx.fill();
+    });
+    educated.forEach(n=>{
+      ctx.beginPath();ctx.arc(LX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
+      ctx.textAlign='right';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(10,10,10,0.7)';ctx.fillText(n.label,LX*W-14,n.y*H+4);
+      ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);
+    });
+    working.forEach(n=>{
+      ctx.beginPath();ctx.arc(RX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
+      ctx.textAlign='left';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(10,10,10,0.7)';ctx.fillText(n.label,RX*W+14,n.y*H+4);
+      ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);
+    });
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  draw();
+})();

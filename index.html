@@ -486,36 +486,7 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US AI investment ($109B) is about 8x the EU's ($14B) in 2024, shown as coin stacks">
-            <text class="cu-fig coral" x="14" y="44">~8&times;</text>
-            <text class="cu-cap" x="16" y="62">US drew ~8&times; the EU&rsquo;s private AI investment in 2024</text>
-            <g class="cu-pop">
-              <!-- EU: 2 coins -->
-              <ellipse class="cu-coin-eu" cx="100" cy="138" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin-eu" cx="100" cy="131" rx="15" ry="4.8"/>
-              <!-- US: 16 coins -->
-              <ellipse class="cu-coin" cx="250" cy="138" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="131" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="124" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="117" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="110" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="103" rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="96"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="89"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="82"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="75"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="68"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="61"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="54"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="47"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="40"  rx="15" ry="4.8"/>
-              <ellipse class="cu-coin" cx="250" cy="33"  rx="15" ry="4.8"/>
-            </g>
-            <g class="cu-legend" text-anchor="middle">
-              <text x="100" y="158">EU &middot; $14B</text>
-              <text x="250" y="158">US &middot; $109B</text>
-            </g>
-          </svg>
+          <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding and founders flow west to the US"></canvas>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">$14B</span><span class="viz-mini-label">EU AI 2024</span></div>
@@ -542,29 +513,7 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap" data-tall>
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="6 in 10 EU-trained AI researchers work in the US, shown as 10 figures">
-            <defs>
-              <g id="psn"><circle cx="0" cy="0" r="4.6"/><path d="M-7,20 C-7,8.5 -3.5,6.5 0,6.5 C3.5,6.5 7,8.5 7,20 Z"/></g>
-            </defs>
-            <text class="cu-fig" x="14" y="44">6 in 10</text>
-            <text class="cu-cap" x="16" y="62">EU-trained researchers work in the US</text>
-            <g class="cu-pop">
-              <use href="#psn" x="28"  y="92" class="cu-on"/>
-              <use href="#psn" x="61"  y="92" class="cu-on"/>
-              <use href="#psn" x="94"  y="92" class="cu-on"/>
-              <use href="#psn" x="127" y="92" class="cu-on"/>
-              <use href="#psn" x="160" y="92" class="cu-on"/>
-              <use href="#psn" x="193" y="92" class="cu-on"/>
-              <use href="#psn" x="226" y="92" class="cu-off"/>
-              <use href="#psn" x="259" y="92" class="cu-off"/>
-              <use href="#psn" x="292" y="92" class="cu-off"/>
-              <use href="#psn" x="325" y="92" class="cu-off"/>
-            </g>
-            <g class="cu-legend">
-              <circle cx="20" cy="150" r="5" class="cu-on"/><text x="30" y="150">in the US</text>
-              <circle cx="150" cy="150" r="5" class="cu-off"/><text x="160" y="150">stay / elsewhere</text>
-            </g>
-          </svg>
+          <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: where EU-trained AI researchers are educated and where they now work"></canvas>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">60%</span><span class="viz-mini-label">EU researchers to US</span></div>
@@ -1230,7 +1179,7 @@
 
 </main>
 
-<script src="scripts.js?v=4" defer></script>
+<script src="scripts.js?v=5" defer></script>
 
 </body>
 </html>
