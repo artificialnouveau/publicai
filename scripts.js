@@ -1010,8 +1010,11 @@
     ctx.clearRect(0,0,W,H);
     const fs=Math.max(8, Math.min(11, W*0.024));
     const lfs=Math.max(11, Math.min(14, W*0.03));
-    ctx.font=fs+'px JetBrains Mono, monospace';ctx.textAlign='center';
-    colHeaders.forEach(ch=>{ctx.fillStyle='rgba(10,10,10,0.45)';ctx.fillText(ch.label,ch.x*W,12);});
+    ctx.font=fs+'px JetBrains Mono, monospace';ctx.fillStyle='rgba(10,10,10,0.45)';
+    // Edge headers anchored to the canvas edges so they never clip.
+    ctx.textAlign='left';   ctx.fillText(colHeaders[0].label, 2, 12);
+    ctx.textAlign='center'; ctx.fillText(colHeaders[1].label, 0.5*W, 12);
+    ctx.textAlign='right';  ctx.fillText(colHeaders[2].label, W-2, 12);
     flows.forEach((f,fi)=>{
       const n1=allNodes[f.from[0]][f.from[1]],n2=allNodes[f.to[0]][f.to[1]];
       const x1=n1.x*W,y1=n1.y*H,x2=n2.x*W,y2=n2.y*H,thickness=f.w*H*0.7;
