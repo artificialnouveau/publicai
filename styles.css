@@ -1116,7 +1116,7 @@
      captions, bouncy pop-in. Memorable over minimal. */
   .cu-fig { font-family: var(--serif); font-weight: 700; font-size: 33px; fill: var(--accent); letter-spacing: -0.01em; }
   .cu-fig.coral { fill: #FF6F59; }
-  .cu-cap { font-family: var(--serif); font-style: italic; font-size: 11.5px; fill: rgba(10,10,10,0.62); }
+  .cu-cap { font-family: var(--serif); font-style: italic; font-size: 12px; fill: rgba(10,10,10,0.62); }
   .cu-legend text { font-family: var(--mono); font-size: 12.5px; font-weight: 600; fill: rgba(10,10,10,0.7); dominant-baseline: middle; }
   .cu-on  { fill: var(--accent); }
   .cu-off { fill: #FFB3A8; }
@@ -1140,7 +1140,7 @@
   .ci-tick { font-family: var(--mono); font-size: 8.5px; fill: rgba(10,10,10,0.45); }
   .ci-dot  { fill: var(--accent); stroke: var(--ink); stroke-width: 1.4; }
   .ci-end  { fill: #FF6F59; stroke: var(--ink); stroke-width: 2; }
-  .ci-note { font-family: var(--serif); font-style: italic; font-size: 12.5px; fill: rgba(10,10,10,0.6); }
+  .ci-note { font-family: var(--serif); font-style: italic; font-size: 12px; fill: rgba(10,10,10,0.6); }
   .ci-emph { font-family: var(--mono); font-size: 13px; font-weight: 700; fill: #FF6F59; }
   .ci-emph.accent { fill: var(--accent); }
   /* export-control "decree" stamps */
@@ -1156,7 +1156,7 @@
   .cu-bag { fill: #FFC23C; stroke: #E0991A; stroke-width: 1.2; }
   .cu-bag.accent { fill: var(--accent); stroke: #003DA8; }
   .cu-bag-sym { font-family: var(--serif); font-weight: 700; fill: #fff; }
-  .cu-bag-label { font-family: var(--mono); font-size: 13px; font-weight: 600; fill: rgba(10,10,10,0.7); }
+  .cu-bag-label { font-family: var(--mono); font-size: 12.5px; font-weight: 600; fill: rgba(10,10,10,0.7); }
   .cu-bag-label.accent { fill: var(--accent); }
   @media (prefers-reduced-motion: reduce) {
     .viz-card.mn-anim .mn-line { stroke-dashoffset: 0; }
