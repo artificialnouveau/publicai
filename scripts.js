@@ -314,7 +314,7 @@
 
     root.innerHTML = `
       <div class="design-section">
-        <div class="design-section-kicker">Member states (10 in the proposal)</div>
+        <div class="design-section-kicker">Member states</div>
         <h3 class="design-section-title">Who joins</h3>
         <p class="design-section-note">France, Germany, Japan, Singapore, South Korea, Spain, Sweden, Switzerland, the UK, and Canada are the first-cohort middle powers. Four picks on the left decide which of them are eligible on the right.</p>
         <div class="design-split-body">
@@ -483,751 +483,6 @@
   });
 })();
 
-// ============================================================
-// CHART RENDER FUNCTIONS — lifted from the v1 dashboard
-// ============================================================
-
-// Honor prefers-reduced-motion: charts will draw once and stop their
-// requestAnimationFrame loops. The static frame still conveys the data;
-// only the particle-along-curve flourishes go away.
-const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// --- Language Heatmap ---
-(function(){
-  const container = document.getElementById('dbLangHeatmap');
-  if (!container) return;
-  const languages = [
-    {name:'English',code:'EN',level:'strong',speakers:'~450M'},
-    {name:'French',code:'FR',level:'strong',speakers:'~77M'},
-    {name:'Spanish',code:'ES',level:'strong',speakers:'~47M'},
-    {name:'German',code:'DE',level:'moderate',speakers:'~95M'},
-    {name:'Italian',code:'IT',level:'moderate',speakers:'~63M'},
-    {name:'Dutch',code:'NL',level:'moderate',speakers:'~25M'},
-    {name:'Polish',code:'PL',level:'moderate',speakers:'~40M'},
-    {name:'Portuguese',code:'PT',level:'moderate',speakers:'~12M'},
-    {name:'Romanian',code:'RO',level:'moderate',speakers:'~22M'},
-    {name:'Swedish',code:'SV',level:'moderate',speakers:'~10M'},
-    {name:'Czech',code:'CS',level:'moderate',speakers:'~10M'},
-    {name:'Greek',code:'EL',level:'weak',speakers:'~11M'},
-    {name:'Hungarian',code:'HU',level:'weak',speakers:'~10M'},
-    {name:'Finnish',code:'FI',level:'weak',speakers:'~5M'},
-    {name:'Danish',code:'DA',level:'weak',speakers:'~6M'},
-    {name:'Bulgarian',code:'BG',level:'weak',speakers:'~7M'},
-    {name:'Slovak',code:'SK',level:'weak',speakers:'~5M'},
-    {name:'Croatian',code:'HR',level:'weak',speakers:'~4M'},
-    {name:'Lithuanian',code:'LT',level:'weak',speakers:'~3M'},
-    {name:'Slovenian',code:'SL',level:'weak',speakers:'~2M'},
-    {name:'Latvian',code:'LV',level:'weak',speakers:'~1.5M'},
-    {name:'Estonian',code:'ET',level:'weak',speakers:'~1M'},
-    {name:'Irish',code:'GA',level:'weak',speakers:'~0.2M'},
-    {name:'Maltese',code:'MT',level:'weak',speakers:'~0.5M'}
-  ];
-  const colorMap = {strong:'#0057FF',moderate:'#6E6E69',weak:'#b8002e'};
-  const labelMap = {strong:'Strong', moderate:'Partial', weak:'At risk'};
-  const speakersM = s => parseFloat(String(s).replace(/[^0-9.]/g,'')) || 1;
-  // Group languages by support level, sort each group by speakers desc so the
-  // dominant segment leads each row and you can read the long tail at a glance.
-  const order = ['strong','moderate','weak'];
-  container.innerHTML = '';
-  container.style.cssText = 'display:flex; flex-direction:column; gap:6px;';
-  order.forEach(level => {
-    const langs = languages.filter(l => l.level === level)
-                           .sort((a,b) => speakersM(b.speakers) - speakersM(a.speakers));
-    const totalM = langs.reduce((s,l) => s + speakersM(l.speakers), 0);
-
-    const row = document.createElement('div');
-    row.style.cssText = 'display:flex; align-items:center; gap:8px; min-width:0;';
-
-    const label = document.createElement('div');
-    label.style.cssText = 'flex:0 0 78px; font-family:var(--mono); font-size:0.55rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-soft); line-height:1.2;';
-    label.innerHTML = `<div style="color:${colorMap[level]};">${labelMap[level]}</div><div style="font-size:0.5rem; opacity:0.7;">${langs.length} langs &middot; ${Math.round(totalM)}M</div>`;
-    row.appendChild(label);
-
-    const bar = document.createElement('div');
-    bar.style.cssText = 'flex:1 1 auto; display:flex; height:30px; border-radius:3px; overflow:hidden; min-width:0; gap:1px;';
-
-    langs.forEach(l => {
-      const cell = document.createElement('div');
-      const m = speakersM(l.speakers);
-      cell.style.cssText = `flex:${m} 1 0; min-width:14px; background:${colorMap[level]}; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:0.52rem; font-weight:700; color:#fff; cursor:default; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding: 0 2px;`;
-      cell.title = `${l.name} ~${l.speakers.replace(/[~]/g,'')} native speakers`;
-      cell.textContent = l.code;
-      bar.appendChild(cell);
-    });
-    row.appendChild(bar);
-    container.appendChild(row);
-  });
-})();
-
-// --- Capital Flow Sankey ---
-(function(){
-  const canvas = document.getElementById('dbCapitalFlowCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  // (pane visibility check removed; charts always render inline)
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize(); window.addEventListener('resize',resize);
-  const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0057FF'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0057FF'},{label:'Southern EU',x:0.07,y:0.62,col:'#0057FF'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0057FF'}];
-  const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#b8002e'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#4a4a4a'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#8e8e8e'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7a7a7a'}];
-  const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#b8002e'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0057FF'},{label:'Diluted / lost',x:0.93,y:0.80,col:'#666666'}];
-  const allNodes=[colA,colB,colC];
-  const colHeaders=[{label:'EU FUNDING SOURCES',x:0.07},{label:'WHERE FOUNDERS GO',x:0.50},{label:'ECONOMIC RESULT',x:0.93}];
-  const flows=[{from:[0,0],to:[1,0],w:0.22},{from:[0,1],to:[1,0],w:0.18},{from:[0,1],to:[1,1],w:0.12},{from:[0,2],to:[1,1],w:0.10},{from:[0,2],to:[1,2],w:0.08},{from:[0,3],to:[1,2],w:0.05},{from:[0,3],to:[1,3],w:0.06},{from:[1,0],to:[2,0],w:0.30},{from:[1,1],to:[2,1],w:0.15},{from:[1,2],to:[2,1],w:0.08},{from:[1,3],to:[2,2],w:0.06}];
-  let particles=flows.map(()=>Math.random());
-  function bezPt(a,b,c,d,t){const t2=1-t;return t2*t2*t2*a+3*t2*t2*t*b+3*t2*t*t*c+t*t*t*d;}
-  function draw(){
-    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0,0,W,H);
-    const fs=Math.max(7, Math.min(9, W*0.025));
-    const lfs=Math.max(10, Math.min(13, W*0.03));
-    ctx.font=fs+'px Inter, sans-serif';ctx.textAlign='center';
-    colHeaders.forEach(ch=>{ctx.fillStyle='rgba(10,10,10,0.4)';ctx.fillText(ch.label,ch.x*W,12);});
-    flows.forEach((f,fi)=>{
-      const n1=allNodes[f.from[0]][f.from[1]],n2=allNodes[f.to[0]][f.to[1]];
-      const x1=n1.x*W,y1=n1.y*H,x2=n2.x*W,y2=n2.y*H,thickness=f.w*H*0.7;
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.4,y1,x1+(x2-x1)*0.6,y2,x2,y2);ctx.strokeStyle=n1.col+'18';ctx.lineWidth=thickness;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.4,y1,x1+(x2-x1)*0.6,y2,x2,y2);ctx.strokeStyle=n2.col+'50';ctx.lineWidth=0.8;ctx.stroke();
-      particles[fi]=(particles[fi]+0.004)%1;const s=particles[fi];
-      const bx=bezPt(x1,x1+(x2-x1)*0.4,x1+(x2-x1)*0.6,x2,s),by=bezPt(y1,y1,y2,y2,s);
-      ctx.beginPath();ctx.arc(bx,by,2.5,0,Math.PI*2);ctx.fillStyle=n2.col;ctx.fill();
-    });
-    allNodes.forEach((col,ci)=>{col.forEach(n=>{
-      ctx.beginPath();ctx.arc(n.x*W,n.y*H,Math.max(3,5*W/500),0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
-      ctx.fillStyle='rgba(10,10,10,0.78)';ctx.font=lfs+'px Inter, sans-serif';
-      ctx.textAlign=ci===0?'left':ci===2?'right':'center';
-      const labelX=ci===0?n.x*W+12:ci===2?n.x*W-12:n.x*W;
-      ctx.fillText(n.label,labelX,n.y*H-10);
-    });});
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  // Always draw — the dock is fixed so visibility is controlled separately
-  draw();
-})();
-
-// --- Talent Migration ---
-(function(){
-  const canvas=document.getElementById('dbTalentChordCanvas');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  // (pane visibility check removed; charts always render inline)
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();window.addEventListener('resize',resize);
-  const educated=[{label:'EU-West',y:0.14,col:'#0057FF',pct:'22%'},{label:'EU-East',y:0.28,col:'#0057FF',pct:'8%'},{label:'UK / CH',y:0.42,col:'#8e8e8e',pct:'12%'},{label:'China',y:0.56,col:'#6a6a6a',pct:'29%'},{label:'India',y:0.70,col:'#7a7a7a',pct:'11%'},{label:'US',y:0.84,col:'#4a4a4a',pct:'18%'}];
-  const working=[{label:'Work in US',y:0.20,col:'#4a4a4a',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0057FF',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#8e8e8e',pct:'~10%'},{label:'China',y:0.74,col:'#6a6a6a',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'#7a7a7a',pct:'~5%'}];
-  const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
-  let particles=flows.map(()=>Math.random());
-  function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
-  function draw(){
-    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0,0,W,H);
-    // Reserve room for the (now short) labels on each side; flow region
-    // gets most of the width.
-    const insetPx = W < 380 ? 80 : 100;
-    const LX = Math.max(0.18, insetPx / W);
-    const RX = 1 - LX;
-    const tfs=Math.max(9, Math.min(11, W*0.022));
-    const lfs=Math.max(10, Math.min(13, W*0.026));
-    const pfs=Math.max(9, Math.min(12, W*0.024));
-    const dotR=Math.max(3, Math.min(5, W*0.012));
-    // Headers sit ABOVE the columns, not at chart top, so they never
-    // collide with the first row of labels at narrow widths.
-    ctx.font=tfs+'px Inter, sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(10,10,10,0.42)';
-    ctx.fillText('EDUCATED IN', LX*W, 10);
-    ctx.fillText('NOW WORKING IN', RX*W, 10);
-    // Center arrow stays soft and tucked behind the bezier curves.
-    ctx.fillStyle='rgba(10,10,10,0.08)';
-    const arrowFs = Math.max(18, Math.min(28, W*0.06));
-    ctx.font=arrowFs+'px Inter, sans-serif';
-    ctx.fillText('→', 0.5*W, 0.5*H + arrowFs*0.15);
-    flows.forEach((f,fi)=>{
-      const src=educated[f.from],dst=working[f.to];const x1=LX*W+8,y1=src.y*H,x2=RX*W-8,y2=dst.y*H,thickness=f.w*H*0.6;
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=src.col+'12';ctx.lineWidth=thickness;ctx.stroke();
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*0.35,y1,x1+(x2-x1)*0.65,y2,x2,y2);ctx.strokeStyle=dst.col+'40';ctx.lineWidth=0.7;ctx.stroke();
-      particles[fi]=(particles[fi]+0.003+f.w*0.005)%1;const s=particles[fi];
-      const bx=bezPt(x1,x1+(x2-x1)*0.35,x1+(x2-x1)*0.65,x2,s),by=bezPt(y1,y1,y2,y2,s);
-      ctx.beginPath();ctx.arc(bx,by,2,0,Math.PI*2);ctx.fillStyle=dst.col;ctx.fill();
-    });
-    educated.forEach(n=>{
-      ctx.beginPath();ctx.arc(LX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
-      ctx.textAlign='right';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(10,10,10,0.65)';ctx.fillText(n.label,LX*W-14,n.y*H+4);
-      ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,LX*W-14,n.y*H+18);
-    });
-    working.forEach(n=>{
-      ctx.beginPath();ctx.arc(RX*W,n.y*H,dotR,0,Math.PI*2);ctx.fillStyle=n.col;ctx.fill();
-      ctx.textAlign='left';ctx.font=lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(10,10,10,0.65)';ctx.fillText(n.label,RX*W+14,n.y*H+4);
-      ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);
-    });
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// --- Compute Map: now rendered as static HTML (see .compute-stats markup) ---
-
-// --- Coalition Revenue Growth ---
-(function(){
-  const canvas=document.getElementById('dbGrowthChart');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  // (pane visibility check removed; charts always render inline)
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();window.addEventListener('resize',resize);
-  // Real-time axis: points carry an absolute date (year + month/12) so all
-  // three series share one timeline.
-  const X_MIN = 2023.0;
-  const X_MAX = 2026.25;
-  const series=[
-    {name:'Mistral AI',color:'#0057FF',points:[
-      {date:2025.0,  y:20,  label:'Jan 2025'},
-      {date:2025.25, y:50},
-      {date:2025.5,  y:150},
-      {date:2025.92, y:312, label:'Dec 2025'},
-      {date:2026.0,  y:400, label:'Jan 2026'},
-    ]},
-    {name:'Cohere',color:'rgba(10,10,10,0.35)',points:[
-      {date:2024.17, y:22,  label:'Mar 2024'},
-      {date:2025.33, y:100, label:'May 2025'},
-      {date:2025.75, y:150, label:'Oct 2025'},
-      {date:2026.08, y:240, label:'Feb 2026'},
-    ]},
-    {name:'DeepL',color:'rgba(10,10,10,0.55)',points:[
-      {date:2023.5, y:141, label:'2023'},
-      {date:2024.5, y:185, label:'2024'},
-    ]}
-  ];
-  const maxY=420;
-  function dateToX(d){ return (d - X_MIN) / (X_MAX - X_MIN); }
-  let grown=reduceMotion?1:0;
-  function draw(){
-    const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0,0,W,H);
-    const pad={l:54,r:64,t:30,b:42};
-    const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
-    grown=Math.min(grown+0.015,1);
-
-    // Y gridlines + labels
-    ctx.strokeStyle='rgba(10,10,10,0.06)';ctx.lineWidth=0.5;
-    for(let v=0;v<=400;v+=100){
-      const y=pad.t+ch-(v/maxY)*ch;
-      ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cw,y);ctx.stroke();
-      ctx.fillStyle='rgba(10,10,10,0.45)';ctx.font='10px JetBrains Mono, monospace';ctx.textAlign='right';
-      ctx.fillText('$'+v+'M',pad.l-8,y+4);
-    }
-    // Y-axis title
-    ctx.save();ctx.translate(14,pad.t+ch/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='rgba(10,10,10,0.35)';ctx.font='10px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('ARR ($M)',0,0);ctx.restore();
-
-    // X-axis baseline + year ticks
-    ctx.strokeStyle='rgba(10,10,10,0.25)';ctx.lineWidth=0.8;
-    ctx.beginPath();ctx.moveTo(pad.l,pad.t+ch);ctx.lineTo(pad.l+cw,pad.t+ch);ctx.stroke();
-    // Year labels: skip alternate years on narrow canvases so they don't collide.
-    const xLabelFs = cw < 280 ? 8 : 9.5;
-    const skipEven = cw < 240;
-    for(let year=2023; year<=2026; year++){
-      const x = pad.l + dateToX(year) * cw;
-      ctx.strokeStyle='rgba(10,10,10,0.25)';
-      ctx.beginPath();ctx.moveTo(x,pad.t+ch);ctx.lineTo(x,pad.t+ch+4);ctx.stroke();
-      if (!skipEven || year % 2 === 1) {
-        ctx.fillStyle='rgba(10,10,10,0.55)';
-        ctx.font = xLabelFs + 'px JetBrains Mono, monospace';
-        ctx.textAlign='center';
-        ctx.fillText(year, x, pad.t+ch+18);
-      }
-      // Faint vertical gridline
-      ctx.strokeStyle='rgba(10,10,10,0.04)';
-      ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,pad.t+ch);ctx.stroke();
-    }
-
-    series.forEach(s=>{
-      ctx.beginPath();
-      s.points.forEach((p,i)=>{
-        const x=pad.l+dateToX(p.date)*cw;
-        const y=pad.t+ch-(Math.min(p.y*grown,p.y)/maxY)*ch;
-        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-      });
-      ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.stroke();
-      s.points.forEach(p=>{
-        const x=pad.l+dateToX(p.date)*cw;
-        const y=pad.t+ch-(Math.min(p.y*grown,p.y)/maxY)*ch;
-        ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
-        if(p.label&&grown>0.8){
-          ctx.fillStyle='rgba(10,10,10,0.55)';ctx.font='10px Inter, sans-serif';ctx.textAlign='center';
-          ctx.fillText(p.label,x,y>pad.t+30?y-10:y+16);
-        }
-      });
-      const last=s.points[s.points.length-1];
-      const lx=pad.l+dateToX(last.date)*cw;
-      const ly=pad.t+ch-(Math.min(last.y*grown,last.y)/maxY)*ch;
-      if(grown>0.8){
-        ctx.fillStyle=s.color;ctx.font='bold 11px JetBrains Mono, monospace';ctx.textAlign='left';
-        const labelTxt = '$'+Math.round(last.y*grown)+'M';
-        // Clamp label inside canvas, never cropped.
-        const maxLabelX = W - ctx.measureText(labelTxt).width - 4;
-        ctx.fillText(labelTxt, Math.min(lx+8, maxLabelX), ly+4);
-      }
-    });
-
-    // Legend (top-left)
-    const lx=pad.l+10;
-    series.forEach((s,i)=>{
-      const ly=pad.t+10+i*16;
-      ctx.beginPath();ctx.arc(lx,ly,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
-      ctx.fillStyle='rgba(10,10,10,0.65)';ctx.font='10px Inter, sans-serif';ctx.textAlign='left';
-      ctx.fillText(s.name,lx+8,ly+4);
-    });
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// --- EU Public AI Capex (Paris) ---
-(function(){
-  const canvas = document.getElementById('dbEuCapexCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  // (pane visibility check removed; charts always render inline)
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // State-committed public AI funding, in €B. Sorted descending.
-  // `asp` = aspirational/private-pipeline pledge typically quoted alongside.
-  const data = [
-    { name: 'EU (InvestAI)',  state: 20.0, asp: 180, highlight: false, aspNote: 'mobilisation target €200B' },
-    { name: 'Germany',        state:  5.0, asp: 0,   highlight: false, aspNote: '' },
-    { name: 'France',         state:  2.5, asp: 107, highlight: true,  aspNote: 'private pipeline €109B' },
-    { name: 'UK',             state:  2.4, asp: 0,   highlight: false, aspNote: '' },
-    { name: 'Spain',          state:  2.1, asp: 0,   highlight: false, aspNote: '' },
-    { name: 'Italy',          state:  1.0, asp: 0,   highlight: false, aspNote: '' },
-    { name: 'Nordics',        state:  0.35,asp: 0,   highlight: false, aspNote: '' },
-    { name: 'Netherlands',    state:  0.2, asp: 0,   highlight: false, aspNote: '' },
-  ];
-  const maxState = 22; // scale max — EU at 20€B is the largest committed
-  const ACCENT = '#0057FF';
-  const BAR = 'rgba(10,10,10,0.7)';
-
-  let grown = reduceMotion ? 1 : 0;
-  function draw(){
-    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, W, H);
-    const pad = { l: 90, r: 18, t: 20, b: 10 };
-    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-    grown = Math.min(grown + 0.025, 1);
-
-    // Header label
-    ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font='10.5px JetBrains Mono, monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('PUBLIC AI COMMITMENT — €B (STATE)', pad.l, 11);
-
-    const rowH = ch / data.length;
-    const barH = Math.min(18, rowH * 0.55);
-
-    // Faint vertical gridlines at 5, 10, 15, 20
-    ctx.strokeStyle = 'rgba(10,10,10,0.06)';
-    ctx.lineWidth = 0.5;
-    [5, 10, 15, 20].forEach(v => {
-      const x = pad.l + (v / maxState) * cw;
-      ctx.beginPath();
-      ctx.moveTo(x, pad.t);
-      ctx.lineTo(x, pad.t + ch);
-      ctx.stroke();
-      ctx.fillStyle = 'rgba(10,10,10,0.30)';
-      ctx.font='10px JetBrains Mono, monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('€' + v, x, pad.t + ch + 8);
-    });
-
-    data.forEach((d, i) => {
-      const y = pad.t + i * rowH;
-      const cy = y + rowH / 2;
-      const by = cy - barH / 2;
-
-      // Country label (left)
-      ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.78)';
-      ctx.font = d.highlight ? 'bold 10.5px Inter, sans-serif' : '10.5px Inter, sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText(d.name, pad.l - 8, cy + 3.5);
-
-      // Solid state bar
-      const stateW = (d.state / maxState) * cw * grown;
-      ctx.fillStyle = d.highlight ? ACCENT : BAR;
-      ctx.fillRect(pad.l, by, stateW, barH);
-
-      // Aspirational hashed extension, capped at the chart edge
-      if (d.asp > 0 && grown > 0.4) {
-        const aspAvail = cw - stateW;
-        const aspW = Math.min((d.asp / maxState) * cw, aspAvail) * Math.min((grown - 0.4) / 0.6, 1);
-        if (aspW > 0) {
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(pad.l + stateW, by, aspW, barH);
-          ctx.clip();
-          // Diagonal hatch pattern
-          ctx.strokeStyle = d.highlight ? 'rgba(0,87,255,0.35)' : 'rgba(10,10,10,0.28)';
-          ctx.lineWidth = 1;
-          for (let x = -barH; x < aspW + barH; x += 5) {
-            ctx.beginPath();
-            ctx.moveTo(pad.l + stateW + x, by + barH);
-            ctx.lineTo(pad.l + stateW + x + barH, by);
-            ctx.stroke();
-          }
-          ctx.restore();
-          // Trailing edge fade to indicate truncation
-          if ((d.asp / maxState) * cw > aspAvail) {
-            const grad = ctx.createLinearGradient(pad.l + cw - 20, 0, pad.l + cw, 0);
-            grad.addColorStop(0, 'rgba(248,246,241,0)');
-            grad.addColorStop(1, 'rgba(248,246,241,1)');
-            ctx.fillStyle = grad;
-            ctx.fillRect(pad.l + cw - 20, by, 20, barH);
-          }
-        }
-      }
-
-      // State value label (right of solid bar)
-      if (grown > 0.5) {
-        ctx.fillStyle = d.highlight ? ACCENT : 'rgba(10,10,10,0.68)';
-        ctx.font='bold 10.5px JetBrains Mono, monospace';
-        ctx.textAlign = 'left';
-        const labelX = Math.min(pad.l + stateW + 5, pad.l + cw - 38);
-        const val = d.state >= 1 ? d.state.toFixed(1) : d.state.toFixed(2);
-        ctx.fillText('€' + val + 'B', labelX, cy + 3.5);
-      }
-
-      // Aspirational note above the bar
-      if (d.asp > 0 && grown > 0.85) {
-        ctx.fillStyle = d.highlight ? 'rgba(0,87,255,0.7)' : 'rgba(10,10,10,0.45)';
-        ctx.font='italic 10px Inter, sans-serif';
-        ctx.textAlign = 'right';
-        ctx.fillText('+ ' + d.aspNote, pad.l + cw - 2, by - 2);
-      }
-    });
-
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// --- Export Controls Timeline (White House) ---
-(function(){
-  const canvas = document.getElementById('dbExportControlsCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  // (pane visibility check removed; charts always render inline)
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // status: 'force' (red/green dot), 'rescinded' (gray), 'reversed' (orange), 'suspended' (orange)
-  const events = [
-    { date: 'Oct \'22', label: 'BIS Oct 7 rule (advanced computing ICs to PRC)', status: 'force',     pill: 'in force' },
-    { date: 'Oct \'23', label: 'Performance-density + HBM update; 40+ country FDPR',       status: 'force',     pill: 'in force' },
-    { date: 'Dec \'24', label: 'HBM controls (3A090.c); 140 entities listed',              status: 'force',     pill: 'in force' },
-    { date: 'Jan \'25', label: 'AI Diffusion Rule — 3-tier countries + model weights',     status: 'rescinded', pill: 'rescinded' },
-    { date: 'Apr \'25', label: 'H20 / MI308 license requirement',                          status: 'reversed',  pill: 'reversed' },
-    { date: 'May \'25', label: 'Diffusion Rule rescinded',                                  status: 'force',     pill: 'in force' },
-    { date: 'Jul \'25', label: 'H20 shipments to China resume',                             status: 'force',     pill: 'in force' },
-    { date: 'Sep \'25', label: '50% Affiliates Rule',                                       status: 'suspended', pill: 'suspended' },
-    { date: 'Jan \'26', label: 'H200 / MI325X case-by-case licensing',                      status: 'force',     pill: 'in force' },
-    { date: 'Jan \'26', label: '25% Section 232 semiconductor tariff',                      status: 'force',     pill: 'in force' },
-  ];
-
-  const colors = {
-    force:     '#0057FF',
-    rescinded: 'rgba(10,10,10,0.40)',
-    reversed:  'rgba(10,10,10,0.45)',
-    suspended: 'rgba(10,10,10,0.45)',
-  };
-
-  // Bucket events by year and by "currently in force" vs "retracted/reversed".
-  const yearOf = e => '20' + e.date.split(' ')[1].replace("'", '');
-  const years = ['2022','2023','2024','2025','2026'];
-  const byYear = years.map(y => {
-    const yEvents = events.filter(e => yearOf(e) === y);
-    return {
-      year: y,
-      force: yEvents.filter(e => e.status === 'force').length,
-      retracted: yEvents.filter(e => e.status !== 'force').length,
-      total: yEvents.length,
-    };
-  });
-  const yMax = Math.max(...byYear.map(d => d.total), 5);
-
-  let grown = reduceMotion ? 1 : 0;
-  function draw(){
-    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, W, H);
-    const pad = { l: 30, r: 12, t: 20, b: 30 };
-    grown = Math.min(grown + 0.03, 1);
-
-    // Header
-    ctx.fillStyle = 'rgba(10,10,10,0.55)';
-    ctx.font = '10px JetBrains Mono, monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('US AI EXPORT ACTIONS / YEAR', pad.l, 12);
-
-    // Legend on the right
-    const legendY = 12;
-    const legendItems = [
-      { label: 'IN FORCE', color: '#0057FF' },
-      { label: 'RETRACTED', color: 'rgba(10,10,10,0.4)' },
-    ];
-    let lx = W - pad.r;
-    legendItems.slice().reverse().forEach(item => {
-      ctx.font='bold 10px JetBrains Mono, monospace';
-      const tw = ctx.measureText(item.label).width;
-      lx -= tw + 16;
-      ctx.fillStyle = item.color;
-      ctx.fillRect(lx, legendY - 7, 8, 8);
-      ctx.fillStyle = 'rgba(10,10,10,0.65)';
-      ctx.fillText(item.label, lx + 12, legendY);
-      lx -= 6;
-    });
-
-    const ch = H - pad.t - pad.b;
-    const cw = W - pad.l - pad.r;
-
-    // Y-axis ticks (0, peak)
-    ctx.strokeStyle = 'rgba(10,10,10,0.08)';
-    ctx.lineWidth = 0.5;
-    for (let v = 0; v <= yMax; v += 1) {
-      const y = pad.t + ch - (v / yMax) * ch;
-      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
-    }
-    ctx.fillStyle = 'rgba(10,10,10,0.45)';
-    ctx.font='10px JetBrains Mono, monospace';
-    ctx.textAlign = 'right';
-    [0, Math.ceil(yMax / 2), yMax].forEach(v => {
-      const y = pad.t + ch - (v / yMax) * ch;
-      ctx.fillText(String(v), pad.l - 6, y + 3);
-    });
-
-    // Bars
-    const bw = Math.min(46, cw / byYear.length * 0.62);
-    const gap = cw / byYear.length;
-    byYear.forEach((d, i) => {
-      const cx = pad.l + gap * (i + 0.5);
-      const bx = cx - bw / 2;
-      const fH = (d.force / yMax) * ch * grown;
-      const rH = (d.retracted / yMax) * ch * grown;
-      // In-force segment (bottom)
-      ctx.fillStyle = '#0057FF';
-      ctx.fillRect(bx, pad.t + ch - fH, bw, fH);
-      // Retracted segment (stacked on top)
-      ctx.fillStyle = 'rgba(10,10,10,0.4)';
-      ctx.fillRect(bx, pad.t + ch - fH - rH, bw, rH);
-      // X-axis year label
-      ctx.fillStyle = 'rgba(10,10,10,0.7)';
-      ctx.font='bold 10.5px JetBrains Mono, monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(d.year, cx, pad.t + ch + 14);
-      // Total label above the bar
-      if (d.total > 0 && grown > 0.85) {
-        ctx.fillStyle = 'rgba(10,10,10,0.7)';
-        ctx.font='bold 10px JetBrains Mono, monospace';
-        ctx.fillText(String(d.total), cx, pad.t + ch - fH - rH - 4);
-      }
-    });
-
-    // Caption under x-axis
-    ctx.fillStyle = 'rgba(10,10,10,0.5)';
-    ctx.font='italic 10px Inter, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('2025: peak volatility (rules added and rescinded).', pad.l, pad.t + ch + 26);
-
-    if (!reduceMotion && grown < 1) requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// --- Talent Brain Drain Timeline (Dublin Jan) ---
-(function(){
-  const canvas = document.getElementById('dbTalentTimelineCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  // (pane visibility check removed; charts always render inline)
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width, cssH = rect.height;
-    if (cssW < 4 || cssH < 4) return;
-    const bw = Math.round(cssW * dpr), bh = Math.round(cssH * dpr);
-    if (canvas.width !== bw) canvas.width = bw;
-    if (canvas.height !== bh) canvas.height = bh;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Quarterly trend, interpolated between MacroPolo (2022 anchor) and Atomico
-  // (2023-24 anchors). 2019 baseline is the upper reference line.
-  const baseline2019 = 50;     // % of EU-trained AI researchers working in EU
-  const anchor2022 = 43;       // MacroPolo 3.0
-  const points = [
-    { q: 'Q4 24', v: 43.0, anchor: 'MacroPolo 3.0 (NeurIPS 2022 sample)' },
-    { q: 'Q1 25', v: 42.4 },
-    { q: 'Q2 25', v: 41.7 },
-    { q: 'Q3 25', v: 41.1, anchor: 'Atomico SoET 2025: net tech inflow 26k (was 52k)' },
-    { q: 'Q4 25', v: 40.5 },
-    { q: 'Q1 26', v: 40.0, anchor: 'Euronews: brain drain accelerating' },
-  ];
-  const yMin = 36, yMax = 52;
-
-  let grown = reduceMotion ? 1 : 0;
-  function draw(){
-    const dpr = window.devicePixelRatio || 1; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); const W = canvas.width / dpr, H = canvas.height / dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, W, H);
-    const pad = { l: 38, r: 16, t: 22, b: 26 };
-    const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-    grown = Math.min(grown + 0.018, 1);
-
-    // Header
-    ctx.fillStyle = 'rgba(10,10,10,0.42)';
-    ctx.font='10.5px JetBrains Mono, monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('% OF EU-TRAINED AI RESEARCHERS WORKING IN EU', pad.l, 12);
-
-    // Y gridlines + labels
-    ctx.strokeStyle = 'rgba(10,10,10,0.07)';
-    ctx.lineWidth = 0.5;
-    ctx.fillStyle = 'rgba(10,10,10,0.4)';
-    ctx.font='10.5px JetBrains Mono, monospace';
-    ctx.textAlign = 'right';
-    [40, 45, 50].forEach(v => {
-      const y = pad.t + ch - ((v - yMin) / (yMax - yMin)) * ch;
-      ctx.beginPath();
-      ctx.moveTo(pad.l, y);
-      ctx.lineTo(pad.l + cw, y);
-      ctx.stroke();
-      ctx.fillText(v + '%', pad.l - 5, y + 3);
-    });
-
-    // 2019 baseline reference (dashed)
-    const baseY = pad.t + ch - ((baseline2019 - yMin) / (yMax - yMin)) * ch;
-    ctx.save();
-    ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = 'rgba(0,87,255,0.55)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(pad.l, baseY);
-    ctx.lineTo(pad.l + cw, baseY);
-    ctx.stroke();
-    ctx.restore();
-    ctx.fillStyle = 'rgba(0,87,255,0.7)';
-    ctx.font='italic 10.5px Inter, sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText('2019 baseline', pad.l + 4, baseY - 4);
-
-    // Plot points & line
-    const stepX = cw / (points.length - 1);
-    const xy = points.map((p, i) => {
-      const x = pad.l + i * stepX;
-      const y = pad.t + ch - ((p.v - yMin) / (yMax - yMin)) * ch;
-      return { x, y, p };
-    });
-    // Area under curve (subtle red wash)
-    const drawTo = Math.max(1, Math.floor(xy.length * grown));
-    ctx.beginPath();
-    ctx.moveTo(xy[0].x, pad.t + ch);
-    for (let i = 0; i < drawTo; i++) ctx.lineTo(xy[i].x, xy[i].y);
-    ctx.lineTo(xy[drawTo - 1].x, pad.t + ch);
-    ctx.closePath();
-    const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + ch);
-    grad.addColorStop(0, 'rgba(184,0,46,0.18)');
-    grad.addColorStop(1, 'rgba(184,0,46,0.02)');
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Line
-    ctx.beginPath();
-    for (let i = 0; i < drawTo; i++) {
-      if (i === 0) ctx.moveTo(xy[i].x, xy[i].y);
-      else ctx.lineTo(xy[i].x, xy[i].y);
-    }
-    ctx.strokeStyle = '#b8002e';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Points + x labels + anchor callouts
-    xy.forEach((pt, i) => {
-      if (i >= drawTo) return;
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = '#b8002e';
-      ctx.fill();
-
-      // X-axis quarter label
-      ctx.fillStyle = 'rgba(10,10,10,0.5)';
-      ctx.font='10.5px JetBrains Mono, monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(pt.p.q, pt.x, pad.t + ch + 14);
-
-      // Value label only on first, last, and anchor points
-      const isAnchor = !!pt.p.anchor;
-      const isEndpoint = i === 0 || i === xy.length - 1;
-      if ((isAnchor || isEndpoint) && grown > 0.75) {
-        ctx.fillStyle = '#b8002e';
-        ctx.font='bold 10.5px JetBrains Mono, monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(pt.p.v.toFixed(1) + '%', pt.x, pt.y - 8);
-      }
-    });
-
-    if (!reduceMotion) requestAnimationFrame(draw);
-  }
-  draw();
-})();
 
 // ============================================================
 // COUNTRY MAP — orthographic globe; spins to the chapter's country on scroll
@@ -1287,6 +542,127 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     'scene-dublin-jan':  [-6.27, 53.35],
     'scene-whitehouse':  [-77.04, 38.90],
   };
+
+  // --- Coalition trail: a curved, dotted line that hops from each chapter's
+  // capital to the next (Dublin -> Berlin -> Brussels -> ...). The newest hop
+  // is brightest; every older hop fades a step further back. ---
+  const arcsGroup = document.getElementById('cmArcs');
+  const NS_SVG = 'http://www.w3.org/2000/svg';
+  // Scenes with coordinates, in chapter (DOM) order.
+  let arcSequence = [];
+  // One arc record per consecutive pair; arc i links seq[i] -> seq[i+1].
+  let arcList = [];
+  // How many hops have been revealed so far (monotonic as you scroll down).
+  let revealedCount = 0;
+  // Visual fade applied per hop age.
+  const FADE_TOP = 0.95, FADE_DECAY = 0.62, FADE_FLOOR = 0.18;
+
+  // Spherical-linear interpolation between two [lng, lat] points; returns a
+  // list of [lng, lat] samples tracing the great circle between them.
+  function greatCircle(a, b, n) {
+    function toVec(p) {
+      const l = p[0] * DEG, ph = p[1] * DEG;
+      return [Math.cos(ph) * Math.cos(l), Math.cos(ph) * Math.sin(l), Math.sin(ph)];
+    }
+    const va = toVec(a), vb = toVec(b);
+    let dot = va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2];
+    dot = Math.max(-1, Math.min(1, dot));
+    const om = Math.acos(dot);
+    const pts = [];
+    if (om < 1e-6) return [a.slice(), b.slice()];
+    const sinOm = Math.sin(om);
+    for (let i = 0; i <= n; i++) {
+      const t = i / n;
+      const s1 = Math.sin((1 - t) * om) / sinOm;
+      const s2 = Math.sin(t * om) / sinOm;
+      const x = s1*va[0] + s2*vb[0], y = s1*va[1] + s2*vb[1], z = s1*va[2] + s2*vb[2];
+      pts.push([Math.atan2(y, x) / DEG, Math.asin(Math.max(-1, Math.min(1, z))) / DEG]);
+    }
+    return pts;
+  }
+
+  // Project the first `frac` (0..1) of an arc, breaking the path wherever it
+  // crosses to the hidden hemisphere.
+  function arcPath(points, frac) {
+    const count = Math.max(2, Math.ceil(frac * (points.length - 1)) + 1);
+    let d = '', inSub = false;
+    for (let i = 0; i < count; i++) {
+      const [x, y, vis] = project(points[i][0], points[i][1]);
+      if (vis) { d += (inSub ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1); inSub = true; }
+      else inSub = false;
+    }
+    return d;
+  }
+
+  // Redraw every revealed hop against the current view.
+  function drawArcs() {
+    arcList.forEach(arc => {
+      arc.el.setAttribute('d', arc.revealed ? arcPath(arc.points, arc.progress) : '');
+    });
+  }
+
+  // Re-apply the trailing fade: newest revealed hop brightest, older dimmer.
+  function refreshArcFade() {
+    const newest = revealedCount - 1;
+    arcList.forEach((arc, i) => {
+      if (!arc.revealed) { arc.el.style.opacity = '0'; return; }
+      const age = newest - i;
+      arc.el.style.opacity = Math.max(FADE_FLOOR, FADE_TOP * Math.pow(FADE_DECAY, age)).toFixed(3);
+    });
+  }
+
+  // Animate any hops still growing in.
+  let arcRaf = false;
+  function arcTick(ts) {
+    let active = false;
+    arcList.forEach(arc => {
+      if (arc.revealed && arc.progress < 1) {
+        if (!arc.start) arc.start = ts;
+        arc.progress = Math.min((ts - arc.start) / 1100, 1);
+        active = true;
+      }
+    });
+    drawArcs();
+    if (active) requestAnimationFrame(arcTick);
+    else arcRaf = false;
+  }
+  function ensureArcRaf() {
+    if (!arcRaf) { arcRaf = true; requestAnimationFrame(arcTick); }
+  }
+
+  // Build one dotted hop per consecutive pair of capitals (all hidden at first).
+  function buildArcs() {
+    if (!arcsGroup) return;
+    arcSequence = Array.from(document.querySelectorAll('.scene[data-country-id]'))
+      .filter(s => CITY_COORDS[s.id]);
+    arcList = [];
+    for (let i = 1; i < arcSequence.length; i++) {
+      const from = CITY_COORDS[arcSequence[i - 1].id];
+      const to = CITY_COORDS[arcSequence[i].id];
+      const el = document.createElementNS(NS_SVG, 'path');
+      el.setAttribute('class', 'cm-arc');
+      el.style.opacity = '0';
+      arcsGroup.appendChild(el);
+      arcList.push({ points: greatCircle(from, to, 48), el, revealed: false, progress: 0, start: 0 });
+    }
+  }
+
+  // Reveal hops up to (and including) the link into the chapter at seqIndex.
+  function revealTrailTo(seqIndex) {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let changed = false;
+    for (let i = 0; i < seqIndex; i++) {
+      if (!arcList[i].revealed) {
+        arcList[i].revealed = true;
+        arcList[i].progress = reduce ? 1 : 0;
+        arcList[i].start = 0;
+        changed = true;
+      }
+    }
+    if (seqIndex > revealedCount) revealedCount = seqIndex;
+    refreshArcFade();
+    if (changed) { if (reduce) drawArcs(); else ensureArcRaf(); }
+  }
 
   let dotEl = null;
   let countryData = [];
@@ -1357,6 +733,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       c.el.setAttribute('d', d);
     });
     if (dotEl && dotEl._sceneEl) positionDotNow(dotEl._sceneEl);
+    drawArcs();
   }
 
   // Tween rotation from (viewLng, viewLat) to (targetLng, targetLat).
@@ -1421,6 +798,7 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       dotEl.setAttribute('cx', '0');
       dotEl.setAttribute('cy', '0');
       svg.appendChild(dotEl);
+      buildArcs();
       redraw();
       setupHighlighter();
     })
@@ -1447,6 +825,9 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
       if (dotEl) dotEl._sceneEl = sceneEl;
       active = id;
       const coords = CITY_COORDS[sceneEl.id];
+      // Extend the dotted coalition trail to this chapter, then spin to it.
+      const seqIndex = arcSequence.indexOf(sceneEl);
+      if (seqIndex > 0) revealTrailTo(seqIndex);
       if (coords) spinTo(coords[0], coords[1]);
     }
     const visible = new Map();
@@ -1477,4 +858,109 @@ const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-mo
     if (e.key !== 'Escape') return;
     document.querySelectorAll('details.viz-info[open]').forEach(d => d.removeAttribute('open'));
   });
+})();
+
+// --- Live-data grid: keep one headline figure on each chart card and move the
+// full figure set into that card's "i" overlay, so all eight charts can sit
+// together beside the coalition designer without crowding. ---
+(function(){
+  document.querySelectorAll('.supporting-data-grid .viz-card').forEach(card => {
+    const footer = card.querySelector('.viz-footer');
+    if (!footer) return;
+    const body = card.querySelector('.viz-info-body');
+    if (body && footer.querySelector('.viz-mini-stat')) {
+      const full = footer.cloneNode(true);
+      full.classList.remove('viz-footer');
+      full.classList.add('viz-figures');
+      const h = document.createElement('h4');
+      h.textContent = 'Key figures';
+      body.appendChild(h);
+      body.appendChild(full);
+    }
+    footer.classList.remove('viz-footer');
+    footer.classList.add('viz-headline');
+  });
+})();
+
+// --- Minimal charts: quiet draw/grow animation when a card scrolls into view ---
+(function(){
+  const cards = Array.from(document.querySelectorAll('.supporting-data-grid .viz-card'))
+    .filter(c => c.querySelector('.mn-chart'));
+  if (!cards.length) return;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    cards.forEach(c => c.classList.add('mn-anim', 'is-in'));
+    return;
+  }
+  cards.forEach(c => c.classList.add('mn-anim'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.35 });
+  cards.forEach(c => io.observe(c));
+})();
+
+// --- Footnote chart previews: tap/hover a marker or data link to see its chart
+//     in a floating popover (a clone of the chart from the live-data panel). ---
+(function(){
+  const pop = document.createElement('div');
+  pop.className = 'viz-pop';
+  pop.setAttribute('role', 'dialog');
+  document.body.appendChild(pop);
+  let openFor = null, hideTimer = null;
+
+  function targetId(el){
+    return el.dataset.vizPop || (el.getAttribute('href') || '').replace('#','');
+  }
+  function fill(id){
+    const card = document.getElementById(id);
+    if (!card) return false;
+    const name = card.querySelector('.viz-name');
+    const chart = card.querySelector('.viz-canvas-wrap') || card.querySelector('svg');
+    if (!chart) return false;
+    pop.innerHTML = '';
+    if (name){ const t=document.createElement('div'); t.className='viz-pop-title'; t.textContent=name.textContent; pop.appendChild(t); }
+    pop.appendChild(chart.cloneNode(true));
+    return true;
+  }
+  function place(trigger){
+    const r = trigger.getBoundingClientRect();
+    const pr = pop.getBoundingClientRect();
+    let left = r.left + r.width/2 - pr.width/2;
+    left = Math.max(8, Math.min(left, window.innerWidth - pr.width - 8));
+    let top = r.top - pr.height - 10;            // prefer above
+    if (top < 8) top = r.bottom + 10;            // else below
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+  }
+  function show(trigger){
+    clearTimeout(hideTimer);
+    const id = targetId(trigger);
+    if (!fill(id)) return;
+    openFor = trigger;
+    pop.classList.add('is-open');
+    // measure then place (two rAFs so layout settles)
+    requestAnimationFrame(()=>{ place(trigger); requestAnimationFrame(()=>place(trigger)); });
+  }
+  function hide(){ pop.classList.remove('is-open'); openFor = null; }
+  function hideSoon(){ hideTimer = setTimeout(hide, 180); }
+
+  const triggers = document.querySelectorAll('.story-fn, .scene-data-link');
+  triggers.forEach(t => {
+    t.addEventListener('mouseenter', () => show(t));
+    t.addEventListener('mouseleave', hideSoon);
+    t.addEventListener('focus', () => show(t));
+    t.addEventListener('blur', hideSoon);
+    // tap: toggle, and don't jump for inline markers
+    t.addEventListener('click', (e) => {
+      if (t.classList.contains('story-fn')) e.preventDefault();
+      if (openFor === t) hide(); else show(t);
+    });
+  });
+  pop.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+  pop.addEventListener('mouseleave', hideSoon);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') hide(); });
+  window.addEventListener('scroll', hide, { passive:true });
+  document.addEventListener('click', (e)=>{ if(openFor && !pop.contains(e.target) && !openFor.contains(e.target) && e.target!==openFor) hide(); });
 })();

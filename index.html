@@ -51,45 +51,13 @@
 <!-- STORY + VIZ (centered two-column experience) -->
 <div class="experience-shell" id="experience">
 <div class="experience-columns">
-<aside class="country-map" id="countryMap" aria-hidden="true">
-  <div class="country-map-frame">
-    <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <clipPath id="globeClip"><circle cx="100" cy="100" r="78"/></clipPath>
-      </defs>
-      <!-- Whirl: subtle, continuously rotating decoration around the globe -->
-      <g class="cm-whirl" aria-hidden="true">
-        <circle cx="100" cy="100" r="92" fill="none" stroke="rgba(10,10,10,0.18)" stroke-width="0.4" stroke-dasharray="2 5"/>
-        <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(10,10,10,0.08)" stroke-width="0.35" stroke-dasharray="1 9"/>
-        <!-- four cardinal tick marks -->
-        <line x1="100" y1="2"  x2="100" y2="8"  stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
-        <line x1="100" y1="192" x2="100" y2="198" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
-        <line x1="2"  y1="100" x2="8"  y2="100" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
-        <line x1="192" y1="100" x2="198" y2="100" stroke="rgba(10,10,10,0.35)" stroke-width="0.6"/>
-      </g>
-      <!-- Globe: transparent disc, rim drawn on top -->
-      <circle class="cm-ocean" cx="100" cy="100" r="78" fill="transparent" stroke="rgba(10,10,10,0.4)" stroke-width="0.6"/>
-      <!-- Latitude/longitude graticule, faint -->
-      <g class="cm-graticule" clip-path="url(#globeClip)" fill="none" stroke="rgba(10,10,10,0.10)" stroke-width="0.3" stroke-dasharray="1 2">
-        <ellipse cx="100" cy="100" rx="78" ry="20"/>
-        <ellipse cx="100" cy="100" rx="78" ry="40"/>
-        <ellipse cx="100" cy="100" rx="78" ry="60"/>
-        <ellipse cx="100" cy="100" rx="20" ry="78"/>
-        <ellipse cx="100" cy="100" rx="40" ry="78"/>
-        <ellipse cx="100" cy="100" rx="60" ry="78"/>
-      </g>
-      <g id="countryMapGroup" clip-path="url(#globeClip)"></g>
-      <!-- Outer rim ring drawn on top for crisp edge -->
-      <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(10,10,10,0.5)" stroke-width="0.7"/>
-    </svg>
-  </div>
-</aside>
 <article class="story" id="story">
 
   <!-- 1. Dublin, April 2026 -->
   <section class="scene" data-viz="talent-migration" id="scene-dublin-apr" data-country-id="372" data-country-iso="IE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 1</div>
+      <a class="scene-data-link" href="#viz-talent">Data &darr; Talent migration</a>
       <span class="scene-dateline">
         Apr.23.2026<br>
         Dublin, Ireland<br>
@@ -103,7 +71,7 @@
       <p>One of the Americans to come over when Open AI opened its doors to Dublin, Aaron was an advisor on the policy team. A lawyer by training and by disposition, He&rsquo;d been entrusted to make sure that the legal and ethical output of Open AI&rsquo;s actions in Europe were in line with EU regulations.</p>
       <p>I met Aaron exactly one year before he was fired. I&rsquo;d moved to Dublin from the San Francisco office as a researcher, and had trouble adjusting to a new life on a different continent in a country whose sense of humor reserved a special sting for the American invaders. Aaron had taken pity on me rather quickly and invited me over to his house for dinner a few times where the three of us: myself, Aaron, and Aaron&rsquo;s wife Laura, would get properly drunk and gossip about friends we knew back in the states. I&rsquo;d walk back to my own unadorned flat unsteady but happy.</p>
       <p>The rounds of layoffs were happening swiftly. I had learned that morning I was safe. &ldquo;Congrats&rdquo; my supervisor said, &ldquo;you live to fight another day.&rdquo;</p>
-      <p>The official stance taken by the company was a consolidation towards its major revenue-generating operations in the US, and further investment in American datacenters. The other EU offices in Munich, Paris and Brussels were similarly decimated, I had heard.</p>
+      <p>The official stance taken by the company was a consolidation towards its major revenue-generating operations in the US, and further investment in American datacenters. The other EU offices in Munich, Paris and Brussels were similarly decimated, I had heard. <button class="story-fn" type="button" data-viz-pop="viz-talent" aria-label="See chart: Talent migration">1</button></p>
       <p>Aaron was walking out the door. Last chance to say goodbye. I pushed my way through a crowd of fellow well-wishers for the other recently unemployed and intercepted Aaron at the door. I told him that they were bastards. That this was a huge mistake. That they&rsquo;ll come to their senses. Or that he&rsquo;ll land a better gig somewhere else. He nodded wearily, his eyes fixed on the ground.</p>
       <p>Once I was done with the platitudes, he pulled me aside and said in a low whisper as we huddled together: &ldquo;look, I&rsquo;ve been working on something for a few weeks. It could be nothing. But could you do me a favor?&rdquo;</p>
       <p>&ldquo;Of course.&rdquo;</p>
@@ -119,6 +87,7 @@
   <section class="scene" data-viz="compute-map" id="scene-berlin" data-country-id="276" data-country-iso="DE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 2</div>
+      <a class="scene-data-link" href="#viz-cloud">Data &darr; Cloud dependence</a>
       <span class="scene-dateline">
         Apr.16.2027<br>
         Berlin, Germany<br>
@@ -182,7 +151,7 @@
       <p>Merz rubbed his eyelids. The clock on his laptop hit 5am. He was tired. He turned towards Pieter who had melted into the couch in the stately office where the atmosphere had turned thick and bilious with anxiety.</p>
       <p>&ldquo;Can you tell me how exposed we are? What&rsquo;s the risk in saying no?&rdquo;</p>
       <p>Pieter was scrolling on his laptop. It was a long time before either man said anything.</p>
-      <p>&ldquo;It&rsquo;s difficult to say. We have some hedges so we won&rsquo;t go dark overnight, but even the things we advertise as sovereign are built on top of Microsoft or Google&rsquo;s technology.&rdquo;</p>
+      <p>&ldquo;It&rsquo;s difficult to say. We have some hedges so we won&rsquo;t go dark overnight, but even the things we advertise as sovereign are built on top of Microsoft or Google&rsquo;s technology.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-cloud" aria-label="See chart: Cloud dependence">2</button></p>
       <p>&ldquo;What about the other stuff. Hospitals, universities, our own ministiries that are supposed to be on the cutting edge?&rdquo;</p>
       <p>&ldquo;I just don&rsquo;t know. Any pause, any price increase, or limits to access would cause a massive panic. I don&rsquo;t think anyone has the full picture of who&rsquo;s using what.&rdquo;</p>
       <p>&ldquo;This is insane&hellip;&rdquo;</p>
@@ -199,6 +168,7 @@
   <section class="scene" data-viz="lang-heatmap" id="scene-brussels" data-country-id="56" data-country-iso="BE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 3</div>
+      <a class="scene-data-link" href="#viz-language">Data &darr; Language coverage</a>
       <span class="scene-dateline">
         Jun.03.2026<br>
         Brussels, Belgium<br>
@@ -217,7 +187,7 @@
       <p>The Finn paused. &ldquo;The situation might not seem so dire to those of us whose job isn&rsquo;t to plan for contingencies, but what if I were to put it to you this way? We control almost none of our own frontier-scale compute. We cannot reliably train, fine-tune, or deploy any sort of frontier model at scale using what we have today. Our public services are hosted on cloud layers supplied by American companies that run on datacenters we don&rsquo;t have. Our capital pools are diluted. Every week I hear of a new European startup that relocates to the US because they don&rsquo;t have the resources to grow here. Where is our Silicon Valley? Where are our innovation hubs? We are too fragmented, our efforts too aimless. So we end up as toothless regulators over technology that doesn&rsquo;t even belong to us.</p>
       <p>Some of the crowd walked out. Others stayed, rapt by what might come next.</p>
       <p>&ldquo;I look at this and I worry. But this is a worry that must reinforce a shared collective interest. As individual nations, none of us have the resources to compete with the US or China. But if we were to come together? If we were to pool our resources, play to each other&rsquo;s strengths? Then these policy proposals stop looking like a particularly fanciful child&rsquo;s dream book. We must be realists. We cannot afford to be anything else. We must set aside any sense of pride or sense of competitiveness we might have with each other, and form a whole that&rsquo;s greater than the sum of its parts. Otherwise we will continue to burn through money on projects that, when compared to what we&rsquo;re up against, are merely bait fish in a sea of sharks. My plea, if you could call it that, is to join me on a path forged by collaborative advantage.</p>
-      <p>This is because AI is not like other technologies. It requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary. As a fragmented group of countries who speak different languages, have different goals, are bound by local customs, this might prove to be our greatest challenge yet. How can we move in lockstep? How can we work as one? If we can&rsquo;t answer that question, there&rsquo;s no use in maintaining the illusion of our sovereignty. It becomes just another word we use to hide the fact that we failed to come together to control our own future. That we let petty differences and inactivity push our own powers of self-determination to the side.&rdquo;</p>
+      <p>This is because AI is not like other technologies. It requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary. As a fragmented group of countries who speak different languages <button class="story-fn" type="button" data-viz-pop="viz-language" aria-label="See chart: Language coverage">3</button>, have different goals, are bound by local customs, this might prove to be our greatest challenge yet. How can we move in lockstep? How can we work as one? If we can&rsquo;t answer that question, there&rsquo;s no use in maintaining the illusion of our sovereignty. It becomes just another word we use to hide the fact that we failed to come together to control our own future. That we let petty differences and inactivity push our own powers of self-determination to the side.&rdquo;</p>
       <p>Virkkunen strode off the stage to scattered applause. Her assistant ran up to her with a bottle of water, &ldquo;that was fantastic! Much more stirring than the other speech.&rdquo;</p>
       <p>Virkkunen unscrewed the cap and noisily chugged all of the bottle&rsquo;s liquids. She noticed her knees were still shaking.</p>
       <p>&ldquo;We&rsquo;ll see if they listen this time.&rdquo;</p>
@@ -234,6 +204,7 @@
   <section class="scene" id="scene-tokyo" data-country-id="392" data-country-iso="JP">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 4</div>
+      <a class="scene-data-link" href="#viz-tokyo">Data &darr; Japan's AI bet</a>
       <span class="scene-dateline">
         Feb.19.2027<br>
         <span lang="ja-Latn">Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda</span>, Tokyo<br>
@@ -251,7 +222,7 @@
       <p>Prime Minister Takaichi was unimpressed. &ldquo;Say more.&rdquo;</p>
       <p>&ldquo;Well, the way an AI system like ours works is that it trains on large sets of data. Without getting too deep into the details, what happens is that the model generates words based on what is likely to come next. Again, given the given context before it.&rdquo;</p>
       <p>Stern and impassive, Prime Minister Takaichi nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo; &ldquo;Yes, <span lang="ja-Latn">Takaichi Shush&#333;</span>. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
-      <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasnt&rsquo; good enough?&rdquo;</p>
+      <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasnt&rsquo; good enough?&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-tokyo" aria-label="See chart: Japan's AI bet">4</button></p>
       <p>The head of the program started to mumble something before Prime Minister Takaichi cut him off. &ldquo;This model, the one I promised all of our citizens would be imbued with traditional Japanese values. Technology they could trust. And you&rsquo;re telling me I lied to them? That I broke their trust?&rdquo;</p>
       <p>&ldquo;No&hellip; no&rdquo; stammered the program head.</p>
       <p>&ldquo;Why would no one tell me this before we integrated into all of our ministries? Or push it out to our major industries? Are we naive? Are we blind? Are we over-confident?&rdquo; A pause hung in the air before she continued with a different tenor in her voice, one that was slower and more poisonous. &ldquo;I just want to know what I&rsquo;m missing because I have to go on television in twenty minutes and explain why we can&rsquo;t make cars because China won&rsquo;t trade with us anymore.&rdquo;</p>
@@ -272,6 +243,7 @@
   <section class="scene" data-viz="coalition-revenue" id="scene-stockholm" data-country-id="752" data-country-iso="SE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 5</div>
+      <a class="scene-data-link" href="#viz-defense">Data &darr; Defence-AI boom</a>
       <span class="scene-dateline">
         Dec.07.2026<br>
         Prima Materia Office<br>
@@ -295,7 +267,7 @@
       <p>Pia passed around a piece of paper to each of the four men.</p>
       <p>&ldquo;What is this?&rdquo; Zennst&ouml;m asked, looking down through his thickly framed glasses.</p>
       <p>&ldquo;A liferaft,&rdquo; Pia responded.</p>
-      <p>Ek stood up: &ldquo;We cannot be caught flat-footed when the shoe finally drops and the Americans force us to choose between them or the Chinese. It&rsquo;s a farce that it&rsquo;s even come to this. What I&rsquo;m proposing here is that we pool our collective capital and accelerate the development of Helsing into a multilateral defense company for the entire EU.&rdquo;</p>
+      <p>Ek stood up: &ldquo;We cannot be caught flat-footed when the shoe finally drops and the Americans force us to choose between them or the Chinese. It&rsquo;s a farce that it&rsquo;s even come to this. What I&rsquo;m proposing here is that we pool our collective capital and accelerate the development of Helsing into a multilateral defense company for the entire EU.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-defense" aria-label="See chart: Defence-AI boom">5</button></p>
       <p>&ldquo;Your pet drone venture you mean?&rdquo; Hinrikus said.</p>
       <p>&ldquo;If we demonstrate a broad coalition of AI-first defense capabilities, it shows that we&rsquo;re not relying on Department of War technology that we don&rsquo;t even own. It&rsquo;s proof of concept that with private capital we at least have the capabilities to build companies that matter. Not just consumer tech.&rdquo;</p>
       <p>There was a long drawn out discussion about the structure of the company: who would pay for what, which markets they&rsquo;d target, how they&rsquo;d market themselves to nations with their own standing armies. But a broad consensus was reached. They would try it.</p>
@@ -308,6 +280,7 @@
   <section class="scene" data-viz="capital-flow" id="scene-monroe" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 6</div>
+      <a class="scene-data-link" href="#viz-capital">Data &darr; Capital flow</a>
       <span class="scene-dateline">
         Sep.04.2026<br>
         IBEW Data Center<br>
@@ -318,7 +291,7 @@
     <div class="scene-prose">
       <p>Finally beginning to cool down. Jesus what a summer. Standing all day in this sticky heat with the highlighter yellow vest shouting at HVAC technicians. Boss riding on me all the time, shouting about deadlines. Yeah, I heard you the first time, man. Foreman for a project like this is bound to be an asshole. Usually some guy they bring in from outside who hangs his degree in his A/C cooled trailer while we&rsquo;re out here sweating in the goddamn Louisiana summertime dodging thunderstorms and wiring switchgears.</p>
       <p>You know I&rsquo;ve been on this project for two years, right? It pays well, so I can&rsquo;t complain too much. But they tried to bring in some non-union guys at one point and we had to throw some muscle around to make sure we weren&rsquo;t being pushed out of our own backyard.</p>
-      <p>Who&rsquo;s they? Shit man: I don&rsquo;t know. This is where the work is, though. Costs something like $27 billion to build. They&rsquo;re calling it &ldquo;Hyperion.&rdquo; Funny name. Usually the work is a little less, let&rsquo;s say, grandiose than this. But sometimes just getting to where you need to go is a maze. I was almost late to a shift because I got stuck behind a bunch of guys laying concrete. It&rsquo;s a mess. Guess that&rsquo;s what happens when you hire a few thousand guys to build a big, complicated building that&rsquo;s pulling a lot of megawatts.</p>
+      <p>Who&rsquo;s they? Shit man: I don&rsquo;t know. This is where the work is, though. Costs something like $27 billion to build. They&rsquo;re calling it &ldquo;Hyperion.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-capital" aria-label="See chart: Capital flow">6</button> Funny name. Usually the work is a little less, let&rsquo;s say, grandiose than this. But sometimes just getting to where you need to go is a maze. I was almost late to a shift because I got stuck behind a bunch of guys laying concrete. It&rsquo;s a mess. Guess that&rsquo;s what happens when you hire a few thousand guys to build a big, complicated building that&rsquo;s pulling a lot of megawatts.</p>
       <p>It&rsquo;s a steady job, man, I can&rsquo;t complain. It&rsquo;s where the work is right now. I&rsquo;m getting paid. Hey if I weren&rsquo;t you think I&rsquo;d be in the middle of nowhere Louisiana, man? Hell no. I&rsquo;d probably be installing wiring at some apartment complex in Dallas. I go where the money is. A leaf in the wind, man. I figure I got another few months of this gig before moving onto another one of these data centers. We&rsquo;ll see if the grid can handle it. I&rsquo;ve been seeing some stuff I&rsquo;ve never seen tried before. I keep my mouth shut. That way the paycheck keeps coming. If it breaks, hey, maybe they&rsquo;ll call us back to fix it.</p>
     </div>
   </section>
@@ -327,6 +300,7 @@
   <section class="scene" id="scene-ottawa" data-country-id="124" data-country-iso="CA">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 7</div>
+      <a class="scene-data-link" href="#viz-ottawa">Data &darr; Why pool</a>
       <span class="scene-dateline">
         Apr.17.2027<br>
         Ottawa, Canada<br>
@@ -342,7 +316,7 @@
       <p>&ldquo;You.&rdquo; Nemer responded in a blunted, tonally flat response. &ldquo;Isn&rsquo;t your job to look out for this kind of thing?&rdquo;</p>
       <p>It was true, Solomon, with his newscaster jawline and molded look that arrived after a career in the political arena, is the Minister of Artificial Development and Digital Innovation. But more comfortable being the one asking the questions, than answering them, it was difficult to come to any other conclusion that he&rsquo;d been caught flat-footed, and Nemer, a sharply cut, no-nonsense Lebanese chemist and one of Canada&rsquo;s Chief Science Officers, was in no position to let Solomon off the hook after frequently bringing up AI safety concerns as early as 2025.</p>
       <p>Solomon let the question linger. If there was one thing he knew as an interviewer was the power of saying absolutely nothing. Most people find silence so unbearable that they begin to backtrack. Not Solomon. He was fine to sit in the discomfort.</p>
-      <p>Nemer couldn&rsquo;t take it anymore; a scientist by training she was grounded in the empirical backings of things that could be measured, responsibilities that could be held. &ldquo;2 billion dollars we&rsquo;ve spent through ISED to try and solve our infrastructure problem. Where has that money gone? It&rsquo;s a derelection of duty, Evan.&rdquo;</p>
+      <p>Nemer couldn&rsquo;t take it anymore; a scientist by training she was grounded in the empirical backings of things that could be measured, responsibilities that could be held. &ldquo;2 billion dollars we&rsquo;ve spent through ISED to try and solve our infrastructure problem. <button class="story-fn" type="button" data-viz-pop="viz-ottawa" aria-label="See chart: Why pool">7</button> Where has that money gone? It&rsquo;s a derelection of duty, Evan.&rdquo;</p>
       <p>At this, Solomon snapped. &ldquo;$2 billion is pocket change! It&rsquo;s hard enough to get a bunch of bureaucrats to agree on something they already understand: I&rsquo;m dealing with a bunch of career politicians who don&rsquo;t know what &lsquo;LLM&rsquo; stands for. That money is being pissed away on different pet projects for people trying to get re-elected for data centers they know we don&rsquo;t have the money to build. But hey: they can say &lsquo;not our problem, we were told we had cash on hand to make these.&rsquo;&rdquo;</p>
       <p>&ldquo;Okay, how much would these limits compromise the integrity of the models we use?&rdquo;</p>
       <p>&ldquo;I&rsquo;ve no idea. If our model weights become restricted then all of the supercomputing facilities we want to build become useless. And from a business point of view? It would severely damage any Canadian startup&rsquo;s ability to grow if they can&rsquo;t use American AI systems. I&rsquo;m not a doomsday prophet, but it could be bad. And I mean really bad.&rdquo;</p>
@@ -358,15 +332,29 @@
   <section class="scene" data-viz="eu-public-capex" id="scene-paris" data-country-id="250" data-country-iso="FR">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 8</div>
+      <a class="scene-data-link" href="#viz-energy">Data &darr; France&rsquo;s power edge</a>
       <span class="scene-dateline">
         Apr.17.2027<br>
         Paris, France<br>
-        H&ocirc;tel Matignon, 57 Rue de Varenne
+        Undisclosed Ministerial Vehicle
       </span>
       <h2 class="scene-title">Paris</h2>
     </header>
     <div class="scene-prose">
-      <p class="tktk">TKTK</p>
+      <p>The car was the only place to field the onslaught of calls coming through the minor army of political advisors Macron had assembled around him. The car&rsquo;s constant movement through the streets of Paris fought off the feeling of claustrophobia that would normally accompany a crowded world waiting with baited breath on a decision that would affect the legacy of an entire continent. And somehow he was the only one who felt prepared.</p>
+      <p>France, like its German counterpart, had been downgraded to managed-access status. The French President was not surprised. Everyone traded with China. It was the cost of having an economy at all. When he first read the &ldquo;Digital Liberty Act,&rdquo; he thought it was a good bit of satire that was a bit too on the nose. When he found out it was real, he could only throw his hands up. Could we say we saw this coming?</p>
+      <p>The day was windy and overcast as the car carrying the President slowly made its way to Villacoublay. He&rsquo;d need to go to Brussels first. And then most likely Dubai and Japan. He had the CEO of Mistral AI on the phone with him.</p>
+      <p>&ldquo;I need to know exactly how exposed you are with the bill before I make any moves&rdquo; the President said.</p>
+      <p>The voice on the other line was windswept and weary, like it was coming from miles away while the rest of Paris jostled to be heard over him, &ldquo;As of right now, in this very moment? Very exposed. We all are. We try to use EU datacenters where we can, but even those are owned by American companies. I&rsquo;ll tell you the truth: if they shut off our Azure partnership, we&rsquo;re done. We&rsquo;re deep in bed with Microsoft.&rdquo;</p>
+      <p>The President pressed on, &ldquo;what do I need to do to get you untangled from all of this?&rdquo;</p>
+      <p>&ldquo;It&rsquo;s not that simple. We need capital, we need time, we need infrastructure, we need people. This doesn&rsquo;t happen overnight. We have Mistral AI Compute, so we have a bit of breathing room there without needing foreign cloud dependencies. But we only have three datacenters, and I don&rsquo;t know how long the GPUs will stay competitive. If you could help push the banks to let us raise more debt, there might be something there. But even our centers in Paris and Sweden are behind schedule and have a fraction of the compute power of the ones they&rsquo;re building in the middle of nowhere in the US.&rdquo;</p>
+      <p>The President thanked the Mistral CEO and made a series of calls to funders in order of the amount they pledged in 2025. Having organized a $110bn private capital raise for French AI capabilities, he needed to assure the creditors, the UAE sovereign wealth fund, Canada&rsquo;s Brookfield (an enormous investment company), Fluidstack, and the state bank. He assured each of them in turn that this was just proof that their money was well justified. That, in its own way, this bill was a blessing in disguise. Finally, we could all become major players. No, of course we won&rsquo;t respond to the bill in any fashion. He reminded all of his funders of France&rsquo;s nuclear energy capabilities <button class="story-fn" type="button" data-viz-pop="viz-energy" aria-label="See chart: France's power edge">8</button>, poised to absorb the enormous expenditure of real datacenters, that France already has critical public state data hosted outside US CLOUD jurisdictions, that we have a third way.</p>
+      <p>He&rsquo;d need to have these conversations in person, of course. $50bn in investment for a French datacenter merits a visit to the UAE to shake hands and look his investors in the eye.</p>
+      <p>Slowly the caravan pulled up to the air base, and the French President made a decision. He called over his press secretary. She appeared before his side, with a solemnity befitting a major change in the global order and the author of the words that might set the whole thing ablaze.</p>
+      <p>&ldquo;I want a statement in 48 hours. I want to call this act what it is: a blatant trade weapon. No beating around the bush or any of our usual political hedging with the US. I&rsquo;ve been sounding this alarm for years, and now we&rsquo;re finally seeing the consequence of our own ridiculous navel-gazing. But I need two days. I don&rsquo;t want this to come from France alone. If one of us buckles, we all buckle. I need the rest of the world to know cooperation is our only bulwark against entrapment. Does that make sense?&rdquo;</p>
+      <p>The press secretary nodded slowly. &ldquo;Do you want me to start a draft?&rdquo;</p>
+      <p>&ldquo;Not until I see who&rsquo;s onboard&rdquo; he yelled while they climbed the steps into the state aircraft. &ldquo;We need to buy Mistral time, and the only way we can do that is if we persuade the rest of the EU that we won&rsquo;t be bullied into trade deals because we were too slow to act.&rdquo;</p>
+      <p>The art of statecraft was in motion. A list was drafted. We sink or we swim, the French President thought to himself. He had about 8 hours before landing in Dubai. He asked his aides to start drafting the vulnerabilities of each of his prospective partners. He&rsquo;d to know the source of their reticence. Time was too tight to negotiate on two fronts. And if they couldn&rsquo;t arrive at an agreement in two days, then they&rsquo;d look weak. The very same weakness that emboldened the US to threaten the self-rule of the entire EU, and the rest of the middle powers who didn&rsquo;t have the foresight to think that the Americans might one day weaponize their control over the global tech stack. The plane took off, pivoting into the afternoon sky, cutting a smaller and smaller figure as the French began to make their move.</p>
     </div>
   </section>
 
@@ -374,6 +362,7 @@
   <section class="scene" data-viz="talent-timeline" id="scene-dublin-jan" data-country-id="372" data-country-iso="IE">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 9</div>
+      <a class="scene-data-link" href="#viz-brain">Data &darr; Brain-drain timeline</a>
       <span class="scene-dateline">
         Jan.12.2026<br>
         Dublin, Ireland<br>
@@ -382,7 +371,10 @@
       <h2 class="scene-title">Dublin</h2>
     </header>
     <div class="scene-prose">
-      <p class="tktk">Aaron finding defense contractor info</p>
+      <p>The pay was a lot. That was the first thing that convinced Aaron to move to Dublin from San Francisco. So was the idea of a European adventure. His wife took some persuading, but eventually was charmed by the show that the OpenAI put on for them when they visited Ireland. There&rsquo;s only so long one can hold out against a huge paycheck and the novelty of a new city, especially as Aaron seemed increasingly distraught by the scene in Silicon Valley. <button class="story-fn" type="button" data-viz-pop="viz-brain" aria-label="See chart: Brain-drain timeline">9</button> Not a coder by background or by temperament, the city felt hollowed out by AI startups that were just a well-designed frontend that made API calls to one of either Chat GPT, Claude, or Gemini.</p>
+      <p>The first months of Aaron&rsquo;s job were pleasantly uneventful. He oversaw the legal and geopolitical consequences of OpenAI&rsquo;s presence in Europe, making sure they fell in line within the much stricter regulatory rules of the EU.</p>
+      <p>He had a few early successes, making sure that OpenAI could pass all of their GDPR data protection rights through the Irish Data Protection Commission, responding to data protection inquiries from countries across the EU, liaising between the eager San Francisco coders and the EU team about how what was legal in the US was not legal in the EU (they had a hard time understanding this), and making some strategic friendships with people across key positions in different country&rsquo;s tech offices. Aaron was told to make a friendlier regulatory environment for OpenAI in Europe, and the promptness and scrupulousness with which he handled all inquiries about training data or users rights made him a popular figure at the company, and amidst the circle of EU government tech regulators.</p>
+      <p>He could be trusted. This was the consensus opinion of everyone who came across Aaron, even if his role at OpenAI was in direct contradiction to the goals of the EU. How he managed this balancing act was the reason he rose so fast, to eventually lead the EU Global Affairs team.</p>
     </div>
   </section>
 
@@ -390,6 +382,7 @@
   <section class="scene" data-viz="export-controls" id="scene-whitehouse" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 10</div>
+      <a class="scene-data-link" href="#viz-export">Data &darr; US export controls</a>
       <span class="scene-dateline">
         Apr.18.2027<br>
         The White House<br>
@@ -406,6 +399,7 @@
   <section class="scene" id="scene-ether" data-country-id="" data-country-iso="">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 11</div>
+      <a class="scene-data-link" href="#viz-ether">Data &darr; Pooled vs alone</a>
       <span class="scene-dateline">
         Apr.25.2027<br>
         The Ether<br>
@@ -420,7 +414,34 @@
 
 </article>
 
-
+<!-- Right rail: globe + scroll-linked live-data deck (deck filled by JS) -->
+<aside class="experience-aside" id="experienceAside" aria-hidden="true">
+  <div class="country-map" id="countryMap">
+    <div class="country-map-frame">
+      <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="globeClip"><circle cx="100" cy="100" r="78"/></clipPath>
+        </defs>
+        <!-- Globe: transparent disc, rim drawn on top -->
+        <circle class="cm-ocean" cx="100" cy="100" r="78" fill="transparent" stroke="rgba(10,10,10,0.4)" stroke-width="0.6"/>
+        <!-- Latitude/longitude graticule, faint -->
+        <g class="cm-graticule" clip-path="url(#globeClip)" fill="none" stroke="rgba(10,10,10,0.10)" stroke-width="0.3" stroke-dasharray="1 2">
+          <ellipse cx="100" cy="100" rx="78" ry="20"/>
+          <ellipse cx="100" cy="100" rx="78" ry="40"/>
+          <ellipse cx="100" cy="100" rx="78" ry="60"/>
+          <ellipse cx="100" cy="100" rx="20" ry="78"/>
+          <ellipse cx="100" cy="100" rx="40" ry="78"/>
+          <ellipse cx="100" cy="100" rx="60" ry="78"/>
+        </g>
+        <g id="countryMapGroup" clip-path="url(#globeClip)"></g>
+        <!-- Coalition arcs: great-circle links between visited capitals, drawn by JS -->
+        <g id="cmArcs" clip-path="url(#globeClip)" aria-hidden="true"></g>
+        <!-- Outer rim ring drawn on top for crisp edge -->
+        <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(10,10,10,0.5)" stroke-width="0.7"/>
+      </svg>
+    </div>
+  </div>
+</aside>
 
 </div>
 </div>
@@ -440,11 +461,11 @@
       <!-- Supporting data: the live charts that inform each coalition decision -->
       <div class="supporting-data">
       <div class="supporting-data-header">
-        <h3 class="supporting-data-title">Live data &middot; 8 charts</h3>
+        <h3 class="supporting-data-title">Live data</h3>
       </div>
       <div class="supporting-data-grid">
     <!-- VIZ: Capital Flow -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-capital">
       <div class="viz-header"><span class="viz-name">Capital flow</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -459,7 +480,36 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <canvas id="dbCapitalFlowCanvas" role="img" aria-label="Capital flow: EU AI funding flows to US, $14B EU vs $109B US"></canvas>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US AI investment ($109B) is about 8x the EU's ($14B) in 2024, shown as coin stacks">
+            <text class="cu-fig coral" x="14" y="44">~8&times;</text>
+            <text class="cu-cap" x="16" y="62">more AI money piles up in the US</text>
+            <g class="cu-pop">
+              <!-- EU: 2 coins -->
+              <ellipse class="cu-coin-eu" cx="100" cy="138" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin-eu" cx="100" cy="131" rx="15" ry="4.8"/>
+              <!-- US: 16 coins -->
+              <ellipse class="cu-coin" cx="250" cy="138" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="131" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="124" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="117" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="110" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="103" rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="96"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="89"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="82"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="75"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="68"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="61"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="54"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="47"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="40"  rx="15" ry="4.8"/>
+              <ellipse class="cu-coin" cx="250" cy="33"  rx="15" ry="4.8"/>
+            </g>
+            <g class="cu-legend" text-anchor="middle">
+              <text x="100" y="158">EU &middot; $14B</text>
+              <text x="250" y="158">US &middot; $109B</text>
+            </g>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">$14B</span><span class="viz-mini-label">EU AI 2024</span></div>
@@ -470,7 +520,7 @@
     </div>
 
     <!-- VIZ: Talent Migration -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-talent">
       <div class="viz-header"><span class="viz-name">Talent migration</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -486,7 +536,29 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap" data-tall>
-          <canvas id="dbTalentChordCanvas" role="img" aria-label="Talent migration: EU-educated AI researchers predominantly work in the US"></canvas>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="6 in 10 EU-trained AI researchers work in the US, shown as 10 figures">
+            <defs>
+              <g id="psn"><circle cx="0" cy="0" r="4.6"/><path d="M-7,20 C-7,8.5 -3.5,6.5 0,6.5 C3.5,6.5 7,8.5 7,20 Z"/></g>
+            </defs>
+            <text class="cu-fig" x="14" y="44">6 in 10</text>
+            <text class="cu-cap" x="16" y="62">EU-trained researchers work in the US</text>
+            <g class="cu-pop">
+              <use href="#psn" x="28"  y="92" class="cu-on"/>
+              <use href="#psn" x="61"  y="92" class="cu-on"/>
+              <use href="#psn" x="94"  y="92" class="cu-on"/>
+              <use href="#psn" x="127" y="92" class="cu-on"/>
+              <use href="#psn" x="160" y="92" class="cu-on"/>
+              <use href="#psn" x="193" y="92" class="cu-on"/>
+              <use href="#psn" x="226" y="92" class="cu-off"/>
+              <use href="#psn" x="259" y="92" class="cu-off"/>
+              <use href="#psn" x="292" y="92" class="cu-off"/>
+              <use href="#psn" x="325" y="92" class="cu-off"/>
+            </g>
+            <g class="cu-legend">
+              <circle cx="20" cy="150" r="5" class="cu-on"/><text x="30" y="150">in the US</text>
+              <circle cx="150" cy="150" r="5" class="cu-off"/><text x="160" y="150">stay / elsewhere</text>
+            </g>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">60%</span><span class="viz-mini-label">EU researchers to US</span></div>
@@ -497,7 +569,7 @@
     </div>
 
     <!-- VIZ: Language Heatmap -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-language">
       <div class="viz-header"><span class="viz-name">Language coverage</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -513,7 +585,43 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <div id="dbLangHeatmap"></div>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="All 24 official EU languages by frontier-model support: 3 strong (EN, FR, ES), 8 partial, 13 at risk of digital extinction">
+            <defs>
+              <g id="bub"><rect x="-14" y="-9" width="28" height="18" rx="5"/><path d="M-6,9 L-11,15 L-1,9 Z"/></g>
+            </defs>
+            <text class="cu-cap" x="14" y="22">Only 3 of 24 EU languages are well supported</text>
+            <g class="cu-pop">
+              <use href="#bub" x="30"  y="52" class="cu-strong"/><text class="cu-code" x="30"  y="54" text-anchor="middle">EN</text>
+              <use href="#bub" x="73"  y="52" class="cu-strong"/><text class="cu-code" x="73"  y="54" text-anchor="middle">FR</text>
+              <use href="#bub" x="116" y="52" class="cu-strong"/><text class="cu-code" x="116" y="54" text-anchor="middle">ES</text>
+              <use href="#bub" x="159" y="52" class="cu-partial"/><text class="cu-code ink" x="159" y="54" text-anchor="middle">DE</text>
+              <use href="#bub" x="202" y="52" class="cu-partial"/><text class="cu-code ink" x="202" y="54" text-anchor="middle">IT</text>
+              <use href="#bub" x="245" y="52" class="cu-partial"/><text class="cu-code ink" x="245" y="54" text-anchor="middle">NL</text>
+              <use href="#bub" x="288" y="52" class="cu-partial"/><text class="cu-code ink" x="288" y="54" text-anchor="middle">PT</text>
+              <use href="#bub" x="331" y="52" class="cu-partial"/><text class="cu-code ink" x="331" y="54" text-anchor="middle">PL</text>
+              <use href="#bub" x="30"  y="90" class="cu-partial"/><text class="cu-code ink" x="30"  y="92" text-anchor="middle">SV</text>
+              <use href="#bub" x="73"  y="90" class="cu-partial"/><text class="cu-code ink" x="73"  y="92" text-anchor="middle">DA</text>
+              <use href="#bub" x="116" y="90" class="cu-partial"/><text class="cu-code ink" x="116" y="92" text-anchor="middle">FI</text>
+              <use href="#bub" x="159" y="90" class="cu-risk"/><text class="cu-code ink" x="159" y="92" text-anchor="middle">EL</text>
+              <use href="#bub" x="202" y="90" class="cu-risk"/><text class="cu-code ink" x="202" y="92" text-anchor="middle">CS</text>
+              <use href="#bub" x="245" y="90" class="cu-risk"/><text class="cu-code ink" x="245" y="92" text-anchor="middle">HU</text>
+              <use href="#bub" x="288" y="90" class="cu-risk"/><text class="cu-code ink" x="288" y="92" text-anchor="middle">RO</text>
+              <use href="#bub" x="331" y="90" class="cu-risk"/><text class="cu-code ink" x="331" y="92" text-anchor="middle">BG</text>
+              <use href="#bub" x="30"  y="128" class="cu-risk"/><text class="cu-code ink" x="30"  y="130" text-anchor="middle">HR</text>
+              <use href="#bub" x="73"  y="128" class="cu-risk"/><text class="cu-code ink" x="73"  y="130" text-anchor="middle">SK</text>
+              <use href="#bub" x="116" y="128" class="cu-risk"/><text class="cu-code ink" x="116" y="130" text-anchor="middle">SL</text>
+              <use href="#bub" x="159" y="128" class="cu-risk"/><text class="cu-code ink" x="159" y="130" text-anchor="middle">LT</text>
+              <use href="#bub" x="202" y="128" class="cu-risk"/><text class="cu-code ink" x="202" y="130" text-anchor="middle">LV</text>
+              <use href="#bub" x="245" y="128" class="cu-risk"/><text class="cu-code ink" x="245" y="130" text-anchor="middle">ET</text>
+              <use href="#bub" x="288" y="128" class="cu-risk"/><text class="cu-code ink" x="288" y="130" text-anchor="middle">MT</text>
+              <use href="#bub" x="331" y="128" class="cu-risk"/><text class="cu-code ink" x="331" y="130" text-anchor="middle">GA</text>
+            </g>
+            <g class="cu-legend">
+              <circle cx="20"  cy="160" r="5" class="cu-strong"/><text x="30"  y="160">3 strong</text>
+              <circle cx="118" cy="160" r="5" class="cu-partial"/><text x="128" y="160">8 partial</text>
+              <circle cx="216" cy="160" r="5" class="cu-risk"/><text x="226" y="160">13 at risk</text>
+            </g>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">3</span><span class="viz-mini-label">strong</span></div>
@@ -524,7 +632,7 @@
     </div>
 
     <!-- VIZ: Coalition Revenue -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-revenue">
       <div class="viz-header"><span class="viz-name">Coalition revenue</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -540,7 +648,42 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <canvas id="dbGrowthChart" role="img" aria-label="Coalition revenue growth: Mistral, Cohere, DeepL"></canvas>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mistral ARR grew ~20x to $400M over 2025-26; Cohere $240M and DeepL $185M for scale">
+            <g class="ci-grid">
+              <line x1="40" y1="108.6" x2="330" y2="108.6"/>
+              <line x1="40" y1="87.1"  x2="330" y2="87.1"/>
+              <line x1="40" y1="65.7"  x2="330" y2="65.7"/>
+              <line x1="40" y1="44.3"  x2="330" y2="44.3"/>
+            </g>
+            <g class="ci-tick" text-anchor="end">
+              <text x="35" y="133">0</text>
+              <text x="35" y="111.6">100</text>
+              <text x="35" y="90.1">200</text>
+              <text x="35" y="68.7">300</text>
+              <text x="35" y="47.3">400</text>
+              <text x="35" y="40">$M</text>
+            </g>
+            <polygon class="mn-area" points="44,130 44,125.7 115.5,121.4 187,104.3 258.5,74.3 330,44.3 330,130"/>
+            <polyline class="mn-line" pathLength="1" points="44,125.7 115.5,121.4 187,104.3 258.5,74.3 330,44.3"/>
+            <g class="ci-dot">
+              <circle cx="44"    cy="125.7" r="2.2"/>
+              <circle cx="115.5" cy="121.4" r="2.2"/>
+              <circle cx="187"   cy="104.3" r="2.2"/>
+              <circle cx="258.5" cy="74.3"  r="2.2"/>
+            </g>
+            <circle class="ci-end" cx="330" cy="44.3" r="3.6"/>
+            <text class="ci-emph accent" x="326" y="40" text-anchor="end">$400M</text>
+            <!-- Cohere / DeepL for scale -->
+            <circle cx="330" cy="78.6" r="2.4" fill="rgba(10,10,10,0.4)"/>
+            <text class="ci-tick" x="322" y="79" text-anchor="end">Cohere $240M</text>
+            <circle cx="330" cy="90.4" r="2.4" fill="rgba(10,10,10,0.4)"/>
+            <text class="ci-tick" x="322" y="92" text-anchor="end">DeepL $185M</text>
+            <g class="ci-tick" text-anchor="middle">
+              <text x="44"  y="146">2025</text>
+              <text x="330" y="146">2026</text>
+            </g>
+            <text class="ci-note" x="14" y="164">Mistral ARR &middot; about 20&times; in 12 months</text>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">$400M</span><span class="viz-mini-label">Mistral ARR</span></div>
@@ -551,7 +694,7 @@
     </div>
 
     <!-- VIZ: EU Public AI Capex (Paris) -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-capex">
       <div class="viz-header"><span class="viz-name">Public AI capex</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -569,7 +712,33 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <canvas id="dbEuCapexCanvas" role="img" aria-label="European state AI funding commitments: France highlighted at €2.5B alongside Germany €5B, UK €2.4B, EU InvestAI €20B"></canvas>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="State-committed public AI funding as money-bags sized by amount: EU InvestAI €20B, Germany €5B, France €2.5B, UK €2.4B, Spain €2.1B, Italy €1B">
+            <defs>
+              <symbol id="bag" viewBox="0 0 30 38">
+                <rect x="10" y="3" width="10" height="7" rx="1.5"/>
+                <path d="M8,10 L22,10 C26,17 27.5,30 15,34.5 C2.5,30 4,17 8,10 Z"/>
+                <text class="cu-bag-sym" x="15" y="27" text-anchor="middle" font-size="13">&euro;</text>
+              </symbol>
+            </defs>
+            <text class="cu-cap" x="14" y="22">What each actually commits &mdash; bag size = &euro;B</text>
+            <line class="mn-base" x1="14" y1="114" x2="346" y2="114"/>
+            <!-- bags sized by sqrt(value); bottoms aligned to the ground line -->
+            <use href="#bag" x="27"    y="43"   width="56"   height="71"   class="cu-bag"/>
+            <use href="#bag" x="116"   y="78.5" width="28"   height="35.5" class="cu-bag"/>
+            <use href="#bag" x="170.1" y="88.9" width="19.8" height="25.1" class="cu-bag accent"/>
+            <use href="#bag" x="212.3" y="89.4" width="19.4" height="24.6" class="cu-bag"/>
+            <use href="#bag" x="253"   y="91"   width="18.1" height="23"   class="cu-bag"/>
+            <use href="#bag" x="293.75" y="98.1" width="12.5" height="15.9" class="cu-bag"/>
+            <g class="cu-bag-label" text-anchor="middle">
+              <text x="55"  y="128">EU</text><text x="55"  y="140">&euro;20B</text>
+              <text x="130" y="128">DE</text><text x="130" y="140">&euro;5B</text>
+              <text x="180" y="128" fill="#0057FF">FR</text><text x="180" y="140" fill="#0057FF">&euro;2.5B</text>
+              <text x="222" y="128">UK</text><text x="222" y="140">&euro;2.4B</text>
+              <text x="262" y="128">ES</text><text x="262" y="140">&euro;2.1B</text>
+              <text x="300" y="128">IT</text><text x="300" y="140">&euro;1B</text>
+            </g>
+            <text class="cu-bag-label" x="14" y="162">State funds only &middot; France&rsquo;s &euro;107B is mostly private</text>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">&euro;20B</span><span class="viz-mini-label">EU InvestAI</span></div>
@@ -580,7 +749,7 @@
     </div>
 
     <!-- VIZ: Talent Timeline (Dublin Jan) -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-brain">
       <div class="viz-header"><span class="viz-name">Brain drain timeline</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -598,7 +767,41 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <canvas id="dbTalentTimelineCanvas" role="img" aria-label="EU-trained AI researcher retention timeline: declines from ~50% (2019) to ~40% (Q1 2026)"></canvas>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Share of EU-trained AI researchers still in the EU: ~50% (2019), ~43% (2022), ~40% (2026), declining each year">
+            <g class="ci-grid">
+              <line x1="40" y1="52.9"  x2="330" y2="52.9"/>
+              <line x1="40" y1="85"    x2="330" y2="85"/>
+              <line x1="40" y1="117.1" x2="330" y2="117.1"/>
+            </g>
+            <g class="ci-tick" text-anchor="end">
+              <text x="35" y="55.9">50</text>
+              <text x="35" y="88">45</text>
+              <text x="35" y="120.1">40</text>
+              <text x="35" y="44">%</text>
+            </g>
+            <!-- 2019 baseline reference -->
+            <line class="ci-ref" x1="40" y1="52.9" x2="330" y2="52.9"/>
+            <text class="ci-tick" x="328" y="49" text-anchor="end">2019 baseline</text>
+            <polygon class="mn-area" points="44,130 44,52.9 84.9,68.9 125.7,81.8 166.6,97.9 207.4,104.3 248.3,107.5 289.1,112.6 330,117.1 330,130"/>
+            <polyline class="mn-line" pathLength="1" points="44,52.9 84.9,68.9 125.7,81.8 166.6,97.9 207.4,104.3 248.3,107.5 289.1,112.6 330,117.1"/>
+            <g class="ci-dot">
+              <circle cx="44"    cy="52.9"  r="2.2"/>
+              <circle cx="84.9"  cy="68.9"  r="2.2"/>
+              <circle cx="125.7" cy="81.8"  r="2.2"/>
+              <circle cx="166.6" cy="97.9"  r="2.2"/>
+              <circle cx="207.4" cy="104.3" r="2.2"/>
+              <circle cx="248.3" cy="107.5" r="2.2"/>
+              <circle cx="289.1" cy="112.6" r="2.2"/>
+            </g>
+            <circle class="ci-end" cx="330" cy="117.1" r="3.6"/>
+            <text class="ci-emph" x="326" y="113" text-anchor="end">~40%</text>
+            <g class="ci-tick" text-anchor="middle">
+              <text x="44"    y="146">2019</text>
+              <text x="166.6" y="146">2022</text>
+              <text x="330"   y="146">2026</text>
+            </g>
+            <text class="ci-note" x="14" y="164">EU-trained AI researchers still working in the EU</text>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">~50%</span><span class="viz-mini-label">in EU (2019)</span></div>
@@ -609,7 +812,7 @@
     </div>
 
     <!-- VIZ: Export Controls (White House) -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-export">
       <div class="viz-header"><span class="viz-name">US export controls</span></div>
       <div class="viz-pane-inner">
         <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
@@ -631,7 +834,41 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap" data-tall>
-          <canvas id="dbExportControlsCanvas" role="img" aria-label="US AI/chip export-control timeline 2022-2026: layered actions, some rescinded"></canvas>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US AI/chip export actions by year as decree tiles: 2022-24 one each, 2025 five (three rescinded), 2026 two; 3 of 10 rescinded">
+            <defs>
+              <rect id="stmp" x="-11" y="-8" width="22" height="16" rx="3"/>
+            </defs>
+            <text class="cu-cap" x="14" y="24">A flurry of rules &mdash; and 3 already rescinded</text>
+            <line class="mn-base" x1="20" y1="122" x2="346" y2="122"/>
+            <g class="cu-pop">
+              <use href="#stmp" x="50"  y="108" class="cu-stamp"/>
+              <use href="#stmp" x="120" y="108" class="cu-stamp"/>
+              <use href="#stmp" x="190" y="108" class="cu-stamp"/>
+              <use href="#stmp" x="260" y="108" class="cu-stamp"/>
+              <use href="#stmp" x="260" y="86"  class="cu-stamp"/>
+              <use href="#stmp" x="260" y="64"  class="cu-stamp-out"/>
+              <use href="#stmp" x="260" y="42"  class="cu-stamp-out"/>
+              <use href="#stmp" x="260" y="20"  class="cu-stamp-out"/>
+              <use href="#stmp" x="330" y="108" class="cu-stamp"/>
+              <use href="#stmp" x="330" y="86"  class="cu-stamp"/>
+            </g>
+            <g class="cu-x">
+              <line x1="253" y1="59" x2="267" y2="69"/><line x1="253" y1="69" x2="267" y2="59"/>
+              <line x1="253" y1="37" x2="267" y2="47"/><line x1="253" y1="47" x2="267" y2="37"/>
+              <line x1="253" y1="15" x2="267" y2="25"/><line x1="253" y1="25" x2="267" y2="15"/>
+            </g>
+            <g class="ci-tick" text-anchor="middle">
+              <text x="50"  y="136">2022</text>
+              <text x="120" y="136">2023</text>
+              <text x="190" y="136">2024</text>
+              <text x="260" y="136">2025</text>
+              <text x="330" y="136">2026</text>
+            </g>
+            <g class="cu-legend">
+              <rect x="14" y="153" width="14" height="10" rx="2" class="cu-stamp"/><text x="34" y="158">in force (7)</text>
+              <rect x="132" y="153" width="14" height="10" rx="2" class="cu-stamp-out"/><text x="152" y="158">rescinded (3)</text>
+            </g>
+          </svg>
         </div>
       <div class="viz-footer">
         <div class="viz-mini-stat"><span class="viz-mini-value">10</span><span class="viz-mini-label">actions 2022-26</span></div>
@@ -642,7 +879,7 @@
     </div>
 
     <!-- VIZ: Compute Map -->
-    <div class="viz-card">
+    <div class="viz-card" id="viz-compute">
             <div class="viz-header">
         <span class="viz-name">Compute infrastructure</span>
       </div>
@@ -660,40 +897,32 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap compute-pool-wrap" role="img" aria-label="EuroHPC pooled compute by contributor, compared to one US frontier cluster">
-          <svg class="compute-stack" viewBox="0 0 360 130" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <!-- 2 EF reference tick spanning both bars -->
-            <line x1="139" y1="14" x2="139" y2="100" stroke="rgba(0,87,255,0.35)" stroke-width="0.6" stroke-dasharray="2 3"/>
-
-            <!-- Pool bar (top): 11 EuroHPC systems stacked.
-                 Total width 131.6 px (2.058 / 5.0 of the 320 px scale, starting at x=8). -->
-            <text x="8" y="12" class="cs-row-label">EuroHPC pooled &middot; 11 supercomputers</text>
-            <g class="cs-pool-bar" transform="translate(8, 16)">
-              <rect x="0"     y="0" width="64"   height="24" fill="#0057FF"></rect>
-              <rect x="64.4"  y="0" width="24"   height="24" fill="#0057FF" fill-opacity="0.82"></rect>
-              <rect x="88.8"  y="0" width="20"   height="24" fill="#0057FF" fill-opacity="0.68"></rect>
-              <rect x="109.2" y="0" width="16"   height="24" fill="#0057FF" fill-opacity="0.55"></rect>
-              <rect x="125.5" y="0" width="6"    height="24" fill="#0057FF" fill-opacity="0.4"></rect>
-              <text x="32"  y="16" class="cs-code" text-anchor="middle">DE</text>
-              <text x="76"  y="16" class="cs-code" text-anchor="middle">FI</text>
-              <text x="98"  y="16" class="cs-code" text-anchor="middle">ES</text>
-              <text x="117" y="16" class="cs-code" text-anchor="middle">IT</text>
-              <text x="138" y="16" class="cs-total" dominant-baseline="middle">~2 EF</text>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One US frontier cluster is about 2.5x all pooled EuroHPC compute: EU ~2 exaFLOPS (2 chips) vs US ~5 exaFLOPS (5 chips)">
+            <defs>
+              <g id="chip">
+                <rect x="-11" y="-11" width="22" height="22" rx="4"/>
+                <rect class="cu-die" x="-5" y="-5" width="10" height="10" rx="2"/>
+                <g class="cu-pin">
+                  <line x1="-11" y1="-5" x2="-15" y2="-5"/><line x1="-11" y1="1" x2="-15" y2="1"/>
+                  <line x1="11" y1="-5" x2="15" y2="-5"/><line x1="11" y1="1" x2="15" y2="1"/>
+                </g>
+              </g>
+            </defs>
+            <text class="cu-cap" x="14" y="24">One US cluster &asymp; 2.5&times; all of EuroHPC pooled</text>
+            <text class="cu-bag-label accent" x="14" y="64">EU pooled</text>
+            <g class="cu-pop">
+              <use href="#chip" x="170" y="60" class="cu-chip-eu"/>
+              <use href="#chip" x="205" y="60" class="cu-chip-eu"/>
             </g>
-            <!-- Country-code legend (two lines so it fits the tile) -->
-            <text x="8" y="56" class="cs-legend"><tspan font-weight="700">DE</tspan> JUPITER 1000 PF &middot; <tspan font-weight="700">FI</tspan> LUMI 380 &middot; <tspan font-weight="700">ES</tspan> MareNostrum 314 &middot; <tspan font-weight="700">IT</tspan> Leonardo 250</text>
-            <text x="8" y="68" class="cs-legend"><tspan font-weight="700">+7 small (GR, LU, SI, PT, CZ, BG, PL)</tspan> combined ~114 PF</text>
-
-            <!-- US frontier bar (bottom): one cluster ~ 5 EF -->
-            <text x="8" y="84" class="cs-row-label">US frontier cluster &middot; Meta / Microsoft / xAI (est.)</text>
-            <g class="cs-frontier-bar" transform="translate(8, 88)">
-              <rect x="0" y="0" width="320" height="24" fill="#b8002e" fill-opacity="0.18" stroke="#b8002e" stroke-opacity="0.55" stroke-width="0.6"></rect>
-              <text x="160" y="16" class="cs-frontier-label" text-anchor="middle">~5 EF</text>
+            <text class="cu-bag-label" x="14" y="116">US frontier</text>
+            <g class="cu-pop">
+              <use href="#chip" x="170" y="112" class="cu-chip-us"/>
+              <use href="#chip" x="205" y="112" class="cu-chip-us"/>
+              <use href="#chip" x="240" y="112" class="cu-chip-us"/>
+              <use href="#chip" x="275" y="112" class="cu-chip-us"/>
+              <use href="#chip" x="310" y="112" class="cu-chip-us"/>
             </g>
-
-            <!-- Scale labels along the bottom -->
-            <text x="8"   y="126" class="cs-axis">0</text>
-            <text x="139" y="126" class="cs-axis">~2 EF</text>
-            <text x="328" y="126" class="cs-axis" text-anchor="end">~5 EF</text>
+            <text class="cu-bag-label" x="14" y="150">each chip &asymp; 1 exaFLOP &middot; 11 EuroHPC systems pooled</text>
           </svg>
         </div>
       </div>
@@ -703,6 +932,244 @@
         <div class="viz-mini-stat"><span class="viz-mini-value">~5 EF</span><span class="viz-mini-label">US frontier (est.)</span></div>
       </div>
       </div>
+    <!-- VIZ: Tokyo — Japan sovereign AI vs China chokehold -->
+    <div class="viz-card" id="viz-tokyo">
+      <div class="viz-header"><span class="viz-name">Japan's AI bet</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>Japan&rsquo;s ~&yen;1 trillion (~$6.3B) five-year sovereign-AI fund (METI/NEDO GENIAC), set against China&rsquo;s grip on the inputs: ~90% of global rare-earth refining.</p>
+          <h4>Why it matters here</h4>
+          <p>The <strong>Tokyo</strong> call &mdash; off-the-shelf US, build your own, or join a coalition model. A national model is expensive and still hostage to a supply chain Beijing controls; a coalition spreads both cost and exposure.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>~&yen;1T 5-yr sovereign-AI support from FY2026 via METI/NEDO GENIAC; ~&yen;10T ($65B) to 2030. <a href="https://japantoday.com/category/tech/japan-to-support-domestic-ai-development-with-1-tril.-yen-funding-source" target="_blank" rel="noopener">Japan Today</a>; <a href="https://asiatimes.com/2025/09/inside-japans-struggle-to-build-sovereign-ai/" target="_blank" rel="noopener">Asia Times</a>.</li>
+            <li>China ~70% of rare earths mined, ~90% of refining; EU 98% of rare-earth magnets from China. <a href="https://www.iea.org/commentaries/with-new-export-controls-on-critical-minerals-supply-concentration-risks-become-reality" target="_blank" rel="noopener">IEA</a>; <a href="https://epthinktank.eu/2025/11/24/chinas-rare-earth-export-restrictions/" target="_blank" rel="noopener">EU Parliament</a>.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Japan's ~1 trillion yen 5-year sovereign-AI fund vs China's ~90% control of rare-earth refining">
+            <text class="cu-cap" x="14" y="26">Japan bets on sovereign AI &mdash; while leaning on China</text>
+            <text class="cu-fig" x="14" y="78">&yen;1T</text>
+            <text class="cu-bag-label" x="16" y="98">5-year sovereign-AI fund (GENIAC)</text>
+            <text class="cu-fig coral" x="14" y="140">90%</text>
+            <text class="cu-bag-label" x="16" y="160">China&rsquo;s share of rare-earth refining</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Ottawa — investment by bloc -->
+    <div class="viz-card" id="viz-ottawa">
+      <div class="viz-header"><span class="viz-name">Why pool</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>2024 private AI investment by country: the US at $109B dwarfs every middle power (UK $4.5B, China $9.3B). No one competes alone.</p>
+          <h4>Why it matters here</h4>
+          <p>The <strong>Ottawa</strong> call &mdash; EU only, EU + Canada, or EU + Five Eyes. The wider the pool, the closer the combined total gets to mattering. Canada itself brings a $2B sovereign-compute commitment and Cohere.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>2024 private AI investment: US $109.1B, China $9.3B, UK $4.5B. <a href="https://hai.stanford.edu/ai-index/2025-ai-index-report/economy" target="_blank" rel="noopener">Stanford AI Index 2025</a>.</li>
+            <li>Canada Sovereign AI Compute Strategy CAD $2B / 5yr; AI Compute Access Fund up to $300M. <a href="https://ised-isde.canada.ca/site/ised/en/canadian-sovereign-ai-compute-strategy" target="_blank" rel="noopener">ISED</a>.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="2024 private AI investment as coin stacks: US $109B towering over China $9.3B, UK $4.5B, Canada $2B">
+            <text class="cu-cap" x="14" y="22">No one competes alone &mdash; AI money, 2024</text>
+            <g class="cu-pop">
+              <!-- US: ~11 coins ($109B, 1 coin = $10B) -->
+              <ellipse class="cu-coin" cx="70" cy="120" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="113" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="106" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="99"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="92"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="85"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="78"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="71"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="64"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="57"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="70" cy="50"  rx="15" ry="4.7"/>
+              <!-- China ~1, UK ~0.5, Canada ~0.2 — a single coin each -->
+              <ellipse class="cu-coin" cx="150" cy="120" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="220" cy="120" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin-eu" cx="290" cy="120" rx="15" ry="4.7"/>
+            </g>
+            <g class="cu-bag-label" text-anchor="middle">
+              <text x="70"  y="140">US $109B</text>
+              <text x="150" y="140">CN $9.3B</text>
+              <text x="220" y="140">UK $4.5B</text>
+              <text x="290" y="140" fill="#0057FF">CA $2B</text>
+            </g>
+            <text class="cu-bag-label" x="14" y="160">US private AI spend &asymp; 24&times; the UK &middot; Canada adds $2B sovereign compute</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: The Ether — pooled vs alone -->
+    <div class="viz-card" id="viz-ether">
+      <div class="viz-header"><span class="viz-name">Pooled vs alone</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>Frontier compute (exaFLOPS): the biggest single member (~1 EF) against the EU pooled (~2 EF) and one US cluster (~5 EF). Pooling roughly doubles Europe&rsquo;s reach.</p>
+          <h4>Why it matters here</h4>
+          <p>The final <strong>coalition</strong> call &mdash; sign the DLA, hybrid, or form the entity. Apart, no member is a contest; pooled, it is at least the same order of magnitude as a US cluster.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>EuroHPC pooled ~2 EF across 11 systems; largest single (JUPITER) ~1 EF; US frontier cluster ~5 EF (est.). <a href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank" rel="noopener">EuroHPC JU</a>.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Frontier compute as chips: a single member ~1 chip, EU pooled ~2 chips, one US cluster ~5 chips">
+            <defs>
+              <g id="chip2">
+                <rect x="-11" y="-11" width="22" height="22" rx="4"/>
+                <rect class="cu-die" x="-5" y="-5" width="10" height="10" rx="2"/>
+                <g class="cu-pin"><line x1="-11" y1="-5" x2="-15" y2="-5"/><line x1="-11" y1="1" x2="-15" y2="1"/><line x1="11" y1="-5" x2="15" y2="-5"/><line x1="11" y1="1" x2="15" y2="1"/></g>
+              </g>
+            </defs>
+            <text class="cu-cap" x="14" y="22">Apart, no contest. Pooled, a fighting chance.</text>
+            <g class="cu-pop">
+              <use href="#chip2" x="155" y="48" fill="rgba(10,10,10,0.32)"/>
+              <use href="#chip2" x="155" y="90" class="cu-chip-eu"/>
+              <use href="#chip2" x="191" y="90" class="cu-chip-eu"/>
+              <use href="#chip2" x="155" y="132" class="cu-chip-us"/>
+              <use href="#chip2" x="191" y="132" class="cu-chip-us"/>
+              <use href="#chip2" x="227" y="132" class="cu-chip-us"/>
+              <use href="#chip2" x="263" y="132" class="cu-chip-us"/>
+              <use href="#chip2" x="299" y="132" class="cu-chip-us"/>
+            </g>
+            <g class="cu-bag-label" text-anchor="end">
+              <text x="132" y="52">1 member</text>
+              <text x="132" y="94" fill="#0057FF">EU pooled</text>
+              <text x="132" y="136" fill="#FF6F59">US cluster</text>
+            </g>
+            <g class="cu-bag-label">
+              <text x="178" y="52">~1 EF</text>
+              <text x="232" y="94">~2 EF</text>
+              <text x="340" y="136" text-anchor="end">~5 EF</text>
+            </g>
+            <text class="cu-bag-label" x="14" y="162">Pooling EuroHPC roughly doubles Europe&rsquo;s frontier compute</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Berlin — cloud dependence -->
+    <div class="viz-card" id="viz-cloud">
+      <div class="viz-header"><span class="viz-name">Cloud dependence</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>US hyperscalers (AWS, Azure, Google) run ~70% of Europe&rsquo;s ~&euro;61B cloud market; European providers hold ~15%.</p>
+          <h4>Why it matters here</h4>
+          <p>The <strong>Berlin</strong> call &mdash; sign the Digital Liberty Act, slow-walk, or refuse. &ldquo;Even the things we advertise as sovereign are built on Microsoft or Google.&rdquo; This is the exposure a US framework can switch off.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>US hyperscalers ~70% of the ~&euro;61B European cloud market; European providers ~15%. <a href="https://www.datacenterdynamics.com/en/news/european-cloud-providers-hold-15-of-local-market-share-synergy-research/" target="_blank" rel="noopener">Synergy Research / DCD</a>.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="7 of 10 clouds are US: ~70% of Europe's cloud runs on US hyperscalers, ~15% EU, ~15% other">
+            <defs>
+              <g id="cloud"><ellipse cx="0" cy="4" rx="13" ry="7"/><circle cx="-6" cy="-1" r="6"/><circle cx="5" cy="-3" r="7.5"/></g>
+            </defs>
+            <text class="cu-fig coral" x="14" y="46">70%</text>
+            <text class="cu-cap" x="16" y="66">of Europe&rsquo;s cloud runs on US hyperscalers</text>
+            <g class="cu-pop">
+              <use href="#cloud" x="32"  y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="65"  y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="98"  y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="131" y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="164" y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="197" y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="230" y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="263" y="104" fill="#0057FF"/>
+              <use href="#cloud" x="296" y="104" fill="#0057FF"/>
+              <use href="#cloud" x="329" y="104" fill="rgba(10,10,10,0.3)"/>
+            </g>
+            <g class="cu-legend">
+              <circle cx="20"  cy="142" r="5" fill="#FF6F59"/><text x="30" y="142">US 70%</text>
+              <circle cx="118" cy="142" r="5" fill="#0057FF"/><text x="128" y="142">EU 15%</text>
+              <circle cx="216" cy="142" r="5" fill="rgba(10,10,10,0.3)"/><text x="226" y="142">other 15%</text>
+            </g>
+            <text class="cu-bag-label" x="14" y="164">AWS, Azure, Google &middot; the exposure the Digital Liberty Act targets</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Stockholm — defence-AI boom -->
+    <div class="viz-card" id="viz-defense">
+      <div class="viz-header"><span class="viz-name">Defence-AI boom</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>Helsing &mdash; the drone-and-AI venture Ek is pushing in the story &mdash; reached a &euro;12B valuation (Series D led by Ek&rsquo;s Prima Materia) and is in talks near $18B.</p>
+          <h4>Why it matters here</h4>
+          <p>The <strong>Stockholm</strong> call &mdash; defence-only, defence + commercial, or full stack. Defence is where European capital and political will already exist; it is the saleable wedge for a coalition.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>Helsing &euro;12B Series D (Prima Materia / Ek-led); in talks ~$18B. <a href="https://sacra.com/c/helsing/" target="_blank" rel="noopener">Sacra</a>.</li>
+            <li>European defence-tech VC ~$1.5B in 2025; ReArm Europe ~&euro;800B by 2029. <a href="https://techfundingnews.com/2025-marks-europes-biggest-funding-year-yet-helsing-mistral-lead-billion-dollar-rounds/" target="_blank" rel="noopener">TechFundingNews</a>.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helsing valuation grew from €12B (2025) toward ~$18B (2026), shown as growing shields">
+            <defs>
+              <symbol id="shield" viewBox="0 0 30 36"><path d="M15,2 L27,7 L27,18 C27,29 15,34 15,34 C15,34 3,29 3,18 L3,7 Z"/></symbol>
+            </defs>
+            <text class="cu-cap" x="14" y="24">Helsing &mdash; Europe&rsquo;s top defence-AI startup (Ek-backed)</text>
+            <g class="cu-pop">
+              <use href="#shield" x="64"  y="76" width="58" height="70" fill="#0057FF"/>
+              <use href="#shield" x="198" y="48" width="82" height="98" fill="#FF6F59"/>
+            </g>
+            <text class="cu-bag-label" x="158" y="104" fill="#FF6F59">&rarr;</text>
+            <g class="cu-bag-label" text-anchor="middle">
+              <text x="93"  y="160" fill="#0057FF">2025 &middot; &euro;12B</text>
+              <text x="239" y="160" fill="#FF6F59">2026e &middot; ~$18B</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Paris — France energy edge -->
+    <div class="viz-card" id="viz-energy">
+      <div class="viz-header"><span class="viz-name">France's power edge</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>France draws ~70% of its electricity from nuclear &mdash; cheap, clean, dispatchable power for datacenters &mdash; against a low German share and the EU average.</p>
+          <h4>Why it matters here</h4>
+          <p>The <strong>Paris</strong> call &mdash; France defers, co-leads, or leads. France&rsquo;s real leverage is not budget but power: it can host frontier compute that strained grids elsewhere cannot.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>France ~70% nuclear electricity; ~90 TWh net exports 2024. <a href="https://www.theregister.com/2025/09/08/data4_edf_nuclear_deal/" target="_blank" rel="noopener">The Register / EDF</a>.</li>
+            <li>SoftBank up to &euro;75B for 5 GW of AI datacenters in France; Mistral Compute &rarr; 200 MW by 2027. <a href="https://blogs.nvidia.com/blog/france-sovereign-ai-infrastructure/" target="_blank" rel="noopener">NVIDIA</a>.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="About 7 of every 10 units of France's electricity are nuclear">
+            <defs>
+              <g id="bolt"><path d="M4,-14 L-8,4 L-1,4 L-5,14 L9,-5 L1,-5 Z"/></g>
+            </defs>
+            <text class="cu-fig" x="14" y="46">70%</text>
+            <text class="cu-cap" x="16" y="66">of France&rsquo;s power is nuclear &mdash; cheap, clean, dispatchable</text>
+            <g class="cu-pop">
+              <use href="#bolt" x="32"  y="106" fill="#0057FF"/>
+              <use href="#bolt" x="65"  y="106" fill="#0057FF"/>
+              <use href="#bolt" x="98"  y="106" fill="#0057FF"/>
+              <use href="#bolt" x="131" y="106" fill="#0057FF"/>
+              <use href="#bolt" x="164" y="106" fill="#0057FF"/>
+              <use href="#bolt" x="197" y="106" fill="#0057FF"/>
+              <use href="#bolt" x="230" y="106" fill="#0057FF"/>
+              <use href="#bolt" x="263" y="106" fill="rgba(10,10,10,0.25)"/>
+              <use href="#bolt" x="296" y="106" fill="rgba(10,10,10,0.25)"/>
+              <use href="#bolt" x="329" y="106" fill="rgba(10,10,10,0.25)"/>
+            </g>
+            <text class="cu-bag-label" x="14" y="150">7 in 10 kWh nuclear &middot; powers SoftBank&rsquo;s &euro;75B / 5 GW datacenter bet</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
       </div><!-- /supporting-data-grid -->
     </div><!-- /supporting-data -->
     </div><!-- /outcome-split -->
@@ -757,7 +1224,7 @@
 
 </main>
 
-<script src="scripts.js" defer></script>
+<script src="scripts.js?v=3" defer></script>
 
 </body>
 </html>

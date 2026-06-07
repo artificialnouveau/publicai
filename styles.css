@@ -262,8 +262,53 @@
   .scene-kicker {
     font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 0.75rem;
+    color: var(--accent); margin-bottom: 0.4rem;
   }
+  /* Footnote link from a chapter down to its supporting chart. */
+  .scene-data-link {
+    display: inline-block;
+    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-soft); text-decoration: none;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dotted var(--hairline-strong);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .scene-data-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Inline footnote marker in the prose: tap/hover to preview its chart. */
+  .story-fn {
+    display: inline-flex; align-items: center; justify-content: center;
+    vertical-align: super;
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    line-height: 1; cursor: pointer;
+    color: var(--accent); background: rgba(0,87,255,0.10);
+    border: 0; border-radius: 999px;
+    padding: 0.1em 0.45em; margin: 0 0.12em;
+    text-decoration: none;
+  }
+  .story-fn:hover, .story-fn:focus-visible { background: var(--accent); color: #fff; outline: none; }
+
+  /* Floating chart preview shown by a footnote / data link. */
+  .viz-pop {
+    position: fixed; z-index: 60;
+    width: 340px; max-width: 88vw;
+    background: var(--ink);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(10,10,10,0.18);
+    padding: 0.7rem 0.8rem 0.6rem;
+    opacity: 0; transform: translateY(4px); pointer-events: none;
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .viz-pop.is-open { opacity: 1; transform: none; pointer-events: auto; }
+  .viz-pop-title {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft); margin-bottom: 0.35rem;
+  }
+  .viz-pop svg { width: 100%; height: auto; display: block; }
+  @media (prefers-reduced-motion: reduce) { .viz-pop { transition: none; } }
   .scene-dateline {
     font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
     letter-spacing: 0.06em;
@@ -595,45 +640,6 @@
   /* Compute stack: 11 named EuroHPC contributors as one stacked bar,
      compared with a single US frontier cluster reference bar below it. */
   .compute-pool-wrap { padding: 0.4rem; }
-  .compute-stack {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  .compute-stack .cs-title {
-    font-family: var(--mono); font-size: 9px; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    fill: var(--text-soft);
-  }
-  .compute-stack .cs-row-label {
-    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    fill: rgba(10,10,10,0.7);
-  }
-  .compute-stack .cs-code {
-    font-family: var(--mono); font-size: 10px; font-weight: 700;
-    fill: #fff;
-  }
-  .compute-stack .cs-code-sm {
-    font-size: 7.5px;
-  }
-  .compute-stack .cs-total {
-    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
-    fill: var(--accent);
-  }
-  .compute-stack .cs-frontier-label {
-    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
-    fill: #b8002e;
-  }
-  .compute-stack .cs-axis {
-    font-family: var(--mono); font-size: 8.5px; font-weight: 600;
-    fill: rgba(10,10,10,0.5);
-  }
-  .compute-stack .cs-legend {
-    font-family: var(--font); font-size: 8.5px;
-    fill: rgba(10,10,10,0.65);
-  }
-
   /* HF live cards */
   .hf-cards {
     display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1rem;
@@ -716,20 +722,10 @@
 
 /* Push the viz-pane content down when the decision strip is active */
 
-  /* === COUNTRY MAP (sticky right-side widget that tracks the active chapter) === */
-  .country-map { display: none; }
+  /* === STORY RIGHT RAIL: the globe, sticky beside the prose (desktop only).
+     The live data lives down in the outcome, next to the coalition designer. */
+  .experience-aside { display: none; }
   @media (min-width: 1024px) {
-    .country-map {
-      display: block;
-      position: sticky;
-      top: calc(56px + 1.5rem);
-      align-self: start;
-      width: 220px;
-      flex-shrink: 0;
-      order: 2;
-      margin-left: clamp(1rem, 3vw, 2rem);
-    }
-    /* Override the old grid: lay story + map side-by-side. */
     .experience-columns {
       display: flex !important;
       flex-direction: row;
@@ -737,9 +733,21 @@
       gap: clamp(1rem, 3vw, 2.5rem);
     }
     .experience-columns > .story { flex: 1 1 auto; min-width: 0; order: 1; }
+    .experience-aside {
+      display: block;
+      order: 2;
+      flex: 0 0 clamp(230px, 22vw, 280px);
+      width: clamp(230px, 22vw, 280px);
+      position: sticky;
+      top: calc(56px + 1rem);
+      align-self: start;
+    }
   }
+
+  /* Globe block: centered in the rail. */
+  .country-map { display: block; }
   .country-map-frame {
-    width: 220px; height: 220px;
+    width: 200px; height: 200px;
     margin: 0 auto;
     background: transparent;
     overflow: visible;
@@ -764,15 +772,15 @@
     stroke-width: 0.6;
     filter: drop-shadow(0 0 2px rgba(0,119,200,0.55));
   }
-  /* Whirl: continuously rotates very slowly around the globe. */
-  .country-map .cm-whirl {
-    transform-box: view-box;
-    transform-origin: 100px 100px;
-    animation: cm-whirl-spin 40s linear infinite;
-  }
-  @keyframes cm-whirl-spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+  /* Coalition trail: a curved, dotted hop between consecutive capitals.
+     Per-hop opacity is set in JS so older hops fade further back. */
+  .country-map .cm-arc {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 0 5;
   }
   /* City dot for the active chapter. */
   .country-map .cm-dot {
@@ -792,24 +800,29 @@
     50% { transform: scale(1.6); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .country-map .cm-whirl { animation: none; }
     .country-map .cm-dot.is-visible { animation: none; }
   }
 
-  /* === OUTCOME SPLIT: Your Coalition (left) + Live Data (right) side by side === */
+  /* === OUTCOME SPLIT: coalition designer (member-state decisions) on the left,
+     all eight live charts together on the right so the data informs the picks. */
   .outcome-split {
     display: block;
     margin-top: 2rem;
   }
-  .outcome-split-design { min-width: 0; margin-bottom: 2rem; }
-  @media (min-width: 1200px) {
+  .outcome-split-design { min-width: 0; margin-bottom: 2.5rem; }
+  @media (min-width: 1100px) {
     .outcome-split {
       display: grid;
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-      gap: 2.25rem;
+      grid-template-columns: minmax(380px, 1fr) minmax(0, 1fr);
+      gap: clamp(1.75rem, 3.5vw, 3rem);
       align-items: start;
     }
-    .outcome-split-design { margin-bottom: 0; }
+    .outcome-split-design { margin-bottom: 0; position: sticky; top: calc(56px + 1rem); }
+    /* Dotted seam hinting that the left decisions and right data belong together. */
+    .supporting-data {
+      border-left: 2px dotted var(--text-soft);
+      padding-left: clamp(1.25rem, 2.5vw, 2.25rem);
+    }
   }
 
   /* === SUPPORTING DATA (Live data: dense bento grid of all 8 charts) === */
@@ -818,64 +831,76 @@
     border-top: 0;
     min-width: 0;
   }
+  /* All eight charts, shown together in a roomy two-up grid so each chart and
+     its labels stay readable. Equal-height rows keep it tidy. */
+  /* Composed infographic: detail-heavy charts run full width; compact
+     pictograms pair up. Not a uniform grid. */
   .supporting-data-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.4rem;
-    margin-top: 0.6rem;
+    grid-template-areas:
+      "cap tal"
+      "lan lan"
+      "def nrg"
+      "brn brn"
+      "exp exp"
+      "clo tok"
+      "ott eth"
+      "cld dfn"
+      "egy egy";
+    gap: 0.1rem 0.9rem;
+    margin-top: 0.5rem;
     counter-reset: viz;
   }
-  /* Side-by-side (>=1200px): 2-col grid in the right column.
-     Wide charts (chord, timeline, constellation) span both cols. */
-  @media (min-width: 1200px) {
-    .supporting-data-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: minmax(0, auto);
-      gap: 0.7rem;
-    }
-    .supporting-data-grid > :nth-child(1) { grid-column: span 2; }
-    .supporting-data-grid > :nth-child(2) { grid-column: span 2; }
-    .supporting-data-grid > :nth-child(3) { grid-column: span 1; }
-    .supporting-data-grid > :nth-child(4) { grid-column: span 1; }
-    .supporting-data-grid > :nth-child(5) { grid-column: span 1; }
-    .supporting-data-grid > :nth-child(6) { grid-column: span 1; }
-    .supporting-data-grid > :nth-child(7) { grid-column: span 2; }
-    .supporting-data-grid > :nth-child(8) { grid-column: span 2; }
-  }
-  /* Intermediate (stacked below coalition): 4-col compact grid. */
-  @media (min-width: 700px) and (max-width: 1199px) {
-    .supporting-data-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-    .supporting-data-grid > :nth-child(1),
-    .supporting-data-grid > :nth-child(2),
-    .supporting-data-grid > :nth-child(7),
-    .supporting-data-grid > :nth-child(8) { grid-column: span 2; }
-  }
+  .supporting-data-grid > :nth-child(1)  { grid-area: cap; } /* capital flow (Monroe) */
+  .supporting-data-grid > :nth-child(2)  { grid-area: tal; } /* talent (Dublin Apr) */
+  .supporting-data-grid > :nth-child(3)  { grid-area: lan; } /* languages (Brussels) */
+  .supporting-data-grid > :nth-child(4)  { grid-area: def; } /* defence-AI (Stockholm) */
+  .supporting-data-grid > :nth-child(5)  { grid-area: nrg; } /* France energy (Paris) */
+  .supporting-data-grid > :nth-child(6)  { grid-area: brn; } /* brain drain (Dublin Jan) */
+  .supporting-data-grid > :nth-child(7)  { grid-area: exp; } /* export controls (White House) */
+  .supporting-data-grid > :nth-child(8)  { grid-area: clo; } /* cloud dependence (Berlin) */
+  .supporting-data-grid > :nth-child(9)  { grid-area: tok; } /* Japan/China (Tokyo) */
+  .supporting-data-grid > :nth-child(10) { grid-area: ott; } /* investment by bloc (Ottawa) */
+  .supporting-data-grid > :nth-child(11) { grid-area: eth; } /* pooled vs alone (Ether) */
+  .supporting-data-grid > :nth-child(12) { grid-area: cld; } /* cloud dependence (Berlin) */
+  .supporting-data-grid > :nth-child(13) { grid-area: dfn; } /* defence-AI (Stockholm) */
+  .supporting-data-grid > :nth-child(14) { grid-area: egy; } /* France energy (Paris) */
+  /* Keep the full-width bands large but not blown up. */
+  .supporting-data-grid > :nth-child(3) .mn-chart,
+  .supporting-data-grid > :nth-child(6) .mn-chart,
+  .supporting-data-grid > :nth-child(7) .mn-chart,
+  .supporting-data-grid > :nth-child(14) .mn-chart { max-width: 480px; margin: 0 auto; }
   @media (max-width: 600px) {
-    .supporting-data-grid { grid-template-columns: 1fr; gap: 0.55rem; }
+    .supporting-data-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: "cap" "tal" "lan" "def" "nrg" "brn" "exp" "clo" "tok" "ott" "eth" "cld" "dfn" "egy";
+    }
   }
-  /* Section title compressed to a single thin line */
+  /* Section title: a thin labelled rule above the grid. */
   .supporting-data-header {
-    margin-bottom: 0.1rem;
-    max-width: 60ch;
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 0.2rem;
+  }
+  .supporting-data-header::after {
+    content: ''; flex: 1 1 auto; height: 1px; background: var(--hairline);
   }
   .supporting-data-title {
     font-family: var(--mono);
-    font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase;
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--text-soft);
     margin-bottom: 0;
   }
   .supporting-data-note { display: none; }
-  /* Bento tile: clean frame, info button in the top-right corner. */
+  /* Composed infographic: frameless pieces that blend on the page. */
   .viz-card {
     counter-increment: viz;
-    background: var(--ink);
-    border: 1px solid var(--hairline);
-    border-radius: 5px;
-    overflow: hidden;
-    padding: 0.7rem 0.85rem 0.6rem;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    padding: 0.05rem 0.25rem;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -991,26 +1016,124 @@
     flex: 1 1 auto;
     min-height: 0;
   }
+  /* Charts: a comfortable, readable height now that two charts share a row. */
   .viz-card .viz-canvas-wrap canvas {
     width: 100%;
-    height: 170px;
+    height: 172px;
     display: block;
   }
-  .viz-card .viz-canvas-wrap[data-tall] canvas { height: 190px; }
-  /* Wide bento tiles (chord, timeline, compute) get more chart height. */
-  .supporting-data-grid > :nth-child(1) .viz-canvas-wrap canvas,
-  .supporting-data-grid > :nth-child(2) .viz-canvas-wrap canvas,
-  .supporting-data-grid > :nth-child(7) .viz-canvas-wrap canvas,
-  .supporting-data-grid > :nth-child(8) .viz-canvas-wrap canvas {
-    height: 210px;
+  .viz-card .viz-canvas-wrap[data-tall] canvas { height: 172px; }
+
+  /* Donut segment dividers (reused by the minimal Talent donut). */
+  .rad-seg path { stroke: var(--ink); stroke-width: 1.2; }
+
+  /* === MINIMAL style — after ai-2027.com: a big headline number,
+     one clean shape, lots of whitespace, grayscale + a single accent, and a
+     quiet scroll-in animation. */
+  /* Scale with the card width (was a fixed 172px, which kept charts tiny). */
+  .mn-chart { width: 100%; height: auto; display: block; }
+  .mn-figure {
+    font-family: var(--mono); font-weight: 700; font-size: 30px;
+    letter-spacing: -0.02em; fill: var(--text);
   }
-  .compute-stack { height: 210px; }
+  .mn-figure.is-accent { fill: var(--accent); }
+  .mn-sub {
+    font-family: var(--mono); font-size: 7.5px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; fill: var(--text-soft);
+  }
+  .mn-cap { font-family: var(--mono); font-size: 7px; fill: rgba(10,10,10,0.45); }
+  .mn-axislabel { font-family: var(--mono); font-size: 7px; fill: rgba(10,10,10,0.4); }
+  .mn-base { stroke: rgba(10,10,10,0.14); stroke-width: 0.7; }
+  .mn-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .mn-area { fill: var(--accent); opacity: 0.09; }
+  .mn-bar { fill: var(--accent); }
+  .mn-bar-rest { fill: rgba(10,10,10,0.10); }
+  .mn-dot { fill: var(--accent); }
+
+  /* Hide the redundant footer stat when the card carries its own big number. */
+  .viz-card:has(.mn-chart) .viz-headline { display: none; }
+
+  /* Quiet scroll-in: lines draw, areas/bars grow. Enabled only when JS marks
+     the card (.mn-anim) and it enters the viewport (.is-in). */
+  .viz-card.mn-anim .mn-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .viz-card.mn-anim .mn-area { transform: scaleY(0); transform-box: fill-box; transform-origin: bottom; }
+  .viz-card.mn-anim .mn-bar  { transform: scaleX(0); transform-box: fill-box; transform-origin: left; }
+  .viz-card.mn-anim.is-in .mn-line { animation: mnDraw 1.1s ease 0.05s forwards; }
+  .viz-card.mn-anim.is-in .mn-area { transition: transform 0.9s ease 0.1s; transform: scaleY(1); }
+  .viz-card.mn-anim.is-in .mn-bar  { transition: transform 0.9s cubic-bezier(.2,.7,.2,1) 0.1s; transform: scaleX(1); }
+  @keyframes mnDraw { to { stroke-dashoffset: 0; } }
+  .mn-bar-muted { fill: rgba(10,10,10,0.26); }
+  .mn-legend text {
+    font-family: var(--mono); font-size: 8px; font-weight: 600;
+    letter-spacing: 0.03em; fill: rgba(10,10,10,0.72); dominant-baseline: middle;
+  }
+  .mn-seg path { stroke: var(--ink); stroke-width: 1.4; }
+  /* horizontal-bar grow + group fade/scale (donut), reusing the scroll trigger */
+  .viz-card.mn-anim .mn-growx { transform: scaleX(0); transform-box: fill-box; transform-origin: left; }
+  .viz-card.mn-anim.is-in .mn-growx { transition: transform 0.9s cubic-bezier(.2,.7,.2,1) 0.1s; transform: scaleX(1); }
+  .viz-card.mn-anim .mn-grow { opacity: 0; transform: scale(0.94); transform-box: fill-box; transform-origin: center; }
+  .viz-card.mn-anim.is-in .mn-grow { transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s; opacity: 1; transform: none; }
+
+  /* === CUTE style (prototype): pictogram units, warm palette, friendly serif
+     captions, bouncy pop-in. Memorable over minimal. */
+  .cu-fig { font-family: var(--serif); font-weight: 700; font-size: 33px; fill: var(--accent); letter-spacing: -0.01em; }
+  .cu-fig.coral { fill: #FF6F59; }
+  .cu-cap { font-family: var(--serif); font-style: italic; font-size: 13.5px; fill: rgba(10,10,10,0.62); }
+  .cu-legend text { font-family: var(--mono); font-size: 12.5px; font-weight: 600; fill: rgba(10,10,10,0.7); dominant-baseline: middle; }
+  .cu-on  { fill: var(--accent); }
+  .cu-off { fill: #FFB3A8; }
+  .cu-coin { fill: #FFC23C; stroke: #E0991A; stroke-width: 1; }
+  .cu-coin-eu { fill: #8FB4FF; stroke: #0057FF; stroke-width: 1; }
+  /* bouncy pop-in, reusing the .mn-anim / .is-in scroll trigger */
+  .viz-card.mn-anim .cu-pop > * { opacity: 0; transform: translateY(7px) scale(0.55); transform-box: fill-box; transform-origin: center bottom; }
+  .viz-card.mn-anim.is-in .cu-pop > * { animation: cuPop 0.5s cubic-bezier(.34,1.56,.64,1) forwards; }
+  @keyframes cuPop { to { opacity: 1; transform: none; } }
+  /* pictogram tiers (e.g. language bubbles) */
+  .cu-strong  { fill: var(--accent); }
+  .cu-partial { fill: #FFC23C; }
+  .cu-risk    { fill: #FFB3A8; }
+  .cu-code      { font-family: var(--mono); font-size: 7.5px; font-weight: 700; fill: #fff; }
+  .cu-code.ink  { fill: rgba(10,10,10,0.6); }
+
+  /* === CUTE-INFORMATIVE line: keep the analytical scaffolding (gridlines,
+     reference line, every point) but warm and rounded. */
+  .ci-grid line { stroke: rgba(10,10,10,0.10); stroke-width: 0.6; }
+  .ci-ref  { stroke: #FF6F59; stroke-width: 0.8; stroke-dasharray: 3 3; opacity: 0.75; }
+  .ci-tick { font-family: var(--mono); font-size: 8.5px; fill: rgba(10,10,10,0.45); }
+  .ci-dot  { fill: var(--accent); stroke: var(--ink); stroke-width: 1.4; }
+  .ci-end  { fill: #FF6F59; stroke: var(--ink); stroke-width: 2; }
+  .ci-note { font-family: var(--serif); font-style: italic; font-size: 12.5px; fill: rgba(10,10,10,0.6); }
+  .ci-emph { font-family: var(--mono); font-size: 13px; font-weight: 700; fill: #FF6F59; }
+  .ci-emph.accent { fill: var(--accent); }
+  /* export-control "decree" stamps */
+  .cu-stamp { fill: var(--accent); }
+  .cu-stamp-out { fill: #FFB3A8; }
+  .cu-x { stroke: #E0457B; stroke-width: 2; stroke-linecap: round; }
+  /* compute chips */
+  .cu-chip-eu { fill: var(--accent); }
+  .cu-chip-us { fill: #FF6F59; }
+  .cu-die { fill: rgba(255,255,255,0.5); }
+  .cu-pin { stroke: rgba(10,10,10,0.35); stroke-width: 1.4; stroke-linecap: round; }
+  /* capex money-bags */
+  .cu-bag { fill: #FFC23C; stroke: #E0991A; stroke-width: 1.2; }
+  .cu-bag.accent { fill: var(--accent); stroke: #003DA8; }
+  .cu-bag-sym { font-family: var(--serif); font-weight: 700; fill: #fff; }
+  .cu-bag-label { font-family: var(--mono); font-size: 13px; font-weight: 600; fill: rgba(10,10,10,0.7); }
+  .cu-bag-label.accent { fill: var(--accent); }
+  @media (prefers-reduced-motion: reduce) {
+    .viz-card.mn-anim .mn-line { stroke-dashoffset: 0; }
+    .viz-card.mn-anim .mn-area { transform: none; }
+    .viz-card.mn-anim .mn-bar  { transform: none; }
+    .viz-card.mn-anim .mn-growx { transform: none; }
+    .viz-card.mn-anim .mn-grow { opacity: 1; transform: none; }
+    .viz-card.mn-anim .cu-pop > * { opacity: 1; transform: none; }
+  }
 
   /* Header: date pill + name on a single row, room reserved for the info button */
   .viz-card .viz-header {
     display: flex; align-items: center; gap: 0.45rem;
-    margin: 0 0 0.5rem;
-    padding-right: 2rem;
+    margin: 0 0 0.3rem;
+    padding-right: 1.7rem;
     flex-wrap: nowrap;
     min-width: 0;
   }
@@ -1069,6 +1192,43 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* Compact dashboard headline: the single lead figure shown under the chart.
+     The full figure set is relocated into the "i" overlay (.viz-figures). */
+  .viz-card .viz-headline {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--hairline);
+    min-width: 0;
+  }
+  .viz-card .viz-headline .viz-mini-stat {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.35rem;
+    flex: 1 1 auto;
+  }
+  .viz-card .viz-headline .viz-mini-stat + .viz-mini-stat { display: none; }
+  .viz-card .viz-headline .viz-mini-value { font-size: 1.1rem; }
+  .viz-card .viz-headline .viz-mini-label {
+    font-size: 0.52rem;
+    white-space: normal;
+    line-height: 1.15;
+  }
+  /* Relocated full figure set inside the info overlay. */
+  .viz-info-body .viz-figures {
+    display: flex;
+    gap: 0.65rem;
+    margin: 0.3rem 0 0.2rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .viz-info-body .viz-figures .viz-mini-stat { flex: 1 1 0; min-width: 0; }
+  .viz-info-body .viz-figures .viz-mini-stat + .viz-mini-stat {
+    border-left: 1px solid var(--hairline);
+    padding-left: 0.65rem;
+  }
 
   /* === OUTCOME SCREEN === */
   .outcome {
@@ -1078,7 +1238,7 @@
     padding: 5rem 1.5rem;
   }
   .outcome-inner {
-    max-width: min(1320px, 96vw); margin: 0 auto;
+    max-width: min(1240px, 94vw); margin: 0 auto;
   }
   .outcome-kicker {
     font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
@@ -1115,7 +1275,7 @@
   /* === COALITION DESIGN PANEL === */
   .coalition-design {
     display: grid; gap: 2.5rem;
-    margin: 2rem 0 2.5rem;
+    margin: 0 0 2.5rem;
   }
 
   /* Inline picks embedded inside each design-section. Each pick reads as a
