@@ -1380,6 +1380,30 @@
       : 'No anchor labs in yet. Mistral ARR shown for scale');
   }
 
+  function renderSummary(members){
+    const n = members.size;
+    let ef = 0;  members.forEach(m => { ef  += (MEMBER_COMPUTE[m] || 0); }); if (!n) ef  = 2.0;
+    let inv = 0; members.forEach(m => { inv += (MEMBER_INVEST[m]  || 0); }); if (!n) inv = 14;
+    const strong = new Set(BASE_STRONG);
+    members.forEach(m => (MEMBER_LANGS[m] || []).forEach(l => strong.add(l)));
+    countTo($('#clMembers'), n, '', '', 0);
+    countTo($('#clCompute'), ef, '~', '', 1);
+    countTo($('#clInvest'), Math.round(inv), '$', 'B', 0);
+    countTo($('#clLangs'), strong.size, '', '', 0);
+  }
+
+  const PULSE_CARDS = ['viz-language','viz-compute','viz-ottawa','viz-capex','viz-revenue'];
+  function pulse(){
+    PULSE_CARDS.forEach(id => {
+      const c = document.getElementById(id);
+      if (!c) return;
+      c.classList.remove('viz-pulse');
+      void c.offsetWidth; // restart the animation
+      c.classList.add('viz-pulse');
+    });
+  }
+
+  let lastSig = null, inited = false;
   function update(){
     const members = (window.__coalition && window.__coalition.members) || new Set();
     renderLanguages(members);
@@ -1387,6 +1411,10 @@
     renderInvestment(members);
     renderCapex(members);
     renderRevenue(members);
+    renderSummary(members);
+    const sig = Array.from(members).sort().join(',');
+    if (inited && sig !== lastSig) pulse();
+    lastSig = sig; inited = true;
   }
 
   window.addEventListener('coalition:change', update);

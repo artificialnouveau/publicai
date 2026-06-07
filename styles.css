@@ -1806,3 +1806,32 @@
 
 /* Smooth re-tiering when charts recompute from the live coalition. */
 #viz-language .cu-pop use, #computeEuChips use { transition: fill 0.45s ease; }
+
+/* Live coalition readout above the decisions (makes member-linked data visible). */
+.coalition-live {
+  background: var(--paper, #fff);
+  border: 1px solid var(--hairline-strong, rgba(10,10,10,0.18));
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.25rem;
+}
+.coalition-live-title {
+  display: block;
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-soft); margin-bottom: 0.55rem;
+}
+.coalition-live-stats { display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; }
+.cl-stat { display: flex; flex-direction: column; line-height: 1.1; }
+.cl-stat b { font-family: var(--serif); font-size: 1.55rem; font-weight: 600; color: var(--accent); font-style: normal; }
+.cl-stat i { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-soft); font-style: normal; margin-top: 0.15rem; }
+.coalition-live-hint { display: block; font-family: var(--serif); font-style: italic; font-size: 0.82rem; color: var(--text-soft); margin-top: 0.7rem; }
+
+/* Brief highlight when a chart recomputes from a coalition change. */
+@keyframes vizPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,87,255,0.0); }
+  25%  { box-shadow: 0 0 0 3px rgba(0,87,255,0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(0,87,255,0.0); }
+}
+.viz-pulse { animation: vizPulse 0.9s ease-out; border-radius: 10px; }
+@media (prefers-reduced-motion: reduce) { .viz-pulse { animation: none; } }
