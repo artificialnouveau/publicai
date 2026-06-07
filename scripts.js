@@ -964,3 +964,17 @@
   window.addEventListener('scroll', hide, { passive:true });
   document.addEventListener('click', (e)=>{ if(openFor && !pop.contains(e.target) && !openFor.contains(e.target) && e.target!==openFor) hide(); });
 })();
+
+// --- Resize the decisions / live-data split (50-50 default; minimize/maximize) ---
+(function(){
+  const split = document.getElementById('outcomeSplit');
+  const btns = document.querySelectorAll('.split-btn');
+  if (!split || !btns.length) return;
+  btns.forEach(b => b.addEventListener('click', () => {
+    const mode = b.dataset.split;
+    split.classList.remove('split-data', 'split-design');
+    if (mode === 'data') split.classList.add('split-data');
+    else if (mode === 'design') split.classList.add('split-design');
+    btns.forEach(x => x.classList.toggle('is-active', x === b));
+  }));
+})();

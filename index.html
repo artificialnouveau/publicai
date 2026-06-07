@@ -454,7 +454,13 @@
     <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
     <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above.</p>
 
-    <div class="outcome-split">
+    <div class="split-controls" role="group" aria-label="Resize panels">
+      <span class="split-controls-label">View</span>
+      <button type="button" class="split-btn" data-split="design">&#9696; Decisions</button>
+      <button type="button" class="split-btn is-active" data-split="balanced">50 / 50</button>
+      <button type="button" class="split-btn" data-split="data">Data &#9697;</button>
+    </div>
+    <div class="outcome-split" id="outcomeSplit">
       <div class="outcome-split-design">
         <div class="coalition-design" id="coalitionDesign"></div>
       </div>
@@ -482,7 +488,7 @@
         <div class="viz-canvas-wrap">
           <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US AI investment ($109B) is about 8x the EU's ($14B) in 2024, shown as coin stacks">
             <text class="cu-fig coral" x="14" y="44">~8&times;</text>
-            <text class="cu-cap" x="16" y="62">more AI money piles up in the US</text>
+            <text class="cu-cap" x="16" y="62">US drew ~8&times; the EU&rsquo;s private AI investment in 2024</text>
             <g class="cu-pop">
               <!-- EU: 2 coins -->
               <ellipse class="cu-coin-eu" cx="100" cy="138" rx="15" ry="4.8"/>
@@ -737,7 +743,7 @@
               <text x="262" y="128">ES</text><text x="262" y="140">&euro;2.1B</text>
               <text x="300" y="128">IT</text><text x="300" y="140">&euro;1B</text>
             </g>
-            <text class="cu-bag-label" x="14" y="162">State funds only &middot; France&rsquo;s &euro;107B is mostly private</text>
+            <text class="cu-cap" x="14" y="162">State funds shown; France&rsquo;s &euro;107B is private</text>
           </svg>
         </div>
       <div class="viz-footer">
@@ -838,7 +844,7 @@
             <defs>
               <rect id="stmp" x="-11" y="-8" width="22" height="16" rx="3"/>
             </defs>
-            <text class="cu-cap" x="14" y="24">A flurry of rules &mdash; and 3 already rescinded</text>
+            <text class="cu-cap" x="14" y="24">US chip rules: added fast, often reversed</text>
             <line class="mn-base" x1="20" y1="122" x2="346" y2="122"/>
             <g class="cu-pop">
               <use href="#stmp" x="50"  y="108" class="cu-stamp"/>
@@ -922,7 +928,7 @@
               <use href="#chip" x="275" y="112" class="cu-chip-us"/>
               <use href="#chip" x="310" y="112" class="cu-chip-us"/>
             </g>
-            <text class="cu-bag-label" x="14" y="150">each chip &asymp; 1 exaFLOP &middot; 11 EuroHPC systems pooled</text>
+            <text class="cu-cap" x="14" y="150">each chip &asymp; 1 EF &middot; 11 EuroHPC systems</text>
           </svg>
         </div>
       </div>
@@ -999,7 +1005,7 @@
               <text x="220" y="140">UK $4.5B</text>
               <text x="290" y="140" fill="#0057FF">CA $2B</text>
             </g>
-            <text class="cu-bag-label" x="14" y="160">US private AI spend &asymp; 24&times; the UK &middot; Canada adds $2B sovereign compute</text>
+            <text class="cu-cap" x="14" y="160">US &asymp; 24&times; the UK; Canada adds $2B</text>
           </svg>
         </div>
       </div>
@@ -1048,7 +1054,7 @@
               <text x="232" y="94">~2 EF</text>
               <text x="340" y="136" text-anchor="end">~5 EF</text>
             </g>
-            <text class="cu-bag-label" x="14" y="162">Pooling EuroHPC roughly doubles Europe&rsquo;s frontier compute</text>
+            <text class="cu-cap" x="14" y="162">Pooling ~doubles Europe&rsquo;s compute</text>
           </svg>
         </div>
       </div>
@@ -1091,7 +1097,7 @@
               <circle cx="118" cy="142" r="5" fill="#0057FF"/><text x="128" y="142">EU 15%</text>
               <circle cx="216" cy="142" r="5" fill="rgba(10,10,10,0.3)"/><text x="226" y="142">other 15%</text>
             </g>
-            <text class="cu-bag-label" x="14" y="164">AWS, Azure, Google &middot; the exposure the Digital Liberty Act targets</text>
+            <text class="cu-cap" x="14" y="164">Clouds the Digital Liberty Act can switch off</text>
           </svg>
         </div>
       </div>
@@ -1164,7 +1170,7 @@
               <use href="#bolt" x="296" y="106" fill="rgba(10,10,10,0.25)"/>
               <use href="#bolt" x="329" y="106" fill="rgba(10,10,10,0.25)"/>
             </g>
-            <text class="cu-bag-label" x="14" y="150">7 in 10 kWh nuclear &middot; powers SoftBank&rsquo;s &euro;75B / 5 GW datacenter bet</text>
+            <text class="cu-cap" x="14" y="150">Cheap clean power for home-grown AI compute</text>
           </svg>
         </div>
       </div>
@@ -1224,7 +1230,7 @@
 
 </main>
 
-<script src="scripts.js?v=3" defer></script>
+<script src="scripts.js?v=4" defer></script>
 
 </body>
 </html>
