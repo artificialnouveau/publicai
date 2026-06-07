@@ -883,24 +883,24 @@
   .supporting-data-grid canvas { max-width: 520px; margin-left: auto; margin-right: auto; }
   /* Order so each decision's linked chart runs in the SAME top-to-bottom
      sequence as the decisions (Who joins -> Who anchors -> held together ->
-     covers -> MVP), keeping the connector lines short and non-crossing. */
-  .supporting-data-grid > :nth-child(15) { order: 1; }  /* Act 1 */
-  .supporting-data-grid > :nth-child(10) { order: 2; }  /* why pool      <- Who joins */
+     covers -> MVP), keeping the connector lines short and non-crossing.
+     DOM is now 13 charts + 3 act beats = 16 children (ether removed). */
+  .supporting-data-grid > :nth-child(14) { order: 1; }  /* Act 1 */
+  .supporting-data-grid > :nth-child(10) { order: 2; }  /* why pool        <- Who joins */
   .supporting-data-grid > :nth-child(1)  { order: 3; }  /* capital flow */
   .supporting-data-grid > :nth-child(2)  { order: 4; }  /* talent */
   .supporting-data-grid > :nth-child(3)  { order: 5; }  /* languages */
   .supporting-data-grid > :nth-child(6)  { order: 6; }  /* brain drain */
-  .supporting-data-grid > :nth-child(16) { order: 7; }  /* Act 2 */
-  .supporting-data-grid > :nth-child(4)  { order: 8; }  /* revenue       <- Who anchors */
+  .supporting-data-grid > :nth-child(15) { order: 7; }  /* Act 2 */
+  .supporting-data-grid > :nth-child(4)  { order: 8; }  /* revenue         <- Who anchors */
   .supporting-data-grid > :nth-child(7)  { order: 9; }  /* export controls <- held together */
-  .supporting-data-grid > :nth-child(12) { order: 10; } /* cloud */
-  .supporting-data-grid > :nth-child(17) { order: 11; } /* Act 3 */
-  .supporting-data-grid > :nth-child(13) { order: 12; } /* defence-AI    <- covers */
-  .supporting-data-grid > :nth-child(8)  { order: 13; } /* compute       <- MVP */
-  .supporting-data-grid > :nth-child(11) { order: 14; } /* pooled vs alone */
-  .supporting-data-grid > :nth-child(5)  { order: 15; } /* capex */
-  .supporting-data-grid > :nth-child(9)  { order: 16; } /* tokyo */
-  .supporting-data-grid > :nth-child(14) { order: 17; } /* france energy */
+  .supporting-data-grid > :nth-child(11) { order: 10; } /* cloud */
+  .supporting-data-grid > :nth-child(16) { order: 11; } /* Act 3 */
+  .supporting-data-grid > :nth-child(12) { order: 12; } /* defence-AI      <- covers */
+  .supporting-data-grid > :nth-child(8)  { order: 13; } /* compute         <- MVP */
+  .supporting-data-grid > :nth-child(5)  { order: 14; } /* capex */
+  .supporting-data-grid > :nth-child(9)  { order: 15; } /* tokyo */
+  .supporting-data-grid > :nth-child(13) { order: 16; } /* france energy */
   /* Story-beat markers sitting on the spine. */
   .story-act { position: relative; }
   .story-act-num {

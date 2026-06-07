@@ -977,55 +977,6 @@
       </div>
     </div>
 
-    <!-- VIZ: The Ether — pooled vs alone -->
-    <div class="viz-card" id="viz-ether">
-      <div class="viz-header"><span class="viz-name">Pooled vs alone</span></div>
-      <div class="viz-pane-inner">
-        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
-          <h4>What it shows</h4>
-          <p>Frontier compute (exaFLOPS): the biggest single member (~1 EF) against the EU pooled (~2 EF) and one US cluster (~5 EF). Pooling roughly doubles Europe&rsquo;s reach.</p>
-          <h4>Why it matters here</h4>
-          <p>The final <strong>coalition</strong> call &mdash; sign the DLA, hybrid, or form the entity. Apart, no member is a contest; pooled, it is at least the same order of magnitude as a US cluster.</p>
-          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
-            <li>EuroHPC pooled ~2 EF across 11 systems; largest single (JUPITER) ~1 EF; US frontier cluster ~5 EF (est.). <a href="https://www.eurohpc-ju.europa.eu/supercomputers/our-supercomputers_en" target="_blank" rel="noopener">EuroHPC JU</a>.</li>
-          </ol></details>
-        </div></details>
-        <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Frontier compute as chips: a single member ~1 chip, EU pooled ~2 chips, one US cluster ~5 chips">
-            <defs>
-              <g id="chip2">
-                <rect x="-11" y="-11" width="22" height="22" rx="4"/>
-                <rect class="cu-die" x="-5" y="-5" width="10" height="10" rx="2"/>
-                <g class="cu-pin"><line x1="-11" y1="-5" x2="-15" y2="-5"/><line x1="-11" y1="1" x2="-15" y2="1"/><line x1="11" y1="-5" x2="15" y2="-5"/><line x1="11" y1="1" x2="15" y2="1"/></g>
-              </g>
-            </defs>
-            <text class="cu-cap" x="14" y="22">Apart, no contest. Pooled, a fighting chance.</text>
-            <g class="cu-pop">
-              <use href="#chip2" x="155" y="48" fill="rgba(10,10,10,0.32)"/>
-              <use href="#chip2" x="155" y="90" class="cu-chip-eu"/>
-              <use href="#chip2" x="191" y="90" class="cu-chip-eu"/>
-              <use href="#chip2" x="155" y="132" class="cu-chip-us"/>
-              <use href="#chip2" x="191" y="132" class="cu-chip-us"/>
-              <use href="#chip2" x="227" y="132" class="cu-chip-us"/>
-              <use href="#chip2" x="263" y="132" class="cu-chip-us"/>
-              <use href="#chip2" x="299" y="132" class="cu-chip-us"/>
-            </g>
-            <g class="cu-bag-label" text-anchor="end">
-              <text x="132" y="52">1 member</text>
-              <text x="132" y="94" fill="#0057FF">EU pooled</text>
-              <text x="132" y="136" fill="#FF6F59">US cluster</text>
-            </g>
-            <g class="cu-bag-label">
-              <text x="178" y="52">~1 EF</text>
-              <text x="232" y="94">~2 EF</text>
-              <text x="340" y="136" text-anchor="end">~5 EF</text>
-            </g>
-            <text class="cu-cap" x="14" y="162">Pooling ~doubles Europe&rsquo;s compute</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-
     <!-- VIZ: Berlin — cloud dependence -->
     <div class="viz-card" id="viz-cloud">
       <div class="viz-header"><span class="viz-name">Cloud dependence</span></div>
@@ -1145,21 +1096,21 @@
       <span class="story-act-num">1</span>
       <div class="story-act-body">
         <div class="story-act-title">The gap</div>
-        <div class="story-act-line">Europe is losing the money, people, and languages that AI runs on.</div>
+        <div class="story-act-line">Europe makes the talent and raises the money, then watches both leave for the US.</div>
       </div>
     </div>
     <div class="story-act" data-act="2">
       <span class="story-act-num">2</span>
       <div class="story-act-body">
         <div class="story-act-title">The squeeze</div>
-        <div class="story-act-line">And it leans on a US stack, cloud, chips, rules, that can be switched off.</div>
+        <div class="story-act-line">What is left runs on a US stack, cloud, chips, rules, that can be switched off in a quarter.</div>
       </div>
     </div>
     <div class="story-act" data-act="3">
       <span class="story-act-num">3</span>
       <div class="story-act-body">
         <div class="story-act-title">The answer</div>
-        <div class="story-act-line">Pooled, the middle powers can fund, staff, and run a real alternative.</div>
+        <div class="story-act-line">Pooled, ten middle powers can fund, staff, and run a real alternative. Build it below.</div>
       </div>
     </div>
       </div><!-- /supporting-data-grid -->
@@ -1216,7 +1167,7 @@
 
 </main>
 
-<script src="scripts.js?v=15" defer></script>
+<script src="scripts.js?v=16" defer></script>
 
 </body>
 </html>
