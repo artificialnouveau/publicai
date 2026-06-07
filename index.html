@@ -803,40 +803,37 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap" data-tall>
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US AI/chip export actions by year as decree tiles: 2022-24 one each, 2025 five (three rescinded), 2026 two; 3 of 10 rescinded">
-            <defs>
-              <rect id="stmp" x="-11" y="-8" width="22" height="16" rx="3"/>
-            </defs>
-            <text class="cu-cap" x="14" y="24">US chip rules: added fast, often reversed</text>
-            <line class="mn-base" x1="20" y1="122" x2="346" y2="122"/>
-            <g class="cu-pop">
-              <use href="#stmp" x="50"  y="108" class="cu-stamp"/>
-              <use href="#stmp" x="120" y="108" class="cu-stamp"/>
-              <use href="#stmp" x="190" y="108" class="cu-stamp"/>
-              <use href="#stmp" x="260" y="108" class="cu-stamp"/>
-              <use href="#stmp" x="260" y="86"  class="cu-stamp"/>
-              <use href="#stmp" x="260" y="64"  class="cu-stamp-out"/>
-              <use href="#stmp" x="260" y="42"  class="cu-stamp-out"/>
-              <use href="#stmp" x="260" y="20"  class="cu-stamp-out"/>
-              <use href="#stmp" x="330" y="108" class="cu-stamp"/>
-              <use href="#stmp" x="330" y="86"  class="cu-stamp"/>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US chip export rules 2022-2026 as a staircase: it climbs as rules are added then collapses three times where rules were rescinded, ending higher than it started; 3 of 10 actions reversed">
+            <text class="cu-cap" x="14" y="20">Rules piled on fast, then yanked back</text>
+            <g class="ci-grid">
+              <line x1="40" y1="97" x2="346" y2="97"/>
+              <line x1="40" y1="69" x2="346" y2="69"/>
             </g>
+            <g class="ci-tick" text-anchor="end">
+              <text x="34" y="128">0</text>
+              <text x="34" y="100">2</text>
+              <text x="34" y="72">4</text>
+              <text x="34" y="44">rules</text>
+            </g>
+            <line class="mn-base" x1="40" y1="125" x2="346" y2="125"/>
+            <polyline class="mn-line" pathLength="1" fill="none"
+              points="40,125 55,125 55,111 100,111 100,97 150,97 150,83 185,83 185,69 205,69 205,55 225,55 225,69 245,69 245,83 275,83 275,69 295,69 295,83 320,83 320,69 340,69 340,55"/>
+            <!-- where the staircase drops: a rule was rescinded -->
             <g class="cu-x">
-              <line x1="253" y1="59" x2="267" y2="69"/><line x1="253" y1="69" x2="267" y2="59"/>
-              <line x1="253" y1="37" x2="267" y2="47"/><line x1="253" y1="47" x2="267" y2="37"/>
-              <line x1="253" y1="15" x2="267" y2="25"/><line x1="253" y1="25" x2="267" y2="15"/>
+              <line x1="219" y1="57" x2="231" y2="67"/><line x1="219" y1="67" x2="231" y2="57"/>
+              <line x1="239" y1="71" x2="251" y2="81"/><line x1="239" y1="81" x2="251" y2="71"/>
+              <line x1="289" y1="71" x2="301" y2="81"/><line x1="289" y1="81" x2="301" y2="71"/>
             </g>
+            <circle class="ci-end" cx="340" cy="55" r="3.6"/>
+            <text class="ci-emph" x="252" y="42" text-anchor="middle">3 reversed</text>
             <g class="ci-tick" text-anchor="middle">
-              <text x="50"  y="136">2022</text>
-              <text x="120" y="136">2023</text>
-              <text x="190" y="136">2024</text>
-              <text x="260" y="136">2025</text>
-              <text x="330" y="136">2026</text>
+              <text x="55"  y="140">2022</text>
+              <text x="100" y="140">2023</text>
+              <text x="150" y="140">2024</text>
+              <text x="245" y="140">2025</text>
+              <text x="335" y="140">2026</text>
             </g>
-            <g class="cu-legend">
-              <rect x="14" y="153" width="14" height="10" rx="2" class="cu-stamp"/><text x="34" y="158">in force (7)</text>
-              <rect x="132" y="153" width="14" height="10" rx="2" class="cu-stamp-out"/><text x="152" y="158">rescinded (3)</text>
-            </g>
+            <text class="ci-note" x="14" y="160">AI Diffusion Rule: in force Jan 2025, gone by May</text>
           </svg>
         </div>
       <div class="viz-footer">
@@ -1210,7 +1207,7 @@
 
 </main>
 
-<script src="scripts.js?v=13" defer></script>
+<script src="scripts.js?v=14" defer></script>
 
 </body>
 </html>
