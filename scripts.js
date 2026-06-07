@@ -1169,3 +1169,41 @@
   // re-tag after a tick in case the designer renders slightly later
   setTimeout(tag, 600);
 })();
+
+// --- Count-up: headline numbers animate to their value as the chart scrolls
+//     into view (the percentages / dollars "change" rather than just appearing). ---
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+  function fmt(n, dec){ return dec > 0 ? n.toFixed(dec) : Math.round(n).toString(); }
+  function animate(el){
+    if (el.dataset.counted) return;
+    const raw = el.textContent;
+    const m = raw.trim().match(/^([^\d-]*)(-?\d+(?:\.\d+)?)(.*)$/);
+    if (!m) return;
+    el.dataset.counted = '1';
+    const pre = m[1], numStr = m[2], suf = m[3];
+    const end = parseFloat(numStr);
+    const dec = (numStr.split('.')[1] || '').length;
+    const dur = 1000; let start = null;
+    function step(ts){
+      if (!start) start = ts;
+      const t = Math.min((ts - start) / dur, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      el.textContent = pre + fmt(end * e, dec) + suf;
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = raw;
+    }
+    el.textContent = pre + fmt(0, dec) + suf;
+    requestAnimationFrame(step);
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.cu-fig, .ci-emph, .mn-figure').forEach(animate);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.45 });
+  document.querySelectorAll('.supporting-data-grid .viz-card').forEach(c => io.observe(c));
+})();
