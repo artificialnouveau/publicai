@@ -434,12 +434,27 @@
     `;
 
     // Wire up the inline pick buttons.
+    // Broadcast a coalition without persisting it (used for hover preview).
+    function broadcastPreview(){
+      const sh = deriveShape();
+      window.__coalition = { members: sh.members, labs: sh.labs, scope: sh.scope };
+      window.dispatchEvent(new CustomEvent('coalition:change'));
+    }
+
     root.querySelectorAll('.design-pick-option').forEach(btn => {
       btn.addEventListener('click', () => {
         simState[btn.dataset.scene] = btn.dataset.pick;
         saveState();
         renderCoalitionDesign();
       });
+      // Hover preview: scrub the charts to this option, then snap back on leave.
+      btn.addEventListener('mouseenter', () => {
+        const saved = simState[btn.dataset.scene];
+        simState[btn.dataset.scene] = btn.dataset.pick;
+        broadcastPreview();
+        simState[btn.dataset.scene] = saved;
+      });
+      btn.addEventListener('mouseleave', broadcastPreview);
     });
 
     // Store the derived shape on the sign-on form so it travels with the
