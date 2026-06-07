@@ -1095,3 +1095,74 @@
   }
   draw();
 })();
+
+// --- Section -> chart connectors: hover a decision section to draw a dotted line
+//     to its relevant live-data chart (and outline that chart). ---
+(function(){
+  const NS = 'http://www.w3.org/2000/svg';
+  const overlay = document.createElementNS(NS, 'svg');
+  overlay.setAttribute('class', 'link-overlay');
+  const path = document.createElementNS(NS, 'path');
+  const d1 = document.createElementNS(NS, 'circle'); d1.setAttribute('r', '4');
+  const d2 = document.createElementNS(NS, 'circle'); d2.setAttribute('r', '4');
+  overlay.appendChild(path); overlay.appendChild(d1); overlay.appendChild(d2);
+  document.body.appendChild(overlay);
+
+  // Map each decision section (by its title) to the chart that informs it.
+  const MAP = {
+    'Who joins': 'viz-ottawa',
+    'Who anchors': 'viz-revenue',
+    'How it’s held together': 'viz-export',
+    'What the coalition covers': 'viz-defense',
+    'How small the first version can be': 'viz-compute',
+  };
+  function targetIdFor(sec){
+    const t = sec.querySelector('.design-section-title');
+    if (!t) return null;
+    return MAP[t.textContent.trim()] || null;
+  }
+  let active = null, target = null;
+  function recompute(){
+    if (!active || !target) return;
+    const s = active.getBoundingClientRect();
+    const c = target.getBoundingClientRect();
+    const sx = s.right, sy = s.top + Math.min(s.height/2, 38);
+    const cx = c.left, cy = c.top + Math.min(c.height/2, 60);
+    const mx = (sx + cx) / 2;
+    path.setAttribute('d', `M${sx},${sy} C ${mx},${sy} ${mx},${cy} ${cx},${cy}`);
+    d1.setAttribute('cx', sx); d1.setAttribute('cy', sy);
+    d2.setAttribute('cx', cx); d2.setAttribute('cy', cy);
+  }
+  function show(sec){
+    const id = targetIdFor(sec); if (!id) return;
+    const tgt = document.getElementById(id); if (!tgt) return;
+    if (target && target !== tgt) target.classList.remove('viz-linked');
+    active = sec; target = tgt;
+    target.classList.add('viz-linked');
+    recompute();
+    overlay.classList.add('is-on');
+  }
+  function hide(){
+    overlay.classList.remove('is-on');
+    if (target) target.classList.remove('viz-linked');
+    active = null; target = null;
+  }
+  // Tag sections that have a chart (for the cursor hint), once the designer renders.
+  function tag(){
+    document.querySelectorAll('.design-section').forEach(sec => {
+      if (targetIdFor(sec)) sec.setAttribute('data-haschart', '');
+    });
+  }
+  tag();
+  // Delegated hover (designer is rendered by JS; delegation survives re-render).
+  document.addEventListener('mouseover', (e) => {
+    if (window.innerWidth < 1100) return;
+    const sec = e.target.closest && e.target.closest('.design-section[data-haschart]');
+    if (sec) { if (sec !== active) show(sec); }
+    else if (active && !(e.target.closest && e.target.closest('.link-overlay'))) hide();
+  });
+  window.addEventListener('scroll', recompute, { passive: true });
+  window.addEventListener('resize', recompute);
+  // re-tag after a tick in case the designer renders slightly later
+  setTimeout(tag, 600);
+})();

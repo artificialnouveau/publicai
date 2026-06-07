@@ -1795,3 +1795,11 @@
     .story { padding-bottom: 0 !important; max-width: 100%; }
     .scene { page-break-inside: avoid; }
   }
+
+  /* === Section -> chart connector (hover a decision to see its data linked) === */
+  .link-overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 58; overflow: visible; }
+  .link-overlay path { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: 1 6; stroke-linecap: round; opacity: 0; transition: opacity 0.15s ease; }
+  .link-overlay circle { fill: var(--accent); opacity: 0; transition: opacity 0.15s ease; }
+  .link-overlay.is-on path, .link-overlay.is-on circle { opacity: 0.9; }
+  .viz-card.viz-linked { outline: 2px dashed var(--accent); outline-offset: 6px; border-radius: 10px; }
+  @media (min-width: 1100px) { .design-section[data-haschart] { cursor: help; } }
