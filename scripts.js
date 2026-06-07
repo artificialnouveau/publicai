@@ -262,6 +262,10 @@
     const root = document.getElementById('coalitionDesign');
     if (!root) return;
     const shape = deriveShape();
+    // Broadcast the live coalition so the data charts can recompute from the
+    // member set the visitor is assembling (member-state-linked "scrubbing").
+    window.__coalition = { members: shape.members, labs: shape.labs, scope: shape.scope };
+    window.dispatchEvent(new CustomEvent('coalition:change'));
 
     const memberHtml = COALITION_MEMBERS.map(m => {
       const active = shape.members.has(m.iso);
@@ -1206,4 +1210,99 @@
     });
   }, { threshold: 0.45 });
   document.querySelectorAll('.supporting-data-grid .viz-card').forEach(c => io.observe(c));
+})();
+
+// ============================================================
+// MEMBER-STATE-LINKED CHARTS: the live data recomputes from the
+// coalition the visitor is assembling (the designer broadcasts
+// `coalition:change` with window.__coalition.members). As states join,
+// the charts "scrub" to that scenario instead of to a point in time.
+// ============================================================
+(function(){
+  // Languages each member state brings to first-class representation
+  // (frontier models already cover EN/FR/ES; members add their own).
+  const BASE_STRONG  = ['EN','FR','ES'];
+  const BASE_PARTIAL = ['DE','IT','NL','PT','PL','SV','DA','FI'];
+  const MEMBER_LANGS = {
+    FR:['FR'], DE:['DE'], ES:['ES'], SE:['SV','DA','FI'],
+    CH:['IT','DE','FR'], CA:['FR'], GB:[], JP:[], KR:[], SG:[]
+  };
+  // Each member's contribution to pooled frontier compute, in exaFLOPS.
+  const MEMBER_COMPUTE = {
+    DE:1.0, ES:0.3, SE:0.5, CH:0.1, FR:0.2,
+    CA:0.4, GB:0.5, JP:0.7, KR:0.3, SG:0.1
+  };
+
+  const $ = (sel) => document.querySelector(sel);
+  function setText(sel, txt){ const el = $(sel); if (el) el.textContent = txt; }
+
+  // Animate a mini-stat value (e.g. "~2 EF") toward a new number.
+  function countTo(el, end, prefix, suffix, dec){
+    if (!el) return;
+    const m = (el.textContent || '').match(/-?\d+(?:\.\d+)?/);
+    const start = m ? parseFloat(m[0]) : 0;
+    const dur = 600; let t0 = null;
+    function step(ts){
+      if (!t0) t0 = ts;
+      const t = Math.min((ts - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      const v = start + (end - start) * e;
+      el.textContent = prefix + (dec > 0 ? v.toFixed(dec) : Math.round(v)) + suffix;
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function renderLanguages(members){
+    const strong = new Set(BASE_STRONG);
+    members.forEach(m => (MEMBER_LANGS[m] || []).forEach(l => strong.add(l)));
+    const partial = BASE_PARTIAL.filter(l => !strong.has(l));
+    let strongN = 0, partialN = 0;
+    document.querySelectorAll('#viz-language use[data-lang]').forEach(u => {
+      const code = u.getAttribute('data-lang');
+      let cls;
+      if (strong.has(code)) { cls = 'cu-strong'; strongN++; }
+      else if (partial.indexOf(code) !== -1) { cls = 'cu-partial'; partialN++; }
+      else cls = 'cu-risk';
+      u.setAttribute('class', cls);
+      const label = u.nextElementSibling; // the <text> code label
+      if (label) label.setAttribute('class', cls === 'cu-strong' ? 'cu-code' : 'cu-code ink');
+    });
+    const riskN = 24 - strongN - partialN;
+    setText('#legStrong', strongN + ' strong');
+    setText('#legPartial', partialN + ' partial');
+    setText('#legRisk', riskN + ' at risk');
+    setText('#langCap', strongN + ' of 24 EU languages sit at the coalition table');
+  }
+
+  function renderCompute(members){
+    let sum = 0;
+    members.forEach(m => { sum += (MEMBER_COMPUTE[m] || 0); });
+    const hasMembers = members.size > 0;
+    const ef = hasMembers ? sum : 2.0; // empty coalition falls back to today's EuroHPC baseline
+    const chips = Math.max(1, Math.min(6, Math.round(ef)));
+    const group = $('#computeEuChips');
+    if (group){
+      let html = '';
+      for (let i = 0; i < chips; i++){
+        html += '<use href="#chip" x="' + (170 + i * 35) + '" y="60" class="cu-chip-eu"/>';
+      }
+      group.innerHTML = html;
+    }
+    setText('#computeCap', hasMembers
+      ? 'Your coalition pools ≈ ' + ef.toFixed(1) + ' EF against the US’s ~5'
+      : 'EuroHPC today ≈ 2 EF, unpooled, against the US’s ~5');
+    countTo($('#computePooledEF'), ef, '~', ' EF', 1);
+  }
+
+  function update(){
+    const members = (window.__coalition && window.__coalition.members) || new Set();
+    renderLanguages(members);
+    renderCompute(members);
+  }
+
+  window.addEventListener('coalition:change', update);
+  // The designer renders (and first broadcasts) before this listener binds,
+  // so run once now from the persisted state.
+  update();
 })();

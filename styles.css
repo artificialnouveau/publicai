@@ -1803,3 +1803,6 @@
   .link-overlay.is-on path, .link-overlay.is-on circle { opacity: 0.9; }
   .viz-card.viz-linked { outline: 2px dashed var(--accent); outline-offset: 6px; border-radius: 10px; }
   @media (min-width: 1100px) { .design-section[data-haschart] { cursor: help; } }
+
+/* Smooth re-tiering when charts recompute from the live coalition. */
+#viz-language .cu-pop use, #computeEuChips use { transition: fill 0.45s ease; }
