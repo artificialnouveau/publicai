@@ -629,15 +629,19 @@
             <circle class="ci-end" cx="330" cy="44.3" r="3.6"/>
             <text class="ci-emph accent" x="326" y="40" text-anchor="end">$400M</text>
             <!-- Cohere / DeepL for scale -->
-            <circle cx="330" cy="78.6" r="2.4" fill="rgba(10,10,10,0.4)"/>
-            <text class="ci-tick" x="322" y="79" text-anchor="end">Cohere $240M</text>
-            <circle cx="330" cy="90.4" r="2.4" fill="rgba(10,10,10,0.4)"/>
-            <text class="ci-tick" x="322" y="92" text-anchor="end">DeepL $185M</text>
+            <g data-cc="CA">
+              <circle cx="330" cy="78.6" r="2.4" fill="rgba(10,10,10,0.4)"/>
+              <text class="ci-tick" x="322" y="79" text-anchor="end">Cohere $240M</text>
+            </g>
+            <g data-cc="DE">
+              <circle cx="330" cy="90.4" r="2.4" fill="rgba(10,10,10,0.4)"/>
+              <text class="ci-tick" x="322" y="92" text-anchor="end">DeepL $185M</text>
+            </g>
             <g class="ci-tick" text-anchor="middle">
               <text x="44"  y="146">2025</text>
               <text x="330" y="146">2026</text>
             </g>
-            <text class="ci-note" x="14" y="164">Mistral ARR &middot; about 20&times; in 12 months</text>
+            <text class="ci-note" id="revNote" x="14" y="164">Mistral ARR &middot; about 20&times; in 12 months</text>
           </svg>
         </div>
       <div class="viz-footer">
@@ -678,12 +682,12 @@
             <text class="cu-cap" x="14" y="22">What each actually commits &mdash; bag size = &euro;B</text>
             <line class="mn-base" x1="14" y1="114" x2="346" y2="114"/>
             <!-- bags sized by sqrt(value); bottoms aligned to the ground line -->
-            <use href="#bag" x="27"    y="43"   width="56"   height="71"   class="cu-bag"/>
-            <use href="#bag" x="116"   y="78.5" width="28"   height="35.5" class="cu-bag"/>
-            <use href="#bag" x="170.1" y="88.9" width="19.8" height="25.1" class="cu-bag accent"/>
-            <use href="#bag" x="212.3" y="89.4" width="19.4" height="24.6" class="cu-bag"/>
-            <use href="#bag" x="253"   y="91"   width="18.1" height="23"   class="cu-bag"/>
-            <use href="#bag" x="293.75" y="98.1" width="12.5" height="15.9" class="cu-bag"/>
+            <use href="#bag" data-cc="EU" x="27"    y="43"   width="56"   height="71"   class="cu-bag"/>
+            <use href="#bag" data-cc="DE" x="116"   y="78.5" width="28"   height="35.5" class="cu-bag"/>
+            <use href="#bag" data-cc="FR" x="170.1" y="88.9" width="19.8" height="25.1" class="cu-bag accent"/>
+            <use href="#bag" data-cc="GB" x="212.3" y="89.4" width="19.4" height="24.6" class="cu-bag"/>
+            <use href="#bag" data-cc="ES" x="253"   y="91"   width="18.1" height="23"   class="cu-bag"/>
+            <use href="#bag" data-cc="IT" x="293.75" y="98.1" width="12.5" height="15.9" class="cu-bag"/>
             <g class="cu-bag-label" text-anchor="middle">
               <text x="55"  y="128">EU</text><text x="55"  y="140">&euro;20B</text>
               <text x="130" y="128">DE</text><text x="130" y="140">&euro;5B</text>
@@ -692,7 +696,7 @@
               <text x="262" y="128">ES</text><text x="262" y="140">&euro;2.1B</text>
               <text x="300" y="128">IT</text><text x="300" y="140">&euro;1B</text>
             </g>
-            <text class="cu-cap" x="14" y="162">State funds shown; France&rsquo;s &euro;107B is private</text>
+            <text class="cu-cap" id="capexTotal" x="14" y="162">Your coalition commits &euro;20B in state AI funds</text>
           </svg>
         </div>
       <div class="viz-footer">
@@ -943,18 +947,15 @@
               <ellipse class="cu-coin" cx="70" cy="64"  rx="15" ry="4.7"/>
               <ellipse class="cu-coin" cx="70" cy="57"  rx="15" ry="4.7"/>
               <ellipse class="cu-coin" cx="70" cy="50"  rx="15" ry="4.7"/>
-              <!-- China ~1, UK ~0.5, Canada ~0.2 — a single coin each -->
-              <ellipse class="cu-coin" cx="150" cy="120" rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="220" cy="120" rx="15" ry="4.7"/>
-              <ellipse class="cu-coin-eu" cx="290" cy="120" rx="15" ry="4.7"/>
             </g>
+            <!-- Your coalition: JS-rendered coin stack, grows as states join -->
+            <g class="cu-pop" id="ottawaCoalition"></g>
             <g class="cu-bag-label" text-anchor="middle">
               <text x="70"  y="140">US $109B</text>
-              <text x="150" y="140">CN $9.3B</text>
-              <text x="220" y="140">UK $4.5B</text>
-              <text x="290" y="140" fill="#0057FF">CA $2B</text>
+              <text id="ottawaCoalLabel" x="225" y="140" fill="#0057FF">Your coalition</text>
+              <text id="ottawaCoalAmt"   x="225" y="152" fill="#0057FF">$14B</text>
             </g>
-            <text class="cu-cap" x="14" y="160">US &asymp; 24&times; the UK; Canada adds $2B</text>
+            <text class="cu-cap" id="ottawaCap" x="14" y="168">Pooled, the coalition reaches &asymp; $14B vs $109B</text>
           </svg>
         </div>
       </div>
@@ -1199,7 +1200,7 @@
 
 </main>
 
-<script src="scripts.js?v=9" defer></script>
+<script src="scripts.js?v=10" defer></script>
 
 </body>
 </html>

@@ -1232,6 +1232,24 @@
     DE:1.0, ES:0.3, SE:0.5, CH:0.1, FR:0.2,
     CA:0.4, GB:0.5, JP:0.7, KR:0.3, SG:0.1
   };
+  // 2024 private AI investment each member brings to the pool, in $B.
+  const MEMBER_INVEST = {
+    FR:3, DE:2, ES:0.6, SE:0.6, CH:0.8,
+    GB:4.5, CA:2, JP:2, KR:1.5, SG:1
+  };
+  // State-committed public AI funds, in EUR B (the EU InvestAI fund joins once
+  // any EU member is in). Bag country codes mirror the chart's data-cc tags.
+  const MEMBER_CAPEX = {
+    FR:2.5, DE:5, ES:2.1, SE:0.35, CH:0.5,
+    GB:2.4, CA:1.4, JP:6, KR:1, SG:0.5
+  };
+  const EU_MEMBERS = ['FR','DE','ES','SE'];
+  // Anchor labs tied to their home state, with ARR in $M.
+  const MEMBER_LABS = {
+    FR:{ name:'Mistral', arr:400 },
+    CA:{ name:'Cohere',  arr:240 },
+    DE:{ name:'DeepL',   arr:185 }
+  };
 
   const $ = (sel) => document.querySelector(sel);
   function setText(sel, txt){ const el = $(sel); if (el) el.textContent = txt; }
@@ -1295,10 +1313,65 @@
     countTo($('#computePooledEF'), ef, '~', ' EF', 1);
   }
 
+  function renderInvestment(members){
+    let sum = 0;
+    members.forEach(m => { sum += (MEMBER_INVEST[m] || 0); });
+    const total = members.size ? sum : 14; // empty -> today's EU baseline (~$14B)
+    const coins = Math.max(1, Math.min(9, Math.round(total / 10)));
+    const group = $('#ottawaCoalition');
+    if (group){
+      let html = '';
+      for (let i = 0; i < coins; i++){
+        html += '<ellipse class="cu-coin-eu" cx="225" cy="' + (120 - i * 7) + '" rx="15" ry="4.7"/>';
+      }
+      group.innerHTML = html;
+    }
+    const amtEl = $('#ottawaCoalAmt');
+    if (amtEl) countTo(amtEl, Math.round(total), '$', 'B', 0);
+    setText('#ottawaCap', 'Pooled, the coalition reaches ≈ $' + Math.round(total) + 'B vs $109B');
+  }
+
+  function renderCapex(members){
+    // EU-level InvestAI fund counts once any EU state is in.
+    const euIn = EU_MEMBERS.some(c => members.has(c));
+    let total = euIn ? 20 : 0;
+    members.forEach(m => { total += (MEMBER_CAPEX[m] || 0); });
+    // Dim the bag of any country not in the coalition (EU bag follows euIn).
+    // With no coalition yet, show every bag full as the neutral "on the table" view.
+    const active = members.size > 0;
+    document.querySelectorAll('#viz-capex use[data-cc]').forEach(u => {
+      const cc = u.getAttribute('data-cc');
+      const inIt = cc === 'EU' ? euIn : members.has(cc);
+      u.style.opacity = (!active || inIt) ? '1' : '0.18';
+    });
+    setText('#capexTotal', members.size
+      ? 'Your coalition commits ≈ €' + total.toFixed(total < 10 ? 1 : 0) + 'B in state AI funds'
+      : 'Add members to pool their state AI funds (EU InvestAI €20B)');
+  }
+
+  function renderRevenue(members){
+    let arr = 0; const names = [];
+    Object.keys(MEMBER_LABS).forEach(cc => {
+      if (members.has(cc)) { arr += MEMBER_LABS[cc].arr; names.push(MEMBER_LABS[cc].name); }
+    });
+    // Dim the reference labs whose home state is not in the coalition.
+    // With no coalition yet, keep them full as scale references.
+    const active = members.size > 0;
+    document.querySelectorAll('#viz-revenue g[data-cc]').forEach(g => {
+      g.style.opacity = (!active || members.has(g.getAttribute('data-cc'))) ? '1' : '0.25';
+    });
+    setText('#revNote', names.length
+      ? 'Coalition labs: $' + arr + 'M ARR across ' + names.length + (names.length === 1 ? ' firm' : ' firms')
+      : 'No anchor labs in yet. Mistral ARR shown for scale');
+  }
+
   function update(){
     const members = (window.__coalition && window.__coalition.members) || new Set();
     renderLanguages(members);
     renderCompute(members);
+    renderInvestment(members);
+    renderCapex(members);
+    renderRevenue(members);
   }
 
   window.addEventListener('coalition:change', update);
