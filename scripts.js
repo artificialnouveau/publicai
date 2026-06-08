@@ -1539,3 +1539,49 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 })();
+
+// ============================================================
+// COLLAGE LAYOUT (opt-in): pile the live-data charts as a fanned, overlapping
+// collage; hovering/tapping a card lifts it to the front and straightens it.
+// The default "Stream" layout is untouched.
+// ============================================================
+(function(){
+  const grid = document.querySelector('.supporting-data-grid');
+  const btns = document.querySelectorAll('.data-layout-btn');
+  if (!grid || !btns.length) return;
+
+  function layoutCollage(){
+    const cards = Array.from(grid.querySelectorAll('.viz-card'));
+    const W = grid.clientWidth;
+    const cardW = Math.min(380, Math.max(220, W * 0.56));
+    const leftCol = [0, Math.max(0, W - cardW)];
+    const colTop = [10, 70]; // stagger the two columns so cards interleave
+    const peek = 104;        // how much of each card peeks above the next
+    cards.forEach((c, i) => {
+      const col = i % 2;
+      c.style.width = cardW + 'px';
+      c.style.left = (leftCol[col] + (((i * 17) % 14) - 7)) + 'px';
+      c.style.top = colTop[col] + 'px';
+      const rot = (col ? 2.4 : -2.8) + ((((i * 13) % 5) - 2) * 0.5);
+      c.style.setProperty('--rot', rot.toFixed(2) + 'deg');
+      colTop[col] += peek + ((i * 11) % 34);
+    });
+    grid.style.height = (Math.max(colTop[0], colTop[1]) + 320) + 'px';
+  }
+  function clearCollage(){
+    grid.style.height = '';
+    grid.querySelectorAll('.viz-card').forEach(c => {
+      c.style.width = ''; c.style.left = ''; c.style.top = '';
+      c.style.removeProperty('--rot');
+    });
+  }
+  function setLayout(mode){
+    btns.forEach(b => b.classList.toggle('is-active', b.dataset.layout === mode));
+    if (mode === 'collage'){ grid.classList.add('is-collage'); layoutCollage(); }
+    else { grid.classList.remove('is-collage'); clearCollage(); }
+  }
+  btns.forEach(b => b.addEventListener('click', () => setLayout(b.dataset.layout)));
+  window.addEventListener('resize', () => {
+    if (grid.classList.contains('is-collage')) layoutCollage();
+  });
+})();

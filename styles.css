@@ -1868,3 +1868,32 @@
 .cl-scenario { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.03em; padding: 0.28rem 0.55rem; border: 1px solid var(--hairline-strong); border-radius: 999px; background: transparent; color: var(--text); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
 .cl-scenario:hover { border-color: var(--accent); color: var(--accent); }
 .cl-scenario-reset { color: var(--text-soft); }
+
+/* Live-data layout toggle + opt-in collage (fanned, overlapping cards). */
+.supporting-data-header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.data-layout-toggle { display: inline-flex; gap: 0.3rem; }
+.data-layout-btn { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.6rem; border: 1px solid var(--hairline-strong); border-radius: 999px; background: transparent; color: var(--text-soft); cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.data-layout-btn.is-active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.supporting-data-grid.is-collage { position: relative; display: block; margin: 0; }
+.supporting-data-grid.is-collage::before { display: none; }        /* hide the dotted spine */
+.supporting-data-grid.is-collage > .story-act { display: none; }   /* act beats don't pile well */
+.supporting-data-grid.is-collage > .viz-card {
+  position: absolute; margin: 0; max-width: none;
+  transform: rotate(var(--rot, 0deg));
+  transform-origin: center top;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s, filter 0.3s;
+  box-shadow: 0 12px 32px -18px rgba(10,10,10,0.45);
+  background: var(--paper, #fff);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 10px;
+  cursor: pointer;
+  filter: saturate(0.9);
+}
+.supporting-data-grid.is-collage > .viz-card:hover,
+.supporting-data-grid.is-collage > .viz-card:focus-within {
+  transform: rotate(0deg) scale(1.07);
+  z-index: 100;
+  box-shadow: 0 28px 64px -22px rgba(10,10,10,0.55);
+  filter: none;
+}
