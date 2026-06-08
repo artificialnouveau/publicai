@@ -1942,8 +1942,8 @@
 .scroll-rail-node:focus-visible .scroll-rail-label { opacity: 1; max-width: 170px; padding: 1px 6px; }
 /* Reserve a left gutter for the rail so it never overlaps the text. */
 @media (min-width: 1100px) {
-  .experience-columns { padding-left: 34px; }
-  .outcome-inner { padding-left: 34px; }
+  .experience-columns { padding-left: 46px; }
+  .outcome-inner { padding-left: 46px; }
 }
 @media (max-width: 1099px) { .scroll-rail { display: none; } }
 @media (prefers-reduced-motion: reduce) { .scroll-rail, .scroll-rail-dot, .scroll-rail-label { transition: none; } }
