@@ -477,6 +477,8 @@
     allies:   { 'scene-brussels':'eu-allies',    'scene-ottawa':'five-eyes-minus-us', 'scene-tokyo':'coalition-model', 'scene-paris':'co-leads' },
     reset:    { 'scene-brussels':'national',     'scene-ottawa':'eu-only',            'scene-tokyo':'off-the-shelf',   'scene-paris':'defers' }
   };
+  const noteEl = document.getElementById('clScenarioNote');
+  const noteDefault = noteEl ? noteEl.textContent : '';
   document.querySelectorAll('.cl-scenario').forEach(btn => {
     btn.addEventListener('click', () => {
       const preset = SCENARIOS[btn.dataset.scenario];
@@ -484,7 +486,15 @@
       Object.keys(preset).forEach(k => { simState[k] = preset[k]; });
       saveState();
       renderCoalitionDesign();
+      if (noteEl && btn.dataset.note) noteEl.textContent = btn.dataset.note;
     });
+    // Show that option's context (who joins) on hover / keyboard focus.
+    const showNote = () => { if (noteEl && btn.dataset.note) noteEl.textContent = btn.dataset.note; };
+    const resetNote = () => { if (noteEl) noteEl.textContent = noteDefault; };
+    btn.addEventListener('mouseenter', showNote);
+    btn.addEventListener('focus', showNote);
+    btn.addEventListener('mouseleave', resetNote);
+    btn.addEventListener('blur', resetNote);
   });
 
   // Render the design panel on load so the outcome section is ready whenever

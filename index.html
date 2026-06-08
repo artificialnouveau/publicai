@@ -475,11 +475,12 @@
           </div>
           <div class="cl-scenarios">
             <span class="cl-scenarios-label">Try a coalition:</span>
-            <button type="button" class="cl-scenario" data-scenario="eu">EU only</button>
-            <button type="button" class="cl-scenario" data-scenario="fiveeyes">+ Five Eyes</button>
-            <button type="button" class="cl-scenario" data-scenario="allies">+ Asia allies</button>
-            <button type="button" class="cl-scenario cl-scenario-reset" data-scenario="reset">Reset</button>
+            <button type="button" class="cl-scenario" data-scenario="eu" data-note="EU core only: France, Germany, Spain, the Nordics and Switzerland. No Atlantic or Asia-Pacific partners.">EU only</button>
+            <button type="button" class="cl-scenario" data-scenario="fiveeyes" data-note="EU core plus the UK and Canada (Five Eyes minus the US). Crosses the Atlantic; brings Cohere and standards-body weight.">+ Five Eyes</button>
+            <button type="button" class="cl-scenario" data-scenario="allies" data-note="EU plus Five Eyes plus Japan, South Korea and Singapore. The widest middle-power bloc; brings RIKEN and Asia-Pacific compute.">+ Asia allies</button>
+            <button type="button" class="cl-scenario cl-scenario-reset" data-scenario="reset" data-note="Clear the coalition: back to the national-only framing with no states in.">Reset</button>
           </div>
+          <p class="cl-scenario-note" id="clScenarioNote">Hover an option to see who joins; click to apply it.</p>
         </div>
         <div class="coalition-design" id="coalitionDesign"></div>
       </div>
@@ -1174,7 +1175,7 @@
 
 </main>
 
-<script src="scripts.js?v=25" defer></script>
+<script src="scripts.js?v=26" defer></script>
 
 </body>
 </html>
