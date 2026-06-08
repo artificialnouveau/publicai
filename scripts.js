@@ -1164,11 +1164,12 @@
     if (!t) return null;
     return MAP[t.textContent.trim()] || null;
   }
-  let active = null, target = null;
+  let active = null, target = null, pinnedId = null;
   function recompute(){
     if (!active || !target) return;
     const s = active.getBoundingClientRect();
     const c = target.getBoundingClientRect();
+    if (!s.width && !s.height) return; // active node was detached by a re-render
     const sx = s.right, sy = s.top + Math.min(s.height/2, 38);
     const cx = c.left, cy = c.top + Math.min(c.height/2, 60);
     const mx = (sx + cx) / 2;
@@ -1180,7 +1181,7 @@
     const id = targetIdFor(sec); if (!id) return;
     const tgt = document.getElementById(id); if (!tgt) return;
     if (target && target !== tgt) target.classList.remove('viz-linked');
-    active = sec; target = tgt;
+    active = sec; target = tgt; pinnedId = id;
     target.classList.add('viz-linked');
     recompute();
     overlay.classList.add('is-on');
@@ -1188,7 +1189,7 @@
   function hide(){
     overlay.classList.remove('is-on');
     if (target) target.classList.remove('viz-linked');
-    active = null; target = null;
+    active = null; target = null; pinnedId = null;
   }
   // Tag sections that have a chart (for the cursor hint), once the designer renders.
   function tag(){
@@ -1196,17 +1197,33 @@
       if (targetIdFor(sec)) sec.setAttribute('data-haschart', '');
     });
   }
+  // After the designer re-renders (any pick change), the old section nodes are
+  // gone: re-tag and re-attach the pinned line to the matching new section.
+  function rebind(){
+    tag();
+    if (!pinnedId) return;
+    const tgt = document.getElementById(pinnedId);
+    let sec = null;
+    document.querySelectorAll('.design-section[data-haschart]').forEach(s => {
+      if (targetIdFor(s) === pinnedId) sec = s;
+    });
+    if (sec && tgt){ active = sec; target = tgt; target.classList.add('viz-linked'); recompute(); }
+    else hide();
+  }
   tag();
-  // Delegated hover (designer is rendered by JS; delegation survives re-render).
+  // Hover a decision to PIN its line. It stays put and tracks scrolling (so you
+  // can scroll to the chart it points at) until you hover a different decision.
   document.addEventListener('mouseover', (e) => {
     if (window.innerWidth < 1100) return;
     const sec = e.target.closest && e.target.closest('.design-section[data-haschart]');
-    if (sec) { if (sec !== active) show(sec); }
-    else if (active && !(e.target.closest && e.target.closest('.link-overlay'))) hide();
+    if (sec && sec !== active) show(sec);
   });
+  // Esc clears the pinned line.
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
   window.addEventListener('scroll', recompute, { passive: true });
   window.addEventListener('resize', recompute);
-  // re-tag after a tick in case the designer renders slightly later
+  // Re-bind after every coalition change; deferred so the new DOM is in place.
+  window.addEventListener('coalition:change', () => setTimeout(rebind, 0));
   setTimeout(tag, 600);
 })();
 
