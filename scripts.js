@@ -1036,6 +1036,9 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize(); window.addEventListener('resize',resize);
+  // Keep the backing store matched to the rendered size (layout, fonts, split,
+  // stacking) so the text never stretches and pixelates.
+  if (window.ResizeObserver) new ResizeObserver(() => { resize(); if (reduceMotion) draw(); }).observe(canvas);
   const colA=[{label:'France / Germany',x:0.07,y:0.18,col:'#0057FF'},{label:'Nordics / UK',x:0.07,y:0.40,col:'#0057FF'},{label:'Southern EU',x:0.07,y:0.62,col:'#0057FF'},{label:'Eastern EU',x:0.07,y:0.82,col:'#0057FF'}];
   const colB=[{label:'Relocate to US (57%)',x:0.50,y:0.15,col:'#b8002e'},{label:'Stay in EU (28%)',x:0.50,y:0.40,col:'#4a4a4a'},{label:'UK / Switzerland',x:0.50,y:0.62,col:'#8e8e8e'},{label:'Other (15%)',x:0.50,y:0.82,col:'#7a7a7a'}];
   const colC=[{label:'$109B US AI ecosystem',x:0.93,y:0.22,col:'#b8002e'},{label:'$14B EU AI ecosystem',x:0.93,y:0.52,col:'#0057FF'},{label:'Diluted / lost',x:0.93,y:0.80,col:'#666666'}];
@@ -1093,6 +1096,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   resize();window.addEventListener('resize',resize);
+  if (window.ResizeObserver) new ResizeObserver(() => { resize(); if (reduceMotion) draw(); }).observe(canvas);
   const educated=[{label:'EU-West',y:0.14,col:'#0057FF',pct:'22%'},{label:'EU-East',y:0.28,col:'#0057FF',pct:'8%'},{label:'UK / CH',y:0.42,col:'#8e8e8e',pct:'12%'},{label:'China',y:0.56,col:'#6a6a6a',pct:'29%'},{label:'India',y:0.70,col:'#7a7a7a',pct:'11%'},{label:'US',y:0.84,col:'#4a4a4a',pct:'18%'}];
   const working=[{label:'Work in US',y:0.20,col:'#b8002e',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0057FF',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#8e8e8e',pct:'~10%'},{label:'China',y:0.74,col:'#6a6a6a',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'#7a7a7a',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
@@ -1382,7 +1386,7 @@
     if (group){
       let html = '';
       for (let i = 0; i < coins; i++){
-        html += '<ellipse class="cu-coin-eu" cx="225" cy="' + (120 - i * 7) + '" rx="15" ry="4.7"/>';
+        html += '<ellipse class="cu-coin-eu" cx="300" cy="' + (120 - i * 7) + '" rx="15" ry="4.7"/>';
       }
       group.innerHTML = html;
     }
@@ -1548,7 +1552,7 @@
 (function(){
   const grid = document.querySelector('.supporting-data-grid');
   if (!grid) return;
-  const BASE = 70, PEEK = 28, CAP = 8;
+  const BASE = 70, PEEK = 40, CAP = 8;
   function apply(){
     const kids = Array.from(grid.children).filter(
       el => el.classList.contains('viz-card') || el.classList.contains('story-act')
