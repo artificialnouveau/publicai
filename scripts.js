@@ -1600,7 +1600,7 @@
 // click a dot to jump; the rail shows only while its section is on screen.
 // ============================================================
 (function(){
-  if (!('IntersectionObserver' in window) || window.innerWidth < 1320) return;
+  if (!('IntersectionObserver' in window) || window.innerWidth < 1100) return;
 
   function makeRail(items, sectionEl, aria){
     if (!items.length || !sectionEl) return null;

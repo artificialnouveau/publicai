@@ -1947,8 +1947,8 @@
 }
 .scroll-rail-node:hover .scroll-rail-label,
 .scroll-rail-node:focus-visible .scroll-rail-label { opacity: 1; max-width: 170px; color: var(--accent); }
-/* Only show where there is real gutter room beside the centered content. */
-@media (max-width: 1320px) { .scroll-rail { display: none; } }
+/* Only show where there is gutter room beside the centered content. */
+@media (max-width: 1099px) { .scroll-rail { display: none; } }
 @media (prefers-reduced-motion: reduce) { .scroll-rail, .scroll-rail-dot, .scroll-rail-label { transition: none; } }
 
 /* Collapsible coalition scorecard (minimise on mobile so it isn't always open). */
