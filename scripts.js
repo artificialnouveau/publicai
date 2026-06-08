@@ -1161,6 +1161,7 @@
   const NS = 'http://www.w3.org/2000/svg';
   const overlay = document.createElementNS(NS, 'svg');
   overlay.setAttribute('class', 'link-overlay');
+  overlay.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS(NS, 'path');
   const d1 = document.createElementNS(NS, 'circle'); d1.setAttribute('r', '4');
   const d2 = document.createElementNS(NS, 'circle'); d2.setAttribute('r', '4');
@@ -1599,7 +1600,7 @@
 // click a dot to jump; the rail shows only while its section is on screen.
 // ============================================================
 (function(){
-  if (!('IntersectionObserver' in window) || window.innerWidth < 1200) return;
+  if (!('IntersectionObserver' in window) || window.innerWidth < 1320) return;
 
   function makeRail(items, sectionEl, aria){
     if (!items.length || !sectionEl) return null;
@@ -1610,6 +1611,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'scroll-rail-node';
+      btn.setAttribute('aria-label', it.label);            // dot-only at rest, so label the button
       btn.innerHTML = '<span class="scroll-rail-dot"></span><span class="scroll-rail-label"></span>';
       btn.querySelector('.scroll-rail-label').textContent = it.label;
       btn.addEventListener('click', () => it.el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
@@ -1620,6 +1622,7 @@
 
     function setActive(idx){
       nodes.forEach((n, i) => {
+        if (i === idx) n.setAttribute('aria-current', 'step'); else n.removeAttribute('aria-current');
         n.classList.toggle('is-active', i === idx);
         n.classList.toggle('is-done', i <= idx);
       });
@@ -1678,4 +1681,17 @@
     if (memberRail && memberRail.items[0] && document.body.contains(memberRail.items[0].el)) return;
     buildMemberRail();
   }, 0));
+})();
+
+// --- Collapse / expand the coalition scorecard (esp. useful on mobile) ---
+(function(){
+  const card = document.getElementById('coalitionLiveSummary');
+  const btn = document.getElementById('clToggle');
+  if (!card || !btn) return;
+  btn.addEventListener('click', () => {
+    const collapsed = card.classList.toggle('is-collapsed');
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    btn.setAttribute('aria-label', collapsed ? 'Expand coalition summary' : 'Collapse coalition summary');
+    btn.innerHTML = collapsed ? '+' : '&minus;';
+  });
 })();

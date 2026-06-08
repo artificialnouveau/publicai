@@ -1911,20 +1911,30 @@
   margin: 0.55rem 0 0; min-height: 2.2em;
 }
 
-/* Scroll rails: fixed left-edge progress timelines (story chapters / decisions). */
+/* Scroll rails: fixed left-edge progress timelines (story chapters / decisions).
+   Dots-only at rest on a readable backplate; labels appear on hover/focus only,
+   so the rail never sits a line of text on top of the prose. */
 .scroll-rail {
-  position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+  position: fixed; left: 14px; top: 50%; transform: translateY(-50%);
   z-index: 45; display: flex; flex-direction: column; gap: 2px;
-  padding: 6px 0; opacity: 0; pointer-events: none; transition: opacity 0.35s;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px -18px rgba(10,10,10,0.4);
+  opacity: 0; pointer-events: none; transition: opacity 0.35s;
+}
+@supports (backdrop-filter: blur(6px)) {
+  .scroll-rail { background: rgba(255,255,255,0.72); backdrop-filter: blur(6px); }
 }
 .scroll-rail.is-visible { opacity: 1; pointer-events: auto; }
 .scroll-rail::before {
-  content: ''; position: absolute; left: 10px; top: 12px; bottom: 12px;
-  width: 1.5px; background: var(--hairline-strong); z-index: -1;
+  content: ''; position: absolute; left: 18.5px; top: 14px; bottom: 14px;
+  width: 1.5px; background: var(--hairline-strong); z-index: 0;
 }
-.scroll-rail-node { display: flex; align-items: center; gap: 0.55rem; padding: 3px 4px 3px 0; border: 0; background: none; cursor: pointer; }
+.scroll-rail-node { display: flex; align-items: center; gap: 0.55rem; padding: 3px 2px; border: 0; background: none; cursor: pointer; position: relative; z-index: 1; }
 .scroll-rail-dot {
-  width: 9px; height: 9px; margin-left: 5.5px; border-radius: 50%; flex: 0 0 auto;
+  width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto;
   background: var(--paper, #fff); border: 1.5px solid var(--hairline-strong);
   transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
@@ -1936,6 +1946,20 @@
   transition: opacity 0.2s, max-width 0.2s;
 }
 .scroll-rail-node:hover .scroll-rail-label,
-.scroll-rail-node.is-active .scroll-rail-label { opacity: 1; max-width: 170px; }
-.scroll-rail-node.is-active .scroll-rail-label { color: var(--accent); }
-@media (max-width: 1200px) { .scroll-rail { display: none; } }
+.scroll-rail-node:focus-visible .scroll-rail-label { opacity: 1; max-width: 170px; color: var(--accent); }
+/* Only show where there is real gutter room beside the centered content. */
+@media (max-width: 1320px) { .scroll-rail { display: none; } }
+@media (prefers-reduced-motion: reduce) { .scroll-rail, .scroll-rail-dot, .scroll-rail-label { transition: none; } }
+
+/* Collapsible coalition scorecard (minimise on mobile so it isn't always open). */
+.cl-toggle {
+  margin-left: auto; flex: 0 0 auto;
+  width: 26px; height: 26px; line-height: 1; font-size: 1.1rem;
+  border: 1px solid var(--hairline-strong); border-radius: 7px;
+  background: transparent; color: var(--text-soft); cursor: pointer;
+}
+.cl-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.coalition-live.is-collapsed .cl-scorecard,
+.coalition-live.is-collapsed .cl-scenarios,
+.coalition-live.is-collapsed .cl-scenario-note { display: none; }
+.coalition-live.is-collapsed { padding-bottom: 0.7rem; }
