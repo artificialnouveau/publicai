@@ -1920,6 +1920,7 @@
   opacity: 0; pointer-events: none; transition: opacity 0.35s;
 }
 .scroll-rail.is-visible { opacity: 1; pointer-events: auto; }
+.scroll-rail.rail-suppressed { display: none; }
 .scroll-rail::before {
   content: ''; position: absolute; left: 4px; top: 9px; bottom: 9px;
   width: 1.5px; background: var(--hairline-strong);

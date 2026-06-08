@@ -1649,6 +1649,7 @@
   }
 
   // --- Story chapters ---
+  let storyRail = null;
   const story = document.getElementById('story');
   if (story){
     const items = Array.from(story.querySelectorAll('.scene')).map(s => {
@@ -1658,7 +1659,16 @@
       const city = t ? t.textContent.trim() : '';
       return { el: s, label: (num ? num + '  ' : '') + city };
     });
-    makeRail(items, story, 'Story progress');
+    storyRail = makeRail(items, story, 'Story progress');
+  }
+
+  // The outcome takes the left edge over the story: once it scrolls into view,
+  // suppress the story rail so it can't collide with the scorecard / member rail.
+  const outcomeSection = document.getElementById('outcome');
+  if (storyRail && outcomeSection){
+    new IntersectionObserver(es => {
+      es.forEach(e => storyRail.rail.classList.toggle('rail-suppressed', e.isIntersecting));
+    }, { rootMargin: '0px 0px -30% 0px' }).observe(outcomeSection);
   }
 
   // --- Member-states decisions (rebuilt only when the designer DOM is replaced) ---
