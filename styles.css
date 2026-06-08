@@ -1910,3 +1910,32 @@
   line-height: 1.35; color: var(--text-soft);
   margin: 0.55rem 0 0; min-height: 2.2em;
 }
+
+/* Scroll rails: fixed left-edge progress timelines (story chapters / decisions). */
+.scroll-rail {
+  position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+  z-index: 45; display: flex; flex-direction: column; gap: 2px;
+  padding: 6px 0; opacity: 0; pointer-events: none; transition: opacity 0.35s;
+}
+.scroll-rail.is-visible { opacity: 1; pointer-events: auto; }
+.scroll-rail::before {
+  content: ''; position: absolute; left: 10px; top: 12px; bottom: 12px;
+  width: 1.5px; background: var(--hairline-strong); z-index: -1;
+}
+.scroll-rail-node { display: flex; align-items: center; gap: 0.55rem; padding: 3px 4px 3px 0; border: 0; background: none; cursor: pointer; }
+.scroll-rail-dot {
+  width: 9px; height: 9px; margin-left: 5.5px; border-radius: 50%; flex: 0 0 auto;
+  background: var(--paper, #fff); border: 1.5px solid var(--hairline-strong);
+  transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.scroll-rail-node.is-done .scroll-rail-dot { background: var(--accent); border-color: var(--accent); }
+.scroll-rail-node.is-active .scroll-rail-dot { background: var(--accent); border-color: var(--accent); transform: scale(1.55); box-shadow: 0 0 0 4px rgba(0,87,255,0.16); }
+.scroll-rail-label {
+  font-family: var(--mono); font-size: 0.57rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-soft); white-space: nowrap; opacity: 0; max-width: 0; overflow: hidden;
+  transition: opacity 0.2s, max-width 0.2s;
+}
+.scroll-rail-node:hover .scroll-rail-label,
+.scroll-rail-node.is-active .scroll-rail-label { opacity: 1; max-width: 170px; }
+.scroll-rail-node.is-active .scroll-rail-label { color: var(--accent); }
+@media (max-width: 1200px) { .scroll-rail { display: none; } }

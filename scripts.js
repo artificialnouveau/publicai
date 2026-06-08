@@ -1592,3 +1592,90 @@
   apply();
   window.addEventListener('resize', apply);
 })();
+
+// ============================================================
+// SCROLL RAILS: a fixed left-edge timeline of where you are. One for the story
+// chapters, one for the member-states decisions. Dots fill in as you progress;
+// click a dot to jump; the rail shows only while its section is on screen.
+// ============================================================
+(function(){
+  if (!('IntersectionObserver' in window) || window.innerWidth < 1200) return;
+
+  function makeRail(items, sectionEl, aria){
+    if (!items.length || !sectionEl) return null;
+    const rail = document.createElement('nav');
+    rail.className = 'scroll-rail';
+    rail.setAttribute('aria-label', aria);
+    const nodes = items.map(it => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'scroll-rail-node';
+      btn.innerHTML = '<span class="scroll-rail-dot"></span><span class="scroll-rail-label"></span>';
+      btn.querySelector('.scroll-rail-label').textContent = it.label;
+      btn.addEventListener('click', () => it.el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      rail.appendChild(btn);
+      return btn;
+    });
+    document.body.appendChild(rail);
+
+    function setActive(idx){
+      nodes.forEach((n, i) => {
+        n.classList.toggle('is-active', i === idx);
+        n.classList.toggle('is-done', i <= idx);
+      });
+    }
+    const seen = new Map();
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { e.isIntersecting ? seen.set(e.target, true) : seen.delete(e.target); });
+      let bestIdx = -1, bestTop = Infinity;
+      items.forEach((it, i) => {
+        if (!seen.get(it.el)) return;
+        const t = it.el.getBoundingClientRect().top;
+        if (t < window.innerHeight * 0.5 && t < bestTop) { bestTop = t; bestIdx = i; }
+      });
+      if (bestIdx >= 0) setActive(bestIdx);
+    }, { rootMargin: '-20% 0px -50% 0px', threshold: [0, 0.5, 1] });
+    items.forEach(it => io.observe(it.el));
+
+    const visIo = new IntersectionObserver(es => {
+      es.forEach(e => rail.classList.toggle('is-visible', e.isIntersecting));
+    }, { rootMargin: '-8% 0px -8% 0px' });
+    visIo.observe(sectionEl);
+
+    return { rail, items, io, visIo };
+  }
+
+  // --- Story chapters ---
+  const story = document.getElementById('story');
+  if (story){
+    const items = Array.from(story.querySelectorAll('.scene')).map(s => {
+      const k = s.querySelector('.scene-kicker');
+      const t = s.querySelector('.scene-title');
+      const num = k ? ((k.textContent.match(/\d+/) || [''])[0]) : '';
+      const city = t ? t.textContent.trim() : '';
+      return { el: s, label: (num ? num + '  ' : '') + city };
+    });
+    makeRail(items, story, 'Story progress');
+  }
+
+  // --- Member-states decisions (rebuilt only when the designer DOM is replaced) ---
+  const designWrap = document.querySelector('.outcome-split-design');
+  let memberRail = null;
+  function buildMemberRail(){
+    const design = document.getElementById('coalitionDesign');
+    if (!design || !designWrap) return;
+    const items = Array.from(design.querySelectorAll('.design-section')).map(s => {
+      const t = s.querySelector('.design-section-title');
+      return { el: s, label: t ? t.textContent.trim() : '' };
+    });
+    if (memberRail){ memberRail.io.disconnect(); memberRail.visIo.disconnect(); memberRail.rail.remove(); }
+    memberRail = makeRail(items, designWrap, 'Decision progress');
+  }
+  buildMemberRail();
+  // Re-bind only after a real re-render (the section nodes get replaced); a hover
+  // preview leaves the DOM in place, so skip those to avoid flicker.
+  window.addEventListener('coalition:change', () => setTimeout(() => {
+    if (memberRail && memberRail.items[0] && document.body.contains(memberRail.items[0].el)) return;
+    buildMemberRail();
+  }, 0));
+})();
