@@ -1013,8 +1013,10 @@
     if (mode === 'data') split.classList.add('split-data');
     else if (mode === 'design') split.classList.add('split-design');
     btns.forEach(x => x.classList.toggle('is-active', x === b));
-    // The canvas charts size their backing store to the panel width; after the
-    // panel resizes, tell them to redraw so they don't stretch and pixelate.
+    // Clear the connector line right away (it only belongs in the 50/50 view),
+    // then redraw the canvas charts after the panel finishes resizing so they
+    // don't stretch and pixelate.
+    window.dispatchEvent(new Event('resize'));
     setTimeout(() => window.dispatchEvent(new Event('resize')), 400);
   }));
 })();
@@ -1168,12 +1170,18 @@
     if (!t) return null;
     return MAP[t.textContent.trim()] || null;
   }
+  // The connector only makes sense in the 50/50 view (both panels visible).
+  const splitEl = document.getElementById('outcomeSplit');
+  function isBalanced(){
+    return !splitEl || (!splitEl.classList.contains('split-data') && !splitEl.classList.contains('split-design'));
+  }
   let active = null, target = null, pinnedId = null;
   function recompute(){
     if (!active || !target) return;
+    if (!isBalanced()) { hide(); return; }
     const s = active.getBoundingClientRect();
     const c = target.getBoundingClientRect();
-    if (!s.width && !s.height) return; // active node was detached by a re-render
+    if ((!s.width && !s.height) || (!c.width && !c.height)) { hide(); return; } // an endpoint is hidden/detached
     const sx = s.right, sy = s.top + Math.min(s.height/2, 38);
     const cx = c.left, cy = c.top + Math.min(c.height/2, 60);
     const mx = (sx + cx) / 2;
@@ -1218,7 +1226,7 @@
   // Hover a decision to PIN its line. It stays put and tracks scrolling (so you
   // can scroll to the chart it points at) until you hover a different decision.
   document.addEventListener('mouseover', (e) => {
-    if (window.innerWidth < 1100) return;
+    if (window.innerWidth < 1100 || !isBalanced()) return;
     const sec = e.target.closest && e.target.closest('.design-section[data-haschart]');
     if (sec && sec !== active) show(sec);
   });
@@ -1552,7 +1560,7 @@
 (function(){
   const grid = document.querySelector('.supporting-data-grid');
   if (!grid) return;
-  const BASE = 70, PEEK = 40, CAP = 8;
+  const BASE = 70;
   function apply(){
     const kids = Array.from(grid.children).filter(
       el => el.classList.contains('viz-card') || el.classList.contains('story-act')
@@ -1560,9 +1568,14 @@
     kids.sort((a, b) =>
       (parseInt(getComputedStyle(a).order, 10) || 0) - (parseInt(getComputedStyle(b).order, 10) || 0)
     );
+    // Accumulate the sticky top per card so EVERY card keeps a peek strip (act
+    // dividers get a taller strip so their title row shows). No cap, so later
+    // cards never collide onto the same offset.
+    let top = BASE;
     kids.forEach((el, i) => {
-      el.style.top = (BASE + Math.min(i, CAP) * PEEK) + 'px';
+      el.style.top = top + 'px';
       el.style.zIndex = String(i + 1); // later (visual) cards sit on top and cover earlier ones
+      top += el.classList.contains('story-act') ? 48 : 32;
     });
   }
   grid.classList.add('is-stack');
