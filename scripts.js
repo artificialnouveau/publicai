@@ -1539,3 +1539,29 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
 })();
+
+// ============================================================
+// SCROLL-STACKING LAYOUT: pin each live-data card with position:sticky so they
+// pile as you scroll, the previous card's header peeking above the next. The
+// per-card sticky top + z-index are assigned in VISUAL (flex order) sequence.
+// ============================================================
+(function(){
+  const grid = document.querySelector('.supporting-data-grid');
+  if (!grid) return;
+  const BASE = 70, PEEK = 28, CAP = 8;
+  function apply(){
+    const kids = Array.from(grid.children).filter(
+      el => el.classList.contains('viz-card') || el.classList.contains('story-act')
+    );
+    kids.sort((a, b) =>
+      (parseInt(getComputedStyle(a).order, 10) || 0) - (parseInt(getComputedStyle(b).order, 10) || 0)
+    );
+    kids.forEach((el, i) => {
+      el.style.top = (BASE + Math.min(i, CAP) * PEEK) + 'px';
+      el.style.zIndex = String(i + 1); // later (visual) cards sit on top and cover earlier ones
+    });
+  }
+  grid.classList.add('is-stack');
+  apply();
+  window.addEventListener('resize', apply);
+})();

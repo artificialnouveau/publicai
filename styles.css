@@ -1869,3 +1869,27 @@
 .cl-scenario:hover { border-color: var(--accent); color: var(--accent); }
 .cl-scenario-reset { color: var(--text-soft); }
 
+
+/* Scroll-stacking: cards pin and pile as you scroll (top + z-index set per
+   card in visual order by JS). Each earlier card's header peeks above the next. */
+.supporting-data-grid.is-stack::before { display: none; }            /* drop the dotted spine */
+.supporting-data-grid.is-stack > .viz-card,
+.supporting-data-grid.is-stack > .story-act {
+  position: sticky;
+  margin-left: 0;
+  margin-bottom: 20px;
+  background: var(--paper, #fff);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 12px;
+  box-shadow: 0 18px 38px -24px rgba(10,10,10,0.5);
+}
+.supporting-data-grid.is-stack > .story-act {
+  padding: 1rem 1.2rem;
+  background: var(--accent);
+}
+.supporting-data-grid.is-stack > .story-act .story-act-num {
+  position: static; margin-bottom: 0.5rem;
+  background: #fff; color: var(--accent);
+}
+.supporting-data-grid.is-stack > .story-act .story-act-title,
+.supporting-data-grid.is-stack > .story-act .story-act-line { color: #fff; }
