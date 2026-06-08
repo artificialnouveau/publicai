@@ -1553,20 +1553,22 @@
   function layoutCollage(){
     const cards = Array.from(grid.querySelectorAll('.viz-card'));
     const W = grid.clientWidth;
-    const cardW = Math.min(380, Math.max(220, W * 0.56));
-    const leftCol = [0, Math.max(0, W - cardW)];
-    const colTop = [10, 70]; // stagger the two columns so cards interleave
-    const peek = 104;        // how much of each card peeks above the next
+    const cols = W > 600 ? 2 : 1;
+    const cardW = cols === 2 ? Math.round(W * 0.6) : W;  // >half so the columns overlap
+    const colX = cols === 2 ? [0, W - cardW] : [0];
+    const colTop = cols === 2 ? [6, 44] : [6];           // stagger the two columns
+    const overlap = 66;                                  // each card covers the previous by this much
     cards.forEach((c, i) => {
-      const col = i % 2;
+      const col = i % cols;
       c.style.width = cardW + 'px';
-      c.style.left = (leftCol[col] + (((i * 17) % 14) - 7)) + 'px';
+      c.style.left = colX[col] + 'px';
       c.style.top = colTop[col] + 'px';
-      const rot = (col ? 2.4 : -2.8) + ((((i * 13) % 5) - 2) * 0.5);
+      const rot = (col ? 1.8 : -2.2) + ((((i * 13) % 5) - 2) * 0.4);
       c.style.setProperty('--rot', rot.toFixed(2) + 'deg');
-      colTop[col] += peek + ((i * 11) % 34);
+      const h = c.offsetHeight || 170;                   // forces reflow: real height at this width
+      colTop[col] += Math.max(74, h - overlap);          // shingle so there are never gaps
     });
-    grid.style.height = (Math.max(colTop[0], colTop[1]) + 320) + 'px';
+    grid.style.height = (Math.max.apply(null, colTop) + 24) + 'px';
   }
   function clearCollage(){
     grid.style.height = '';
