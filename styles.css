@@ -744,6 +744,78 @@
     }
   }
 
+  /* === CHAPTER CHECKPOINTS + YOU-DRAW-IT: the story plays back. Checkpoints
+     write the same picks as the coalition designer; guesses score intuition
+     against the sourced figures. === */
+  .checkpoint, .ydi {
+    margin: 1.6rem 0 0.4rem;
+    border: 1px solid var(--hairline-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    background: var(--paper-2);
+    padding: 0.85rem 1rem 0.8rem;
+    font-family: var(--font);
+  }
+  .checkpoint-kicker, .ydi-kicker {
+    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.4rem;
+  }
+  .checkpoint-q, .ydi-q {
+    font-size: 0.95rem; font-weight: 600; color: var(--text);
+    line-height: 1.45; margin-bottom: 0.6rem;
+  }
+  .checkpoint-options { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .checkpoint-opt {
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 600;
+    padding: 0.4rem 0.75rem; cursor: pointer;
+    background: var(--ink); color: var(--text);
+    border: 1px solid var(--hairline-strong); border-radius: 999px;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .checkpoint-opt:hover { border-color: var(--accent); color: var(--accent); }
+  .checkpoint-opt.is-picked { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .checkpoint-impact { font-size: 0.78rem; line-height: 1.5; color: var(--text-soft); margin: 0.55rem 0 0; }
+  .ydi-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem; }
+  .ydi-row input[type=range] { flex: 1 1 auto; accent-color: var(--accent); }
+  .ydi-row output {
+    font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+    color: var(--accent); min-width: 5.5ch; text-align: right;
+  }
+  .ydi-lock {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.45rem 0.85rem; cursor: pointer;
+    background: var(--accent); color: #fff; border: 0; border-radius: 4px;
+  }
+  .ydi-lock:hover { filter: brightness(1.1); }
+  .ydi-bars { display: grid; gap: 0.35rem; margin-bottom: 0.5rem; }
+  .ydi-bar-row {
+    display: grid; grid-template-columns: 2.6rem 1fr auto;
+    gap: 0.55rem; align-items: center;
+    font-family: var(--mono); font-size: 0.66rem; color: var(--text-soft);
+  }
+  .ydi-bar-row b { font-size: 0.74rem; }
+  .ydi-bar-row:first-child b { color: #FF6F59; }
+  .ydi-bar-row:last-child b { color: var(--accent); }
+  .ydi-track { height: 10px; background: rgba(10,10,10,0.08); border-radius: 999px; position: relative; overflow: hidden; }
+  .ydi-bar { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; }
+  .ydi-bar.you { background: #FF6F59; }
+  .ydi-bar.truth { background: var(--accent); transition: width 0.9s cubic-bezier(.2,.7,.2,1); }
+  .ydi-verdict { font-size: 0.8rem; color: var(--text); margin: 0; }
+  .ydi-verdict a {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-left: 0.4rem;
+  }
+  .ydi-score {
+    margin: 0.9rem auto 0; max-width: 720px;
+    font-family: var(--mono); font-size: 0.72rem; line-height: 1.6;
+    color: var(--text-soft); text-align: center;
+    border: 1px dashed var(--hairline-strong); border-radius: 6px;
+    padding: 0.6rem 0.9rem;
+  }
+  .ydi-score b { color: var(--accent); }
+
   /* === STORY ASCII RAIL: a live mini-chart for the chapter being read,
      animated character art in the story's mono voice. Desktop rail only. === */
   .story-ascii { margin: 1.5rem auto 0; max-width: 230px; }

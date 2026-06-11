@@ -502,6 +502,53 @@
   if (outcome) {
     renderCoalitionDesign();
   }
+
+  // =====================================================================
+  // CHAPTER CHECKPOINTS — make the calls inside the story (FT Uber-Game
+  // style). Each decide-chapter ends with "Your call"; picking an option
+  // writes the same simState the coalition designer reads, so Your
+  // Coalition is already built by the time the reader reaches it.
+  // Changing a pick later in the designer updates the checkpoint too.
+  // =====================================================================
+  function renderCheckpoints(){
+    decisionOrder.forEach(sceneId => {
+      const scene = document.getElementById(sceneId);
+      const cfg = SIM[sceneId];
+      if (!scene || !cfg) return;
+      let box = scene.querySelector('.checkpoint');
+      if (!box) {
+        box = document.createElement('div');
+        box.className = 'checkpoint';
+        (scene.querySelector('.scene-prose') || scene).appendChild(box);
+      }
+      const made = !!simState[sceneId];
+      const pick = getPick(sceneId);
+      const picked = cfg.options.find(o => o.id === pick) || cfg.options[0];
+      box.innerHTML =
+        '<div class="checkpoint-kicker">Your call &middot; ' +
+          (made ? 'locked in (revise here or in Your Coalition)' : 'this builds Your Coalition below') + '</div>' +
+        '<div class="checkpoint-q">' + cfg.question + '</div>' +
+        '<div class="checkpoint-options" role="radiogroup" aria-label="' + cfg.question.replace(/"/g, '&quot;') + '">' +
+          cfg.options.map(o =>
+            '<button type="button" class="checkpoint-opt' + (made && o.id === pick ? ' is-picked' : '') + '" ' +
+            'data-opt="' + o.id + '" aria-pressed="' + (made && o.id === pick) + '">' + o.label + '</button>'
+          ).join('') +
+        '</div>' +
+        '<p class="checkpoint-impact">' + (made ? picked.impact :
+          'No call yet. The passive option (' + cfg.options[0].label.toLowerCase() + ') stands until you choose.') + '</p>';
+      box.querySelectorAll('.checkpoint-opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          simState[sceneId] = btn.dataset.opt;
+          saveState();
+          renderCheckpoints();
+          renderCoalitionDesign(); // cascades to scorecard + live charts
+        });
+      });
+    });
+  }
+  renderCheckpoints();
+  // Keep checkpoints in sync when picks change from the designer side.
+  window.addEventListener('coalition:change', renderCheckpoints);
 })();
 
 // ============================================================
@@ -1742,7 +1789,7 @@
     // Clicking a covered (earlier) chapter scrolls back so it rests at its
     // pin, fully readable again. Links and footnote buttons keep working.
     el.addEventListener('click', e => {
-      if (e.target.closest && e.target.closest('a, button')) return;
+      if (e.target.closest && e.target.closest('a, button, input, .ydi, .checkpoint')) return;
       const next = scenes[i + 1];
       const covered = next && next.getBoundingClientRect().top <= pinOf(i + 1) + 6;
       if (!covered) return;
@@ -1881,5 +1928,97 @@
   window.addEventListener('resize', pickActive);
   pickActive();
   if (!reduced) setInterval(draw, 150);
+})();
+
+// ============================================================
+// YOU DRAW IT — guess the number before the data shows it (NYT-style).
+// Five key stats get a guess slider inside their chapter; the reveal
+// compares intuition to the sourced figure, and the outcome section
+// totals the misses.
+// ============================================================
+(function(){
+  const YDI = {
+    talent:  { q: 'Top-tier AI researchers trained in the EU: what share ends up working in the US?',
+               min: 0, max: 100, start: 30, truth: 60, fmt: v => v + '%', href: '#viz-talent', chart: 'Talent migration' },
+    cloud:   { q: 'What share of Europe’s cloud market runs on US hyperscalers?',
+               min: 0, max: 100, start: 35, truth: 70, fmt: v => v + '%', href: '#viz-cloud', chart: 'Cloud dependence' },
+    langs:   { q: 'Of the EU’s 24 official languages, how many do frontier models support well?',
+               min: 0, max: 24, start: 12, truth: 3, fmt: v => v + ' of 24', href: '#viz-language', chart: 'Language coverage' },
+    capital: { q: 'US private AI investment in 2024 was $109B. How much was the EU’s?',
+               min: 0, max: 109, start: 55, truth: 14, fmt: v => '$' + v + 'B', href: '#viz-ottawa', chart: 'Why pool' },
+    energy:  { q: 'What share of France’s electricity is nuclear?',
+               min: 0, max: 100, start: 35, truth: 70, fmt: v => v + '%', href: '#viz-energy', chart: 'France’s power edge' }
+  };
+  const KEY = 'afa_ydi_v1';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){}
+  function persist(){ try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){} }
+
+  function verdict(cfg, guess){
+    const d = Math.abs(guess - cfg.truth);
+    const span = cfg.max - cfg.min;
+    if (d <= span * 0.05) return 'Dead on.';
+    if (d <= span * 0.15) return 'Close, but the chart has the rest.';
+    return 'Off by ' + cfg.fmt(d).replace(' of 24', '') + '. This is why the chapters carry data.';
+  }
+
+  function renderScore(){
+    const el = document.getElementById('ydiScore');
+    if (!el) return;
+    const keys = Object.keys(YDI).filter(k => saved[k] !== undefined);
+    if (!keys.length) { el.hidden = true; return; }
+    let miss = 0;
+    keys.forEach(k => { const c = YDI[k]; miss += Math.abs(saved[k] - c.truth) / (c.max - c.min); });
+    const avg = Math.round((miss / keys.length) * 100);
+    el.hidden = false;
+    el.innerHTML = '<b>Your intuition vs the data:</b> ' + keys.length + ' of ' + Object.keys(YDI).length +
+      ' stats guessed while reading · average miss ' + avg + ' points (of 100).' +
+      (avg <= 10 ? ' You already knew the water was hot.' : avg <= 25 ? ' The gap is bigger than it feels.' : ' The status quo flatters itself.');
+  }
+
+  function reveal(box, key, guess, animate){
+    const cfg = YDI[key];
+    const pct = v => Math.round(((v - cfg.min) / (cfg.max - cfg.min)) * 100);
+    box.classList.add('is-done');
+    box.innerHTML =
+      '<div class="ydi-kicker">your guess vs the data</div>' +
+      '<div class="ydi-q">' + cfg.q + '</div>' +
+      '<div class="ydi-bars">' +
+        '<div class="ydi-bar-row"><span>you</span><div class="ydi-track"><i class="ydi-bar you" style="width:' + pct(guess) + '%"></i></div><b>' + cfg.fmt(guess) + '</b></div>' +
+        '<div class="ydi-bar-row"><span>data</span><div class="ydi-track"><i class="ydi-bar truth" style="width:' + (animate ? 0 : pct(cfg.truth)) + '%"></i></div><b>' + cfg.fmt(cfg.truth) + '</b></div>' +
+      '</div>' +
+      '<p class="ydi-verdict">' + verdict(cfg, guess) + ' <a href="' + cfg.href + '">' + cfg.chart + ' &darr;</a></p>';
+    if (animate) {
+      const bar = box.querySelector('.ydi-bar.truth');
+      requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = pct(cfg.truth) + '%'; }));
+    }
+    renderScore();
+  }
+
+  function build(box){
+    const key = box.dataset.ydi;
+    const cfg = YDI[key];
+    if (!cfg) return;
+    if (saved[key] !== undefined) { reveal(box, key, saved[key], false); return; }
+    box.innerHTML =
+      '<div class="ydi-kicker">before the data &middot; your guess</div>' +
+      '<div class="ydi-q">' + cfg.q + '</div>' +
+      '<div class="ydi-row">' +
+        '<input type="range" min="' + cfg.min + '" max="' + cfg.max + '" step="1" value="' + cfg.start + '" aria-label="' + cfg.q.replace(/"/g, '&quot;') + '">' +
+        '<output>' + cfg.fmt(cfg.start) + '</output>' +
+      '</div>' +
+      '<button type="button" class="ydi-lock">Lock in my guess</button>';
+    const range = box.querySelector('input');
+    const out = box.querySelector('output');
+    range.addEventListener('input', () => { out.textContent = cfg.fmt(+range.value); });
+    box.querySelector('.ydi-lock').addEventListener('click', () => {
+      saved[key] = +range.value;
+      persist();
+      reveal(box, key, saved[key], true);
+    });
+  }
+
+  document.querySelectorAll('.ydi[data-ydi]').forEach(build);
+  renderScore();
 })();
 
