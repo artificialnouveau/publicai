@@ -262,61 +262,17 @@
       'the water is ' + word + ' · heat ' + Math.round(heat * 100) + '%';
   }
 
-  // Generic decode: an element's text resolves left to right out of full
-  // glyph soup. Used for datelines, titles, month rules, log lines, endings.
+  // Text renders instantly: the decode/typewriter reveals were removed as
+  // distracting. Function names kept for their call sites; GLYPHS stays for
+  // the logo ignition sparks.
   function decodeIn (el, text, opts) {
-    opts = opts || {};
-    if (!canAnimate || reducedMotion() || !text) {
-      el.textContent = text || '';
-      if (opts.done) opts.done();
-      return;
-    }
-    const pool = opts.pool || GLYPHS;
-    let i = 0;
-    const t = setInterval(() => {
-      i += (opts.step || 2);
-      if (i >= text.length) {
-        clearInterval(t);
-        el.textContent = text;
-        if (opts.done) opts.done();
-        return;
-      }
-      let out = text.slice(0, i);
-      for (let k = i; k < text.length; k++) {
-        out += text[k] === ' ' ? ' ' : pool[(Math.random() * pool.length) | 0];
-      }
-      el.textContent = out;
-    }, opts.tick || 16);
+    el.textContent = text || '';
+    if (opts && opts.done) opts.done();
   }
 
-  // Dispatch prose: the entire paragraph sits as faint slipping glyph soup
-  // and resolves left to right. A click on the dispatch completes it.
   function typeInto (host, p, text, done) {
-    function finishAll () {
-      p.textContent = text;
-      host.classList.remove('typing');
-      if (done) done();
-    }
-    if (!p) { if (done) done(); return; }
-    if (!canAnimate || reducedMotion()) { finishAll(); return; }
-    host.classList.add('typing');
-    let i = 0, fin = false;
-    const t = setInterval(() => {
-      i += 2;
-      if (i >= text.length) { finish(); return; }
-      let flux = '';
-      for (let k = i; k < text.length; k++) {
-        flux += text[k] === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0];
-      }
-      p.innerHTML = esc(text.slice(0, i)) + '<span class="flux">' + esc(flux) + '</span>';
-    }, 16);
-    function finish () {
-      if (fin) return;
-      fin = true;
-      clearInterval(t);
-      finishAll();
-    }
-    host.addEventListener('click', finish, { once: true });
+    if (p) p.textContent = text;
+    if (done) done();
   }
 
   function dispatch (city, prose, title, fx) {
