@@ -55,6 +55,7 @@ window.GAME_DATA = (function () {
     1: {
       city: 'Dublin',
       title: 'The layoffs',
+      cast: [{ n: 'The Laid-off', c: 'four thousand researchers, briefly free agents' }],
       fx: { phrase: 'severance under NDA', type: 'glitch' },
       prose: 'OpenAI clears out its European offices floor by floor. Brown cardboard boxes, security escorts, severance under NDA. Some of the best policy and research people on the continent are suddenly, briefly, available.',
       choice: {
@@ -70,6 +71,7 @@ window.GAME_DATA = (function () {
     3: {
       city: 'Brussels',
       title: 'The speech',
+      cast: [{ n: 'The Commissioner', c: 'true believer, twice ignored' }],
       fx: { phrase: 'dependency numbers', type: 'glitch' },
       prose: 'The Commissioner throws out her prepared remarks and tells the room what the dependency numbers actually mean. Some of the crowd walks out. The ones who stay are the ones you can work with. SUMMIT is now available: spend a whole month to warm every hedging capital at once.',
       auto: s => { s.summitUnlocked = true; }
@@ -77,6 +79,7 @@ window.GAME_DATA = (function () {
     4: {
       city: 'Berlin',
       title: 'The condition',
+      cast: [{ n: 'The German Chancellor', c: 'cornered ally, 1.0 EF in his gift' }],
       fx: { phrase: 'no China-controls clause, ever', type: 'glitch' },
       prose: 'Berlin calls back at 5am. The Chancellor will engage, but he has one condition: the coalition takes no China-controls clause, ever. His economy cannot survive one. Accept, and Germany starts hedging toward you.',
       choice: {
@@ -92,6 +95,7 @@ window.GAME_DATA = (function () {
     6: {
       city: 'Tokyo',
       title: 'The hallucination',
+      cast: [{ n: 'The Japanese Prime Minister', c: 'iron politician, burned by her own model' }],
       fx: { phrase: 'never happened', type: 'glitch' },
       prose: 'Japan’s sovereign model invents a Chinese export squeeze that never happened. Markets sell off before anyone checks the source. The Prime Minister goes on television twice in one week. A government that proud does not ask for help, but it would accept some.',
       choice: {
@@ -108,6 +112,7 @@ window.GAME_DATA = (function () {
     7: {
       city: 'Stockholm',
       title: 'The liferaft',
+      cast: [{ n: 'The Swedish VC', c: 'kingmaker, streaming fortune, guilty conscience' }],
       fx: { phrase: 'a wedge, not a solution', type: 'glitch' },
       prose: 'Ek’s people pass a single sheet of paper around a room overlooking the frozen Baltic. A multilateral defense company, Helsing at the center, private capital up front. It is a wedge, not a solution. But wedges open doors.',
       choice: {
@@ -123,6 +128,7 @@ window.GAME_DATA = (function () {
     8: {
       city: 'Monroe, LA',
       title: 'Hyperion',
+      cast: [{ n: 'The Electrician', c: 'union local, sees everything, says nothing' }],
       fx: { phrase: 'calling it Hyperion', type: 'glitch' },
       prose: 'Photographs circulate of a building in Louisiana that pulls more power than a mid-sized country. They are calling it Hyperion. Twenty-seven billion dollars, a few thousand union electricians, and no one you can call. There is nothing to decide this month. That is the point.',
       auto: s => { s.efTarget = 5.5; }
@@ -142,6 +148,7 @@ window.GAME_DATA = (function () {
     12: {
       city: 'Washington',
       title: 'The Godfather offer',
+      cast: [{ n: 'The President', c: 'the godfather, trillion-dollar budget' }],
       fx: { phrase: 'size undisclosed', type: 'glitch' },
       prose: 'The heads of the frontier labs take turns shaking the President’s hand. A strategic investment, size undisclosed, one condition. Every lab you have not anchored is now a defense contractor with a trillion-dollar patron. They will not be returning your calls.',
       auto: null // handled in engine: removes unanchored labs

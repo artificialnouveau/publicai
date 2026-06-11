@@ -351,6 +351,92 @@
   .scene-prose p:first-of-type::first-letter {
     /* Subtle drop-cap on the opening paragraph of each scene. */
   }
+  /* === STORY ARTIFACTS: emails, text threads; bills reuse .doc-inset === */
+  .artifact {
+    margin: 1.4rem 0;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 6px;
+    background: var(--paper-2);
+    padding: 0.8rem 1rem 0.85rem;
+    font-family: var(--font);
+  }
+  .artifact-label {
+    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-soft); margin-bottom: 0.6rem;
+  }
+  /* text thread */
+  .artifact-text .msg { display: flex; flex-direction: column; margin-bottom: 0.55rem; max-width: 80%; }
+  .artifact-text .msg span {
+    font-size: 0.85rem; line-height: 1.45; padding: 0.45rem 0.7rem;
+    border-radius: 10px; width: fit-content;
+  }
+  .artifact-text .msg i {
+    font-style: normal; font-family: var(--mono); font-size: 0.52rem;
+    letter-spacing: 0.06em; color: var(--text-soft); margin-top: 0.15rem;
+  }
+  .artifact-text .msg.them span { background: #fff; border: 1px solid var(--hairline-strong); }
+  .artifact-text .msg.me { margin-left: auto; align-items: flex-end; }
+  .artifact-text .msg.me span { background: var(--accent); color: #fff; }
+  /* email */
+  .artifact-email .email-head {
+    font-family: var(--mono); font-size: 0.66rem; line-height: 1.7;
+    color: var(--text); border-bottom: 1px solid var(--hairline);
+    padding-bottom: 0.5rem; margin-bottom: 0.6rem;
+  }
+  .artifact-email .email-head b {
+    display: inline-block; width: 4.2rem;
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-soft);
+  }
+  .artifact-email .email-body p {
+    font-family: var(--serif); font-size: 0.95rem; line-height: 1.65;
+    margin: 0 0 0.6rem;
+  }
+  .artifact-email .email-attach {
+    display: inline-block;
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 600;
+    color: var(--accent);
+    border: 1px dashed var(--accent); border-radius: 4px;
+    padding: 0.25rem 0.55rem; margin-top: 0.1rem;
+  }
+
+  /* === CAST CARDS: RPG-style character dossiers under each chapter header === */
+  .cast-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.55rem; margin: 0 0 1.6rem;
+  }
+  .cast-card {
+    border: 1px solid var(--hairline-strong);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    background: var(--paper-2);
+    padding: 0.55rem 0.7rem 0.6rem;
+  }
+  .cast-name {
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text); margin-bottom: 0.35rem;
+  }
+  .cast-stat {
+    display: flex; gap: 0.5rem; align-items: baseline;
+    font-family: var(--font); font-size: 0.72rem; line-height: 1.45;
+    color: var(--text-soft); margin-bottom: 0.15rem;
+  }
+  .cast-stat b {
+    font-family: var(--mono); font-size: 0.52rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); flex: 0 0 2.9rem;
+  }
+
+  /* Part divider line inside the preface */
+  .scene-part {
+    font-family: var(--mono) !important; font-size: 0.72rem !important;
+    font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent) !important;
+    border-top: 1px dotted var(--hairline-strong);
+    padding-top: 0.9rem; margin-top: 1.6rem;
+  }
   .scene-prose .dialogue {
     font-style: italic;
   }
@@ -816,6 +902,21 @@
   }
   .ydi-score b { color: var(--accent); }
 
+  /* === STORY TIMELINE: the non-linear story placed on one axis === */
+  .story-timeline { margin: 1.4rem auto 0; max-width: 230px; }
+  .story-timeline svg { width: 100%; height: auto; display: block; }
+  .story-timeline .tl-axis { stroke: var(--hairline-strong); stroke-width: 1; }
+  .story-timeline .tl-year { font-family: var(--mono); font-size: 7.5px; fill: var(--text-soft); }
+  .story-timeline .tl-tick { fill: rgba(10,10,10,0.3); }
+  .story-timeline .tl-tick.done { fill: var(--accent); opacity: 0.45; }
+  .story-timeline .tl-tick.now { fill: var(--accent); }
+  .story-timeline .tl-now-ring { fill: none; stroke: var(--accent); stroke-width: 1.2; }
+  .story-timeline-now {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-top: 0.15rem; text-align: center;
+  }
+
   /* === STORY ASCII RAIL: a live mini-chart for the chapter being read,
      animated character art in the story's mono voice. Desktop rail only. === */
   .story-ascii { margin: 1.5rem auto 0; max-width: 230px; }
@@ -1217,11 +1318,13 @@
   }
   .viz-info-body .viz-footnotes li { margin-bottom: 0.35rem; line-height: 1.4; }
   .viz-info-body .viz-footnotes a { color: var(--accent); text-decoration: underline; }
+  /* Chart plate: each figure sits on a thin-ruled panel, matching the game's
+     ledger tiles. */
   .viz-card .viz-canvas-wrap {
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    padding: 0.15rem 0;
+    background: var(--paper-2);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 0.5rem 0.6rem;
     margin-top: 0;
     position: relative;
     flex: 1 1 auto;
@@ -1231,8 +1334,8 @@
   /* Flow charts (capital Sankey, talent migration) render to canvas. */
   .viz-card .viz-canvas-wrap canvas {
     width: 100%;
-    height: 230px;
-    max-width: 560px;
+    height: 210px;
+    max-width: 520px;
     margin: 0 auto;
     display: block;
   }
@@ -1256,9 +1359,9 @@
   }
   .mn-cap { font-family: var(--mono); font-size: 7px; fill: rgba(10,10,10,0.45); }
   .mn-axislabel { font-family: var(--mono); font-size: 7px; fill: rgba(10,10,10,0.4); }
-  .mn-base { stroke: rgba(10,10,10,0.14); stroke-width: 0.7; }
-  .mn-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-  .mn-area { fill: var(--accent); opacity: 0.09; }
+  .mn-base { stroke: rgba(10,10,10,0.2); stroke-width: 0.7; }
+  .mn-line { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+  .mn-area { fill: var(--accent); opacity: 0.06; }
   .mn-bar { fill: var(--accent); }
   .mn-bar-rest { fill: rgba(10,10,10,0.10); }
   .mn-dot { fill: var(--accent); }
@@ -1288,51 +1391,60 @@
   .viz-card.mn-anim .mn-grow { opacity: 0; transform: scale(0.94); transform-box: fill-box; transform-origin: center; }
   .viz-card.mn-anim.is-in .mn-grow { transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s; opacity: 1; transform: none; }
 
-  /* === CUTE style (prototype): pictogram units, warm palette, friendly serif
-     captions, bouncy pop-in. Memorable over minimal. */
-  .cu-fig { font-family: var(--serif); font-weight: 700; font-size: 33px; fill: var(--accent); letter-spacing: -0.01em; }
-  .cu-fig.coral { fill: #FF6F59; }
-  .cu-cap { font-family: var(--serif); font-style: italic; font-size: 12px; fill: rgba(10,10,10,0.62); }
-  .cu-legend text { font-family: var(--mono); font-size: 12.5px; font-weight: 600; fill: rgba(10,10,10,0.7); dominant-baseline: middle; }
+  /* === Chart pictograms, disciplined: ink outlines, blue for the coalition
+     side, brick red for the US/threat side. Captions in mono small caps,
+     matching the game's panel language. === */
+  .cu-fig { font-family: var(--mono); font-weight: 700; font-size: 26px; fill: var(--accent); letter-spacing: -0.03em; }
+  .cu-fig.coral { fill: var(--red); }
+  .cu-cap {
+    font-family: var(--mono); font-size: 8px; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    fill: rgba(10,10,10,0.55);
+  }
+  .cu-legend text { font-family: var(--mono); font-size: 9px; font-weight: 600; fill: rgba(10,10,10,0.7); dominant-baseline: middle; }
+  .cu-legend circle { r: 3.5; }
   .cu-on  { fill: var(--accent); }
-  .cu-off { fill: #FFB3A8; }
-  .cu-coin { fill: #FFC23C; stroke: #E0991A; stroke-width: 1; }
-  .cu-coin-eu { fill: #8FB4FF; stroke: #0057FF; stroke-width: 1; }
-  /* bouncy pop-in, reusing the .mn-anim / .is-in scroll trigger */
-  .viz-card.mn-anim .cu-pop > * { opacity: 0; transform: translateY(7px) scale(0.55); transform-box: fill-box; transform-origin: center bottom; }
-  .viz-card.mn-anim.is-in .cu-pop > * { animation: cuPop 0.5s cubic-bezier(.34,1.56,.64,1) forwards; }
+  .cu-off { fill: rgba(184,0,46,0.25); }
+  .cu-coin { fill: rgba(184,0,46,0.1); stroke: var(--red); stroke-width: 0.9; }
+  .cu-coin-eu { fill: rgba(0,87,255,0.12); stroke: var(--accent); stroke-width: 0.9; }
+  /* quiet pop-in, reusing the .mn-anim / .is-in scroll trigger */
+  .viz-card.mn-anim .cu-pop > * { opacity: 0; transform: translateY(4px) scale(0.96); transform-box: fill-box; transform-origin: center bottom; }
+  .viz-card.mn-anim.is-in .cu-pop > * { animation: cuPop 0.4s ease-out forwards; }
   @keyframes cuPop { to { opacity: 1; transform: none; } }
   /* pictogram tiers (e.g. language bubbles) */
   .cu-strong  { fill: var(--accent); }
-  .cu-partial { fill: #FFC23C; }
-  .cu-risk    { fill: #FFB3A8; }
+  .cu-partial { fill: rgba(10,10,10,0.16); }
+  .cu-risk    { fill: rgba(184,0,46,0.16); }
   .cu-code      { font-family: var(--mono); font-size: 7.5px; font-weight: 700; fill: #fff; }
-  .cu-code.ink  { fill: rgba(10,10,10,0.6); }
+  .cu-code.ink  { fill: rgba(10,10,10,0.65); }
 
-  /* === CUTE-INFORMATIVE line: keep the analytical scaffolding (gridlines,
-     reference line, every point) but warm and rounded. */
-  .ci-grid line { stroke: rgba(10,10,10,0.10); stroke-width: 0.6; }
-  .ci-ref  { stroke: #FF6F59; stroke-width: 0.8; stroke-dasharray: 3 3; opacity: 0.75; }
-  .ci-tick { font-family: var(--mono); font-size: 8.5px; fill: rgba(10,10,10,0.45); }
-  .ci-dot  { fill: var(--accent); stroke: var(--ink); stroke-width: 1.4; }
-  .ci-end  { fill: #FF6F59; stroke: var(--ink); stroke-width: 2; }
-  .ci-note { font-family: var(--serif); font-style: italic; font-size: 12px; fill: rgba(10,10,10,0.6); }
-  .ci-emph { font-family: var(--mono); font-size: 13px; font-weight: 700; fill: #FF6F59; }
+  /* === Informative line charts: analytical scaffolding, thin and quiet. */
+  .ci-grid line { stroke: rgba(10,10,10,0.22); stroke-width: 0.5; stroke-dasharray: 0.5 3; stroke-linecap: round; }
+  .ci-ref  { stroke: var(--red); stroke-width: 0.8; stroke-dasharray: 3 3; opacity: 0.7; }
+  .ci-tick { font-family: var(--mono); font-size: 8px; fill: rgba(10,10,10,0.5); }
+  .ci-dot  { fill: var(--accent); stroke: #fff; stroke-width: 1.2; }
+  .ci-end  { fill: var(--red); stroke: #fff; stroke-width: 1.6; }
+  .ci-note {
+    font-family: var(--mono); font-size: 8px; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    fill: rgba(10,10,10,0.55);
+  }
+  .ci-emph { font-family: var(--mono); font-size: 11px; font-weight: 700; fill: var(--red); }
   .ci-emph.accent { fill: var(--accent); }
   /* export-control "decree" stamps */
   .cu-stamp { fill: var(--accent); }
-  .cu-stamp-out { fill: #FFB3A8; }
-  .cu-x { stroke: #E0457B; stroke-width: 2; stroke-linecap: round; }
+  .cu-stamp-out { fill: rgba(184,0,46,0.25); }
+  .cu-x { stroke: var(--red); stroke-width: 1.6; stroke-linecap: round; }
   /* compute chips */
   .cu-chip-eu { fill: var(--accent); }
-  .cu-chip-us { fill: #FF6F59; }
-  .cu-die { fill: rgba(255,255,255,0.5); }
-  .cu-pin { stroke: rgba(10,10,10,0.35); stroke-width: 1.4; stroke-linecap: round; }
+  .cu-chip-us { fill: rgba(184,0,46,0.16); stroke: var(--red); stroke-width: 1; }
+  .cu-die { fill: rgba(255,255,255,0.55); }
+  .cu-pin { stroke: rgba(10,10,10,0.4); stroke-width: 1.2; stroke-linecap: round; }
   /* capex money-bags */
-  .cu-bag { fill: #FFC23C; stroke: #E0991A; stroke-width: 1.2; }
-  .cu-bag.accent { fill: var(--accent); stroke: #003DA8; }
-  .cu-bag-sym { font-family: var(--serif); font-weight: 700; fill: #fff; }
-  .cu-bag-label { font-family: var(--mono); font-size: 12.5px; font-weight: 600; fill: rgba(10,10,10,0.7); }
+  .cu-bag { fill: rgba(10,10,10,0.05); stroke: rgba(10,10,10,0.55); stroke-width: 1; }
+  .cu-bag.accent { fill: rgba(0,87,255,0.14); stroke: var(--accent); }
+  .cu-bag-sym { font-family: var(--mono); font-weight: 700; fill: rgba(10,10,10,0.55); }
+  .cu-bag-label { font-family: var(--mono); font-size: 9.5px; font-weight: 600; fill: rgba(10,10,10,0.7); }
   .cu-bag-label.accent { fill: var(--accent); }
   @media (prefers-reduced-motion: reduce) {
     .viz-card.mn-anim .mn-line { stroke-dashoffset: 0; }
@@ -1343,13 +1455,18 @@
     .viz-card.mn-anim .cu-pop > * { opacity: 1; transform: none; }
   }
 
-  /* Header: date pill + name on a single row, room reserved for the info button */
+  /* Header: name + dotted leader on a single row, room for the info button */
   .viz-card .viz-header {
-    display: flex; align-items: center; gap: 0.45rem;
-    margin: 0 0 0.3rem;
+    display: flex; align-items: center; gap: 0.55rem;
+    margin: 0 0 0.4rem;
     padding-right: 1.7rem;
     flex-wrap: nowrap;
     min-width: 0;
+  }
+  .viz-card .viz-header::after {
+    content: '';
+    flex: 1 1 auto;
+    border-top: 1px dotted var(--hairline-strong);
   }
   .viz-date-pill {
     display: inline-flex; align-items: center;
@@ -1362,9 +1479,9 @@
     flex-shrink: 0;
   }
   .viz-name {
-    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text);
+    font-family: var(--mono); font-size: 0.64rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-soft);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1372,10 +1489,10 @@
   /* Footer: single line of mini-stats, separated by hairlines */
   .viz-card .viz-footer {
     display: flex;
-    gap: 0.65rem;
-    margin-top: 0.65rem;
-    padding-top: 0.55rem;
-    border-top: 1px solid var(--hairline);
+    gap: 0.55rem;
+    margin-top: 0.45rem;
+    padding-top: 0.4rem;
+    border-top: 1px dotted var(--hairline-strong);
     min-width: 0;
   }
   .viz-mini-stat {
@@ -1389,7 +1506,7 @@
     padding-left: 0.65rem;
   }
   .viz-mini-value {
-    font-family: var(--mono); font-size: 0.92rem; font-weight: 700;
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 700;
     color: var(--accent);
     letter-spacing: -0.01em;
     line-height: 1.1;
@@ -2053,12 +2170,13 @@
 .supporting-data-grid.is-stack > .story-act {
   position: sticky;
   margin-left: 0;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   background: var(--paper, #fff);
   border: 1px solid var(--hairline-strong);
-  border-radius: 12px;
-  box-shadow: 0 18px 38px -24px rgba(10,10,10,0.5);
+  border-radius: 6px;
+  box-shadow: 0 12px 26px -20px rgba(10,10,10,0.4);
 }
+.supporting-data-grid.is-stack > .viz-card { padding: 0.6rem 0.85rem 0.65rem; }
 .supporting-data-grid.is-stack > .story-act {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -2067,6 +2185,7 @@
   column-gap: 0.7rem;
   padding: 0.6rem 1.2rem;
   background: var(--accent);
+  border-color: var(--accent);
 }
 .supporting-data-grid.is-stack > .story-act .story-act-num {
   position: static; grid-area: num; margin: 0;

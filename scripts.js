@@ -5,6 +5,8 @@
   // Sim config keyed by scene element id. Defaults are the passive/inaction
   // option, so a reader who scrolls without interacting ends in "Slow Boil".
   const SIM = {
+    'scene-preface':    { type:'observe', label:'Why this scenario exists.' },
+    'scene-nyc':        { type:'observe', label:'The flip switches.' },
     'scene-dublin-apr': { type:'observe', label:'The talent shock arrives.' },
     'scene-berlin':     { type:'decide', question:'The Digital Liberty Act is on the desk. Germany’s call:', options:[
       { id:'sign',          label:'Sign',                    strength:'passive', score:0, default:true,
@@ -625,6 +627,7 @@
   // City coordinates per scene id. Used to drop a pulsing dot for the
   // currently-active chapter and to set the rotation target.
   const CITY_COORDS = {
+    'scene-nyc':         [-74.01, 40.71],
     'scene-dublin-apr':  [-6.27, 53.35],
     'scene-berlin':      [13.40, 52.52],
     'scene-brussels':    [4.35, 50.85],
@@ -937,7 +940,7 @@
       scenes.forEach(el => {
         if (!visible.has(el)) return;
         const pin = parseFloat(el.style.top || '');
-        const limit = isNaN(pin) ? window.innerHeight / 2 : pin + 6;
+        const limit = isNaN(pin) ? window.innerHeight / 2 : Math.max(pin + 6, window.innerHeight / 2);
         if (el.getBoundingClientRect().top <= limit) best = el;
       });
       setActive(best);
@@ -1688,7 +1691,7 @@
       items.forEach((it, i) => {
         if (!seen.get(it.el)) return;
         const pin = parseFloat(it.el.style.top || '');
-        const limit = isNaN(pin) ? window.innerHeight * 0.5 : pin + 6;
+        const limit = isNaN(pin) ? window.innerHeight * 0.5 : Math.max(pin + 6, window.innerHeight * 0.5);
         if (it.el.getBoundingClientRect().top <= limit) bestIdx = i;
       });
       if (bestIdx >= 0) setActive(bestIdx);
@@ -1781,22 +1784,43 @@
   const scenes = Array.from(story.querySelectorAll('.scene'));
   if (!scenes.length) return;
   story.classList.add('is-stack');
-  const BASE = 70, STEP = 52; // step exceeds the header strip so titles never overlap
-  function pinOf (i) { return BASE + i * STEP; }
+  // A card SHORTER than the viewport pins by its top (the stair of peeking
+  // headers, capped so deep chapters stay reachable). A card TALLER than the
+  // viewport pins by its BOTTOM (negative top offset): it scrolls normally
+  // until all of its text has been readable, and only then does the next
+  // card slide over it.
+  const BASE = 70, STEP = 52, PIN_MAX = 222, GAP = 28;
+  function applyTops () {
+    const vh = window.innerHeight;
+    scenes.forEach((el, i) => {
+      const stair = Math.min(BASE + i * STEP, PIN_MAX);
+      const bottomPin = vh - el.offsetHeight - GAP;
+      el.style.top = Math.min(stair, bottomPin) + 'px';
+      el.style.zIndex = String(i + 1);
+    });
+  }
+  applyTops();
+  window.addEventListener('resize', applyTops);
+  window.addEventListener('load', applyTops);
+  // Card heights change at runtime (guess widgets reveal, checkpoints render,
+  // sources expand); re-pin whenever they do.
+  if (typeof ResizeObserver === 'function') {
+    const ro = new ResizeObserver(applyTops);
+    scenes.forEach(el => ro.observe(el));
+  }
   scenes.forEach((el, i) => {
-    el.style.top = pinOf(i) + 'px';
-    el.style.zIndex = String(i + 1);
-    // Clicking a covered (earlier) chapter scrolls back so it rests at its
-    // pin, fully readable again. Links and footnote buttons keep working.
+    // Clicking a covered (earlier) chapter scrolls back to its start so it
+    // is fully readable again. Links, buttons and widgets keep working.
     el.addEventListener('click', e => {
-      if (e.target.closest && e.target.closest('a, button, input, .ydi, .checkpoint')) return;
+      if (e.target.closest && e.target.closest('a, button, input, .ydi, .checkpoint, details')) return;
       const next = scenes[i + 1];
-      const covered = next && next.getBoundingClientRect().top <= pinOf(i + 1) + 6;
+      const nextPin = next ? parseFloat(next.style.top || '0') : 0;
+      const covered = next && next.getBoundingClientRect().top <= Math.max(nextPin + 6, 0);
       if (!covered) return;
       const cs = getComputedStyle(story);
       let y = story.getBoundingClientRect().top + window.scrollY + (parseFloat(cs.paddingTop) || 0);
       for (let j = 0; j < i; j++) y += scenes[j].offsetHeight + 30; // 30 = stacked margin-bottom
-      window.scrollTo({ top: y - pinOf(i), behavior: 'smooth' });
+      window.scrollTo({ top: y - BASE, behavior: 'smooth' });
     });
   });
 })();
@@ -1822,11 +1846,17 @@
   const P = t => Math.min(1, t / 14); // grow-in progress
 
   const VIZ = {
+    'scene-nyc': { label: 'us export controls', href: '#viz-export', r: t => {
+      const p = P(t);
+      const steps = Math.max(1, Math.round(7 * p));
+      let stair = '';
+      for (let i = 0; i < 7; i++) stair += i < steps ? '_/' : '  ';
+      const blink = (t >> 2) % 2 ? 'x3 reversed' : '   reversed';
+      return 'us chip rules, 2022-26\n\n ' + stair + '\n 10 actions ' + blink + '\n\n policy that flips yearly\n is not infrastructure';
+    }},
     'scene-dublin-apr': { label: 'talent migration', href: '#viz-talent', r: t => {
       const p = P(t);
-      let flow = '';
-      for (let i = 0; i < 13; i++) flow += (i === t % 13) ? 'o' : '-';
-      return 'top researchers,\nwhere they end up\n\n US   ' + B(0.60 * p, 13) + ' 60%\n EU   ' + B(0.15 * p, 13) + ' ~15%\n else ' + B(0.25 * p, 13) + ' 25%\n\n EU ' + flow + '> US';
+      return 'EU-trained top researchers,\nwhere they end up working\n\n US   ' + B(0.60 * p, 13) + ' 60%\n EU   ' + B(0.15 * p, 13) + ' ~15%\n else ' + B(0.25 * p, 13) + ' 25%';
     }},
     'scene-berlin': { label: 'cloud dependence', href: '#viz-cloud', r: t => {
       const p = P(t);
@@ -1838,13 +1868,13 @@
       return 'of 24 EU languages\n\n strong  ' + B(3 / 24 * p, 13) + '  3\n partial ' + B(8 / 24 * p, 13) + '  8\n at risk ' + B(13 / 24 * p, 13) + ' 13\n\n 13 face digital extinction';
     }},
     'scene-tokyo': { label: 'japan’s AI bet', href: '#viz-tokyo', r: t => {
-      const lines = [' > exports nominal', ' > 3xp0rts r#str1ct3d', ' > exports RESTRICTED ??'];
-      return 'the sovereign bet\n\n GENIAC fund   ¥1T / 5yr\n rare-earth refining\n via china ' + B(0.90 * P(t), 10) + ' 90%\n\n' + lines[(t >> 3) % 3];
+      const p = P(t);
+      return 'the sovereign bet\n\n GENIAC fund   ¥1T / 5yr\n\n world rare-earth refining\n china ' + B(0.90 * p, 13) + ' 90%\n rest  ' + B(0.10 * p, 13) + ' 10%';
     }},
     'scene-stockholm': { label: 'defence-AI boom', href: '#viz-defense', r: t => {
       const p = P(t);
       const spin = '|/-\\'[t % 4];
-      return 'helsing, valuation\n\n 2025  ' + B(12 / 18 * p, 13) + ' €12B\n 2026e ' + B(p, 13) + ' ~$18B\n\n radar ' + spin + ' · defence is\n the saleable wedge';
+      return 'helsing, valuation\n\n 2025      ' + B(12 / 18 * p, 13) + ' €12B\n 2026 est. ' + B(p, 13) + ' ~$18B\n\n radar ' + spin + ' · defence is\n the saleable wedge';
     }},
     'scene-monroe': { label: 'capital flow', href: '#viz-capital', r: t => {
       let racks = '';
@@ -1889,6 +1919,51 @@
   const moreBody = document.getElementById('storyAsciiMoreBody');
   let activeId = null, since = 0, moreFor = null;
 
+  // ---- chronology timeline: the story jumps around 2026-27; this places
+  // the chapter you are reading on the real axis. ----
+  const WHEN = {
+    'scene-nyc':        { y: 2027, m: 4,  d: 15, label: 'Apr 2027' },
+    'scene-dublin-apr': { y: 2026, m: 4,  d: 23, label: 'Apr 2026' },
+    'scene-berlin':     { y: 2027, m: 4,  d: 16, label: 'Apr 2027' },
+    'scene-brussels':   { y: 2026, m: 6,  d: 3,  label: 'Jun 2026' },
+    'scene-tokyo':      { y: 2027, m: 2,  d: 19, label: 'Feb 2027' },
+    'scene-stockholm':  { y: 2026, m: 12, d: 7,  label: 'Dec 2026' },
+    'scene-monroe':     { y: 2026, m: 9,  d: 4,  label: 'Sep 2026' },
+    'scene-ottawa':     { y: 2027, m: 4,  d: 16, label: 'Apr 2027' },
+    'scene-paris':      { y: 2027, m: 4,  d: 17, label: 'Apr 2027' },
+    'scene-dublin-jan': { y: 2026, m: 1,  d: 12, label: 'Jan 2026' },
+    'scene-whitehouse': { y: 2027, m: 4,  d: 18, label: 'Apr 2027' },
+    'scene-ether':      { y: 2027, m: 4,  d: 25, label: 'Apr 2027' }
+  };
+  const tlWrap = document.getElementById('storyTimeline');
+  const tlSvg = document.getElementById('storyTimelineSvg');
+  const tlNow = document.getElementById('storyTimelineNow');
+  // x position: Jan 2026 .. May 2027 mapped onto 10..210
+  function tlX (w) { return 10 + (((w.y - 2026) * 12 + (w.m - 1) + w.d / 31) / 16.2) * 200; }
+  function renderTimeline () {
+    if (!tlWrap || !tlSvg) return;
+    const cur = WHEN[activeId];
+    if (!cur) { tlWrap.hidden = true; return; }
+    tlWrap.hidden = false;
+    const curT = (cur.y * 12 + cur.m) + cur.d / 31;
+    let out = '<line class="tl-axis" x1="6" y1="22" x2="214" y2="22"/>' +
+      '<text class="tl-year" x="10" y="40">JAN 2026</text>' +
+      '<text class="tl-year" x="210" y="40" text-anchor="end">MAY 2027</text>';
+    Object.keys(WHEN).forEach(id => {
+      const w = WHEN[id];
+      if (id === activeId) return;
+      const t = (w.y * 12 + w.m) + w.d / 31;
+      out += '<circle class="tl-tick' + (t < curT ? ' done' : '') + '" cx="' + tlX(w).toFixed(1) + '" cy="22" r="2.4"><title>' + w.label + '</title></circle>';
+    });
+    out += '<circle class="tl-now-ring" cx="' + tlX(cur).toFixed(1) + '" cy="22" r="5.4"/>' +
+      '<circle class="tl-tick now" cx="' + tlX(cur).toFixed(1) + '" cy="22" r="2.8"/>';
+    tlSvg.innerHTML = out;
+    if (tlNow) {
+      const idx = scenes.findIndex(sc => sc.id === activeId); // preface is 0
+      tlNow.textContent = 'now reading: ' + cur.label + (idx > 0 ? ' · chapter ' + idx : '');
+    }
+  }
+
   // The expandable explainer: borrow the chart's own curated info overlay
   // (what it shows, why it matters, sources) so the rail stays in sync with
   // the full card below.
@@ -1918,10 +1993,10 @@
     let cur = null;
     scenes.forEach(s => {
       const pin = parseFloat(s.style.top || '');
-      const limit = isNaN(pin) ? window.innerHeight * 0.45 : pin + 6;
+      const limit = isNaN(pin) ? window.innerHeight * 0.45 : Math.max(pin + 6, window.innerHeight * 0.45);
       if (s.getBoundingClientRect().top <= limit) cur = s.id;
     });
-    if (cur !== activeId) { activeId = cur; since = 0; draw(); }
+    if (cur !== activeId) { activeId = cur; since = 0; draw(); renderTimeline(); }
   }
 
   window.addEventListener('scroll', pickActive, { passive: true });
@@ -2022,3 +2097,73 @@
   renderScore();
 })();
 
+// ============================================================
+// CAST CARDS — every chapter opens with its characters as small RPG-style
+// dossiers (archetype, claim to fame, defining trait), so readers can parse
+// who is speaking without holding the whole story in their head.
+// ============================================================
+(function(){
+  const CAST = {
+    'scene-nyc': [
+      { name: 'The Editor-in-Chief', cls: 'gatekeeper', claim: 'decides what the world reads at breakfast', trait: 'will not print what is wrong' }
+    ],
+    'scene-dublin-apr': [
+      { name: 'The Researcher', cls: 'narrator', claim: 'moved from the San Francisco office to Dublin', trait: 'survived the layoff round' },
+      { name: 'Aaron', cls: 'policy lawyer', claim: 'kept OpenAI legal inside the EU', trait: 'hands you a hard drive on his way out' }
+    ],
+    'scene-berlin': [
+      { name: 'The German Chancellor', cls: 'cornered ally', claim: 'staked his reputation on Washington', trait: 'calls the bluff at 5am' },
+      { name: 'Pieter', cls: 'the honest aide', claim: 'cannot reach the White House', trait: 'fetches coffee, hears everything' }
+    ],
+    'scene-brussels': [
+      { name: 'The Executive President of Tech Sovereignty', cls: 'true believer, twice ignored', claim: 'gave this same speech six months ago', trait: 'throws away the script' }
+    ],
+    'scene-tokyo': [
+      { name: 'The Japanese Prime Minister', cls: 'iron politician', claim: 'sanctioned the \u00a51.067T sovereign model', trait: 'don\u2019t lie, don\u2019t tell the truth' },
+      { name: 'The Program Head', cls: 'scapegoat engineer', claim: 'warned the model wasn\u2019t ready', trait: 'speaks to his shoes' }
+    ],
+    'scene-stockholm': [
+      { name: 'The Swedish VC', cls: 'kingmaker', claim: 'founded the most popular streaming app on earth', trait: 'wants Stockholm to stay livable' },
+      { name: 'The Estonian', cls: 'fintech billionaire', claim: 'co-founded Wise', trait: 'asks the rude questions' },
+      { name: 'The Skype Co-founder', cls: 'elder statesman', claim: 'has seen this movie before', trait: 'blunt with old employees' }
+    ],
+    'scene-monroe': [
+      { name: 'The Electrician', cls: 'union local', claim: 'two years wiring Hyperion', trait: 'keeps his mouth shut, sees everything' }
+    ],
+    'scene-ottawa': [
+      { name: 'Evan Saul, The Minister', cls: 'newscaster turned minister', claim: 'runs Artificial Development and Digital Innovation', trait: 'weaponizes silence' },
+      { name: 'Mona Nasr, Chief Science Officer', cls: 'empiricist', claim: 'warned about this for years', trait: 'measures everything, forgives nothing' }
+    ],
+    'scene-paris': [
+      { name: 'The French President', cls: 'grandmaster', claim: 'raised $110B for French AI', trait: 'negotiates from the back of a moving car' }
+    ],
+    'scene-dublin-jan': [
+      { name: 'Aaron', cls: 'whistle, half blown', claim: 'rose fast by being trusted', trait: 'a USB card under his tongue' },
+      { name: 'Patrick', cls: 'the company\u2019s hand', claim: 'flew in from San Francisco overnight', trait: 'punctuates sentences like a boxer' }
+    ],
+    'scene-whitehouse': [
+      { name: 'The President', cls: 'the godfather', claim: 'a trillion-dollar budget', trait: 'makes offers no lab refuses' }
+    ],
+    'scene-ether': [
+      { name: 'The Coalition of the Doomed', cls: 'conference call', claim: 'prime ministers, chancellors, commissioners, VCs', trait: 'nobody signed' }
+    ]
+  };
+  function esc (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  Object.keys(CAST).forEach(id => {
+    const scene = document.getElementById(id);
+    if (!scene) return;
+    const header = scene.querySelector('.scene-header');
+    if (!header) return;
+    const row = document.createElement('div');
+    row.className = 'cast-row';
+    row.setAttribute('aria-label', 'Characters in this chapter');
+    row.innerHTML = CAST[id].map(c =>
+      '<div class="cast-card">' +
+        '<div class="cast-name">' + esc(c.name) + '</div>' +
+        '<div class="cast-stat"><b>class</b>' + esc(c.cls) + '</div>' +
+        '<div class="cast-stat"><b>claim</b>' + esc(c.claim) + '</div>' +
+        '<div class="cast-stat"><b>trait</b>' + esc(c.trait) + '</div>' +
+      '</div>').join('');
+    header.insertAdjacentElement('afterend', row);
+  });
+})();

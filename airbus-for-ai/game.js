@@ -275,7 +275,7 @@
     if (done) done();
   }
 
-  function dispatch (city, prose, title, fx) {
+  function dispatch (city, prose, title, fx, cast) {
     const el = document.createElement('article');
     el.className = 'g-dispatch';
     const dl = document.createElement('div');
@@ -287,6 +287,13 @@
       tt.className = 'g-ev-title';
       el.appendChild(tt);
       decodeIn(tt, title, { step: 1, tick: 30 });
+    }
+    if (cast && cast.length) {
+      const cr = document.createElement('div');
+      cr.className = 'g-cast';
+      cr.innerHTML = cast.map(c =>
+        '<span class="g-cast-chip"><b>' + esc(c.n) + '</b>' + esc(c.c) + '</span>').join('');
+      el.appendChild(cr);
     }
     const p = document.createElement('p');
     el.appendChild(p);
@@ -768,7 +775,7 @@
     else if (S.turn === 11) eventParis();
     else if (S.turn === 12) eventPentagon();
     else if (ev) {
-      dispatch(ev.city, ev.prose, ev.title, ev.fx);
+      dispatch(ev.city, ev.prose, ev.title, ev.fx, ev.cast);
       if (ev.auto) ev.auto(S);
       if (ev.choice) S.eventChoice = ev.choice;
     } else if (S.turn >= 13) {
@@ -806,7 +813,7 @@
 
   function eventPentagon () {
     const ev = D.EVENTS[12];
-    dispatch(ev.city, ev.prose, ev.title, ev.fx);
+    dispatch(ev.city, ev.prose, ev.title, ev.fx, ev.cast);
     const lost = [];
     Object.keys(D.LABS).forEach(k => {
       if (!S.labs[k].anchored) { S.labs[k].gone = true; lost.push(D.LABS[k].name); }

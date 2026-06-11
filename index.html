@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=42">
+<link rel="stylesheet" href="styles.css?v=45">
 </head>
 <body>
 
@@ -42,7 +42,7 @@
 <section class="hero" id="top">
   <div class="hero-eyebrow"><span class="dot"></span> A near-future scenario</div>
   <h1>The Airbus for AI Story</h1>
-  <p class="hero-sub">Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab. France&rsquo;s flagship, Mistral, holds under 4% of its home market. The Airbus for AI proposal sketches what middle powers might build if they pooled their labs, compute, and people into one public AI company. The story below traces how that coalition would form, across eleven chapters and five capitals.</p>
+  <p class="hero-sub">Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab. France&rsquo;s flagship, Mistral, holds under 4% of its home market. The Airbus for AI proposal sketches what middle powers might build if they pooled their labs, compute, and people into one public AI company. The story below traces how that coalition would form, across twelve chapters, a preface, and six cities.</p>
   <div class="hero-cta">
     <a class="btn btn-ghost hero-btn" href="summary.html">Read the summary &rarr;</a>
   </div>
@@ -54,10 +54,48 @@
 <div class="experience-columns">
 <article class="story" id="story">
 
-  <!-- 1. Dublin, April 2026 -->
-  <section class="scene" data-viz="talent-migration" id="scene-dublin-apr" data-country-id="372" data-country-iso="IE">
+  <!-- 0. Preface -->
+  <section class="scene" id="scene-preface" data-country-id="" data-country-iso="">
+    <header class="scene-header">
+      <div class="scene-kicker">Preface</div>
+      <h2 class="scene-title">The State of Global Technology Sovereignty</h2>
+    </header>
+    <div class="scene-prose">
+      <p>What we&rsquo;ve imagined is a speculative future scenario that explores the weaponization of large technology players for political purposes that ultimately threaten the sovereignty of any nation reliant upon major US infrastructure.</p>
+      <p>Why? Problems naturally arise when a government does not control its own data, when a very small group of heavily-capitalized firms dominate access to tech infrastructure, the US and its potential ability to access data through the CLOUD Act and FISA, and there exists an ever-tightening relationship between these American-based tech companies and the current administration.</p>
+      <p>We want to stress the inevitability of a conflict in sovereignty when middle powers, like the EU, are dependent on access to infrastructure they don&rsquo;t own. We want this to be a call to action as the first step towards a coalition built to establish a greater degree of authorship over their own decision-making. AI systems require an unusually high degree of coordination amongst pieces of a process that are tightly complementary. The central sin of the EU and other middle powers is the inability to coordinate across national interests to build genuinely powerful technology infrastructure.</p>
+      <p>The scale is worldwide, and so is the process of coalition-building. But if proper democratic sovereignty is to be assured, then we must think together about the interoperability standards of a new general purpose technology. We can&rsquo;t continue to hide behind our borders and hope that we can chip away at the dependency problem alone. It&rsquo;s time to get on the phone.</p>
+      <p class="scene-part">2027: You Sleep With a Scorpion, You&rsquo;re Going to Get Stung</p>
+    </div>
+  </section>
+
+  <!-- 1. New York, April 2027 -->
+  <section class="scene" id="scene-nyc" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 1</div>
+      <a class="scene-data-link" href="#viz-export">Data &darr; US export controls</a>
+      <span class="scene-dateline">
+        Apr.15.2027<br>
+        New York, New York<br>
+        WSJ Headquarters: 1211 Avenue of the Americas
+      </span>
+      <h2 class="scene-title">New York</h2>
+    </header>
+    <div class="scene-prose">
+      <p>&ldquo;We go to print?&rdquo; the editor-in-chief both ordered and asked.</p>
+      <p>The team of journalists waited for someone to speak up. If they did decide to go ahead and publish, it was a global catastrophe and no one knew which angle from which to cover it. The China Hawks would be all over it, heaping praise on the courage of the United States to strike where they&rsquo;re weak. The people with a general interest in liberal democracy were horrified at the price we were extracting for something that felt almost trivial. And the tech reporters shuffled nervously, feeling discontented about how they might have missed the slow amassing of political alignment that led to such a pronouncement as this.</p>
+      <p>&ldquo;I don&rsquo;t even know why I&rsquo;m asking. This is my call. Can we be sure all the reporting is accurate? I will not publish something that is wrong, misguided, or misinformed.&rdquo;</p>
+      <p>The assembled team looked at each other and nodded that everything was sound. Leads had been followed up on. Facts had been checked. Sources had been verified. It was airtight.</p>
+      <p>&ldquo;Okay, then. Let&rsquo;s declare war.&rdquo;</p>
+      <p>The front page hit the printers. The aluminum plates pounding the thousands of pounds of coiled paper, each issue leading with bold print typeface: &ldquo;American Tech Threatens to Shut Off Power to Global Allies in Bid Against China.&rdquo;</p>
+      <p>By mid-morning the traffic on their website almost crashed their servers, while reporters were desperately fielding calls from their European colleagues, trying to find out when, exactly, the flip switched.</p>
+    </div>
+  </section>
+
+  <!-- 2. Dublin, April 2026 -->
+  <section class="scene" data-viz="talent-migration" id="scene-dublin-apr" data-country-id="372" data-country-iso="IE">
+    <header class="scene-header">
+      <div class="scene-kicker">Chapter 2</div>
       <a class="scene-data-link" href="#viz-talent">Data &darr; Talent migration</a>
       <span class="scene-dateline">
         Apr.23.2026<br>
@@ -88,18 +126,18 @@
   <!-- 2. Berlin, April 2027 -->
   <section class="scene" data-viz="compute-map" id="scene-berlin" data-country-id="276" data-country-iso="DE">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 2</div>
+      <div class="scene-kicker">Chapter 3</div>
       <a class="scene-data-link" href="#viz-cloud">Data &darr; Cloud dependence</a>
       <span class="scene-dateline">
         Apr.16.2027<br>
         Berlin, Germany<br>
-        NAME OF CHANCELLOR HOUSE
+        Schloss Bellevue
       </span>
       <h2 class="scene-title">Berlin</h2>
     </header>
     <div class="scene-prose">
-      <p>&ldquo;I&rsquo;m sorry but no one has been able to get through to Washington. It looks like they&rsquo;ve cut off comms until the dust settles.&rdquo; Friedrich Merz liked his advisors to be honest, including about his own failures. And their own.</p>
-      <p>&ldquo;Pieter, are you trying to tell me that there is not a single person in the White House we can speak to? At this point, I&rsquo;d take an intern.&rdquo; Merz&rsquo;s lengthy frame coiled in exasperation. &ldquo;I&rsquo;ve stood by these assholes, put my reputation on the line, been called a &lsquo;puppet&rsquo; for them. And what do I get for it? A cold shoulder? A place in the back of the line?&rdquo; he thought, mostly outloud, to himself.</p>
+      <p>&ldquo;I&rsquo;m sorry but no one has been able to get through to Washington. It looks like they&rsquo;ve cut off comms until the dust settles.&rdquo; The German Chancellor liked his advisors to be honest, including about his own failures. And their own.</p>
+      <p>&ldquo;Pieter, are you trying to tell me that there is not a single person in the White House we can speak to? At this point, I&rsquo;d take an intern.&rdquo; The Chancellor&rsquo;s lengthy frame coiled in exasperation. &ldquo;I&rsquo;ve stood by these assholes, put my reputation on the line, been called a &lsquo;puppet&rsquo; for them. And what do I get for it? A cold shoulder? A place in the back of the line?&rdquo; he thought, mostly outloud, to himself.</p>
       <p>He re-read the President&rsquo;s statement again, an hourly ritual ever since it was issued at midnight on a Friday.</p>
 
       <div class="doc-inset">
@@ -150,27 +188,27 @@
       </div>
 
       <p>The attached document came with a warning: Germany was being moved from Aligned to Managed Access.</p>
-      <p>Merz rubbed his eyelids. The clock on his laptop hit 5am. He was tired. He turned towards Pieter who had melted into the couch in the stately office where the atmosphere had turned thick and bilious with anxiety.</p>
+      <p>The Chancellor rubbed his eyelids. The clock on his laptop hit 5am. He was tired. He turned towards Pieter who had melted into the couch in the stately office where the atmosphere had turned thick and bilious with anxiety.</p>
       <p>&ldquo;Can you tell me how exposed we are? What&rsquo;s the risk in saying no?&rdquo;</p>
       <p>Pieter was scrolling on his laptop. It was a long time before either man said anything.</p>
       <p>&ldquo;It&rsquo;s difficult to say. We have some hedges so we won&rsquo;t go dark overnight, but even the things we advertise as sovereign are built on top of Microsoft or Google&rsquo;s technology.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-cloud" aria-label="See chart: Cloud dependence">2</button></p>
       <div class="ydi" data-ydi="cloud"></div>
-      <p>&ldquo;What about the other stuff. Hospitals, universities, our own ministiries that are supposed to be on the cutting edge?&rdquo;</p>
+      <p>&ldquo;What about the other stuff? Hospitals, universities, our own ministries that are supposed to be on the cutting edge?&rdquo;</p>
       <p>&ldquo;I just don&rsquo;t know. Any pause, any price increase, or limits to access would cause a massive panic. I don&rsquo;t think anyone has the full picture of who&rsquo;s using what.&rdquo;</p>
       <p>&ldquo;This is insane&hellip;&rdquo;</p>
-      <p>Pieter tried to interrupt before Channcellor Merz held his hand up: &ldquo;this would be signing off our death warrant. China gives us our motor parts, our chemicals, our incudstrial equipment. Besides: how could anyone build a profitable company in Germany if they can&rsquo;t do business with China? No. We can&rsquo;t do it. This bullying. I&rsquo;m calling the bluff. I&rsquo;m not signing off on anything.&rdquo;</p>
-      <p>&ldquo;Pieter?&rdquo; Chancellor Merz said after a long pause.</p>
+      <p>Pieter tried to interrupt before the Chancellor held his hand up: &ldquo;this would be signing off our death warrant. China gives us our motor parts, our chemicals, our industrial equipment. Besides: how could anyone build a profitable company in Germany if they can&rsquo;t do business with China? No. We can&rsquo;t do it. This bullying. I&rsquo;m calling the bluff. I&rsquo;m not signing off on anything.&rdquo;</p>
+      <p>&ldquo;Pieter?&rdquo; The Chancellor said after a long pause.</p>
       <p>&ldquo;Yes Chancellor?&rdquo;</p>
       <p>&ldquo;I need a large cup of coffee and to be on the phone with Macron in 15 minutes.&rdquo;</p>
       <p>Pieter, never one to disobey orders, lifted his tired legs and hurried out the door.</p>
-      <p>Chancellor Merz sat on his chair, a miracle of the ingenuity of German engineering, and rubbed his temples. His head hurt. Hands folded, he stared up at the ceiling, a decorative fir finish sourced from the Black Forest with a crystalline chandelier that hung lazily in the middle of the room. Chancellor Merz noticed the chandelier had a light that&rsquo;d been broken. He hadn&rsquo;t the faintest of clues when that happened.</p>
+      <p>The Chancellor sat on his chair, a miracle of the ingenuity of German engineering, and rubbed his temples. His head hurt. Hands folded, he stared up at the ceiling, a decorative fir finish sourced from the Black Forest with a crystalline chandelier that hung lazily in the middle of the room. The Chancellor noticed the chandelier had a light that&rsquo;d been broken. He hadn&rsquo;t the faintest of clues when that happened.</p>
     </div>
   </section>
 
   <!-- 3. Brussels, June 2026 -->
   <section class="scene" data-viz="lang-heatmap" id="scene-brussels" data-country-id="56" data-country-iso="BE">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 3</div>
+      <div class="scene-kicker">Chapter 4</div>
       <a class="scene-data-link" href="#viz-language">Data &darr; Language coverage</a>
       <span class="scene-dateline">
         Jun.03.2026<br>
@@ -180,25 +218,25 @@
       <h2 class="scene-title">Brussels</h2>
     </header>
     <div class="scene-prose">
-      <p>Henna Virkkunnen paced impatiently back and forth behind the stage that had been set up for the weekend&rsquo;s final presentation. Tech bureaucrats talking about tech bureaucracy while America is using AI models to start wars. At some point foreign policy jumps off the page, hops on a bomb, and lands somewhere in Iran, algorithmically positioned to explode with the most killing force. At some point, Virkunnen thought to herself, we need to consider the idea that these frontier labs moonlight as defense contractors. The US Department of Defense always did have deep pockets.</p>
-      <p>Virkkunnen had a speech planned. It would mention the policies, the plans, the initiatives. But she tossed it out this morning in favor of something much more like an invective. We sleptwalked through two entire decades of infrastructure planning, our somnolence rewarded with a sovereignty so far indebted to the Americans and the Chinese that she would hesitate to even use that word: sovereignty.</p>
+      <p>The EU had a role for this. The Executive President of Tech Sovereignty, Security, and Democracy paced impatiently back and forth behind the stage that had been set up for the weekend&rsquo;s final presentation. Tech bureaucrats talking about tech bureaucracy while America is using AI models to start wars. At some point foreign policy jumps off the page, hops on a bomb, and lands somewhere in Iran, algorithmically positioned to explode with the most killing force. At some point, she thought to herself, we need to consider the idea that these frontier labs moonlight as defense contractors. The US Department of Defense always did have deep pockets.</p>
+      <p>She had a speech planned. It would mention the policies, the plans, the initiatives. But she tossed it out this morning in favor of something much more like an invective. We sleptwalked through two entire decades of infrastructure planning, our somnolence rewarded with a sovereignty so far indebted to the Americans and the Chinese that she would hesitate to even use that word: sovereignty.</p>
       <p>The Finnish politician took her place at the podium, consulted briefly with the kindly AV crewmember who showed her how to change her now-useless slides using the remote, and then waited as the crowd piled in for the keynote address.</p>
-      <p>&ldquo;Advanced artificial intelligence algorithms created 37,000 bombing targets in the first few weeks of the Israel-Gaza conflict. I&rsquo;ll be the first to profess&hellip; I don&rsquo;t know what to do with that information. Our EU AI act exempts military use cases because we believe that the international humanitarian courts are better places for these issues to be adjudicated. But&rdquo; and here Henna stumbled a bit, &ldquo;I suppose I wanted to bring that up because these American AI companies are not just stumbling into American warfare, they&rsquo;re actively courting it. This is a new class of defense manufacturers that use technology we rely on, but over which we have no control.</p>
+      <p>&ldquo;Advanced artificial intelligence algorithms created 37,000 bombing targets in the first few weeks of the Israel-Gaza conflict. I&rsquo;ll be the first to profess&hellip; I don&rsquo;t know what to do with that information. Our EU AI act exempts military use cases because we believe that the international humanitarian courts are better places for these issues to be adjudicated. But&rdquo; and here she stumbled a bit, &ldquo;I suppose I wanted to bring that up because these American AI companies are not just stumbling into American warfare, they&rsquo;re actively courting it. This is a new class of defense manufacturers that use technology we rely on, but over which we have no control.</p>
       <p>The means we have to protect ourselves? Not ours. No one is saying we are going to war with the United States, but what happens if they decide to do something decidedly against the interest of the European people? Because it&rsquo;s not just our military ladies and gentlemen. Our entire digital chain is being controlled by outside forces. How can I stand in front of you and talk about sovereignty when this is the case? How can I pretend the situation is anything other than it is?&rdquo;</p>
       <p>The crowd began to shift uneasily in their seats, exchanging furtive glances with each other after days spent in optimistic conversations about the Continent Action Plan, the Gigafactories, data unions. Furious dreams of policies enacted and ground broken for new infrastructure.</p>
-      <p>Virkkunen continued: &ldquo;I had a different speech prepared. But I look around and see a lot of back-pattting and laziness. We are, in our wildest dreams, still years behind the United States and China in every perceivable metric that matters for our digital future. We have wagered our future on American and Chinese technology and we have lost it.&rdquo;</p>
+      <p>She continued: &ldquo;I had a different speech prepared. But I look around and see a lot of back-pattting and laziness. We are, in our wildest dreams, still years behind the United States and China in every perceivable metric that matters for our digital future. We have wagered our future on American and Chinese technology and we have lost it.&rdquo;</p>
       <p>The Finn paused. &ldquo;The situation might not seem so dire to those of us whose job isn&rsquo;t to plan for contingencies, but what if I were to put it to you this way? We control almost none of our own frontier-scale compute. We cannot reliably train, fine-tune, or deploy any sort of frontier model at scale using what we have today. Our public services are hosted on cloud layers supplied by American companies that run on datacenters we don&rsquo;t have. Our capital pools are diluted. Every week I hear of a new European startup that relocates to the US because they don&rsquo;t have the resources to grow here. Where is our Silicon Valley? Where are our innovation hubs? We are too fragmented, our efforts too aimless. So we end up as toothless regulators over technology that doesn&rsquo;t even belong to us.</p>
       <p>Some of the crowd walked out. Others stayed, rapt by what might come next.</p>
       <p>&ldquo;I look at this and I worry. But this is a worry that must reinforce a shared collective interest. As individual nations, none of us have the resources to compete with the US or China. But if we were to come together? If we were to pool our resources, play to each other&rsquo;s strengths? Then these policy proposals stop looking like a particularly fanciful child&rsquo;s dream book. We must be realists. We cannot afford to be anything else. We must set aside any sense of pride or sense of competitiveness we might have with each other, and form a whole that&rsquo;s greater than the sum of its parts. Otherwise we will continue to burn through money on projects that, when compared to what we&rsquo;re up against, are merely bait fish in a sea of sharks. My plea, if you could call it that, is to join me on a path forged by collaborative advantage.</p>
       <p>This is because AI is not like other technologies. It requires an unusually high degree of coordination amongst pieces of a process that are tightly complementary. As a fragmented group of countries who speak different languages <button class="story-fn" type="button" data-viz-pop="viz-language" aria-label="See chart: Language coverage">3</button>, have different goals, are bound by local customs, this might prove to be our greatest challenge yet. How can we move in lockstep? How can we work as one? If we can&rsquo;t answer that question, there&rsquo;s no use in maintaining the illusion of our sovereignty. It becomes just another word we use to hide the fact that we failed to come together to control our own future. That we let petty differences and inactivity push our own powers of self-determination to the side.&rdquo;</p>
       <div class="ydi" data-ydi="langs"></div>
-      <p>Virkkunen strode off the stage to scattered applause. Her assistant ran up to her with a bottle of water, &ldquo;that was fantastic! Much more stirring than the other speech.&rdquo;</p>
-      <p>Virkkunen unscrewed the cap and noisily chugged all of the bottle&rsquo;s liquids. She noticed her knees were still shaking.</p>
+      <p>She strode off the stage to scattered applause. Her assistant ran up to her with a bottle of water, &ldquo;that was fantastic! Much more stirring than the other speech.&rdquo;</p>
+      <p>The Finn unscrewed the cap and noisily chugged all of the bottle&rsquo;s liquids. She noticed her knees were still shaking.</p>
       <p>&ldquo;We&rsquo;ll see if they listen this time.&rdquo;</p>
       <p>&ldquo;Oh come on. They&rsquo;d be fools not to. Especially after what you said up there.&rdquo;</p>
-      <p>Virkkunen sat on the floor against a wall. The concrete was cool against the back of her neck. &ldquo;You want to know why it sounded rehearsed?&rdquo;</p>
+      <p>She sat on the floor against a wall. The concrete was cool against the back of her neck. &ldquo;You want to know why it sounded rehearsed?&rdquo;</p>
       <p>&ldquo;Why?&rdquo;</p>
-      <p>&ldquo;Because apart from the whole war part, I gave the same speech six months ago.&rdquo;</p>
+      <p>&ldquo;Because, apart from the whole war part, I gave the same speech six months ago.&rdquo;</p>
       <p>&ldquo;Well what happened?&rdquo;</p>
       <p>&ldquo;That&rsquo;s what worries me. Nothing&rdquo;</p>
     </div>
@@ -207,46 +245,47 @@
   <!-- 4. Tokyo, February 2027 -->
   <section class="scene" id="scene-tokyo" data-country-id="392" data-country-iso="JP">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 4</div>
+      <div class="scene-kicker">Chapter 5</div>
       <a class="scene-data-link" href="#viz-tokyo">Data &darr; Japan's AI bet</a>
       <span class="scene-dateline">
         Feb.19.2027<br>
         <span lang="ja-Latn">Naikaku S&#333;ri Daijin Kantei, Nagatach&#333;, Chiyoda</span>, Tokyo<br>
-        Office of the Prime Minister, Her Excellency Sanae Takaichi
+        Office of the Prime Minister
       </span>
       <h2 class="scene-title">Tokyo</h2>
     </header>
     <div class="scene-prose">
-      <p>China is the thorn in my side. For godssake it&rsquo;s the burden we&rsquo;ve all inherited. If people still think I&rsquo;m smarting from Xi&rsquo;s childish election gambit, they are blind to the fact that ruthlessness isn&rsquo;t a scarce resource. I can play the game, too. The &ldquo;dirty neck that lunges?.&rdquo; Obscene. Utterly obscene.</p>
+      <p>China is the thorn in my side. For god&rsquo;s sake it&rsquo;s the burden we&rsquo;ve all inherited. If people still think I&rsquo;m smarting from Xi&rsquo;s childish election gambit, they are blind to the fact that ruthlessness isn&rsquo;t a scarce resource. I can play the game, too. The &ldquo;dirty neck that lunges?.&rdquo; Obscene. Utterly obscene.</p>
       <p>Thirty researchers filed into the conference room. No cameras were allowed. Status updates, the numbers: give me something I can give to the public. I have a year and a half and no one seems to understand that this is a snap of your fingers in politics. A blink of an eye.</p>
       <p>They were afraid to make eye contact. &ldquo;Someone explain this to me like I&rsquo;m in elementary school, like I&rsquo;m in <span lang="ja-Latn">Sh&#333;gakk&#333;</span>. Can you do that?&rdquo;</p>
       <p>Nervous shuffling. It was the kind of silence you could see if you squinted hard enough. A quicksilver haze choking them all to passionately avoid being the one to admit that a $6.7bn investment shattered into a market sell-off and geopolitical tensions of which none of the frontier model researchers quite understood.</p>
-      <p>After Prime Minister Takaichi indicated that she wouldn&rsquo;t say a word until someone else did, the head of the sovereign model project stepped forward, eyes glued to his shoes.</p>
+      <p>After the Japanese Prime Minister indicated that she wouldn&rsquo;t say a word until someone else did, the head of the sovereign model project stepped forward, eyes glued to his shoes.</p>
       <p>&ldquo;Our model hallucinated.&rdquo;</p>
-      <p>Prime Minister Takaichi was unimpressed. &ldquo;Say more.&rdquo;</p>
+      <p>The Japanese Prime Minister was unimpressed. &ldquo;Say more.&rdquo;</p>
       <p>&ldquo;Well, the way an AI system like ours works is that it trains on large sets of data. Without getting too deep into the details, what happens is that the model generates words based on what is likely to come next. Again, given the given context before it.&rdquo;</p>
-      <p>Stern and impassive, Prime Minister Takaichi nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo; &ldquo;Yes, <span lang="ja-Latn">Takaichi Shush&#333;</span>. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
-      <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasnt&rsquo; good enough?&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-tokyo" aria-label="See chart: Japan's AI bet">4</button></p>
-      <p>The head of the program started to mumble something before Prime Minister Takaichi cut him off. &ldquo;This model, the one I promised all of our citizens would be imbued with traditional Japanese values. Technology they could trust. And you&rsquo;re telling me I lied to them? That I broke their trust?&rdquo;</p>
+      <p>Stern and impassive, the Japanese Prime Minister nodded for him to go along, but not before saying, &ldquo;speak to the room, not the floor. I can barely hear you.&rdquo; &ldquo;Yes, <span lang="ja-Latn">Takaichi Shush&#333;</span>. These hallucinations happen when the model guesses the wrong word, so to speak, to come next. When it isn&rsquo;t trained on enough computational power, then the model is more likely to&hellip;&rdquo; the head paused, choosing his next words carefully, &ldquo;guess rather than reason.&rdquo;</p>
+      <p>&ldquo;Please correct me if I get any of this wrong. But what you are telling me is that our AI model, the one I sanctioned&hellip;&rdquo; she paused and looked at a piece of paper, &ldquo;1.067 trillion yen to create wasn&rsquo;t good enough?&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-tokyo" aria-label="See chart: Japan's AI bet">4</button></p>
+      <p>The head of the program started to mumble something before the Japanese Prime Minister cut him off. &ldquo;This model, the one I promised all of our citizens would be imbued with traditional Japanese values. Technology they could trust. And you&rsquo;re telling me I lied to them? That I broke their trust?&rdquo;</p>
       <p>&ldquo;No&hellip; no&rdquo; stammered the program head.</p>
       <p>&ldquo;Why would no one tell me this before we integrated into all of our ministries? Or push it out to our major industries? Are we naive? Are we blind? Are we over-confident?&rdquo; A pause hung in the air before she continued with a different tenor in her voice, one that was slower and more poisonous. &ldquo;I just want to know what I&rsquo;m missing because I have to go on television in twenty minutes and explain why we can&rsquo;t make cars because China won&rsquo;t trade with us anymore.&rdquo;</p>
       <p>Realizing that he and the rest of his team would, in all likelihood be fired in a few minutes, he decided to lay bare the real reason that an executive briefing falsely concluded that, from a shipping-risk assessment, China looked to squeeze export restrictions on the trade of rare earth minerals.</p>
       <p>&ldquo;<span lang="ja-Latn">Takaichi Shush&#333;</span>: the model hallucinated, yes, because its training data might not have been robust. But it simply wasn&rsquo;t ready to analyze something as complicated as global trade. The timeline was too aggressive. It works fine for administrative work, but when we were asked to integrate it into larger, more complex systems we did send a warning that it wasn&rsquo;t ready.&rdquo;</p>
-      <p>Prime Minister Takaichi snapped her fingers to summon one of her aides. &ldquo;Find me that request.&rdquo;</p>
+      <p>The Japanese Prime Minister snapped her fingers to summon one of her aides. &ldquo;Find me that request.&rdquo;</p>
       <p>She gestured around the room to the research team: &ldquo;get comfortable, you&rsquo;re in this now, too.&rdquo;</p>
-      <p>Surveying the damage, Prime Minister Takaichi made a mental list of how to allocate blame. This was part of politics; any of those cliches about being the first through the breach had come from people who never won elections.</p>
+      <p>Surveying the damage, the Japanese Prime Minister made a mental list of how to allocate blame. This was part of politics; any of those cliches about being the first through the breach had come from people who never won elections.</p>
       <p>One of her aides appeared by her side, handing over the dossier the program head mentioned, in addition to a few other, more recent summaries of the state of the market. She skimmed the first document. It confirmed what the program head had told her. Fine. Somehow it didn&rsquo;t make it to her. She turned back toward her aide, &ldquo;get me an answer as to why this never made it to my desk.&rdquo;</p>
       <p>She had long ago put her phone on silent after the incident. It was too much for one person to handle. The sovereign model they had poured money into building lied and said China was planning to tighten controls on exports. This was shocking news, all of this time they had spent in a fragile peace being undermined so Japanese firms could make less cars? It didn&rsquo;t make much sense, but a response needed to follow. Even before they could launch an official statement, the trading houses and banks hedged violently. Soon, the story leaked and everything was in a freefall. They had to strengthen their position and talk tough. They wouldn&rsquo;t be bullied.</p>
       <p>China was unhappy, especially at what they saw as a broken tacit agreement about shipping lanes through the East China Sea. Restrictions followed, angier words were exchanged, and now we were in a market sell-off and a possible trade war.</p>
       <p>Everyone treated this as information that was acted on because it was true. Soon, she&rsquo;d have to face a nation and admit that this project they&rsquo;d invested so much money in, this dream of technological freedom and parity, had caused a major national crisis by simply being wrong. Nothing malicious, no hacking, no interference. Just misplaced confidence in a few misfiring words.</p>
-      <p>The problem, apparently, was that it drew conclusions it had no right to draw. But the entire ministerial system was reconfigured to run on this model. Prime Minister Takaichi shuddered to think of all of the other times it might have hallucinated. How many potential crises lay waiting in a model that wasn&rsquo;t fit for purpose, that was modeled to match the confidence the politicians that built it displayed. Confidence that, now, had vanished from Prime Minister Takaichi as she tried to come to grips with the consequences of a technology few seemed to understand, but upon which they all relied. Would she blame the hallucination and try to temper the blowback? Or doubledown and use this as an opportunity to hammer China? The path ahead was unclear and full of pitfalls. She needed to tread carefully. Don&rsquo;t lie, but don&rsquo;t tell the truth. Hallucinate. She allowed herself a laugh. The TV crew would be there any minute. Time to address a reeling nation. Time to play politics.</p>
+      <p>The problem, apparently, was that it drew conclusions it had no right to draw. But the entire ministerial system was reconfigured to run on this model. The Japanese Prime Minister shuddered to think of all of the other times it might have hallucinated. How many potential crises lay waiting in a model that wasn&rsquo;t fit for purpose, that was modeled to match the confidence the politicians that built it displayed. Confidence that, now, had vanished from the Japanese Prime Minister as she tried to come to grips with the consequences of something few seemed to understand, but quietly became the backbone of their entire governmental decision-making apparatus.</p>
+      <p>Would she blame the hallucination and try to temper the blowback? Or doubledown and use this as an opportunity to hammer China? The path ahead was unclear and full of pitfalls. She needed to tread carefully. Don&rsquo;t lie, but don&rsquo;t tell the truth. Hallucinate. She allowed herself a laugh. The TV crew would be there any minute. Time to address a reeling nation. Time to play politics.</p>
     </div>
   </section>
 
   <!-- 5. Stockholm, December 2026 -->
   <section class="scene" data-viz="coalition-revenue" id="scene-stockholm" data-country-id="752" data-country-iso="SE">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 5</div>
+      <div class="scene-kicker">Chapter 6</div>
       <a class="scene-data-link" href="#viz-defense">Data &darr; Defence-AI boom</a>
       <span class="scene-dateline">
         Dec.07.2026<br>
@@ -256,34 +295,34 @@
       <h2 class="scene-title">Stockholm</h2>
     </header>
     <div class="scene-prose">
-      <p>Daniel Ek has long been accustomed to &ldquo;founder speak.&rdquo; The practiced staccato of a personality that fits between the beginning and end of a slide deck, the nervous changes in vocal registers when any sort of dissonant question is asked, the silent remuneration that mimics thinking on an answer long decided.</p>
-      <p>The truth is, no matter how much money he might give to any one of these founders looking to accelerate their path to market, the first thing they&rsquo;d need to do to have any chance of success would be to move to Silicon Valley. Ek had done it himself. The same pitching rounds, rejections, failures, practicing in the mirror to hit the right notes at the right time &ndash; all that comes from being an entrepreneur. Although he liked to remember with a bit of a smirk that raising money in 2008 was a much different proposition than in 2026.</p>
-      <p>He wasn&rsquo;t hearing any pitches today. Ek&rsquo;s worries had grown as his own company and fortune amassed. It wasn&rsquo;t from an especially philanthropic part of his heart that this urge originated, but moreso from a matter of Scandanavian common sense: how likely is it that Stockholm will remain the type of place Ek wants to continue to live in if all the founders and the builders and the technologists need to move to California? It was in this firmament of state-sanctioned computer access and ideological alignment that his own aspirations were built. He wasn&rsquo;t so narrow minded as to think his was a unique case. In a dark room in his soul he harbored that same feeling that we all have, though none of us particularly like to admit to its existence, even as it provides a sustenance we can&rsquo;t live without, that he was special, that circumstances could have never blocked his path. In Silicion Valley or in Stockholm.</p>
+      <p>The Swedish VC has long been accustomed to &ldquo;founder speak.&rdquo; The practiced staccato of a personality that fits between the beginning and end of a slide deck, the nervous changes in vocal registers when any sort of dissonant question is asked, the silent remuneration that mimics thinking on an answer long decided.</p>
+      <p>The truth is, no matter how much money he might give to any one of these founders looking to accelerate their path to market, the first thing they&rsquo;d need to do to have any chance of success would be to move to Silicon Valley. He had done it himself. The same pitching rounds, rejections, failures, practicing in the mirror to hit the right notes at the right time &ndash; all that comes from being an entrepreneur. Although he liked to remember with a bit of a smirk that raising money in 2008 was a much different proposition than in 2026.</p>
+      <p>He wasn&rsquo;t hearing any pitches today. His worries had grown as his own company and fortune amassed. It wasn&rsquo;t from an especially philanthropic part of his heart that this urge originated, but more so from a matter of Scandinavian common sense: how likely is it that Stockholm will remain the type of place he wants to continue to live in if all the founders and the builders and the technologists need to move to California? It was in this firmament of state-sanctioned computer access and ideological alignment that his own aspirations were built. He wasn&rsquo;t so narrow minded as to think this was a unique case. In a dark room in his soul he harbored that same feeling that we all have, though none of us particularly like to admit to its existence, even as it provides a sustenance we can&rsquo;t live without, that he was special, that circumstances could have never blocked his path. In Silicon Valley or in Stockholm.</p>
       <p>But this was not a feeling he was proud of (none of us are), so he&rsquo;d called an assembly of minds to plan through an approach to combat the magnetic pull of Silicon Valley capital and talent.</p>
-      <p>He had Shakil, his Prima Materia cofounder and confidante, Pia Michel, his Head of Science Translation, Nikklas Zennstr&ouml;m, former founder of Skype and now a VC, and Taavet Hinrikus, the co-founder of Wise, one of the first Estonian billionaires, and now also a VC who backs European startups.</p>
+      <p>He had his Prima Materia cofounder and confidante, his Head of Science Translation, the former founder of Skype and now a VC, and the co-founder of Wise, one of the first Estonian billionaires, and now also a European-minded VC.</p>
       <p>The office was sleek and sanitary, overlooking the Baltic Sea which was a dark maelstrom of frozen ice caps frothing around in the violent windswept waves framed only by the Christmas lights of the city&rsquo;s downtown that hung above it, the sun having set long ago.</p>
-      <p>&ldquo;The U.S. firms are leaving. I&rsquo;m sure you all saw what happened with OpenAI&rsquo;s European offices, but there are rumors of something bigger happening,&rdquo; Ek began.</p>
-      <p>&ldquo;Is this the time to make the regulatory push? I&rsquo;m hearing from founders every single day that it&rsquo;s impossible for them to scale if they stay in Europe. Maybe we doubledown. Jobs are at risk. The atmosphere is too heavy. It suffocates anything that tries to grow,&rdquo; Hinrikus responded.</p>
-      <p>Zennstr&ouml;m, the oldest in the group, was more blunt with one of his earliest employees. &ldquo;You know what Daniel is talking about, Taavet. The Americans are leaving because they are about to drop a bomb on us. Actually: a bomb would be preferable to what they&rsquo;re going to do.&rdquo;</p>
+      <p>&ldquo;The U.S. firms are leaving. I&rsquo;m sure you all saw what happened with OpenAI&rsquo;s European offices, but there are rumors of something bigger happening,&rdquo; the initiator of the gathering began.</p>
+      <p>&ldquo;Is this the time to make the regulatory push? I&rsquo;m hearing from founders every single day that it&rsquo;s impossible for them to scale if they stay in Europe. Maybe we doubledown. Jobs are at risk. The atmosphere is too heavy. It suffocates anything that tries to grow,&rdquo; the Estonian responded.</p>
+      <p>The co-founder of Skype, the oldest in the group, was more blunt with one of his earliest employees. &ldquo;You know what Daniel is talking about, Taavet. The Americans are leaving because they are about to drop a bomb on us. Actually: a bomb would be preferable to what they&rsquo;re going to do.&rdquo;</p>
       <p>&ldquo;What? You don&rsquo;t seriously think they&rsquo;d shut off access like that? We&rsquo;re a huge market&hellip;&rdquo;</p>
-      <p>&ldquo;Not as big as the U.S. government&rdquo; Shakil interrupted. &ldquo;Why are we kidding ourselves here? OpenAI, Anthropic, Gemini&hellip; they&rsquo;re just startegic assets for the US to turn on and off when the time is right. You want to know the best way to make money in America? Get a defense contract. All of a sudden those annoying questions about profitability&hellip; vanish&rdquo; and Shakil wove his hands outwards to punctuate his point.</p>
-      <p>&ldquo;What I&rsquo;m saying&rdquo; Ek continued, &ldquo;is that we haven&rsquo;t been very good citizens of Europe. Of course, we all did what we had to do to make money so we could enjoy views like this. But we have aided and abetted the gutting of Europe&rsquo;s technology ecosystem by letting Silicon Valley do whatever they want. And now, it looks like we&rsquo;re all going to reap the consequences.&rdquo;</p>
-      <p>Pia passed around a piece of paper to each of the four men.</p>
-      <p>&ldquo;What is this?&rdquo; Zennst&ouml;m asked, looking down through his thickly framed glasses.</p>
-      <p>&ldquo;A liferaft,&rdquo; Pia responded.</p>
-      <p>Ek stood up: &ldquo;We cannot be caught flat-footed when the shoe finally drops and the Americans force us to choose between them or the Chinese. It&rsquo;s a farce that it&rsquo;s even come to this. What I&rsquo;m proposing here is that we pool our collective capital and accelerate the development of Helsing into a multilateral defense company for the entire EU.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-defense" aria-label="See chart: Defence-AI boom">5</button></p>
-      <p>&ldquo;Your pet drone venture you mean?&rdquo; Hinrikus said.</p>
-      <p>&ldquo;If we demonstrate a broad coalition of AI-first defense capabilities, it shows that we&rsquo;re not relying on Department of War technology that we don&rsquo;t even own. It&rsquo;s proof of concept that with private capital we at least have the capabilities to build companies that matter. Not just consumer tech.&rdquo;</p>
+      <p>&ldquo;Not as big as the U.S. government&rdquo; the co-founder of Prima Materia interrupted. &ldquo;Why are we kidding ourselves here? OpenAI, Anthropic, Gemini&hellip; they&rsquo;re just strategic assets for the US to turn on and off when the time is right. You want to know the best way to make money in America? Get a defense contract. All of a sudden those annoying questions about profitability&hellip; vanish&rdquo; and he wove his hands outwards to punctuate his point.</p>
+      <p>&ldquo;What I&rsquo;m saying&rdquo; the Swedish VC continued, &ldquo;is that we haven&rsquo;t been very good citizens of Europe. Of course, we all did what we had to do to make money so we could enjoy views like this. But we have aided and abetted the gutting of Europe&rsquo;s technology ecosystem by letting Silicon Valley do whatever they want. And now, it looks like we&rsquo;re all going to reap the consequences.&rdquo;</p>
+      <p>The Head of Science Translation passed around a piece of paper to each of the four men.</p>
+      <p>&ldquo;What is this?&rdquo; the Skype co-founder asked, looking down through his thickly framed glasses.</p>
+      <p>&ldquo;A liferaft,&rdquo; the paper-passer responded.</p>
+      <p>The Swedish VC stood up: &ldquo;We cannot be caught flat-footed when the shoe finally drops and the Americans force us to choose between them or the Chinese. It&rsquo;s a farce that it&rsquo;s even come to this. What I&rsquo;m proposing here is that we pool our collective capital and accelerate the development of Helsing into a multilateral defense company for the entire EU.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-defense" aria-label="See chart: Defence-AI boom">5</button></p>
+      <p>&ldquo;Your pet drone venture you mean?&rdquo; the Estonian said.</p>
+      <p>&ldquo;If we demonstrate a broad coalition of AI-first defense capabilities, it shows that we&rsquo;re not relying on Department of War technology that we don&rsquo;t even own. It&rsquo;s proof of concept that with private capital we at least have the capabilities to build companies that matter. Not just consumer tech. We&rsquo;re already working in France with Mistral. This can work. Public and private enterprise. For the good of the people and of industry. It starts with protection. Security. Fighting them at the source of their strength.&rdquo;</p>
       <p>There was a long drawn out discussion about the structure of the company: who would pay for what, which markets they&rsquo;d target, how they&rsquo;d market themselves to nations with their own standing armies. But a broad consensus was reached. They would try it.</p>
-      <p>They would raise money and then take Helsing public, stay in Europe, and make sure no one is hiding behind the walls of their own borders. When the day would finally come for an American blockade on technical infrastructure, Helsing would be there as evidence that key strategic capabilities could be built in house. It would soften the blow. But to Ek, who had been bemoaning the regulatory atmosphere of the EU for decades, it would still need to hurt. He wanted to make his point. They will need to back us because they won&rsquo;t have any other option. A transnational AI-first defense company. This buys them time. No one likes to look weak. And when the compute shutoff happens, everyone is going to look very weak. But Helsing could prove that the EU could bite back right where the Americans invest the most.</p>
-      <p>The room cleared and Ek was left with Michels and Khan. They had thirty minutes before they courted their next round of suitors. Outside, the sea continued to rage while underneath it the data communication cables sat ferrying pulses back and forth between continents. You cut one of those cables and it&rsquo;s an act of war. Such a thin, fragile thing. It&rsquo;s easy to forget that the world exists perpetually on an axis between aggression and cooperation. That at some point the symbolism of words like &ldquo;sovereignty&rdquo; or &ldquo;independence&rdquo; meet their real world referent under a freezing sea where lasers propel data down fiber optic cables at the speed of light. Someone surely is trying to control the subsea infrastructure. But, looking at the undulating frozen wildness of the Baltic, one must assume a limit to what can be bought, controlled, and coerced without a response in kind.</p>
+      <p>They would raise money and then take Helsing public, stay in Europe, and make sure no one is hiding behind the walls of their own borders. When the day would finally come for an American blockade on technical infrastructure, Helsing would be there as evidence that key strategic capabilities could be built in house. It would soften the blow. But to the Swede, who had been bemoaning the regulatory atmosphere of the EU for decades, it would still need to hurt. He wanted to make his point. They will need to back us because they won&rsquo;t have any other option. A transnational AI-first defense company. This buys them time. No one likes to look weak. And when the compute shutoff happens, everyone is going to look very weak. But Helsing could prove that the EU could bite back.</p>
+      <p>The room cleared and the Swede was left with his cofounders. They had thirty minutes before they courted their next round of suitors. Outside, the sea continued to rage while underneath it the data communication cables sat ferrying pulses back and forth between continents. You cut one of those cables and it&rsquo;s an act of war. Such a thin, fragile thing. It&rsquo;s easy to forget that the world exists perpetually on an axis between aggression and cooperation. That at some point the symbolism of words like &ldquo;sovereignty&rdquo; or &ldquo;independence&rdquo; meet their real world referent under a freezing sea where lasers propel data down fiber optic cables at the speed of light. Someone surely is trying to control the subsea infrastructure. But, looking at the undulating frozen wildness of the Baltic, one must assume a limit to what can be bought, controlled, and coerced without a response in kind.</p>
     </div>
   </section>
 
   <!-- 6. Monroe LA, September 2026 -->
   <section class="scene" data-viz="capital-flow" id="scene-monroe" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 6</div>
+      <div class="scene-kicker">Chapter 7</div>
       <a class="scene-data-link" href="#viz-capital">Data &darr; Capital flow</a>
       <span class="scene-dateline">
         Sep.04.2026<br>
@@ -294,19 +333,20 @@
     </header>
     <div class="scene-prose">
       <p>Finally beginning to cool down. Jesus what a summer. Standing all day in this sticky heat with the highlighter yellow vest shouting at HVAC technicians. Boss riding on me all the time, shouting about deadlines. Yeah, I heard you the first time, man. Foreman for a project like this is bound to be an asshole. Usually some guy they bring in from outside who hangs his degree in his A/C cooled trailer while we&rsquo;re out here sweating in the goddamn Louisiana summertime dodging thunderstorms and wiring switchgears.</p>
-      <p>You know I&rsquo;ve been on this project for two years, right? It pays well, so I can&rsquo;t complain too much. But they tried to bring in some non-union guys at one point and we had to throw some muscle around to make sure we weren&rsquo;t being pushed out of our own backyard.</p>
-      <p>Who&rsquo;s they? Shit man: I don&rsquo;t know. This is where the work is, though. Costs something like $27 billion to build. They&rsquo;re calling it &ldquo;Hyperion.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-capital" aria-label="See chart: Capital flow">6</button> Funny name. Usually the work is a little less, let&rsquo;s say, grandiose than this. But sometimes just getting to where you need to go is a maze. I was almost late to a shift because I got stuck behind a bunch of guys laying concrete. It&rsquo;s a mess. Guess that&rsquo;s what happens when you hire a few thousand guys to build a big, complicated building that&rsquo;s pulling a lot of megawatts.</p>
-      <p>It&rsquo;s a steady job, man, I can&rsquo;t complain. It&rsquo;s where the work is right now. I&rsquo;m getting paid. Hey if I weren&rsquo;t you think I&rsquo;d be in the middle of nowhere Louisiana, man? Hell no. I&rsquo;d probably be installing wiring at some apartment complex in Dallas. I go where the money is. A leaf in the wind, man. I figure I got another few months of this gig before moving onto another one of these data centers. We&rsquo;ll see if the grid can handle it. I&rsquo;ve been seeing some stuff I&rsquo;ve never seen tried before. I keep my mouth shut. That way the paycheck keeps coming. If it breaks, hey, maybe they&rsquo;ll call us back to fix it.</p>
+      <p>You know I&rsquo;ve been on this project for two years, right? It pays well, so I can&rsquo;t complain too much. But they tried to bring in some non-union guys at one point, and we had to throw some muscle around to make sure we weren&rsquo;t being pushed out of our own backyard.</p>
+      <p>Who&rsquo;s they? Shit man: I don&rsquo;t know. This is where the work is, though. Costs something like $27 billion to build. They&rsquo;re calling it &ldquo;Hyperion.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-capital" aria-label="See chart: Capital flow">6</button> Funny name. Usually the work is a little less, let&rsquo;s say, fancy than this. They got the governor up from Baton Rouge to cut some ribbon, and the mayor talking about this, that, and the other. I stopped listening about halfway through. Figured, hell, it was a waste of my time. Everybody talking about the future and here we got at least another couple of years before this thing is up and running. You ask me, it&rsquo;s the present they got to worry about.</p>
+      <p>This whole site is a disaster. I was almost late to a shift because I got stuck behind a bunch of guys laying concrete. It&rsquo;s a mess. Here we got thousands of guys, nowhere good to get a drink, and the amount of megawatts this thing will be pulling is crazy. Never seen anything like it before in my life.</p>
+      <p>But hey. It&rsquo;s a steady job, man, I can&rsquo;t complain. It&rsquo;s where the work is right now. I&rsquo;m getting paid. If I weren&rsquo;t you think I&rsquo;d be in the middle of nowhere Louisiana, man? Hell no. I&rsquo;d probably be installing wiring at some apartment complex in Dallas. I go where the money is. A leaf in the wind, man. I figure I got another few months of this gig before moving onto another one of these data centers. We&rsquo;ll see if the grid can handle it. I&rsquo;ve been seeing some stuff I&rsquo;ve never seen anyone try before. But I keep my mouth shut. That way the paycheck keeps coming. If it breaks, hey, maybe they&rsquo;ll call us back to fix it.</p>
     </div>
   </section>
 
   <!-- 7. Ottawa, April 2027 -->
   <section class="scene" id="scene-ottawa" data-country-id="124" data-country-iso="CA">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 7</div>
+      <div class="scene-kicker">Chapter 8</div>
       <a class="scene-data-link" href="#viz-ottawa">Data &darr; Why pool</a>
       <span class="scene-dateline">
-        Apr.17.2027<br>
+        Apr.16.2027<br>
         Ottawa, Canada<br>
         24 Sussex Drive
       </span>
@@ -315,33 +355,48 @@
     <div class="scene-prose">
       <p>&ldquo;Yeah I read it, do you think he&rsquo;s read it yet?&rdquo;</p>
       <p>&ldquo;No. Not a chance. His phone hasn&rsquo;t stopped ringing since midnight.&rdquo;</p>
-      <p>Evan Solomon and Mona Nemer were huddled together in the main foyer of the Prime Minister&rsquo;s residence, postures broken by the weight of the day&rsquo;s news, frantic in a way that a mix of sleeplessness and necessity seem to produce while every word to growa in size and importance as a crisis brews and answers aren&rsquo;t arriving fast.</p>
-      <p>&ldquo;Who do you think is going to get fired first: you or me?&rdquo; Solomon wondered aloud.</p>
-      <p>&ldquo;You.&rdquo; Nemer responded in a blunted, tonally flat response. &ldquo;Isn&rsquo;t your job to look out for this kind of thing?&rdquo;</p>
-      <p>It was true, Solomon, with his newscaster jawline and molded look that arrived after a career in the political arena, is the Minister of Artificial Development and Digital Innovation. But more comfortable being the one asking the questions, than answering them, it was difficult to come to any other conclusion that he&rsquo;d been caught flat-footed, and Nemer, a sharply cut, no-nonsense Lebanese chemist and one of Canada&rsquo;s Chief Science Officers, was in no position to let Solomon off the hook after frequently bringing up AI safety concerns as early as 2025.</p>
-      <p>Solomon let the question linger. If there was one thing he knew as an interviewer was the power of saying absolutely nothing. Most people find silence so unbearable that they begin to backtrack. Not Solomon. He was fine to sit in the discomfort.</p>
-      <p>Nemer couldn&rsquo;t take it anymore; a scientist by training she was grounded in the empirical backings of things that could be measured, responsibilities that could be held. &ldquo;2 billion dollars we&rsquo;ve spent through ISED to try and solve our infrastructure problem. <button class="story-fn" type="button" data-viz-pop="viz-ottawa" aria-label="See chart: Why pool">7</button> Where has that money gone? It&rsquo;s a derelection of duty, Evan.&rdquo;</p>
+      <p>Evan Saul and Mona Nasr were huddled together in the main foyer of the Prime Minister&rsquo;s residence, postures broken by the weight of the day&rsquo;s news, frantic in a way that a mix of sleeplessness and necessity seem to produce while every word to growa in size and importance as a crisis brews and answers aren&rsquo;t arriving fast.</p>
+      <p>&ldquo;Who do you think is going to get fired first: you or me?&rdquo; Saul wondered aloud.</p>
+      <p>&ldquo;You.&rdquo; Nasr responded in a blunted, tonally flat response. &ldquo;Isn&rsquo;t your job to look out for this kind of thing?&rdquo;</p>
+      <p>It was true, Saul, with his newscaster jawline and molded look that arrived after a career in the political arena, is the Minister of Artificial Development and Digital Innovation. But more comfortable being the one asking the questions, than answering them, it was difficult to come to any other conclusion that he&rsquo;d been caught flat-footed, and Nasr, a sharply cut, no-nonsense Lebanese chemist and one of Canada&rsquo;s Chief Science Officers, was in no position to let Saul off the hook after repeatedly bringing up AI safety concerns for years.</p>
+      <p>Saul let the question linger. If there was one thing he knew as an interviewer was the power of saying absolutely nothing. Most people find silence so unbearable that they begin to backtrack. Not Saul. He was fine to sit in the discomfort.</p>
+      <p>Nasr couldn&rsquo;t take it anymore. A scientist by training and by disposition, she was grounded in the empirical backings of things that could be measured, responsibilities that could be held. &ldquo;2 billion dollars we&rsquo;ve spent through ISED to try and solve our infrastructure problem. <button class="story-fn" type="button" data-viz-pop="viz-ottawa" aria-label="See chart: Why pool">7</button> Where has that money gone? It&rsquo;s a derelection of duty, Evan.&rdquo;</p>
       <div class="ydi" data-ydi="capital"></div>
-      <p>At this, Solomon snapped. &ldquo;$2 billion is pocket change! It&rsquo;s hard enough to get a bunch of bureaucrats to agree on something they already understand: I&rsquo;m dealing with a bunch of career politicians who don&rsquo;t know what &lsquo;LLM&rsquo; stands for. That money is being pissed away on different pet projects for people trying to get re-elected for data centers they know we don&rsquo;t have the money to build. But hey: they can say &lsquo;not our problem, we were told we had cash on hand to make these.&rsquo;&rdquo;</p>
-      <p>&ldquo;Okay, how much would these limits compromise the integrity of the models we use?&rdquo;</p>
-      <p>&ldquo;I&rsquo;ve no idea. If our model weights become restricted then all of the supercomputing facilities we want to build become useless. And from a business point of view? It would severely damage any Canadian startup&rsquo;s ability to grow if they can&rsquo;t use American AI systems. I&rsquo;m not a doomsday prophet, but it could be bad. And I mean really bad.&rdquo;</p>
-      <p>Nemer&rsquo;s watch beeped. It was 6am and the two of them shuffled into a conference room where they sat around a huge mahogany table, framed against the backdrop of deeply lacquered wood finishes, landscape paintings of the Canadian outdoors, and a reminder of the modern world that sat, wires and all, in the middle of the table. A Cisco telephone that was about to call together the AI Strategy Taskforce. Solomon and Nemer looked small in the tableau of the room, its mis-en-scene framing them unnaturally against the table&rsquo;s empty depth of field.</p>
-      <p>Marc-Andr&eacute; Blanchard, the PM&rsquo;s Chief of Staf, was the first to speak. &ldquo;I would like to formally and emphatically underline the fact that we have signed 21 bilateral agreements with China as recently as January of last year. So before we get into the technical speak, I have to stay that is in our best interest as a country that we cannot stab one of our biggest allies in the fucking back. An ally that, might I remind you, has actually reduced tariffs on steel and aluminum, and invested heavily in our manufacturing sectors. And on the other side we have our neighbors who keep trying to negotiate trade deals that will catch us with our pants down. I&rsquo;m not signing off on this. End of discussion. We&rsquo;ll double down with China if we need to. I don&rsquo;t care. This is an unprecedented act of aggression against us.&rdquo;</p>
-      <p>His voice was tinny and loud, the telephone catching the high octaves of his near-shouting vocal range. A chorus of different voices immediately jumped in after and there was a moment of polyphonic chaos before Solomon had to step in and loudly shout &ldquo;one at a time, please.&rdquo; Please. Of course: he is Canadian, after all.</p>
+      <p>At this, Saul snapped. &ldquo;$2 billion is pocket change! It&rsquo;s hard enough to get a bunch of bureaucrats to agree on something they already understand: I&rsquo;m dealing with a bunch of career politicians who don&rsquo;t know what &lsquo;LLM&rsquo; stands for. That money is being pissed away on different pet projects for people trying to get re-elected for data centers they know we don&rsquo;t have the money to build. But hey: they can say &lsquo;not our problem, we were told we had cash on hand to make these.&rsquo;&rdquo;</p>
+      <p>&ldquo;Okay, well how much would these limits compromise the integrity of the models we use?&rdquo;</p>
+      <p>&ldquo;I&rsquo;ve no idea. If our model weights become restricted then all of the supercomputing facilities we want to build become useless. And from a business point of view? It would severely damage any Canadian startup&rsquo;s ability to grow if they can&rsquo;t use American AI systems.&rdquo; Saul clasped his hands together and shrugged his shoulders, &ldquo;It&rsquo;s really bad. It&rsquo;s not the end. But it could be.&rdquo;</p>
+      <p>Nasr&rsquo;s watch beeped. It was 6am and the two of them shuffled into a conference room where they sat around a huge mahogany table, framed against the backdrop of deeply lacquered wood finishes, landscape paintings of the Canadian outdoors, and a reminder of the modern world that sat, wires and all, in the middle of the table. A Cisco telephone that was about to call together the AI Strategy Taskforce. Saul and Nasr looked small in the tableau of the room, its mis-en-scene framing them unnaturally against the table&rsquo;s empty depth of field.</p>
+      <p>Marc-Andr&eacute; Bernard, the PM&rsquo;s Chief of Staff, was the first to speak. &ldquo;I would like to formally and emphatically underline the fact that we have signed 21 bilateral agreements with China as recently as January of last year. So before we get into the technical speak, I have to stay that is in our best interest as a country that we cannot stab one of our biggest allies in the fucking back. An ally that, might I remind you, has actually reduced tariffs on steel and aluminum, and invested heavily in our manufacturing sectors. And on the other side we have our neighbors who keep trying to negotiate trade deals that will catch us with our pants down. I&rsquo;m not signing off on this. End of discussion. We&rsquo;ll double down with China if we need to. I don&rsquo;t care. This is an unprecedented act of aggression against us.&rdquo;</p>
+      <p>His voice was tinny and loud, the telephone catching the high octaves of his near-shouting vocal range. A chorus of different voices immediately jumped in after and there was a moment of polyphonic chaos before Saul had to step in and loudly shout &ldquo;one at a time, please.&rdquo; Please. Of course: he is Canadian, after all.</p>
       <p>&ldquo;Do we even know what our public systems rely on?&rdquo; one of the voices replied.</p>
-      <p>&ldquo;Of course not, there&rsquo;s no top-down mandate on which tools to use. If someone wanted to build their hospital tech</p>
+      <p>&ldquo;Of course not, there&rsquo;s no top-down mandate on which tools to use. If someone wanted to build their hospital tech stack with Claude we just said &lsquo;God be with you&rsquo; and let them go about their business&rdquo; replied another one of the voices. People had stopped identifying themselves, and the Minister and Chief Science Officer began to feel like they were speaking to a disembodied sonic chameleon; each time they came close to agreement, someone made sure to underline that Canada found itself in the unenviable position of relying on both China and the United States, should one of those superpowers decide to flex its muscles.</p>
+      <p>&ldquo;I&rsquo;m going to be fielding calls for the next 2 years calling for my head if we cut China off. Every firm that deals at all with China is effectively vaporized. And for what? I don&rsquo;t even know what the trade-off is here&rdquo; the Chief Policy Officer replied.</p>
+      <p>&ldquo;The trade-off,&rdquo; the Minister said, rubbing his brow, &ldquo;is that we are a fish swimming in someone else&rsquo;s pond and we don&rsquo;t even know what water is. And if you don&rsquo;t know what I mean by that I can put it a different way: we are several multiples of billions behind on digital infrastructure that has been woven into all of our public digital systems to a degree beyond our comprehension, while the backlash of the average citizen, who&rsquo;s got quite comfortable with Claude or Chat GPT or whatever, when we come in and pluck it out of their hands for some trade agreement no one understands, is a catastrophe.&rdquo;</p>
+      <p>&ldquo;What is everyone else doing?&rdquo; another voice from the conferencing system asked.</p>
+      <p>&ldquo;Who is everyone else?&rdquo; the Minister replied.</p>
+      <p>&ldquo;If this is a real act, then we can&rsquo;t be the only country facing up to the same choice. Like have we even tried calling anyone in the EU for godssake?&rdquo;</p>
+      <p>&ldquo;They&rsquo;re just as doomed as the rest of us. What&rsquo;s the point?&rdquo;</p>
+      <p>&ldquo;There are different flavors of doom&hellip; I&rsquo;m surprised by all of you, frankly. We have Turing-winning researchers that effectively invented modern AI. We have Mila, The Vector Institute, and Amii. Cohere just bought Aleph Alpha. We just need one thing. And we have it. We have world-class researchers. And now we have a major player, as well.&rdquo;</p>
+      <p>&ldquo;And zero infrastructure to make anything of it&rdquo; the Minister replied, warily. He&rsquo;d heard this same line enough times. The gold standard of Canadian tech research that somehow always ends up in someone else&rsquo;s P&L.</p>
+      <p>&ldquo;Let other people worry about that. We can offer up the brains.&rdquo;</p>
+      <p>&ldquo;To who?&rdquo;</p>
+      <p>&ldquo;I imagine to some sort of coalition of the doomed.&rdquo;</p>
+      <p>The call ended with a promise for the Minister to begin calling his counterparts in Europe and Asia. His back ached and his head was throbbing. He&rsquo;d need to call the research centers, as well. It&rsquo;d been a long time since he checked on how the federal dollars were being spent.</p>
+      <p>Do you want to know why his head hurt and his back ached? Between 2013-2024 Canada spent $15 billion on semiconductors, research, compute, and all of the other major infrastructural elements that powered Generative AI. In 2025 alone the US spent $470 billion. Most of that funding came from the Department of Defense.</p>
+      <p>Is that what people want? He was thinking again. Necessity brings its own clarity, and out of an impossible bind of two economic wrecking balls, the Minister thought to himself, what if we ducked under them? With no possibility to compete on resourcing, a third path was needed, something with more nuance; smaller, more agile, more trustworthy, even. He had fielded calls with Silicon Valley executives he didn&rsquo;t care much for. Surely there were more people like him who wanted something built by, and this is where his Canadian politeness failed him, normal people. The only problem is it was now 5pm in Ottawa, which meant nighttime in Europe and 4am in Tokyo. But he doubted anyone would be sleeping. He settled down at his desk and began dialing numbers.</p>
+      <p>We can offer our brainpower. We can talk about Cohere. What&rsquo;s everyone else ready to offer?</p>
     </div>
   </section>
 
   <!-- 8. Paris, April 2027 -->
   <section class="scene" data-viz="eu-public-capex" id="scene-paris" data-country-id="250" data-country-iso="FR">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 8</div>
+      <div class="scene-kicker">Chapter 9</div>
       <a class="scene-data-link" href="#viz-energy">Data &darr; France&rsquo;s power edge</a>
       <span class="scene-dateline">
         Apr.17.2027<br>
         Paris, France<br>
-        Undisclosed Ministerial Vehicle
+        Undisclosed Ministerial Vehicle Parade
       </span>
       <h2 class="scene-title">Paris</h2>
     </header>
@@ -352,12 +407,12 @@
       <p>&ldquo;I need to know exactly how exposed you are with the bill before I make any moves&rdquo; the President said.</p>
       <p>The voice on the other line was windswept and weary, like it was coming from miles away while the rest of Paris jostled to be heard over him, &ldquo;As of right now, in this very moment? Very exposed. We all are. We try to use EU datacenters where we can, but even those are owned by American companies. I&rsquo;ll tell you the truth: if they shut off our Azure partnership, we&rsquo;re done. We&rsquo;re deep in bed with Microsoft.&rdquo;</p>
       <p>The President pressed on, &ldquo;what do I need to do to get you untangled from all of this?&rdquo;</p>
-      <p>&ldquo;It&rsquo;s not that simple. We need capital, we need time, we need infrastructure, we need people. This doesn&rsquo;t happen overnight. We have Mistral AI Compute, so we have a bit of breathing room there without needing foreign cloud dependencies. But we only have three datacenters, and I don&rsquo;t know how long the GPUs will stay competitive. If you could help push the banks to let us raise more debt, there might be something there. But even our centers in Paris and Sweden are behind schedule and have a fraction of the compute power of the ones they&rsquo;re building in the middle of nowhere in the US.&rdquo;</p>
-      <p>The President thanked the Mistral CEO and made a series of calls to funders in order of the amount they pledged in 2025. Having organized a $110bn private capital raise for French AI capabilities, he needed to assure the creditors, the UAE sovereign wealth fund, Canada&rsquo;s Brookfield (an enormous investment company), Fluidstack, and the state bank. He assured each of them in turn that this was just proof that their money was well justified. That, in its own way, this bill was a blessing in disguise. Finally, we could all become major players. No, of course we won&rsquo;t respond to the bill in any fashion. He reminded all of his funders of France&rsquo;s nuclear energy capabilities <button class="story-fn" type="button" data-viz-pop="viz-energy" aria-label="See chart: France's power edge">8</button>, poised to absorb the enormous expenditure of real datacenters, that France already has critical public state data hosted outside US CLOUD jurisdictions, that we have a third way.</p>
+      <p>&ldquo;It&rsquo;s not that simple. We need capital, we need time, we need infrastructure, we need people. This doesn&rsquo;t happen overnight. We have Mistral AI Compute, so we have a bit of breathing room there without needing foreign cloud dependencies. But we only have three datacenters, and I don&rsquo;t know how long the GPUs will stay competitive. If you could help push the banks to let us raise more debt, there might be something there. But even our centers in Paris and Sweden are behind schedule and have a fraction of the compute power of the ones they&rsquo;re building in the&hellip; in the&hellip; middle of nowhere in the US!&rdquo; The Mistral CEO was young, so the French President excused his panic. It was not French to stumble over one&rsquo;s words like that. The President made a note of this in case it&rsquo;d later become important.</p>
+      <p>The President then thanked the Mistral CEO for his honesty and made a series of calls to funders in order of the amount they pledged in 2025. Having organized a $110bn private capital raise for French AI capabilities, he needed to assure the creditors, the UAE sovereign wealth fund, Canada&rsquo;s Brookfield (an enormous investment company), Fluidstack, and the state bank. He assured each of them in turn that this was just proof that their money was well justified. That, in its own way, this bill was a blessing in disguise. Finally, we could all become major players. No, of course we won&rsquo;t respond to the bill in any fashion. He reminded all of his funders of France&rsquo;s nuclear energy capabilities <button class="story-fn" type="button" data-viz-pop="viz-energy" aria-label="See chart: France's power edge">8</button>, poised to absorb the enormous expenditure of real datacenters, that France already has critical public state data hosted outside US CLOUD jurisdictions, that we have a third way.</p>
       <div class="ydi" data-ydi="energy"></div>
       <p>He&rsquo;d need to have these conversations in person, of course. $50bn in investment for a French datacenter merits a visit to the UAE to shake hands and look his investors in the eye.</p>
       <p>Slowly the caravan pulled up to the air base, and the French President made a decision. He called over his press secretary. She appeared before his side, with a solemnity befitting a major change in the global order and the author of the words that might set the whole thing ablaze.</p>
-      <p>&ldquo;I want a statement in 48 hours. I want to call this act what it is: a blatant trade weapon. No beating around the bush or any of our usual political hedging with the US. I&rsquo;ve been sounding this alarm for years, and now we&rsquo;re finally seeing the consequence of our own ridiculous navel-gazing. But I need two days. I don&rsquo;t want this to come from France alone. If one of us buckles, we all buckle. I need the rest of the world to know cooperation is our only bulwark against entrapment. Does that make sense?&rdquo;</p>
+      <p>&ldquo;I want a statement in 48 hours. I want to call this act what it is: a blatant trade weapon. No beating around the bush or any of our usual political hedging with the US. I&rsquo;ve been sounding this alarm for years, and now we&rsquo;re finally seeing the consequence of our own ridiculous regulatory back-and-forth. But I need two days. I don&rsquo;t want this to come from France alone. If one of us buckles, we all buckle. I need the rest of the world to know cooperation is our only bulwark against entrapment. Does that make sense?&rdquo;</p>
       <p>The press secretary nodded slowly. &ldquo;Do you want me to start a draft?&rdquo;</p>
       <p>&ldquo;Not until I see who&rsquo;s onboard&rdquo; he yelled while they climbed the steps into the state aircraft. &ldquo;We need to buy Mistral time, and the only way we can do that is if we persuade the rest of the EU that we won&rsquo;t be bullied into trade deals because we were too slow to act.&rdquo;</p>
       <p>The art of statecraft was in motion. A list was drafted. We sink or we swim, the French President thought to himself. He had about 8 hours before landing in Dubai. He asked his aides to start drafting the vulnerabilities of each of his prospective partners. He&rsquo;d to know the source of their reticence. Time was too tight to negotiate on two fronts. And if they couldn&rsquo;t arrive at an agreement in two days, then they&rsquo;d look weak. The very same weakness that emboldened the US to threaten the self-rule of the entire EU, and the rest of the middle powers who didn&rsquo;t have the foresight to think that the Americans might one day weaponize their control over the global tech stack. The plane took off, pivoting into the afternoon sky, cutting a smaller and smaller figure as the French began to make their move.</p>
@@ -367,7 +422,7 @@
   <!-- 9. Dublin, January 2026 -->
   <section class="scene" data-viz="talent-timeline" id="scene-dublin-jan" data-country-id="372" data-country-iso="IE">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 9</div>
+      <div class="scene-kicker">Chapter 10</div>
       <a class="scene-data-link" href="#viz-brain">Data &darr; Brain-drain timeline</a>
       <span class="scene-dateline">
         Jan.12.2026<br>
@@ -377,17 +432,46 @@
       <h2 class="scene-title">Dublin</h2>
     </header>
     <div class="scene-prose">
-      <p>The pay was a lot. That was the first thing that convinced Aaron to move to Dublin from San Francisco. So was the idea of a European adventure. His wife took some persuading, but eventually was charmed by the show that the OpenAI put on for them when they visited Ireland. There&rsquo;s only so long one can hold out against a huge paycheck and the novelty of a new city, especially as Aaron seemed increasingly distraught by the scene in Silicon Valley. <button class="story-fn" type="button" data-viz-pop="viz-brain" aria-label="See chart: Brain-drain timeline">9</button> Not a coder by background or by temperament, the city felt hollowed out by AI startups that were just a well-designed frontend that made API calls to one of either Chat GPT, Claude, or Gemini.</p>
+      <p>The pay was a lot. That was the first thing that convinced Aaron to move to Dublin from San Francisco. So was the idea of a European adventure. His wife took some persuading, but eventually was charmed by the show that the OpenAI put on for them when they visited Ireland. There&rsquo;s only so long one can hold out against a huge paycheck and the novelty of a new city, especially as Aaron seemed increasingly distraught by the scene in Silicon Valley. <button class="story-fn" type="button" data-viz-pop="viz-brain" aria-label="See chart: Brain-drain timeline">9</button> Not a coder by background or by temperament, the city felt hollowed out by AI startups that were just well-designed frontends that made API calls to one of either Chat GPT, Claude, or Gemini.</p>
       <p>The first months of Aaron&rsquo;s job were pleasantly uneventful. He oversaw the legal and geopolitical consequences of OpenAI&rsquo;s presence in Europe, making sure they fell in line within the much stricter regulatory rules of the EU.</p>
       <p>He had a few early successes, making sure that OpenAI could pass all of their GDPR data protection rights through the Irish Data Protection Commission, responding to data protection inquiries from countries across the EU, liaising between the eager San Francisco coders and the EU team about how what was legal in the US was not legal in the EU (they had a hard time understanding this), and making some strategic friendships with people across key positions in different country&rsquo;s tech offices. Aaron was told to make a friendlier regulatory environment for OpenAI in Europe, and the promptness and scrupulousness with which he handled all inquiries about training data or users rights made him a popular figure at the company, and amidst the circle of EU government tech regulators.</p>
-      <p>He could be trusted. This was the consensus opinion of everyone who came across Aaron, even if his role at OpenAI was in direct contradiction to the goals of the EU. How he managed this balancing act was the reason he rose so fast, to eventually lead the EU Global Affairs team.</p>
+      <p>He could be trusted. This was the consensus opinion of everyone who came across Aaron, even if his role at OpenAI was in direct contradiction to the goals of the EU. How he managed this balancing act was the reason he rose so fast. He was cordial, polite, punctual, and professional. When asked to read a policy document, he would read it, taking notes with a highlighter after he&rsquo;d printed it out.</p>
+      <p>Lately the stack of papers he&rsquo;d been meticulous about printing had been growing, threatening to overtake his haphazardly organized desk. The professionalism he&rsquo;d exhibited earlier in his career, that quality that brought him to Dublin and put him up in Ballsbridge, had begun to splinter. Aaron had begun missing meetings, missing phone calls, letting slip normal compliance issues that an earlier version of himself would have trounced. But the papers continued to grow, and the circles under his eyes began to darken under the late night glow of his office lamp, a lone lighted figure scribbling furiously after the rest of the office departed.</p>
+      <p>Such was the condition he was in when he was called into one of the well-windowed conference rooms to meet with his superior, a man named Patrick who&rsquo;d flown in from San Francisco to address him in person. A tall and intimidating man, Patrick had grey cowlicked hair, a sharp, Euclidean nose, and enormous, veined hands that were in constant motion. Not out of cheer; Patrick was a serious and dour man. But because he punctuated his sentences like a boxer. He was wearing a grey woolen suit with a starched white collared button down, no tie as per custom, but had clearly arrived fresh off the plane.</p>
+      <p>Aaron sat down, or rather melted into the seat. He didn&rsquo;t want anything to do with this. He understood his relationship with Patrick to be a matter of a professional casualty: someone he&rsquo;d need to put up with because they shared a company vertical, but would, in a state of nature, have nothing to do with each other. The closest approximation to intimacy Aaron had elicited from Patrick was the day, five years into their professional relationship, that Patrick had told Aaron he had kids. Three of them, in fact. There was nothing left to be said. And yet it was still a surprise. Otherwise their relationship was cordial.</p>
+      <p>&ldquo;Hello, Aaron,&rdquo; Patrick had taken a seat directly across from Aaron. It was just the two of them and the room still felt cramped, like the air was being vacuumed out.</p>
+      <p>&ldquo;Yes, hello Patrick, how was your flight and all that&rdquo; Aaron raised his hand dismissively.</p>
+      <p>&ldquo;It was fine, thank you.&rdquo;</p>
+      <p>&ldquo;I&rsquo;m not above or below grandstanding, just so you know&rdquo; Aaron said rather weakly. &ldquo;I assume you wouldn&rsquo;t have flown all the way to the Emerald Isle if you didn&rsquo;t think at some basic sense of moral duty that I am right.&rdquo;</p>
+      <p>Patrick laid his hands on the giant slab of marbled table and leaned forward. &ldquo;What is it that you think you&rsquo;re doing, Aaron?&rdquo; he said with a sinister, measured calm.</p>
+      <p>&ldquo;I&rsquo;m going to go to the press. Or start making calls in Washington. Or&hellip;&rdquo;</p>
+      <p>Patrick interrupted him, &ldquo;or what? You do realize that we&rsquo;ve done nothing illegal. We are a company that is acting in the best interests of its employees. You don&rsquo;t have to like it. Our opinions don&rsquo;t matter. Yours or mine, or any of the rest of us. We have a mandate to maximize value and act in the best interest of the company. Our own &lsquo;morality&rsquo; or whatever juvenile plea you made to me doesn&rsquo;t even factor into our thinking. Seriously, did you think that&rsquo;s how you&rsquo;d win this? By going to the press?&rdquo; Patrick laughed and shook his head, leaning back in his chair and stretching dramatically. He looked at Aaron again, but this time it was as if he were seeing the man for the first time. &ldquo;I never mistook you for being naive. A bit too friendly, maybe. But not naive. I&rsquo;m disappointed. I&rsquo;m just really disappointed.&rdquo;</p>
+      <p>Aaron stood up wearily, and not without the display of great effort. &ldquo;You get in bed with scorpions, and you wonder why they sting&rdquo; he said to nobody in particular. &ldquo;Go ahead and twirl your stupid moustache and crash the world economy. If you want to alienate every single political ally we have just to win a trade war we don&rsquo;t even want to be in, I can&rsquo;t stop you.&rdquo;</p>
+      <p>&ldquo;I need everything you&rsquo;ve been preparing. All the files, anything you&rsquo;ve printed, backed up; any hard drives you have, any company documentation. I&rsquo;m not going to ask, either. I&rsquo;ve already sent my team to your house. You&rsquo;ll wait here until we&rsquo;re done looking.&rdquo;</p>
+      <p>&ldquo;Will you tell my wife I say hello?&rdquo;</p>
+      <p>&ldquo;We escorted her out before we conducted our search.&rdquo;</p>
+      <p>Aaron smiled ruefully. &ldquo;Quite the gentleman, I see.&rdquo;</p>
+      <p>Patrick left and two burly men stood outside the conference room. Aaron couldn&rsquo;t leave. He stretched out across the table, felt its hard, cold stone press against his face as he tried to make himself comfortable.</p>
+      <p>He slept fitfully, before finally deciding to rest on the softer carpet on the floor. He put his jacket underneath his pillow and dreamt of white-crested waves and the rain hitting the ocean.</p>
+      <p>Patrick&rsquo;s call was swift and calculated. &ldquo;He was making a case against us. But as far as I know he hasn&rsquo;t actually presented it to anyone yet.&rdquo; Ever the thorough one, Aaron wanted to make sure his story was airtight before approaching his friends at the EU.</p>
+      <p>After about 6 hours, Patrick let him out of the conference room.</p>
+      <p>&ldquo;You can go.&rdquo;</p>
+      <p>&ldquo;Am I fired?&rdquo;</p>
+      <p>&ldquo;Not yet.&rdquo;</p>
+      <p>&ldquo;Why?&rdquo;</p>
+      <p>&ldquo;Because you&rsquo;ll start talking.&rdquo;</p>
+      <p>&ldquo;Then I quit.&rdquo;</p>
+      <p>&ldquo;Then you&rsquo;re in breach of contract and we&rsquo;ll sue you until your great-great-grandchildren are broke.&rdquo;</p>
+      <p>&ldquo;Then what do I do?&rdquo;</p>
+      <p>&ldquo;Your job.&rdquo; Patrick left.</p>
+      <p>Aaron breathed out hard and grabbed the encased USB card from under his tongue, slipping it carefully in his pocket as Patrick and his men strolled out into the stormy Dublin night.</p>
     </div>
   </section>
 
   <!-- 10. The White House, April 2027 -->
   <section class="scene" data-viz="export-controls" id="scene-whitehouse" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 10</div>
+      <div class="scene-kicker">Chapter 11</div>
       <a class="scene-data-link" href="#viz-pentagon">Data &darr; Pentagon money</a>
       <span class="scene-dateline">
         Apr.18.2027<br>
@@ -406,7 +490,7 @@
   <!-- 11. The Ether, April 2027 -->
   <section class="scene" id="scene-ether" data-country-id="" data-country-iso="">
     <header class="scene-header">
-      <div class="scene-kicker">Chapter 11</div>
+      <div class="scene-kicker">Chapter 12</div>
       <a class="scene-data-link" href="#viz-ether">Data &darr; Pooled vs alone</a>
       <span class="scene-dateline">
         Apr.25.2027<br>
@@ -420,6 +504,44 @@
       <p>A voice rang out clearer than the others: &ldquo;no one signed the thing did they?&rdquo; It was the French President speaking.</p>
       <p>A series of affronted shouts of &ldquo;no&rdquo; greeted his introductory remarks.</p>
       <p>&ldquo;Well then,&rdquo; he said. &ldquo;It&rsquo;s best we figure out how we work together to get out from under this thing.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-ether" aria-label="See chart: Pooled vs alone">11</button></p>
+      <p>What followed was not a speech. It was logistics. The first artifacts of the coalition were not communiqu&eacute;s; they were a text thread, an attachment, and two pages of draft law.</p>
+
+      <div class="artifact artifact-text" aria-label="Text message exchange">
+        <div class="artifact-label">Recovered thread &middot; 22:41 CET</div>
+        <div class="msg them"><span>did you sign?</span><i>The Minister &middot; 22:41</i></div>
+        <div class="msg me"><span>no. you?</span><i>The Convener &middot; 22:41</i></div>
+        <div class="msg them"><span>no. nobody did. paris says nobody will before friday.</span><i>The Minister &middot; 22:42</i></div>
+        <div class="msg me"><span>then we have until friday. call in 20.</span><i>The Convener &middot; 22:44</i></div>
+      </div>
+
+      <p>By morning there was a draft in every inbox that mattered.</p>
+
+      <div class="artifact artifact-email" aria-label="Email">
+        <div class="artifact-label">Forwarded message</div>
+        <div class="email-head">
+          <div><b>From</b> Office of the Convener</div>
+          <div><b>To</b> undisclosed-recipients (11)</div>
+          <div><b>Subject</b> The Instrument &mdash; draft 3 &middot; do not forward</div>
+        </div>
+        <div class="email-body">
+          <p>Attached. Three articles, two pages. Sign nothing with Washington until you have read it.</p>
+          <p>We are past the point where any of us negotiates alone. The act prices access by allegiance; the only counterparty it cannot price is one that does not exist yet. By Friday, it should exist.</p>
+          <p>&mdash; C.</p>
+        </div>
+        <div class="email-attach">instrument_draft3.pdf &middot; 2 pages</div>
+      </div>
+
+      <div class="doc-inset">
+        <h4>The Coalition Instrument (draft 3)</h4>
+        <p class="doc-subtitle">Articles of association for a public AI company of the middle powers. Two pages, three articles, written to be signed before the Digital Liberty Act&rsquo;s first compliance deadline.</p>
+        <ul class="doc-bullets">
+          <li><strong>Article I &middot; Membership.</strong> Open to any state that accepts pooled-compute governance. Each founding member contributes one national entity (a lab, a compute facility, or a fund) and one seat. No member may hold more than a fifth of the vote, whatever it contributes.</li>
+          <li><strong>Article II &middot; The Pool.</strong> Members&rsquo; frontier compute operates as a single scheduled cluster. Model weights trained on the pool are the joint property of the membership. No member may grant any third state the authority to suspend, license, or condition the pool&rsquo;s operation.</li>
+          <li><strong>Article III &middot; The Ladder.</strong> Ninety days to a legal entity. Twelve months to the first pooled training run. Twenty-four months to public-sector model APIs in every member state, in every member language.</li>
+        </ul>
+      </div>
+
+      <p>On Friday the act would still be there. So would the draft. For the first time in eighteen months, both sides of that sentence were true.</p>
     </div>
   </section>
 
@@ -451,6 +573,12 @@
         <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(10,10,10,0.5)" stroke-width="0.7"/>
       </svg>
     </div>
+  </div>
+  <!-- When-are-we timeline: places the active chapter on the 2026-27 axis -->
+  <div class="story-timeline" id="storyTimeline" hidden>
+    <div class="story-ascii-cap">when is this · the story is non-linear</div>
+    <svg viewBox="0 0 220 46" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" id="storyTimelineSvg"></svg>
+    <div class="story-timeline-now" id="storyTimelineNow"></div>
   </div>
   <!-- Live ascii mini-chart for the chapter being read (filled by JS) -->
   <div class="story-ascii" id="storyAsciiWrap" hidden>
@@ -1029,19 +1157,19 @@
             <text class="cu-fig coral" x="14" y="46">70%</text>
             <text class="cu-cap" x="16" y="66">of Europe&rsquo;s cloud runs on US hyperscalers</text>
             <g class="cu-pop">
-              <use href="#cloud" x="32"  y="104" fill="#FF6F59"/>
-              <use href="#cloud" x="65"  y="104" fill="#FF6F59"/>
-              <use href="#cloud" x="98"  y="104" fill="#FF6F59"/>
-              <use href="#cloud" x="131" y="104" fill="#FF6F59"/>
-              <use href="#cloud" x="164" y="104" fill="#FF6F59"/>
-              <use href="#cloud" x="197" y="104" fill="#FF6F59"/>
-              <use href="#cloud" x="230" y="104" fill="#FF6F59"/>
+              <use href="#cloud" x="32"  y="104" fill="#B8002E"/>
+              <use href="#cloud" x="65"  y="104" fill="#B8002E"/>
+              <use href="#cloud" x="98"  y="104" fill="#B8002E"/>
+              <use href="#cloud" x="131" y="104" fill="#B8002E"/>
+              <use href="#cloud" x="164" y="104" fill="#B8002E"/>
+              <use href="#cloud" x="197" y="104" fill="#B8002E"/>
+              <use href="#cloud" x="230" y="104" fill="#B8002E"/>
               <use href="#cloud" x="263" y="104" fill="#0057FF"/>
               <use href="#cloud" x="296" y="104" fill="#0057FF"/>
               <use href="#cloud" x="329" y="104" fill="rgba(10,10,10,0.3)"/>
             </g>
             <g class="cu-legend">
-              <circle cx="20"  cy="142" r="5" fill="#FF6F59"/><text x="30" y="142">US 70%</text>
+              <circle cx="20"  cy="142" r="5" fill="#B8002E"/><text x="30" y="142">US 70%</text>
               <circle cx="118" cy="142" r="5" fill="#0057FF"/><text x="128" y="142">EU 15%</text>
               <circle cx="216" cy="142" r="5" fill="rgba(10,10,10,0.3)"/><text x="226" y="142">other 15%</text>
             </g>
@@ -1066,19 +1194,19 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helsing valuation grew from €12B (2025) toward ~$18B (2026), shown as growing shields">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helsing valuation grew from €12B (2025) toward an estimated ~$18B (2026), shown as growing shields">
             <defs>
               <symbol id="shield" viewBox="0 0 30 36"><path d="M15,2 L27,7 L27,18 C27,29 15,34 15,34 C15,34 3,29 3,18 L3,7 Z"/></symbol>
             </defs>
             <text class="cu-cap" x="14" y="24">Helsing &mdash; Europe&rsquo;s top defence-AI startup (Ek-backed)</text>
             <g class="cu-pop">
               <use href="#shield" x="64"  y="76" width="58" height="70" fill="#0057FF"/>
-              <use href="#shield" x="198" y="48" width="82" height="98" fill="#FF6F59"/>
+              <use href="#shield" x="198" y="48" width="82" height="98" fill="#B8002E"/>
             </g>
-            <text class="cu-bag-label" x="158" y="104" fill="#FF6F59">&rarr;</text>
+            <text class="cu-bag-label" x="158" y="104" fill="#B8002E">&rarr;</text>
             <g class="cu-bag-label" text-anchor="middle">
               <text x="93"  y="160" fill="#0057FF">2025 &middot; &euro;12B</text>
-              <text x="239" y="160" fill="#FF6F59">2026e &middot; ~$18B</text>
+              <text x="239" y="160" fill="#B8002E">2026 est. &middot; ~$18B</text>
             </g>
           </svg>
         </div>
@@ -1277,7 +1405,7 @@
 
 <!-- OUTRO -->
 <section class="outro">
-  <p class="outro-line">Eleven chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
+  <p class="outro-line">Twelve chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
   <div class="outro-actions">
     <a class="btn btn-primary" href="airbus-for-ai/game.html">Play The Slow Boil &rarr;</a>
     <a class="btn btn-ghost" href="research.html">Research &amp; sources</a>
@@ -1286,7 +1414,7 @@
 
 </main>
 
-<script src="scripts.js?v=42" defer></script>
+<script src="scripts.js?v=45" defer></script>
 
 </body>
 </html>

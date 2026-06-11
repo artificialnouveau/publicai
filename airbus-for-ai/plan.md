@@ -113,3 +113,20 @@ Rendering: plain HTML in the site's mono/serif type system, not a canvas termina
 2. How punishing should the Act timing be? A random turn 12-16 rewards replays; a fixed turn 14 is fairer for first-time players.
 3. Should failed runs end with the real data (the actual 2026 numbers) as a "this is where we are today" gut punch? It blurs fiction and advocacy, which might be exactly the point of the site, or a step too far.
 4. Does this live at airbus-for-ai/game.html linked from the story's outro, or as a standalone page pitched separately?
+
+
+## Field notes: europe2031.ai (June 2026)
+
+What they do well, worth stealing:
+- Distribution formats: a Spotify/podcast version and a download-as-PDF. Both are cheap for us (the story reads aloud well; the PDF is a print stylesheet away) and make the piece shareable into policy circles that do not read scrolly websites.
+- A standalone summary analysis with real substance on "how we got here." Our summary.html should carry that weight: the causal chain, not just the pitch.
+- Scenario crispness. Their hinges are concrete and falsifiable: what happens when a frontier open-source model drops, where pressure lands on ASML, the US rationing AI access by country. Each hinge names the actor, the trigger, and the consequence. Our chapters should hit that same specificity.
+
+What they get wrong, which is our opening:
+- Their narrative is the most likely path, and it is a ditch. It is a well-argued downer: it shows exactly what European dependence will look like, and at best it scares people. It does not tell an effective story about how Europe gets OUT. That story is ours to execute. Everything on our site (the Instrument in chapter 12, the coalition builder, the game's Airbus ending) is the way-out scenario; we should say so explicitly and engineer every page toward it.
+
+Two hinges we are missing and should write:
+1. The compute surge hinge: the moment a coalition member (or the bloc) commits to a massive compute investment. Named actor (the EU summit or the French-German pair), a number (an InvestAI-scale tranche directed into one pooled cluster rather than 27 national ones), a trigger (the Act's first compliance deadline), and a consequence (the first pooled training run gets a date). Candidate placement: a new beat between chapters 9 and 10, or an artifact (a leaked budget line) inside the Paris chapter. In the game, this is a late-window event that converts capital into EF for the first time.
+2. The coalition-pulls-together hinge: now partially embodied by the Coalition Instrument artifact in chapter 12 (three articles, signable before the Act's deadline). To make it a true hinge it needs a cost and a refusal: one named state walking out of the Ether call, so the signing means something. In the game, this is the existing POOL treaty; the story should mirror its terms (Article II is the POOL mechanic in prose).
+
+Both hinges share a discipline: name who moves, what it costs them, and what becomes possible the next morning.
