@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The Slow Boil: a sixteen-month negotiation game. Convene the Airbus for AI coalition before the Digital Liberty Act lands.">
+<title>The Slow Boil — a negotiation game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #F8F6F1;
+    --paper-2: #F0EDE7;
+    --hairline: rgba(10,10,10,0.10);
+    --hairline-strong: rgba(10,10,10,0.20);
+    --text: #1A1A1A;
+    --text-soft: #6E6E69;
+    --accent: #0057FF;
+    --red: #b8002e;
+    --coral: #FF6F59;
+    --gold: #FFC23C;
+    --gold-edge: #E0991A;
+    --font: 'Inter', -apple-system, sans-serif;
+    --serif: 'Spectral', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font); color: var(--text); background: var(--ink);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .g-top {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0 1.25rem; height: 52px;
+    background: rgba(248,246,241,0.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .g-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; color: var(--text-soft); }
+  .g-brand {
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .g-meta { margin-left: auto; display: flex; gap: 0.9rem; font-family: var(--mono); font-size: 0.68rem; color: var(--text-soft); }
+  .g-meta b { color: var(--accent); }
+
+  .g-railwrap { display: flex; justify-content: center; padding: 0.6rem 0 0; }
+  #gRail { display: flex; gap: 6px; }
+  .g-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 1.5px solid var(--hairline-strong); background: transparent;
+  }
+  .g-dot.window { border-style: dashed; border-color: var(--coral); }
+  .g-dot.done { background: var(--accent); border-color: var(--accent); }
+  .g-dot.now { background: var(--text); border-color: var(--text); }
+
+  .g-main {
+    max-width: 1080px; margin: 0 auto;
+    display: grid; grid-template-columns: minmax(0, 1.18fr) 320px;
+    gap: 2.2rem; padding: 1.25rem 1.25rem 3.5rem;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .g-main { grid-template-columns: 1fr; }
+    .g-side { order: -1; position: static; max-height: none; overflow: visible; }
+    .g-ring { display: none; }
+  }
+
+  /* dispatches */
+  .g-dispatch { margin: 0 0 1.5rem; max-width: 62ch; }
+  .g-dateline {
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.3rem;
+  }
+  .g-ev-title {
+    font-family: var(--serif); font-weight: 600; font-size: 1.3rem;
+    margin-bottom: 0.35rem;
+  }
+  .g-dispatch p { font-family: var(--serif); font-size: 1.02rem; line-height: 1.75; min-height: 1.75em; }
+  .g-dispatch.typing p::after {
+    content: '\258F'; color: var(--accent);
+    animation: gBlink 0.9s steps(1) infinite;
+  }
+  @keyframes gBlink { 50% { opacity: 0; } }
+
+  .g-month-rule {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin: 1.9rem 0 1.1rem; max-width: 62ch;
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-soft); white-space: nowrap;
+  }
+  .g-month-rule::before, .g-month-rule::after {
+    content: ''; flex: 1 1 auto; border-top: 1px solid var(--hairline-strong);
+  }
+  .g-month-rule.warn { color: var(--coral); }
+  .g-month-rule.warn::before, .g-month-rule.warn::after { border-top-color: var(--coral); border-top-style: dashed; }
+
+  .g-line {
+    font-family: var(--mono); font-size: 0.74rem; line-height: 1.6;
+    margin: 0 0 0.85rem; padding-left: 1rem; max-width: 70ch;
+    border-left: 2px solid var(--hairline-strong); color: var(--text-soft);
+  }
+  .g-line.good { border-left-color: var(--accent); color: var(--text); }
+  .g-line.bad  { border-left-color: var(--coral); color: var(--text); }
+
+  /* courting: a grid of ascii country tiles in the choices area */
+  .g-countries {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem; margin-bottom: 0.5rem;
+  }
+  .g-country {
+    text-align: center; cursor: pointer;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--hairline-strong); border-radius: 6px;
+    padding: 0.6rem 0.5rem 0.55rem;
+    font-family: var(--font);
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  }
+  .g-country:hover:not(.is-locked) { border-color: var(--accent); background: #fff; transform: translateY(-2px); }
+  .g-country pre {
+    font-family: var(--mono); font-size: 0.68rem; line-height: 1.2;
+    color: var(--accent); white-space: pre;
+    display: inline-block; text-align: left;
+    min-height: 6em; margin-bottom: 0.3rem;
+  }
+  .g-country.c1 pre { color: var(--gold-edge); }
+  .g-country-name { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .g-country-name b { font-family: var(--mono); font-size: 0.68rem; font-weight: 700; color: var(--accent); }
+  .g-country-meta { display: block; font-family: var(--mono); font-size: 0.6rem; font-weight: 600; color: var(--accent); margin-top: 0.15rem; }
+  .g-country-brings { display: block; font-family: var(--mono); font-size: 0.58rem; color: var(--text-soft); margin-top: 0.2rem; }
+  .g-country.is-locked { opacity: 0.5; cursor: not-allowed; border-style: dashed; }
+  .g-country.is-locked pre { color: var(--text-soft); }
+
+  /* integrated text effects: motion inside the typography, nothing boxed */
+  .g-logo {
+    font-family: var(--mono); font-size: 0.62rem; line-height: 1.05;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    white-space: pre; overflow: hidden;
+    margin: 0 0 0.9rem;
+  }
+  .g-dispatch .flux { color: var(--accent); opacity: 0.45; }
+  .g-fx { color: var(--accent); }
+  .g-fx.redact { color: var(--red); }
+  .g-boil {
+    font-family: var(--mono); font-size: 0.62rem; line-height: 1.7;
+    color: var(--text-soft); white-space: pre; overflow: hidden;
+    margin: 0 0 0.25rem; letter-spacing: 0.05em;
+  }
+
+  /* side rail */
+  /* The rail follows the reader: sticky, capped to the viewport, and split
+     into two columns on wide screens so everything fits without scrolling. */
+  .g-side {
+    position: sticky; top: 64px;
+    max-height: calc(100vh - 76px);
+    overflow-y: auto; overscroll-behavior: contain;
+    display: grid; gap: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  .g-side-col { min-width: 0; display: grid; gap: 1rem; align-content: start; }
+  @media (min-width: 1180px) {
+    .g-main { max-width: 1340px; grid-template-columns: minmax(0, 1fr) 600px; }
+    .g-side { grid-template-columns: 1fr 1fr; column-gap: 1.3rem; align-items: start; }
+  }
+  .g-panel { border-top: 1px solid var(--hairline-strong); padding-top: 0.6rem; }
+  .g-panel-title {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-soft);
+    margin-bottom: 0.55rem;
+  }
+
+  /* coalition ring */
+  .g-ring { display: flex; justify-content: center; }
+  .g-ring svg { width: 210px; height: 178px; }
+  .g-ring .rim { fill: none; stroke: var(--hairline-strong); stroke-width: 0.8; stroke-dasharray: 1 3; }
+  .g-ring .core { fill: none; stroke: var(--hairline-strong); stroke-width: 1.4; }
+  .g-ring .core.pooled { fill: var(--accent); stroke: var(--accent); }
+  .g-ring .core-label { font-family: var(--mono); font-size: 7px; font-weight: 700; fill: var(--text-soft); text-anchor: middle; }
+  .g-ring .link { stroke: var(--accent); stroke-width: 1.3; }
+  .g-ring .link.hedge { stroke: var(--gold-edge); stroke-dasharray: 3 3; }
+  .g-ring .node { fill: var(--ink); stroke: var(--hairline-strong); stroke-width: 1.2; }
+  .g-ring .node.c1 { fill: var(--gold); stroke: var(--gold-edge); }
+  .g-ring .node.c2 { fill: var(--accent); stroke: var(--accent); }
+  .g-ring text { font-family: var(--mono); font-size: 8.5px; font-weight: 700; fill: var(--text-soft); }
+  .g-ring .c2-label { fill: var(--accent); }
+
+  /* metric rows: pictogram slots in the story-chart vocabulary */
+  .g-met { margin-bottom: 0.7rem; }
+  .g-met-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); margin-bottom: 0.25rem;
+  }
+  .g-met-head label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
+  .g-met-head .g-val { font-size: 0.62rem; color: var(--text-soft); }
+  .g-met-head .g-val.met { color: var(--accent); font-weight: 700; }
+  .g-slots { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
+  .g-slot { border: 1.3px solid var(--hairline-strong); background: transparent; flex-shrink: 0; }
+  .g-slot.goalmark { border-color: var(--coral); border-style: dashed; }
+  .g-slot.fill { animation: gPop 0.35s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes gPop { from { transform: translateY(4px) scale(0.55); opacity: 0; } to { transform: none; opacity: 1; } }
+  /* compute chips */
+  .g-slot.chip { width: 16px; height: 16px; border-radius: 3px; position: relative; }
+  .g-slot.chip::after { content: ''; position: absolute; inset: 4px; border-radius: 1.5px; background: rgba(10,10,10,0.12); }
+  .g-slot.chip.fill { background: var(--accent); border-color: var(--accent); }
+  .g-slot.chip.fill::after { background: rgba(255,255,255,0.5); }
+  .g-slot.chip.ghost { border-color: var(--accent); border-style: dashed; }
+  .g-slot.chip.ghost::after { background: rgba(0,87,255,0.15); }
+  /* capital coins */
+  .g-slot.coin { width: 14px; height: 9px; border-radius: 50%; }
+  .g-slot.coin.fill { background: #8FB4FF; border-color: var(--accent); }
+  /* talent dots */
+  .g-slot.dotp { width: 9px; height: 9px; border-radius: 50%; }
+  .g-slot.dotp.fill { background: var(--accent); border-color: var(--accent); }
+  /* language cells */
+  .g-slot.cell { width: 10.5px; height: 9px; border-radius: 2px; border-width: 1px; }
+  .g-slot.cell.fill { background: var(--accent); border-color: var(--accent); }
+  .g-slot.cell.partial { background: var(--gold); border-color: var(--gold-edge); }
+  .g-slot.cell.risk { background: #FFB3A8; border-color: #FFB3A8; }
+  .g-met-note { font-family: var(--mono); font-size: 0.56rem; line-height: 1.5; color: var(--text-soft); margin-top: 0.2rem; }
+  .g-met-note .warn { color: var(--coral); }
+  .g-ring-note { text-align: center; margin: -0.3rem 0 0; padding: 0 0.6rem; }
+  .g-ledger-note { margin: 0.45rem 0 0; }
+  .g-panel-title + .g-met-note { margin-bottom: 0.45rem; }
+  /* two-column ledger tiles */
+  .g-ledger-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem 0.6rem; }
+  .g-ledger-grid .g-met {
+    margin-bottom: 0;
+    padding: 0.45rem 0.5rem;
+    border: 1px dotted var(--hairline-strong); border-radius: 4px;
+    background: rgba(240,237,231,0.55);
+  }
+  .g-ledger-grid .g-met-head { flex-wrap: wrap; gap: 0 0.4rem; }
+
+  .g-state {
+    display: flex; align-items: center; gap: 0.45rem;
+    font-family: var(--mono); font-size: 0.66rem; padding: 0.18rem 0;
+  }
+  .g-state i { width: 8px; height: 8px; border-radius: 50%; background: transparent; border: 1.2px solid var(--hairline-strong); flex-shrink: 0; }
+  .g-state.c1 i { background: var(--gold); border-color: var(--gold-edge); }
+  .g-state.c2 i { background: var(--accent); border-color: var(--accent); }
+  .g-state b { width: 2.4ch; color: var(--accent); flex-shrink: 0; }
+  .g-state span { color: var(--text-soft); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .g-state em { font-style: normal; font-size: 0.58rem; color: var(--text-soft); }
+  .g-state.c1 em { color: var(--gold-edge); font-weight: 700; }
+  .g-state.c2 em { color: var(--accent); font-weight: 700; }
+
+  .g-lab { display: inline-block; font-family: var(--mono); font-size: 0.62rem; color: var(--text-soft); margin: 0 0.7rem 0.2rem 0; }
+  .g-lab.anchored { color: var(--accent); font-weight: 700; }
+  .g-lab.gone { text-decoration: line-through; color: var(--coral); }
+
+  /* === CHOICES: the decision list is the centerpiece, in the story flow === */
+  .g-choices { max-width: 62ch; margin: 0.5rem 0 2.5rem; }
+  .g-moves {
+    display: flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-soft); margin: 0 0 0.6rem;
+  }
+  .g-moves i {
+    width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+    border: 1.5px solid var(--accent); flex-shrink: 0;
+  }
+  .g-moves i.on { background: var(--accent); }
+  .g-moves i.off { border-color: var(--hairline-strong); }
+  .g-moves span { margin-left: 4px; }
+  .g-choice {
+    display: block; width: 100%; text-align: left; cursor: pointer;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--hairline-strong); border-radius: 6px;
+    padding: 0.62rem 0.85rem 0.58rem; margin-bottom: 0.45rem;
+    font-family: var(--font);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  /* fresh lists cascade in: 0.3s per card, 0.12s apart */
+  .g-choice.cin { animation: gIn 0.3s ease both; }
+  @keyframes gIn { from { opacity: 0; transform: translateY(6px); } }
+  .g-choice:hover:not(.is-locked) { border-color: var(--accent); background: #fff; }
+  .g-choice-head { display: flex; align-items: baseline; gap: 0.55rem; }
+  .g-choice-head b { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; color: var(--accent); }
+  .g-choice-title { font-size: 0.95rem; font-weight: 600; color: var(--text); flex: 1 1 auto; line-height: 1.35; }
+  .g-choice-badge {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+    color: var(--accent); white-space: nowrap; flex-shrink: 0;
+  }
+  .g-choice-sub {
+    display: block; font-size: 0.8rem; line-height: 1.55;
+    color: var(--text-soft); margin-top: 0.25rem; padding-left: 1.3rem;
+  }
+  .g-choice-sub .lock { color: var(--coral); font-weight: 600; }
+  .g-choice.is-locked { cursor: not-allowed; border-style: dashed; background: transparent; }
+  .g-choice.is-locked .g-choice-title { color: var(--text-soft); }
+  .g-choice.is-locked .g-choice-head b, .g-choice.is-locked .g-choice-badge { color: var(--text-soft); }
+  .g-choice.ev { border-color: var(--accent); background: rgba(0,87,255,0.05); }
+  .g-choice.ev .g-choice-title { color: var(--accent); }
+  .g-choice.quiet { background: transparent; border-style: dotted; }
+  .g-choice.quiet .g-choice-title { font-size: 0.82rem; font-weight: 500; color: var(--text-soft); }
+  .g-utilrow { display: flex; gap: 0.5rem; margin-top: 0.65rem; }
+  .g-choice.util { width: auto; flex: 0 0 auto; padding: 0.45rem 0.9rem; margin: 0; }
+  .g-choice.util .g-choice-title { font-size: 0.8rem; font-weight: 500; }
+  .g-choice.util .g-choice-sub { display: none; }
+  .g-choice.go { background: var(--accent); border-color: var(--accent); }
+  .g-choice.go .g-choice-title, .g-choice.go .g-choice-head b { color: #fff; }
+  .g-choice.go:hover:not(.is-locked) { background: var(--accent); filter: brightness(1.12); border-color: var(--accent); }
+
+  /* intro + ending */
+  .g-intro { max-width: 62ch; margin-bottom: 1.6rem; }
+  .g-intro h1 { font-family: var(--serif); font-weight: 600; font-size: 2rem; line-height: 1.2; margin-bottom: 0.6rem; }
+  .g-intro p { font-family: var(--serif); font-size: 1rem; line-height: 1.7; margin-bottom: 0.6rem; }
+  .g-intro .g-how { font-family: var(--mono); font-size: 0.68rem; line-height: 1.8; color: var(--text-soft); }
+  #gEnd {
+    margin: 1.5rem 0; padding: 1.2rem 1.4rem; max-width: 62ch;
+    border: 1px solid var(--hairline-strong); border-radius: 6px; background: var(--paper-2);
+  }
+  #gEndTitle { font-family: var(--mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em; color: var(--red); margin-bottom: 0.5rem; }
+  #gEndProse { font-family: var(--serif); font-size: 1.05rem; line-height: 1.75; margin-bottom: 0.7rem; }
+  .g-end-section {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-soft);
+    margin: 0.8rem 0 0.3rem;
+  }
+  .g-end-goal { font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text-soft); }
+  .g-end-goal.met { color: var(--accent); }
+  .g-end-goal.miss { color: var(--coral); }
+  .g-end-left { font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text-soft); }
+  #gEndStats { font-family: var(--mono); font-size: 0.66rem; color: var(--text-soft); margin-top: 0.8rem; border-top: 1px solid var(--hairline); padding-top: 0.55rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .g-slot.fill { animation: none; }
+    .g-dispatch.typing p::after { animation: none; }
+    .g-choice.cin { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="g-top">
+  <a class="g-back" href="../index.html">&larr; the story</a>
+  <div class="g-brand">The Slow Boil</div>
+  <div class="g-meta">
+    <span id="gTurnLabel">Month 1 of 16</span>
+  </div>
+</header>
+
+<div class="g-railwrap"><div id="gRail" aria-label="Sixteen months; the Act window is the dashed tail"></div></div>
+
+<main class="g-main">
+  <section class="g-log-col">
+    <div class="g-intro">
+      <pre class="g-logo" id="gLogo" aria-hidden="true"></pre>
+      <h1>Sixteen months. Ten states. One phone.</h1>
+      <p>You are the convener. Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab, and somewhere in Washington a draft is circulating that will price access by allegiance. You have until it lands, sometime in the dashed months above, to pool enough compute, capital, talent and languages to matter.</p>
+      <p class="g-how">Two moves a month. COURT states toward In. POOL their compute once two are in. FUND a lab before Washington buys it. HEDGE the cloud. Every move is paid for in influence, your political currency: you start with 3, gain 2 each new month, and HOLD banks an extra 1. The dashed coral slots are the credible minimum, not parity. Keys 1-9 work; a click skips the typing.</p>
+    </div>
+    <div class="g-log" id="gLog" aria-live="polite"></div>
+    <div id="gActions" class="g-choices" role="group" aria-label="Your choices"></div>
+    <div id="gEnd" hidden>
+      <div id="gEndTitle"></div>
+      <p id="gEndProse"></p>
+      <div id="gEndGoals"></div>
+      <div id="gEndLeft"></div>
+      <div id="gEndStats"></div>
+    </div>
+  </section>
+
+  <aside class="g-side">
+    <div class="g-side-col">
+      <div class="g-panel">
+        <div class="g-panel-title">The Coalition &middot; the big picture</div>
+        <div class="g-ring" id="gRing" aria-label="Coalition ring: links appear as states hedge and join"></div>
+        <div class="g-met-note g-ring-note">The ten candidate states around your pool, named below. Gold dashed link = hedging toward you; solid blue = In; the core fills once compute is pooled. To bring states in, choose Court and pick a country card.</div>
+        <div id="gStates"></div>
+        <div class="g-met-note">Court each up the ladder Out &rarr; Hedging &rarr; In. Only In states pour their numbers into the ledger.</div>
+      </div>
+      <div class="g-panel">
+        <div class="g-panel-title">The Water &middot; the countdown</div>
+        <pre class="g-boil" id="gBoil" aria-hidden="true"></pre>
+        <div class="g-met-note">The clock, as temperature. When the water boils, the Act lands and the game ends.</div>
+      </div>
+    </div>
+    <div class="g-side-col">
+      <div class="g-panel">
+        <div class="g-panel-title">The Ledger &middot; what you hold</div>
+        <div class="g-ledger-grid">
+          <div class="g-met">
+            <div class="g-met-head"><label>Compute</label><span class="g-val" id="gVal-compute"></span></div>
+            <div class="g-slots" id="gPicto-compute"></div>
+            <div class="g-met-note" id="gNote-compute">1 chip = 1 EF (exaFLOPS of training compute) &middot; goal 3 &middot; US &asymp; 5</div>
+          </div>
+          <div class="g-met">
+            <div class="g-met-head"><label>Capital</label><span class="g-val" id="gVal-capital"></span></div>
+            <div class="g-slots" id="gPicto-capital"></div>
+            <div class="g-met-note">1 coin = $4B &middot; goal $20B &middot; US: $109B</div>
+          </div>
+          <div class="g-met">
+            <div class="g-met-head"><label>Talent</label><span class="g-val" id="gVal-talent"></span></div>
+            <div class="g-slots" id="gPicto-talent"></div>
+            <div class="g-met-note">1 dot = 5k researchers &middot; goal 36k &middot; US &asymp; 60k</div>
+          </div>
+          <div class="g-met">
+            <div class="g-met-head"><label>Languages</label><span class="g-val" id="gVal-langs"></span></div>
+            <div class="g-slots" id="gPicto-langs"></div>
+            <div class="g-met-note">EU languages covered &middot; goal 7 &middot; gold partial, pink at risk</div>
+          </div>
+        </div>
+        <div class="g-met-note g-ledger-note">Every In state pours in. The dashed coral slot in each tile is the goal: the credible minimum, not parity with the US.</div>
+      </div>
+      <div class="g-panel">
+        <div class="g-panel-title">The Cluster &middot; pooled compute</div>
+        <pre class="g-boil" id="gStack" aria-hidden="true"></pre>
+        <div class="g-met-note">The supercomputer you are assembling. One rack node lights up per EF of pooled member compute; pwr shows its total load.</div>
+      </div>
+      <div class="g-panel">
+        <div class="g-panel-title">Anchor labs &middot; the firms</div>
+        <div id="gLabs"></div>
+        <div class="g-met-note">Mistral (France), Cohere (Canada), DeepL (Germany). FUND one once its home state is at least Hedging; anchored labs add capital and researchers, and survive the Godfather offer in month 12.</div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script src="data.js?v=23"></script>
+<script src="game.js?v=23"></script>
+</body>
+</html>

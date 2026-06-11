@@ -744,6 +744,107 @@
     }
   }
 
+  /* === STORY ASCII RAIL: a live mini-chart for the chapter being read,
+     animated character art in the story's mono voice. Desktop rail only. === */
+  .story-ascii { margin: 1.5rem auto 0; max-width: 230px; }
+  .story-ascii-cap {
+    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  #storyAscii {
+    font-family: var(--mono); font-size: 0.66rem; line-height: 1.55;
+    color: var(--text-muted); white-space: pre; overflow: hidden;
+    margin-bottom: 0.55rem;
+  }
+  .story-ascii-link {
+    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-soft); text-decoration: none;
+    border-bottom: 1px dotted var(--hairline-strong);
+  }
+  .story-ascii-link:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  /* Expandable explainer: the chart's own "what it shows / why / sources",
+     borrowed from the full card so the two never drift apart. */
+  .story-ascii-more { margin: 0 0 0.55rem; }
+  .story-ascii-more > summary {
+    cursor: pointer; list-style: none; user-select: none;
+    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-soft);
+    display: inline-flex; align-items: center; gap: 0.35rem;
+  }
+  .story-ascii-more > summary::-webkit-details-marker { display: none; }
+  .story-ascii-more > summary::before {
+    content: '+'; color: var(--accent);
+    font-size: 0.8rem; width: 0.7rem; display: inline-block;
+  }
+  .story-ascii-more[open] > summary::before { content: '\2212'; }
+  .story-ascii-more > summary:hover { color: var(--accent); }
+  .story-ascii-more-body {
+    margin-top: 0.5rem;
+    max-height: 38vh; overflow-y: auto;
+    font-family: var(--font); font-size: 0.74rem; line-height: 1.5;
+    color: var(--text);
+    border-top: 1px dotted var(--hairline-strong);
+    padding-top: 0.5rem;
+  }
+  .story-ascii-more-body h4 {
+    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0.6rem 0 0.25rem;
+  }
+  .story-ascii-more-body h4:first-child { margin-top: 0; }
+  .story-ascii-more-body p { margin: 0 0 0.5rem; }
+  .story-ascii-more-body details.viz-sources {
+    margin-top: 0.5rem; padding-top: 0.45rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .story-ascii-more-body details.viz-sources > summary {
+    font-family: var(--mono); font-size: 0.54rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-soft); cursor: pointer;
+    margin-bottom: 0.35rem;
+  }
+  .story-ascii-more-body .viz-footnotes {
+    margin: 0; padding-left: 1rem;
+    font-size: 0.66rem; color: var(--text-soft);
+  }
+  .story-ascii-more-body .viz-footnotes li { margin-bottom: 0.3rem; line-height: 1.45; }
+  .story-ascii-more-body .viz-footnotes a { color: var(--accent); text-decoration: underline; }
+
+  /* === STACKED STORY CARDS (desktop): chapters pin and pile as you scroll,
+     each earlier chapter's title strip peeking above the next, exactly like
+     the live-data cards. Top offsets and z-index set by JS in DOM order. === */
+  @media (min-width: 1024px) {
+    .story.is-stack .scene {
+      position: sticky;
+      margin-bottom: 30px;
+      background: var(--ink);
+      border: 1px solid var(--hairline-strong);
+      border-radius: 12px;
+      box-shadow: 0 18px 38px -24px rgba(10,10,10,0.5);
+      padding: 1rem 1.7rem 1.7rem;
+    }
+    .story.is-stack .scene-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        'kicker title link'
+        'dateline dateline dateline';
+      align-items: baseline;
+      column-gap: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+    .story.is-stack .scene-kicker { grid-area: kicker; margin-bottom: 0; }
+    .story.is-stack .scene-title {
+      grid-area: title;
+      font-size: 1.5rem; line-height: 1.2;
+    }
+    .story.is-stack .scene-data-link { grid-area: link; justify-self: end; margin-bottom: 0; }
+    .story.is-stack .scene-dateline { grid-area: dateline; margin: 0.5rem 0 0.4rem; }
+  }
+
   /* Globe block: centered in the rail. */
   .country-map { display: block; }
   .country-map-frame {
@@ -884,23 +985,26 @@
   /* Order so each decision's linked chart runs in the SAME top-to-bottom
      sequence as the decisions (Who joins -> Who anchors -> held together ->
      covers -> MVP), keeping the connector lines short and non-crossing.
-     DOM is now 13 charts + 3 act beats = 16 children (ether removed). */
-  .supporting-data-grid > :nth-child(14) { order: 1; }  /* Act 1 */
+     DOM is now 15 charts + 3 act beats = 18 children (pentagon and ether
+     appended after france energy in the DOM). */
+  .supporting-data-grid > :nth-child(16) { order: 1; }  /* Act 1 */
   .supporting-data-grid > :nth-child(10) { order: 2; }  /* why pool        <- Who joins */
   .supporting-data-grid > :nth-child(1)  { order: 3; }  /* capital flow */
   .supporting-data-grid > :nth-child(2)  { order: 4; }  /* talent */
   .supporting-data-grid > :nth-child(3)  { order: 5; }  /* languages */
   .supporting-data-grid > :nth-child(6)  { order: 6; }  /* brain drain */
-  .supporting-data-grid > :nth-child(15) { order: 7; }  /* Act 2 */
+  .supporting-data-grid > :nth-child(17) { order: 7; }  /* Act 2 */
   .supporting-data-grid > :nth-child(4)  { order: 8; }  /* revenue         <- Who anchors */
   .supporting-data-grid > :nth-child(7)  { order: 9; }  /* export controls <- held together */
-  .supporting-data-grid > :nth-child(11) { order: 10; } /* cloud */
-  .supporting-data-grid > :nth-child(16) { order: 11; } /* Act 3 */
-  .supporting-data-grid > :nth-child(12) { order: 12; } /* defence-AI      <- covers */
-  .supporting-data-grid > :nth-child(8)  { order: 13; } /* compute         <- MVP */
-  .supporting-data-grid > :nth-child(5)  { order: 14; } /* capex */
-  .supporting-data-grid > :nth-child(9)  { order: 15; } /* tokyo */
-  .supporting-data-grid > :nth-child(13) { order: 16; } /* france energy */
+  .supporting-data-grid > :nth-child(14) { order: 10; } /* pentagon money */
+  .supporting-data-grid > :nth-child(11) { order: 11; } /* cloud */
+  .supporting-data-grid > :nth-child(18) { order: 12; } /* Act 3 */
+  .supporting-data-grid > :nth-child(12) { order: 13; } /* defence-AI      <- covers */
+  .supporting-data-grid > :nth-child(8)  { order: 14; } /* compute         <- MVP */
+  .supporting-data-grid > :nth-child(5)  { order: 15; } /* capex */
+  .supporting-data-grid > :nth-child(9)  { order: 16; } /* tokyo */
+  .supporting-data-grid > :nth-child(13) { order: 17; } /* france energy */
+  .supporting-data-grid > :nth-child(15) { order: 18; } /* pooled vs alone */
   /* Story-beat markers sitting on the spine. */
   .story-act { position: relative; }
   .story-act-num {
@@ -1921,6 +2025,7 @@
 }
 .scroll-rail.is-visible { opacity: 1; pointer-events: auto; }
 .scroll-rail.rail-suppressed { display: none; }
+.scroll-rail.rail-hero { display: none; }
 .scroll-rail::before {
   content: ''; position: absolute; left: 4px; top: 9px; bottom: 9px;
   width: 1.5px; background: var(--hairline-strong);

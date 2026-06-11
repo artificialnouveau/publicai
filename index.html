@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=32">
+<link rel="stylesheet" href="styles.css?v=41">
 </head>
 <body>
 
@@ -31,6 +31,7 @@
   <div class="topnav-links">
     <a class="topnav-link" href="#top" aria-current="page">Story</a>
     <a class="topnav-link topnav-link-cta" href="#outcome">Your Coalition</a>
+    <a class="topnav-link" href="airbus-for-ai/game.html" aria-label="Play The Slow Boil, the negotiation game">Game</a>
     <a class="topnav-link" href="#signon" aria-label="Jump to the sign-on form">Sign on</a>
   </div>
 </nav>
@@ -382,7 +383,7 @@
   <section class="scene" data-viz="export-controls" id="scene-whitehouse" data-country-id="840" data-country-iso="US">
     <header class="scene-header">
       <div class="scene-kicker">Chapter 10</div>
-      <a class="scene-data-link" href="#viz-export">Data &darr; US export controls</a>
+      <a class="scene-data-link" href="#viz-pentagon">Data &darr; Pentagon money</a>
       <span class="scene-dateline">
         Apr.18.2027<br>
         The White House<br>
@@ -391,7 +392,9 @@
       <h2 class="scene-title">The White House</h2>
     </header>
     <div class="scene-prose">
-      <p class="tktk">TKTK</p>
+      <p>The heads of the major frontier labs all smiled and took turns shaking hands with the President. It was announced that the Department of War had made a strategic investment into each of their companies. <button class="story-fn" type="button" data-viz-pop="viz-pentagon" aria-label="See chart: Pentagon money">10</button> The amount was undisclosed, but the general sentiment was that it was extremely generous. Fabulously so. More money to push datacenter construction, more money to train new models, more money to use to defend the sovereign nation of the United States of America.</p>
+      <p>There was one condition. It was a big one. But not big enough to turn down the deal of a lifetime: the Godfather offer. So what if Luxembourg couldn&rsquo;t trade with China anymore? Hardly their problem. They were scientists, not policy people. And these models don&rsquo;t come cheap.</p>
+      <p>The pictures flashed. One-by-one, they went up and paid their respects to the man who&rsquo;d dealt them a future, a generous regulatory environment, and a trillion-dollar budget. Simple math. Anyone could understand that.</p>
     </div>
   </section>
 
@@ -408,7 +411,10 @@
       <h2 class="scene-title">The Ether</h2>
     </header>
     <div class="scene-prose">
-      <p class="tktk">TKTK</p>
+      <p>They all dialed in at around the same time. The Canadian, French, and Japanese Prime Ministers, the German Chancellor, the EU technology leader, the Swedish VCs. The coalition of the doomed had assembled. The coterie of the condemned. Their aides had all worked long hours to find a time during which everyone would be awake enough given the events of the last week.</p>
+      <p>A voice rang out clearer than the others: &ldquo;no one signed the thing did they?&rdquo; It was the French President speaking.</p>
+      <p>A series of affronted shouts of &ldquo;no&rdquo; greeted his introductory remarks.</p>
+      <p>&ldquo;Well then,&rdquo; he said. &ldquo;It&rsquo;s best we figure out how we work together to get out from under this thing.&rdquo; <button class="story-fn" type="button" data-viz-pop="viz-ether" aria-label="See chart: Pooled vs alone">11</button></p>
     </div>
   </section>
 
@@ -440,6 +446,16 @@
         <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(10,10,10,0.5)" stroke-width="0.7"/>
       </svg>
     </div>
+  </div>
+  <!-- Live ascii mini-chart for the chapter being read (filled by JS) -->
+  <div class="story-ascii" id="storyAsciiWrap" hidden>
+    <div class="story-ascii-cap" id="storyAsciiCap"></div>
+    <pre id="storyAscii" aria-hidden="true"></pre>
+    <details class="story-ascii-more" id="storyAsciiMore">
+      <summary>what this means + sources</summary>
+      <div class="story-ascii-more-body" id="storyAsciiMoreBody"></div>
+    </details>
+    <a class="story-ascii-link" id="storyAsciiLink" href="#viz-ottawa">full chart &darr;</a>
   </div>
 </aside>
 
@@ -1101,6 +1117,93 @@
         </div>
       </div>
     </div>
+
+    <!-- VIZ: White House — Pentagon money -->
+    <div class="viz-card" id="viz-pentagon">
+      <div class="viz-header"><span class="viz-name">Pentagon money</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>In mid-2025 the Pentagon&rsquo;s Chief Digital and AI Office awarded contracts with a $200M ceiling to each of OpenAI, Anthropic, Google and xAI for &ldquo;agentic AI&rdquo; national-security prototypes: roughly $800M in ceilings across the four frontier labs.</p>
+          <h4>Why it matters here</h4>
+          <p>The <strong>White House</strong> scene dramatizes the entanglement: the same labs the coalition would buy models from are also US defense contractors. The Godfather offer is why &ldquo;off the shelf&rdquo; is never a neutral choice.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>CDAO awards to OpenAI (June 17, 2025), then Anthropic, Google and xAI (July 14, 2025), each with a $200M ceiling, for agentic-AI national-security workflows. <a href="https://defensescoop.com/2025/07/14/pentagon-ai-contracts-musk-xai-google-openai-anthropic-cdao/" target="_blank" rel="noopener">DefenseScoop</a>; <a href="https://www.cnbc.com/2025/07/14/anthropic-google-openai-xai-granted-up-to-200-million-from-dod.html" target="_blank" rel="noopener">CNBC</a>; <a href="https://breakingdefense.com/2025/07/anthropic-google-and-xai-win-200m-each-from-pentagon-ai-chief-for-agentic-ai/" target="_blank" rel="noopener">Breaking Defense</a>.</li>
+            <li>The scene&rsquo;s &ldquo;Department of War&rdquo; investment and its undisclosed size are fiction; the 2025 contract ceilings are the real-world anchor.</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pentagon frontier-AI contracts as coin stacks: $200M ceilings each for OpenAI, Anthropic, Google and xAI, about $800M total">
+            <text class="cu-cap" x="14" y="22">The Pentagon buys into all four frontier labs</text>
+            <g class="cu-pop">
+              <ellipse class="cu-coin" cx="54"  cy="104" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="54"  cy="97"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="137" cy="104" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="137" cy="97"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="220" cy="104" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="220" cy="97"  rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="303" cy="104" rx="15" ry="4.7"/>
+              <ellipse class="cu-coin" cx="303" cy="97"  rx="15" ry="4.7"/>
+            </g>
+            <g class="cu-bag-label" text-anchor="middle">
+              <text x="54"  y="128">OpenAI</text><text x="54"  y="140">$200M</text>
+              <text x="137" y="128">Anthropic</text><text x="137" y="140">$200M</text>
+              <text x="220" y="128">Google</text><text x="220" y="140">$200M</text>
+              <text x="303" y="128">xAI</text><text x="303" y="140">$200M</text>
+            </g>
+            <text class="cu-cap" x="14" y="164">Up to $200M each for agentic AI &middot; 1 coin = $100M</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIZ: Ether — pooled vs alone (the closing argument) -->
+    <div class="viz-card" id="viz-ether">
+      <div class="viz-header"><span class="viz-name">Pooled vs alone</span></div>
+      <div class="viz-pane-inner">
+        <details class="viz-info"><summary class="viz-info-btn" aria-label="About this chart">i</summary><div class="viz-info-body">
+          <h4>What it shows</h4>
+          <p>The share of the US frontier level a middle power reaches alone (its best single state) versus the ten-state coalition pooled, across capital (US $109B, 2024), training compute (US ~5 EF) and top-tier researchers (US ~60k).</p>
+          <h4>Why it matters here</h4>
+          <p>Chapter 11&rsquo;s conference call is the thesis of the whole story: alone, nobody clears a quarter of the US level on any axis. Pooled, the bloc approaches frontier scale in compute and talent; capital stays the gap to close.</p>
+          <details class="viz-sources"><summary>Sources &amp; footnotes</summary><ol class="viz-footnotes">
+            <li>US reference levels: $109.1B 2024 private AI investment (<a href="https://hai.stanford.edu/ai-index/2025-ai-index-report/economy" target="_blank" rel="noopener">Stanford AI Index 2025</a>); ~5 EF frontier training cluster (estimate, see the compute figure); ~60k top-tier researchers (MacroPolo / LinkedIn-derived target used by the scorecard).</li>
+            <li>Per-state splits are the same illustrative round figures that drive the coalition simulator on this page (best alone: UK $4.5B capital, Germany 1.0 EF compute, UK 14k researchers; pooled: ~$18B, ~4.1 EF, ~74k).</li>
+          </ol></details>
+        </div></details>
+        <div class="viz-canvas-wrap">
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Share of the US frontier level reached alone vs pooled: capital 4% alone and 17% pooled, compute 20% alone and 82% pooled, talent 23% alone and over 100% pooled">
+            <text class="cu-cap" x="14" y="22">Share of the US level &mdash; best state alone vs ten pooled</text>
+            <text class="ci-tick" x="72" y="44" text-anchor="end">Capital</text>
+            <rect class="mn-bar-rest" x="78" y="34" width="240" height="6"/>
+            <rect class="mn-bar-muted mn-growx" x="78" y="34" width="10" height="6"/>
+            <text class="ci-tick" x="93" y="40">4%</text>
+            <rect class="mn-bar-rest" x="78" y="42" width="240" height="6"/>
+            <rect class="mn-bar mn-growx" x="78" y="42" width="41" height="6"/>
+            <text class="ci-tick" x="124" y="48" style="fill:#0057FF">17%</text>
+            <text class="ci-tick" x="72" y="74" text-anchor="end">Compute</text>
+            <rect class="mn-bar-rest" x="78" y="64" width="240" height="6"/>
+            <rect class="mn-bar-muted mn-growx" x="78" y="64" width="48" height="6"/>
+            <text class="ci-tick" x="131" y="70">20%</text>
+            <rect class="mn-bar-rest" x="78" y="72" width="240" height="6"/>
+            <rect class="mn-bar mn-growx" x="78" y="72" width="197" height="6"/>
+            <text class="ci-tick" x="280" y="78" style="fill:#0057FF">82%</text>
+            <text class="ci-tick" x="72" y="104" text-anchor="end">Talent</text>
+            <rect class="mn-bar-rest" x="78" y="94" width="240" height="6"/>
+            <rect class="mn-bar-muted mn-growx" x="78" y="94" width="55" height="6"/>
+            <text class="ci-tick" x="138" y="100">23%</text>
+            <rect class="mn-bar-rest" x="78" y="102" width="240" height="6"/>
+            <rect class="mn-bar mn-growx" x="78" y="102" width="240" height="6"/>
+            <text class="ci-tick" x="313" y="108" text-anchor="end" style="fill:#fff">100%+</text>
+            <g class="cu-legend">
+              <circle cx="20" cy="136" r="5" fill="rgba(10,10,10,0.26)"/><text x="30" y="136">best state alone</text>
+              <circle cx="170" cy="136" r="5" fill="#0057FF"/><text x="180" y="136">ten pooled</text>
+            </g>
+            <text class="cu-cap" x="14" y="164">Alone, nobody clears a quarter of the US level</text>
+          </svg>
+        </div>
+      </div>
+    </div>
     <div class="story-act" data-act="1">
       <span class="story-act-num">1</span>
       <div class="story-act-body">
@@ -1170,13 +1273,14 @@
 <section class="outro">
   <p class="outro-line">Eleven chapters, seven decisions, one coalition. Whichever shape it took on this read, it can take another on the next.</p>
   <div class="outro-actions">
+    <a class="btn btn-primary" href="airbus-for-ai/game.html">Play The Slow Boil &rarr;</a>
     <a class="btn btn-ghost" href="research.html">Research &amp; sources</a>
   </div>
 </section>
 
 </main>
 
-<script src="scripts.js?v=32" defer></script>
+<script src="scripts.js?v=41" defer></script>
 
 </body>
 </html>

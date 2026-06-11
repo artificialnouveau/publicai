@@ -883,10 +883,15 @@
         if (e.isIntersecting) visible.set(e.target, true);
         else visible.delete(e.target);
       });
-      let best = null, bestY = Infinity;
-      visible.forEach((_, el) => {
-        const t = el.getBoundingClientRect().top;
-        if (t < bestY && t < window.innerHeight / 2) { bestY = t; best = el; }
+      // Pick the furthest-along scene that has reached its reading position.
+      // Stacked cards pin at their sticky offset (style.top), so a stuck card
+      // compares against its own pin rather than the mid-viewport line.
+      let best = null;
+      scenes.forEach(el => {
+        if (!visible.has(el)) return;
+        const pin = parseFloat(el.style.top || '');
+        const limit = isNaN(pin) ? window.innerHeight / 2 : pin + 6;
+        if (el.getBoundingClientRect().top <= limit) best = el;
       });
       setActive(best);
     }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, 0.25, 0.75] });
@@ -1630,11 +1635,14 @@
     const seen = new Map();
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { e.isIntersecting ? seen.set(e.target, true) : seen.delete(e.target); });
-      let bestIdx = -1, bestTop = Infinity;
+      // Last item that has reached its reading position wins. Stacked story
+      // cards pin at style.top, so a stuck card compares against its own pin.
+      let bestIdx = -1;
       items.forEach((it, i) => {
         if (!seen.get(it.el)) return;
-        const t = it.el.getBoundingClientRect().top;
-        if (t < window.innerHeight * 0.5 && t < bestTop) { bestTop = t; bestIdx = i; }
+        const pin = parseFloat(it.el.style.top || '');
+        const limit = isNaN(pin) ? window.innerHeight * 0.5 : pin + 6;
+        if (it.el.getBoundingClientRect().top <= limit) bestIdx = i;
       });
       if (bestIdx >= 0) setActive(bestIdx);
     }, { rootMargin: '-20% 0px -50% 0px', threshold: [0, 0.5, 1] });
@@ -1671,6 +1679,15 @@
     }, { rootMargin: '0px 0px -30% 0px' }).observe(outcomeSection);
   }
 
+  // No rail during the hero ("The Airbus for AI Story"): it only appears once
+  // the hero has fully scrolled past and the chapters are underway.
+  const heroSection = document.querySelector('.hero');
+  if (storyRail && heroSection){
+    new IntersectionObserver(es => {
+      es.forEach(e => storyRail.rail.classList.toggle('rail-hero', e.isIntersecting));
+    }).observe(heroSection);
+  }
+
   // --- Member-states decisions (rebuilt only when the designer DOM is replaced) ---
   const designWrap = document.querySelector('.outcome-split-design');
   let memberRail = null;
@@ -1705,3 +1722,164 @@
     btn.innerHTML = collapsed ? '+' : '&minus;';
   });
 })();
+
+// ============================================================
+// STACKED STORY CARDS: chapters pin and pile as you scroll, like the
+// live-data cards. Desktop only; per-card sticky top + z-index in DOM order.
+// ============================================================
+(function(){
+  if (window.innerWidth < 1024) return;
+  const story = document.querySelector('.story');
+  if (!story) return;
+  const scenes = Array.from(story.querySelectorAll('.scene'));
+  if (!scenes.length) return;
+  story.classList.add('is-stack');
+  const BASE = 70, STEP = 52; // step exceeds the header strip so titles never overlap
+  function pinOf (i) { return BASE + i * STEP; }
+  scenes.forEach((el, i) => {
+    el.style.top = pinOf(i) + 'px';
+    el.style.zIndex = String(i + 1);
+    // Clicking a covered (earlier) chapter scrolls back so it rests at its
+    // pin, fully readable again. Links and footnote buttons keep working.
+    el.addEventListener('click', e => {
+      if (e.target.closest && e.target.closest('a, button')) return;
+      const next = scenes[i + 1];
+      const covered = next && next.getBoundingClientRect().top <= pinOf(i + 1) + 6;
+      if (!covered) return;
+      const cs = getComputedStyle(story);
+      let y = story.getBoundingClientRect().top + window.scrollY + (parseFloat(cs.paddingTop) || 0);
+      for (let j = 0; j < i; j++) y += scenes[j].offsetHeight + 30; // 30 = stacked margin-bottom
+      window.scrollTo({ top: y - pinOf(i), behavior: 'smooth' });
+    });
+  });
+})();
+
+// ============================================================
+// STORY ASCII RAIL: an animated character mini-chart in the right rail that
+// follows the chapter being read. Real figures, drawn in mono; bars grow in
+// when a chapter becomes active, then idle quietly. Reduced motion = static.
+// ============================================================
+(function(){
+  const wrap = document.getElementById('storyAsciiWrap');
+  const pre = document.getElementById('storyAscii');
+  const cap = document.getElementById('storyAsciiCap');
+  const link = document.getElementById('storyAsciiLink');
+  if (!wrap || !pre || window.innerWidth < 1024) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // bar: fraction -> '████··········'
+  const B = (f, w) => {
+    const n = Math.round(Math.max(0, Math.min(1, f)) * w);
+    return '█'.repeat(n) + '·'.repeat(w - n);
+  };
+  const P = t => Math.min(1, t / 14); // grow-in progress
+
+  const VIZ = {
+    'scene-dublin-apr': { label: 'talent migration', href: '#viz-talent', r: t => {
+      const p = P(t);
+      let flow = '';
+      for (let i = 0; i < 13; i++) flow += (i === t % 13) ? 'o' : '-';
+      return 'top researchers,\nwhere they end up\n\n US   ' + B(0.60 * p, 13) + ' 60%\n EU   ' + B(0.15 * p, 13) + ' ~15%\n else ' + B(0.25 * p, 13) + ' 25%\n\n EU ' + flow + '> US';
+    }},
+    'scene-berlin': { label: 'cloud dependence', href: '#viz-cloud', r: t => {
+      const p = P(t);
+      const blink = (t >> 2) % 2 ? '_' : ' ';
+      return 'who runs europe’s cloud\n\n US    ' + B(0.70 * p, 13) + ' 70%\n EU    ' + B(0.15 * p, 13) + ' 15%\n other ' + B(0.15 * p, 13) + ' 15%\n\n one act can switch it off' + blink;
+    }},
+    'scene-brussels': { label: 'language coverage', href: '#viz-language', r: t => {
+      const p = P(t);
+      return 'of 24 EU languages\n\n strong  ' + B(3 / 24 * p, 13) + '  3\n partial ' + B(8 / 24 * p, 13) + '  8\n at risk ' + B(13 / 24 * p, 13) + ' 13\n\n 13 face digital extinction';
+    }},
+    'scene-tokyo': { label: 'japan’s AI bet', href: '#viz-tokyo', r: t => {
+      const lines = [' > exports nominal', ' > 3xp0rts r#str1ct3d', ' > exports RESTRICTED ??'];
+      return 'the sovereign bet\n\n GENIAC fund   ¥1T / 5yr\n rare-earth refining\n via china ' + B(0.90 * P(t), 10) + ' 90%\n\n' + lines[(t >> 3) % 3];
+    }},
+    'scene-stockholm': { label: 'defence-AI boom', href: '#viz-defense', r: t => {
+      const p = P(t);
+      const spin = '|/-\\'[t % 4];
+      return 'helsing, valuation\n\n 2025  ' + B(12 / 18 * p, 13) + ' €12B\n 2026e ' + B(p, 13) + ' ~$18B\n\n radar ' + spin + ' · defence is\n the saleable wedge';
+    }},
+    'scene-monroe': { label: 'capital flow', href: '#viz-capital', r: t => {
+      let racks = '';
+      for (let r = 0; r < 3; r++) {
+        let l = '';
+        for (let c = 0; c < 8; c++) l += (Math.random() < 0.5 ? '*' : '·') + (c < 7 ? ' ' : '');
+        racks += ' r0' + (r + 1) + ' [' + l + ']\n';
+      }
+      return 'hyperion, monroe LA\n\n' + racks + '\n $27B · one building\n EU 2024 AI total: $14B';
+    }},
+    'scene-ottawa': { label: 'why pool', href: '#viz-ottawa', r: t => {
+      const p = P(t);
+      return '2024 private AI money\n\n US ' + B(p, 13) + ' $109B\n EU ' + B(14 / 109 * p, 13) + ' $14B\n CN ' + B(9.3 / 109 * p, 13) + ' $9.3B\n UK ' + B(4.5 / 109 * p, 13) + ' $4.5B\n\n no one competes alone';
+    }},
+    'scene-paris': { label: 'france’s power edge', href: '#viz-energy', r: t => {
+      const p = P(t);
+      const hum = (t >> 2) % 2 ? '~' : '-';
+      return 'the french grid\n\n nuclear ' + B(0.70 * p, 13) + ' 70%\n other   ' + B(0.30 * p, 13) + ' 30%\n\n ~90 TWh exported ' + hum + '\n power for compute';
+    }},
+    'scene-dublin-jan': { label: 'brain drain', href: '#viz-brain', r: t => {
+      return 'EU-trained, still in EU\n\n 2019 ' + B(0.50 * Math.min(1, t / 8), 13) + ' ~50%\n 2022 ' + B(0.43 * Math.min(1, Math.max(0, t - 5) / 8), 13) + ' ~43%\n 2026 ' + B(0.40 * Math.min(1, Math.max(0, t - 10) / 8), 13) + ' ~40%\n\n the line is not bottoming';
+    }},
+    'scene-whitehouse': { label: 'pentagon money', href: '#viz-pentagon', r: t => {
+      const labs = ['OPENAI', 'ANTHROPIC', 'GOOGLE', 'XAI'];
+      let out = 'the godfather offer\n\n';
+      labs.forEach((l, i) => {
+        const pos = (t + i * 3) % 10;
+        let line = '';
+        for (let k = 0; k < 10; k++) line += (k === pos) ? '$' : '-';
+        out += ' DoW ' + line + '> ' + l + '\n';
+      });
+      return out + '\n $200M ceilings each';
+    }},
+    'scene-ether': { label: 'pooled vs alone', href: '#viz-ether', r: t => {
+      const p = P(t);
+      return 'share of the US level\n\n capital alone  ' + B(0.04 * p, 10) + '   4%\n         pooled ' + B(0.17 * p, 10) + '  17%\n compute alone  ' + B(0.20 * p, 10) + '  20%\n         pooled ' + B(0.82 * p, 10) + '  82%\n talent  alone  ' + B(0.23 * p, 10) + '  23%\n         pooled ' + B(p, 10) + ' 100%+';
+    }}
+  };
+
+  const scenes = Array.from(document.querySelectorAll('.scene'));
+  const more = document.getElementById('storyAsciiMore');
+  const moreBody = document.getElementById('storyAsciiMoreBody');
+  let activeId = null, since = 0, moreFor = null;
+
+  // The expandable explainer: borrow the chart's own curated info overlay
+  // (what it shows, why it matters, sources) so the rail stays in sync with
+  // the full card below.
+  function fillMore (href) {
+    if (!more || !moreBody || moreFor === href) return;
+    moreFor = href;
+    more.removeAttribute('open'); // collapse when the chapter changes
+    const body = document.querySelector(href + ' .viz-info-body');
+    moreBody.innerHTML = body ? body.innerHTML : '';
+  }
+
+  function draw () {
+    const v = VIZ[activeId];
+    if (!v) { wrap.hidden = true; return; }
+    wrap.hidden = false;
+    pre.textContent = v.r(reduced ? 99 : since);
+    cap.textContent = 'live data · ' + v.label;
+    link.setAttribute('href', v.href);
+    fillMore(v.href);
+    since++;
+  }
+
+  function pickActive () {
+    // A scene is "current" once it reaches its reading position. Stacked
+    // cards pin at style.top, so a stuck card compares against its own pin
+    // rather than the mid-viewport line (whose value deep pins can exceed).
+    let cur = null;
+    scenes.forEach(s => {
+      const pin = parseFloat(s.style.top || '');
+      const limit = isNaN(pin) ? window.innerHeight * 0.45 : pin + 6;
+      if (s.getBoundingClientRect().top <= limit) cur = s.id;
+    });
+    if (cur !== activeId) { activeId = cur; since = 0; draw(); }
+  }
+
+  window.addEventListener('scroll', pickActive, { passive: true });
+  window.addEventListener('resize', pickActive);
+  pickActive();
+  if (!reduced) setInterval(draw, 150);
+})();
+
