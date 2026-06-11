@@ -185,6 +185,10 @@ window.GAME_DATA = (function () {
       title: 'THE SLOW BOIL, SURVIVED',
       prose: 'When the Act lands, the call assembles in minutes, and this time nobody asks whether anyone signed. They ask when the pooled cluster comes online. There is a real number to give. The leverage is thin, but it is leverage, and eighteen months ago there was none. {STATS}'
     },
+    negotiated: {
+      title: 'NEGOTIATED VASSALAGE',
+      prose: 'You called first, so the terms are real: managed access with carve-outs, audits with notice, a seat at someone else\u2019s table. Your members keep their clouds and lose the argument. It is comfortable. It is someone else\u2019s comfort. {STATS}'
+    },
     airbus: {
       title: 'AIRBUS FOR AI',
       prose: 'The Act lands and bounces. Your members answer with one voice, one cluster, one anchored lab, and a hiring pipeline that runs toward Europe for the first time in a decade. In Washington someone asks who authorized this. Nobody did. That was the whole idea. {STATS}'

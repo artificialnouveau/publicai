@@ -401,6 +401,129 @@
     padding: 0.25rem 0.55rem; margin-top: 0.1rem;
   }
 
+  /* === THE PHONE RINGS: incoming-call banner === */
+  .call-banner {
+    position: fixed; right: 18px; bottom: 18px; z-index: 70;
+    display: flex; align-items: center; gap: 0.7rem;
+    background: var(--ink);
+    border: 1px solid var(--hairline-strong); border-left: 3px solid var(--accent);
+    border-radius: 8px; box-shadow: 0 14px 30px -18px rgba(10,10,10,0.45);
+    padding: 0.7rem 0.9rem;
+    animation: callIn 0.3s ease;
+  }
+  @keyframes callIn { from { transform: translateY(12px); opacity: 0; } }
+  .call-pulse {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    animation: callPulse 1.1s ease-in-out infinite;
+  }
+  @keyframes callPulse { 50% { box-shadow: 0 0 0 7px rgba(0,87,255,0.15); } }
+  .call-from { font-family: var(--mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; }
+  .call-banner button {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.35rem 0.7rem; cursor: pointer; border-radius: 4px;
+  }
+  .call-answer { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .call-decline { background: transparent; color: var(--text-soft); border: 1px solid var(--hairline-strong); }
+  .call-declined-line { font-family: var(--serif); font-style: italic; font-size: 0.95rem; margin: 0; }
+  @media (prefers-reduced-motion: reduce) { .call-pulse { animation: none; } .call-banner { animation: none; } }
+
+  /* === AARON'S DRIVE === */
+  .usb-chip {
+    display: inline-block; margin: -0.4rem 0 1.2rem; cursor: pointer;
+    font-family: var(--mono); font-size: 0.64rem; font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--accent); background: rgba(0,87,255,0.07);
+    border: 1px dashed var(--accent); border-radius: 4px;
+    padding: 0.35rem 0.65rem;
+  }
+  .usb-chip.is-taken { color: var(--text-soft); border-color: var(--hairline-strong); background: var(--paper-2); cursor: default; }
+  .usb-token {
+    margin: 1rem auto 0; max-width: 230px;
+    font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-soft); text-align: center;
+    border: 1px dashed var(--hairline-strong); border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+  }
+  .usb-dock { max-width: 720px; margin: 0.9rem auto 0; }
+  .usb-port {
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+    font-family: var(--mono); font-size: 0.7rem; color: var(--text);
+    border: 1px dashed var(--hairline-strong); border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+  }
+  .usb-port.empty { color: var(--text-soft); }
+  .usb-port button {
+    font-family: var(--mono); font-size: 0.64rem; font-weight: 700;
+    letter-spacing: 0.06em; cursor: pointer;
+    color: #fff; background: var(--accent);
+    border: 0; border-radius: 4px; padding: 0.4rem 0.75rem;
+  }
+  .artifact-files .file-row {
+    display: flex; gap: 0.8rem; align-items: baseline;
+    font-family: var(--mono); font-size: 0.7rem;
+    padding: 0.35rem 0.2rem; text-decoration: none;
+    border-bottom: 1px dotted var(--hairline);
+  }
+  .artifact-files .file-row:last-child { border-bottom: 0; }
+  .artifact-files .file-row b { color: var(--accent); font-weight: 600; }
+  .artifact-files .file-row span { color: var(--text-soft); font-size: 0.64rem; }
+  .artifact-files .file-row:hover b { text-decoration: underline; }
+
+  /* === SIGN THE INSTRUMENT === */
+  .sign-pad {
+    margin: 1.2rem 0;
+    border: 1px solid var(--hairline-strong); border-radius: 6px;
+    background: #fff; padding: 0.8rem 1rem;
+  }
+  .sign-pad canvas {
+    width: 100%; height: auto; display: block;
+    border-bottom: 1px solid var(--text); cursor: crosshair;
+    touch-action: none;
+  }
+  .sign-actions { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.55rem; }
+  .sign-actions button {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    border-radius: 4px; padding: 0.35rem 0.7rem;
+    background: transparent; border: 1px solid var(--hairline-strong); color: var(--text);
+  }
+  .sign-actions #signCommit { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .sign-actions #signCommit:disabled { opacity: 0.4; cursor: default; }
+  .sign-status { font-family: var(--mono); font-size: 0.6rem; color: var(--text-soft); }
+  .sign-pad.is-signed canvas { cursor: default; }
+
+  /* === BRIEFING TOGGLE === */
+  .brief-bar { margin: -0.8rem 0 1.2rem; }
+  .brief-toggle {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    color: var(--text-soft); background: transparent;
+    border: 1px solid var(--hairline-strong); border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .brief-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .scene.as-brief .brief-toggle { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .scene-brief { display: none; }
+  .scene.as-brief .scene-prose { display: none; }
+  .scene.as-brief .scene-brief {
+    display: block;
+    border: 1px solid var(--hairline-strong); border-left: 3px solid var(--accent);
+    border-radius: 6px; background: var(--paper-2);
+    padding: 0.9rem 1.1rem 1rem; margin-bottom: 1rem;
+  }
+  .scene-brief ul { margin: 0 0 0.7rem 1.1rem; padding: 0; }
+  .scene-brief li { font-size: 0.92rem; line-height: 1.6; color: var(--text); margin-bottom: 0.45rem; }
+  .scene-brief li::marker { color: var(--accent); }
+  .brief-chart {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border-bottom: 1px dotted var(--hairline-strong); text-decoration: none;
+  }
+
   /* === CAST CARDS: RPG-style character dossiers under each chapter header === */
   .cast-row {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -1391,6 +1514,37 @@
   .viz-card.mn-anim .mn-grow { opacity: 0; transform: scale(0.94); transform-box: fill-box; transform-origin: center; }
   .viz-card.mn-anim.is-in .mn-grow { transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s; opacity: 1; transform: none; }
 
+  /* === Editorial chart vocabulary: dot plots, lollipops, slopes, units,
+     annotations with leader lines. === */
+  .ed-axis { stroke: rgba(10,10,10,0.3); stroke-width: 0.8; }
+  .ed-grid { stroke: rgba(10,10,10,0.14); stroke-width: 0.6; stroke-dasharray: 0.5 3; stroke-linecap: round; }
+  .ed-tick { font-family: var(--mono); font-size: 7.5px; fill: rgba(10,10,10,0.45); }
+  .ed-lbl { font-family: var(--mono); font-size: 8.5px; font-weight: 600; fill: rgba(10,10,10,0.62); }
+  .ed-lbl.accent { fill: var(--accent); }
+  .ed-val { font-family: var(--mono); font-size: 9.5px; font-weight: 700; fill: var(--accent); }
+  .ed-val.red { fill: var(--red); }
+  .ed-val.mut { fill: rgba(10,10,10,0.55); }
+  .ed-dot { fill: var(--accent); stroke: #fff; stroke-width: 1.4; }
+  .ed-dot.dim { fill: rgba(10,10,10,0.38); }
+  .ed-dot.red { fill: var(--red); }
+  .ed-dot.hollow { fill: #fff; stroke: rgba(10,10,10,0.55); stroke-width: 1.4; }
+  .ed-stem { stroke: rgba(10,10,10,0.3); stroke-width: 2; stroke-linecap: round; }
+  .ed-stem.accent { stroke: var(--accent); }
+  .ed-lead { stroke: rgba(10,10,10,0.4); stroke-width: 0.6; fill: none; }
+  .ed-bracket { stroke: rgba(10,10,10,0.45); stroke-width: 0.8; fill: none; }
+  .ed-link { stroke: rgba(10,10,10,0.35); stroke-width: 1.6; stroke-linecap: round; }
+  .ed-slope { stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; }
+  .ed-unit { fill: var(--accent); }
+  .ed-unit.us { fill: rgba(184,0,46,0.16); stroke: var(--red); stroke-width: 1; }
+  .ed-unit.off { fill: transparent; stroke: rgba(10,10,10,0.3); stroke-width: 1; }
+  .ed-slot { fill: transparent; stroke: rgba(10,10,10,0.25); stroke-width: 1; stroke-dasharray: 2 2; }
+  .ed-seg { }
+  .ed-seg.red { fill: var(--red); }
+  .ed-seg.eu { fill: var(--accent); }
+  .ed-seg.dim { fill: rgba(10,10,10,0.25); }
+  .ed-seg-lbl { font-family: var(--mono); font-size: 9px; font-weight: 700; fill: #fff; }
+  #ottawaCoalDot { transition: cx 0.5s ease; }
+
   /* === Chart pictograms, disciplined: ink outlines, blue for the coalition
      side, brick red for the US/threat side. Captions in mono small caps,
      matching the game's panel language. === */
@@ -2100,7 +2254,7 @@
   @media (min-width: 1100px) { .design-section[data-haschart] { cursor: help; } }
 
 /* Smooth re-tiering when charts recompute from the live coalition. */
-#viz-language .cu-pop use, #computeEuChips use { transition: fill 0.45s ease; }
+#viz-language .cu-pop rect { transition: fill 0.45s ease; }
 
 /* Live coalition readout above the decisions (makes member-linked data visible). */
 .coalition-live {

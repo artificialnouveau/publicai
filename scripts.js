@@ -1414,7 +1414,7 @@
     members.forEach(m => (MEMBER_LANGS[m] || []).forEach(l => strong.add(l)));
     const partial = BASE_PARTIAL.filter(l => !strong.has(l));
     let strongN = 0, partialN = 0;
-    document.querySelectorAll('#viz-language use[data-lang]').forEach(u => {
+    document.querySelectorAll('#viz-language rect[data-lang]').forEach(u => {
       const code = u.getAttribute('data-lang');
       let cls;
       if (strong.has(code)) { cls = 'cu-strong'; strongN++; }
@@ -1436,12 +1436,12 @@
     members.forEach(m => { sum += (MEMBER_COMPUTE[m] || 0); });
     const hasMembers = members.size > 0;
     const ef = hasMembers ? sum : 2.0; // empty coalition falls back to today's EuroHPC baseline
-    const chips = Math.max(1, Math.min(6, Math.round(ef)));
+    const units = Math.max(1, Math.min(5, Math.round(ef)));
     const group = $('#computeEuChips');
     if (group){
       let html = '';
-      for (let i = 0; i < chips; i++){
-        html += '<use href="#chip" x="' + (170 + i * 35) + '" y="60" class="cu-chip-eu"/>';
+      for (let i = 0; i < units; i++){
+        html += '<rect class="ed-unit eu" x="' + (110 + i * 30) + '" y="38" width="22" height="22" rx="3"/>';
       }
       group.innerHTML = html;
     }
@@ -1455,17 +1455,17 @@
     let sum = 0;
     members.forEach(m => { sum += (MEMBER_INVEST[m] || 0); });
     const total = members.size ? sum : 14; // empty -> today's EU baseline (~$14B)
-    const coins = Math.max(1, Math.min(9, Math.round(total / 10)));
-    const group = $('#ottawaCoalition');
-    if (group){
-      let html = '';
-      for (let i = 0; i < coins; i++){
-        html += '<ellipse class="cu-coin-eu" cx="300" cy="' + (120 - i * 7) + '" rx="15" ry="4.7"/>';
-      }
-      group.innerHTML = html;
-    }
+    // dot plot: slide the coalition marker along the $ axis (16px = $0, ~3px/$B)
+    const x = Math.min(344, 16 + total * 2.982);
+    const dot = $('#ottawaCoalDot');
+    if (dot) dot.setAttribute('cx', x.toFixed(1));
+    const word = $('#ottawaCoalWord');
+    if (word) word.setAttribute('x', x.toFixed(1));
     const amtEl = $('#ottawaCoalAmt');
-    if (amtEl) countTo(amtEl, Math.round(total), '$', 'B', 0);
+    if (amtEl) {
+      amtEl.setAttribute('x', x.toFixed(1));
+      countTo(amtEl, Math.round(total), '$', 'B', 0);
+    }
     setText('#ottawaCap', 'Pooled, the coalition reaches ≈ $' + Math.round(total) + 'B vs $109B');
   }
 
@@ -1477,7 +1477,7 @@
     // Dim the bag of any country not in the coalition (EU bag follows euIn).
     // With no coalition yet, show every bag full as the neutral "on the table" view.
     const active = members.size > 0;
-    document.querySelectorAll('#viz-capex use[data-cc]').forEach(u => {
+    document.querySelectorAll('#viz-capex g[data-cc]').forEach(u => {
       const cc = u.getAttribute('data-cc');
       const inIt = cc === 'EU' ? euIn : members.has(cc);
       u.style.opacity = (!active || inIt) ? '1' : '0.18';
@@ -1996,7 +1996,7 @@
       const limit = isNaN(pin) ? window.innerHeight * 0.45 : Math.max(pin + 6, window.innerHeight * 0.45);
       if (s.getBoundingClientRect().top <= limit) cur = s.id;
     });
-    if (cur !== activeId) { activeId = cur; since = 0; draw(); renderTimeline(); }
+    if (cur !== activeId) { activeId = cur; since = 0; draw(); renderTimeline(); window.dispatchEvent(new CustomEvent('scene:active', { detail: cur })); }
   }
 
   window.addEventListener('scroll', pickActive, { passive: true });
@@ -2165,5 +2165,317 @@
         '<div class="cast-stat"><b>trait</b>' + esc(c.trait) + '</div>' +
       '</div>').join('');
     header.insertAdjacentElement('afterend', row);
+  });
+})();
+
+// ============================================================
+// THE PHONE RINGS — at two story moments an incoming call slides up.
+// Answering opens the conversation as a transcript artifact; declining
+// prints the road not taken. Each call happens once per session.
+// ============================================================
+(function(){
+  const CALLS = {
+    'scene-berlin': {
+      from: 'BERLIN IS CALLING', as: 'You answer as the French President.',
+      transcript: [
+        { who: 'them', name: 'The Chancellor', line: 'Did I wake you?' },
+        { who: 'me', name: 'You', line: 'No one in Europe slept tonight.' },
+        { who: 'them', name: 'The Chancellor', line: 'I will not sign it. I need to not be alone by Friday.' },
+        { who: 'me', name: 'You', line: 'Then you are not alone. Brussels first, then Dubai. Bring Pieter.' }
+      ],
+      declined: 'The call rings out. Berlin makes its next call to Washington instead, and everyone’s timeline gets shorter.'
+    },
+    'scene-ottawa': {
+      from: 'OTTAWA IS CALLING', as: 'You answer as the Convener.',
+      transcript: [
+        { who: 'them', name: 'The Minister', line: 'It is 4am in Tokyo. He picked up anyway.' },
+        { who: 'me', name: 'You', line: 'What did he say?' },
+        { who: 'them', name: 'The Minister', line: 'That he has researchers, a grudge, and no infrastructure. I told him that makes ten of us.' },
+        { who: 'me', name: 'You', line: 'Send the draft.' }
+      ],
+      declined: 'Voicemail. The Minister crosses one name off the short list of people who answer.'
+    }
+  };
+  function esc (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  let banner = null;
+
+  function placeArtifact (sceneId, html) {
+    const scene = document.getElementById(sceneId);
+    if (!scene) return;
+    const prose = scene.querySelector('.scene-prose') || scene;
+    const cp = prose.querySelector('.checkpoint');
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const node = div.firstElementChild;
+    if (cp) prose.insertBefore(node, cp); else prose.appendChild(node);
+    node.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function dismiss () { if (banner) { banner.remove(); banner = null; } }
+
+  function ring (sceneId) {
+    const c = CALLS[sceneId];
+    dismiss();
+    banner = document.createElement('div');
+    banner.className = 'call-banner';
+    banner.setAttribute('role', 'alertdialog');
+    banner.innerHTML =
+      '<span class="call-pulse" aria-hidden="true"></span>' +
+      '<span class="call-from">' + esc(c.from) + '</span>' +
+      '<button type="button" class="call-answer">answer</button>' +
+      '<button type="button" class="call-decline">decline</button>';
+    document.body.appendChild(banner);
+    banner.querySelector('.call-answer').addEventListener('click', () => {
+      sessionStorage.setItem('afa_call_' + sceneId, 'answered');
+      placeArtifact(sceneId,
+        '<div class="artifact artifact-text"><div class="artifact-label">Call answered &middot; ' + esc(c.as) + '</div>' +
+        c.transcript.map(m =>
+          '<div class="msg ' + m.who + '"><span>' + esc(m.line) + '</span><i>' + esc(m.name) + '</i></div>').join('') +
+        '</div>');
+      dismiss();
+    });
+    banner.querySelector('.call-decline').addEventListener('click', () => {
+      sessionStorage.setItem('afa_call_' + sceneId, 'declined');
+      placeArtifact(sceneId,
+        '<div class="artifact"><div class="artifact-label">Call declined &middot; the road not taken</div>' +
+        '<p class="call-declined-line">' + esc(c.declined) + '</p></div>');
+      dismiss();
+    });
+  }
+
+  let pendingTimer = null;
+  window.addEventListener('scene:active', e => {
+    const id = e.detail;
+    clearTimeout(pendingTimer);
+    if (banner && !CALLS[banner.dataset ? banner.dataset.scene : '']) dismiss();
+    if (!CALLS[id]) { dismiss(); return; }
+    let done = null;
+    try { done = sessionStorage.getItem('afa_call_' + id); } catch (err) {}
+    if (done) return;
+    pendingTimer = setTimeout(() => ring(id), 1800);
+  });
+})();
+
+// ============================================================
+// AARON'S DRIVE — take the hard drive in chapter 2, carry it in the rail,
+// plug it in at the outcome to mount the real documents behind the fiction.
+// ============================================================
+(function(){
+  const chip = document.getElementById('usbPickup');
+  const dock = document.getElementById('usbDock');
+  if (!chip || !dock) return;
+  const FILES = [
+    { name: 'cloud_act_2018.pdf', note: 'the CLOUD Act, as enacted', href: 'https://www.congress.gov/bill/115th-congress/house-bill/4943' },
+    { name: 'bis_advanced_computing_ifr_oct2022.pdf', note: '87 FR 62186, the first chip controls', href: 'https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor' },
+    { name: 'ai_diffusion_framework_jan2025.pdf', note: '90 FR 4544, tiers by allegiance', href: 'https://www.federalregister.gov/documents/2025/01/15/2025-00636/framework-for-artificial-intelligence-diffusion' },
+    { name: 'dod_cdao_frontier_contracts.eml', note: '$200M ceilings, all four labs', href: 'https://defensescoop.com/2025/07/14/pentagon-ai-contracts-musk-xai-google-openai-anthropic-cdao/' },
+    { name: 'ai_index_2025_economy.xlsx', note: '$109.1B vs $14B, the money gap', href: 'https://hai.stanford.edu/ai-index/2025-ai-index-report/economy' },
+    { name: 'dependency_memo_draft.txt', note: 'every figure on this site, sourced', href: 'research.html' }
+  ];
+  function state () { try { return sessionStorage.getItem('afa_usb') || ''; } catch (e) { return ''; } }
+  function setState (v) { try { sessionStorage.setItem('afa_usb', v); } catch (e) {} }
+
+  function railToken () {
+    const aside = document.getElementById('storyAsciiWrap');
+    if (!aside || document.getElementById('usbToken')) return;
+    const t = document.createElement('div');
+    t.id = 'usbToken';
+    t.className = 'usb-token';
+    t.textContent = 'in your pocket: unmarked drive';
+    aside.parentNode.insertBefore(t, aside);
+  }
+
+  function renderDock () {
+    dock.hidden = false;
+    const st = state();
+    if (st === 'mounted') {
+      dock.innerHTML =
+        '<div class="artifact artifact-files"><div class="artifact-label">AARON_BACKUP &middot; mounted &middot; verified against public record</div>' +
+        FILES.map(f =>
+          '<a class="file-row" href="' + f.href + '" target="_blank" rel="noopener"><b>' + f.name + '</b><span>' + f.note + '</span></a>').join('') +
+        '</div>';
+    } else if (st === 'taken') {
+      dock.innerHTML =
+        '<div class="usb-port"><span>You still have Aaron&rsquo;s drive.</span>' +
+        '<button type="button" id="usbMount">[=] plug it in</button></div>';
+      const b = document.getElementById('usbMount');
+      if (b) b.addEventListener('click', () => { setState('mounted'); renderDock(); });
+    } else {
+      dock.innerHTML = '<div class="usb-port empty">Nothing to plug in here. (Chapter 2 has something for you.)</div>';
+    }
+  }
+
+  chip.hidden = false;
+  if (state()) {
+    chip.textContent = '[=] unmarked drive · taken';
+    chip.classList.add('is-taken');
+    chip.disabled = true;
+    railToken();
+  }
+  chip.addEventListener('click', () => {
+    if (state()) return;
+    setState('taken');
+    chip.textContent = '[=] unmarked drive · taken';
+    chip.classList.add('is-taken');
+    chip.disabled = true;
+    railToken();
+    renderDock();
+  });
+  renderDock();
+})();
+
+// ============================================================
+// SIGN THE INSTRUMENT — a signature pad under the draft articles. The
+// scrawl persists in this browser and routes to the public sign-on form.
+// ============================================================
+(function(){
+  const pad = document.getElementById('signPad');
+  const canvas = document.getElementById('signCanvas');
+  if (!pad || !canvas || !canvas.getContext) return;
+  pad.hidden = false;
+  const ctx = canvas.getContext('2d');
+  ctx.lineWidth = 2.4;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = '#1A1A1A';
+  const clearBtn = document.getElementById('signClear');
+  const commitBtn = document.getElementById('signCommit');
+  const status = document.getElementById('signStatus');
+  let drawing = false, drew = false;
+
+  function pos (e) {
+    const r = canvas.getBoundingClientRect();
+    return [(e.clientX - r.left) * (canvas.width / r.width), (e.clientY - r.top) * (canvas.height / r.height)];
+  }
+  canvas.addEventListener('pointerdown', e => {
+    drawing = true; drew = true;
+    commitBtn.disabled = false;
+    const [x, y] = pos(e);
+    ctx.beginPath(); ctx.moveTo(x, y);
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove', e => {
+    if (!drawing) return;
+    const [x, y] = pos(e);
+    ctx.lineTo(x, y); ctx.stroke();
+  });
+  ['pointerup', 'pointercancel'].forEach(ev => canvas.addEventListener(ev, () => { drawing = false; }));
+  clearBtn.addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drew = false; commitBtn.disabled = true;
+  });
+  function signedState () {
+    pad.classList.add('is-signed');
+    commitBtn.hidden = true; clearBtn.hidden = true;
+    status.innerHTML = 'signed in this browser &middot; <a href="#signon">add your name to the public roll &darr;</a>';
+    const out = document.getElementById('signonOutcome');
+    if (out) out.value = (out.value ? out.value + '; ' : '') + 'signed-the-instrument';
+  }
+  commitBtn.addEventListener('click', () => {
+    if (!drew) return;
+    try { localStorage.setItem('afa_sig', canvas.toDataURL()); } catch (e) {}
+    signedState();
+  });
+  // restore an earlier signature
+  let saved = null;
+  try { saved = localStorage.getItem('afa_sig'); } catch (e) {}
+  if (saved) {
+    const img = new Image();
+    img.onload = () => { ctx.drawImage(img, 0, 0); };
+    img.src = saved;
+    signedState();
+  }
+})();
+
+// ============================================================
+// BRIEFING TOGGLE — every chapter flips between the fiction and a
+// three-bullet policy briefing with its chart, for readers in policy mode.
+// ============================================================
+(function(){
+  const BRIEFS = {
+    'scene-nyc': { href: '#viz-export', chart: 'US export controls', bullets: [
+      'The hinge: a US administration openly conditions allied access to its technology stack on alignment against China.',
+      'Allies learn the terms from a front page, not through channels; the trust damage lands before the legal effect does.',
+      'The precedent is real: ten US chip-control actions between 2022 and 2026, three of them reversed.'
+    ]},
+    'scene-dublin-apr': { href: '#viz-talent', chart: 'Talent migration', bullets: [
+      'A US lab consolidates home and cuts its European offices in days; the people are suddenly available.',
+      'Today roughly 60% of top EU-trained AI researchers already end up working in the US.',
+      'Talent windows open briefly and close westward; catching one requires an employer that exists.'
+    ]},
+    'scene-berlin': { href: '#viz-cloud', chart: 'Cloud dependence', bullets: [
+      'A US framework (the Digital Liberty Act) prices allied access by tiers: aligned, managed, restricted.',
+      'About 70% of Europe&rsquo;s cloud runs on US hyperscalers; even &ldquo;sovereign&rdquo; stacks sit on Microsoft or Google.',
+      'Germany&rsquo;s bind generalizes: comply against China and lose your economy, or refuse and lose your infrastructure.'
+    ]},
+    'scene-brussels': { href: '#viz-language', chart: 'Language coverage', bullets: [
+      'The EU&rsquo;s core failure is coordination, not capability: fragmented capital, compute, and goals.',
+      'Frontier models support 3 of 24 official EU languages well; 13 face digital extinction.',
+      'The speech&rsquo;s ask: pool resources into one entity, or stop using the word sovereignty.'
+    ]},
+    'scene-tokyo': { href: '#viz-tokyo', chart: 'Japan&rsquo;s AI bet', bullets: [
+      'An underfunded sovereign model is not sovereignty: Japan&rsquo;s &yen;1T model hallucinated a trade crisis into existence.',
+      'A wrong model wired into government becomes the backbone of decision-making before anyone audits it.',
+      'The inputs are also captive: China refines ~90% of the world&rsquo;s rare earths.'
+    ]},
+    'scene-stockholm': { href: '#viz-defense', chart: 'Defence-AI boom', bullets: [
+      'Private European capital can move at strategic speed when the wedge is defense: Helsing &euro;12B, an estimated ~$18B in 2026.',
+      'A multilateral defense champion is proof that strategic-grade tech can be built and funded in Europe.',
+      'The cost: admitting that consumer tech success aided the gutting of Europe&rsquo;s infrastructure.'
+    ]},
+    'scene-monroe': { href: '#viz-capital', chart: 'Capital flow', bullets: [
+      'The other side builds single $27B sites (Hyperion) while debating nothing.',
+      'US private AI investment was $109B in 2024; the EU&rsquo;s was $14B.',
+      'Grid strain and untested engineering are absorbed as routine costs of scale.'
+    ]},
+    'scene-ottawa': { href: '#viz-ottawa', chart: 'Why pool', bullets: [
+      'The middle-power bind: Canada spent ~$15B on AI infrastructure in a decade; the US spent ~$470B in 2025 alone.',
+      'Canada&rsquo;s offer is brains, not infrastructure: world-class researchers and a major lab (Cohere).',
+      'Conclusion on the call: a third path needs a coalition of the doomed, and someone has to start dialing.'
+    ]},
+    'scene-paris': { href: '#viz-energy', chart: 'France&rsquo;s power edge', bullets: [
+      'France&rsquo;s leverage is physical: ~70% nuclear electricity that can host real compute.',
+      'A $110B private raise exists, but the GPUs age and the datacenters run behind schedule.',
+      'The play: respond as a bloc within 48 hours, because alone every member buckles.'
+    ]},
+    'scene-dublin-jan': { href: '#viz-brain', chart: 'Brain drain', bullets: [
+      'How capture works inside a lab: a compliance professional radicalized by what he printed.',
+      'Legal does not mean aligned with allied interests; the company&rsquo;s mandate is value, not alliance.',
+      'Evidence wants out: the chapter ends with the receipts leaving the building.'
+    ]},
+    'scene-whitehouse': { href: '#viz-pentagon', chart: 'Pentagon money', bullets: [
+      'The labs formally become strategic assets: Department of War investment, undisclosed size, one condition.',
+      'The real-world anchor: $200M Pentagon ceilings each for OpenAI, Anthropic, Google, and xAI in 2025.',
+      'Allied collateral (Luxembourg&rsquo;s China trade) is priced at zero in the deal.'
+    ]},
+    'scene-ether': { href: '#viz-ether', chart: 'Pooled vs alone', bullets: [
+      'The way out is institutional: a two-page instrument, not a communiqu&eacute;.',
+      'Article II is the core: pooled compute, jointly owned weights, no third-state kill switch.',
+      'Alone, no member clears a quarter of the US level; pooled, compute and talent approach frontier scale.'
+    ]}
+  };
+  Object.keys(BRIEFS).forEach(id => {
+    const scene = document.getElementById(id);
+    if (!scene) return;
+    const b = BRIEFS[id];
+    const bar = document.createElement('div');
+    bar.className = 'brief-bar';
+    bar.innerHTML = '<button type="button" class="brief-toggle" aria-pressed="false">read it as a briefing</button>';
+    const brief = document.createElement('div');
+    brief.className = 'scene-brief';
+    brief.innerHTML =
+      '<div class="artifact-label">The briefing &middot; what this chapter argues</div>' +
+      '<ul>' + b.bullets.map(t => '<li>' + t + '</li>').join('') + '</ul>' +
+      '<a class="brief-chart" href="' + b.href + '">the data: ' + b.chart + ' &darr;</a>';
+    const cast = scene.querySelector('.cast-row');
+    const anchor = cast || scene.querySelector('.scene-header');
+    if (!anchor) return;
+    anchor.insertAdjacentElement('afterend', bar);
+    bar.insertAdjacentElement('afterend', brief);
+    const btn = bar.querySelector('.brief-toggle');
+    btn.addEventListener('click', () => {
+      const on = scene.classList.toggle('as-brief');
+      btn.setAttribute('aria-pressed', String(on));
+      btn.textContent = on ? 'back to the story' : 'read it as a briefing';
+    });
   });
 })();

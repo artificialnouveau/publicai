@@ -23,6 +23,7 @@
   let pendingCourt = false; // courting: pick a state on the ring / roster
   let pendingFund = false;  // FUND submenu open
   let lastMenuKey = '';     // which choice list was animated in last
+  let pendingRed = false;   // Washington is on the line
   let lastHdrTurn = -1;     // last month decoded into the masthead
 
   function fundableLabs () {
@@ -57,6 +58,7 @@
     };
     pendingCourt = false;
     pendingFund = false;
+    pendingRed = false;
     Object.keys(D.STATES).forEach(k => {
       S.states[k] = { commit: 0, ease: D.STATES[k].ease, tries: 0 };
     });
@@ -549,6 +551,25 @@
 
     const sc = score();
 
+    if (pendingRed) {
+      bar.appendChild(movesHeader('Washington, on the line', false));
+      bar.appendChild(choiceRow(1, 'Sign now, on negotiated terms', 'ends the game',
+        'Capitulate early and on purpose: managed access with carve-outs instead of whatever tier the Act assigns you later. The coalition as it stands today is what you bring to the table.',
+        '', () => {
+          pendingRed = false;
+          logLine('You sign before being asked twice. Washington is gracious in the way winners are.', 'bad');
+          dispatch('Washington', 'The line is warm and friendly. Of course there are terms. There were always going to be terms; calling first only means you get to read them sitting down.', 'The call you were not supposed to make');
+          concludeGame('negotiated', score());
+        }, 'ev'));
+      bar.appendChild(choiceRow(0, 'Hang up', '', 'Put the receiver down and keep building.', '', () => {
+        pendingRed = false;
+        logLine('You put the receiver down. The dial tone sounds like the future clearing its throat.');
+        renderAll();
+      }, 'quiet'));
+      staggerIn(bar);
+      return;
+    }
+
     if (pendingCourt) {
       bar.appendChild(movesHeader('Courting · pick a country · 1 influence each' +
         (S.warm > 0 ? ' · summit warmth +20% active' : ''), false));
@@ -829,6 +850,13 @@
     S.over = true;
     const sc = score();
     dispatch('Washington', 'At midnight on a Friday, the Digital Liberty Act is published. Aligned, managed-access, restricted: every state on your list now has a tier, and every tier has a price. Your phone begins to ring in every language you have.', 'The Digital Liberty Act', { phrase: 'Aligned, managed-access, restricted', type: 'redact' });
+    concludeGame(null, sc);
+  }
+
+  // Shared ending renderer. key === null means "derive from the scorecard";
+  // a forced key (the red phone) skips the derivation but keeps the audit.
+  function concludeGame (forcedKey, sc) {
+    S.over = true;
 
     const goalRows = [
       ['Compute',   (S.pooled ? '~' + sc.compute.toFixed(1) : '0') + ' EF', sc.compute >= D.TRACKS.compute.goal, D.TRACKS.compute.goal + ' EF'],
@@ -838,11 +866,13 @@
     ];
     const goals = goalRows.filter(r => r[2]).length;
 
-    let key;
-    if (sc.inCount < 3) key = 'fragmentation';
-    else if (goals === 4 && sc.labsAnchored >= 1) key = 'airbus';
-    else if (goals >= 3) key = 'survived';
-    else key = 'vassal';
+    let key = forcedKey;
+    if (!key) {
+      if (sc.inCount < 3) key = 'fragmentation';
+      else if (goals === 4 && sc.labsAnchored >= 1) key = 'airbus';
+      else if (goals >= 3) key = 'survived';
+      else key = 'vassal';
+    }
 
     // Hedged cloud pays off at the verdict: enough slices soften vassalage.
     let hedgeSaved = false;
@@ -881,6 +911,41 @@
       ? '<div class="g-end-section">Left on the table</div>' + leftAll.map(t => '<div class="g-end-left">' + esc(t) + '</div>').join('')
       : '';
     $('#gEndStats').textContent = 'FIG. 16 · your run: ' + stats;
+
+    // The player's own founding document, with a copy-as-text button.
+    const members = Object.keys(D.STATES).filter(k => S.states[k].commit === 2).map(k => D.STATES[k].name);
+    const labs = Object.keys(D.LABS).filter(k => S.labs[k].anchored).map(k => D.LABS[k].name);
+    const docLines = [
+      'THE COALITION INSTRUMENT - AS EXECUTED',
+      'month ' + Math.min(S.turn, 16) + ' of 16 - verdict: ' + e.title,
+      '',
+      'ARTICLE I - MEMBERS (' + members.length + ')',
+      '  ' + (members.length ? members.join(', ') : 'none came in'),
+      '',
+      'ARTICLE II - THE POOL',
+      '  ' + (S.pooled ? '~' + sc.compute.toFixed(1) + ' EF pooled, jointly owned' : 'never pooled') +
+        (labs.length ? '; anchor labs: ' + labs.join(', ') : '; no labs anchored'),
+      '',
+      'ARTICLE III - THE LEDGER',
+      '  $' + Math.round(sc.capital) + 'B capital - ' + Math.round(sc.talent) + 'k researchers - ' +
+        sc.langs + ' of 24 languages - ' + (S.hedges || 0) + ' cloud slices hedged',
+      '',
+      'signed, the convener'
+    ];
+    const docText = docLines.join('\n');
+    const docEl = $('#gEndDoc');
+    if (docEl) {
+      docEl.innerHTML =
+        '<div class="g-instrument"><pre>' + esc(docText) + '</pre>' +
+        '<button type="button" class="g-copydoc" id="gCopyDoc">copy as text</button></div>';
+      const cb = $('#gCopyDoc');
+      if (cb && cb.addEventListener) cb.addEventListener('click', () => {
+        const done = () => { cb.textContent = 'copied'; };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(docText).then(done, done);
+        } else { done(); }
+      });
+    }
     renderHUD();
     $('#gActions').innerHTML = '';
     const again = choiceRow('', 'Play again', '', 'A fresh sixteen months, a new Act date, new dice.', '', newGame);
@@ -897,7 +962,47 @@
     }
   });
 
+  // The red phone: always there, never explained.
+  (function () {
+    const rp = $('#gRedPhone');
+    if (!rp || !rp.addEventListener) return;
+    rp.addEventListener('click', () => {
+      if (!S || S.over) return;
+      pendingRed = true;
+      renderActions();
+    });
+  })();
+
+  // Import your read: story checkpoints (same-tab session) seed the game.
+  function importRead () {
+    const lines = [];
+    if (typeof sessionStorage === 'undefined') return lines;
+    let picks = {};
+    try { picks = (JSON.parse(sessionStorage.getItem('afa_sim_v1') || '{}').picks) || {}; } catch (e) { return lines; }
+    const p = id => picks['scene-' + id];
+    if (p('berlin') === 'negotiate') { S.states.DE.ease += 0.15; lines.push('Imported from your reading: Berlin negotiated a slow walk. Germany leans closer.'); }
+    if (p('berlin') === 'refuse-bloc') { S.states.DE.commit = 1; S.states.DE.ease += 0.25; lines.push('Imported from your reading: Berlin refused the act. Germany starts Hedging.'); }
+    if (p('brussels') === 'eu-coalition') { S.states.FR.ease += 0.1; S.states.ES.ease += 0.1; lines.push('Imported: the case was framed as an EU coalition. Paris and Madrid lean in.'); }
+    if (p('brussels') === 'eu-allies') { ['FR','ES','JP','KR','SG'].forEach(k => { S.states[k].ease += 0.1; }); lines.push('Imported: the case was framed for the allies. Doors open from Madrid to Singapore.'); }
+    if (p('tokyo') === 'build-own') { S.states.JP.ease += 0.1; lines.push('Imported: Tokyo tried building alone. They remember who offered help.'); }
+    if (p('tokyo') === 'coalition-model') { S.states.JP.commit = 1; lines.push('Imported: Tokyo chose the coalition model. Japan starts Hedging.'); }
+    if (p('stockholm') === 'defense-commercial') { S.capBonus += 2; lines.push('Imported: the defense-plus-commercial wedge. +$2B head start.'); }
+    if (p('stockholm') === 'full-stack') { S.capBonus += 3; lines.push('Imported: the full sovereign stack was chosen. +$3B head start.'); }
+    if (p('ottawa') === 'eu-canada') { S.states.CA.commit = 1; lines.push('Imported: Ottawa joined early. Canada starts Hedging.'); }
+    if (p('ottawa') === 'five-eyes-minus-us') { S.states.CA.commit = 1; S.states.GB.ease += 0.2; lines.push('Imported: the Five Eyes (minus one) framing. Canada starts Hedging; London listens.'); }
+    if (p('paris') === 'co-leads') { S.states.FR.commit = 1; lines.push('Imported: France co-leads. France starts Hedging.'); }
+    if (p('paris') === 'leads') { S.states.FR.commit = 1; S.influence += 1; lines.push('Imported: France leads. France starts Hedging and lends you a phone line (+1 influence).'); }
+    return lines;
+  }
+
   newGame();
+  (function () {
+    const lines = importRead();
+    if (lines.length) {
+      lines.forEach(t => logLine(t, 'good'));
+      renderAll();
+    }
+  })();
   buildLogo($('#gLogo'));
 
   // The water simmers, the racks blink, the marked phrases slip, each on its

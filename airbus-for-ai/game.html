@@ -45,8 +45,32 @@
     font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
   }
-  .g-meta { margin-left: auto; display: flex; gap: 0.9rem; font-family: var(--mono); font-size: 0.68rem; color: var(--text-soft); }
+  .g-meta { margin-left: auto; display: flex; align-items: center; gap: 0.9rem; font-family: var(--mono); font-size: 0.68rem; color: var(--text-soft); }
   .g-meta b { color: var(--accent); }
+  .g-redphone {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    color: var(--red); background: transparent;
+    border: 1px solid rgba(184,0,46,0.45); border-radius: 999px;
+    padding: 0.28rem 0.65rem;
+    transition: background 0.15s, color 0.15s;
+  }
+  .g-redphone:hover { background: var(--red); color: #fff; }
+  .g-instrument {
+    margin-top: 0.8rem; border-top: 1px solid var(--hairline); padding-top: 0.7rem;
+  }
+  .g-instrument pre {
+    font-family: var(--mono); font-size: 0.66rem; line-height: 1.65;
+    color: var(--text); white-space: pre-wrap;
+    border: 1px solid var(--hairline-strong); border-radius: 4px;
+    background: #fff; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem;
+  }
+  .g-copydoc {
+    font-family: var(--mono); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    background: var(--accent); color: #fff; border: 0; border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+  }
 
   .g-railwrap { display: flex; justify-content: center; padding: 0.6rem 0 0; }
   #gRail { display: flex; gap: 6px; }
@@ -360,6 +384,7 @@
   <div class="g-brand">The Slow Boil</div>
   <div class="g-meta">
     <span id="gTurnLabel">Month 1 of 16</span>
+    <button type="button" class="g-redphone" id="gRedPhone">call washington</button>
   </div>
 </header>
 
@@ -371,7 +396,7 @@
       <pre class="g-logo" id="gLogo" aria-hidden="true"></pre>
       <h1>Sixteen months. Ten states. One phone.</h1>
       <p>You are the convener. Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab, and somewhere in Washington a draft is circulating that will price access by allegiance. You have until it lands, sometime in the dashed months above, to pool enough compute, capital, talent and languages to matter.</p>
-      <p class="g-how">Two moves a month. COURT states toward In. POOL their compute once two are in. FUND a lab before Washington buys it. HEDGE the cloud. Every move is paid for in influence, your political currency: you start with 3, gain 2 each new month, and HOLD banks an extra 1. The dashed coral slots are the credible minimum, not parity. Keys 1-9 work; a click skips the typing.</p>
+      <p class="g-how">Two moves a month. COURT states toward In. POOL their compute once two are in. FUND a lab before Washington buys it. HEDGE the cloud. Every move is paid for in influence, your political currency: you start with 3, gain 2 each new month, and HOLD banks an extra 1. The dashed coral slots are the credible minimum, not parity. Keys 1-9 work. If you made calls while reading the story, the game starts from them.</p>
     </div>
     <div class="g-log" id="gLog" aria-live="polite"></div>
     <div id="gActions" class="g-choices" role="group" aria-label="Your choices"></div>
@@ -381,6 +406,7 @@
       <div id="gEndGoals"></div>
       <div id="gEndLeft"></div>
       <div id="gEndStats"></div>
+      <div id="gEndDoc"></div>
     </div>
   </section>
 
@@ -440,7 +466,7 @@
   </aside>
 </main>
 
-<script src="data.js?v=25"></script>
-<script src="game.js?v=25"></script>
+<script src="data.js?v=26"></script>
+<script src="game.js?v=26"></script>
 </body>
 </html>

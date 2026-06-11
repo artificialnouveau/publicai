@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=45">
+<link rel="stylesheet" href="styles.css?v=47">
 </head>
 <body>
 
@@ -116,6 +116,7 @@
       <p>Once I was done with the platitudes, he pulled me aside and said in a low whisper as we huddled together: &ldquo;look, I&rsquo;ve been working on something for a few weeks. It could be nothing. But could you do me a favor?&rdquo;</p>
       <p>&ldquo;Of course.&rdquo;</p>
       <p>&ldquo;Just take a look at this,&rdquo; he handed me a hard drive. &ldquo;Not on your work computer.&rdquo;</p>
+      <button type="button" class="usb-chip" id="usbPickup" hidden>[=] unmarked drive &middot; take it</button>
       <p>&ldquo;What is it?&rdquo;</p>
       <p>&ldquo;Could be nothing. Just take a look.&rdquo;</p>
       <p>At that, he was continued on his way out the door by security who had decided that it was time for everyone to get back to work.</p>
@@ -541,6 +542,16 @@
         </ul>
       </div>
 
+      <div class="sign-pad" id="signPad" hidden>
+        <div class="artifact-label">Countersignatures &middot; supporters of the draft</div>
+        <canvas id="signCanvas" width="640" height="160" aria-label="Draw your signature"></canvas>
+        <div class="sign-actions">
+          <button type="button" id="signClear">clear</button>
+          <button type="button" id="signCommit" disabled>add my signature</button>
+          <span class="sign-status" id="signStatus">sign with your mouse or finger</span>
+        </div>
+      </div>
+
       <p>On Friday the act would still be there. So would the draft. For the first time in eighteen months, both sides of that sentence were true.</p>
     </div>
   </section>
@@ -603,6 +614,7 @@
     <h2 class="outcome-title" id="outcomeTitle">What an Airbus for AI looks like.</h2>
     <p class="outcome-synthesis">An interactive builder: each section names a component of the proposal, lets you pick the version you want, and shows what falls into place. Built from your story choices above.</p>
     <div class="ydi-score" id="ydiScore" hidden></div>
+    <div class="usb-dock" id="usbDock" hidden></div>
 
     <div class="split-controls" role="group" aria-label="Resize panels">
       <span class="split-controls-label">View</span>
@@ -711,42 +723,16 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="All 24 official EU languages by frontier-model support: 3 strong (EN, FR, ES), 8 partial, 13 at risk of digital extinction">
-            <defs>
-              <g id="bub"><rect x="-14" y="-9" width="28" height="18" rx="5"/><path d="M-6,9 L-11,15 L-1,9 Z"/></g>
-            </defs>
-            <text class="cu-cap" id="langCap" x="14" y="22">Only 3 of 24 EU languages are well supported</text>
-            <g class="cu-pop">
-              <use href="#bub" data-lang="EN" x="30"  y="52" class="cu-strong"/><text class="cu-code" x="30"  y="54" text-anchor="middle">EN</text>
-              <use href="#bub" data-lang="FR" x="73"  y="52" class="cu-strong"/><text class="cu-code" x="73"  y="54" text-anchor="middle">FR</text>
-              <use href="#bub" data-lang="ES" x="116" y="52" class="cu-strong"/><text class="cu-code" x="116" y="54" text-anchor="middle">ES</text>
-              <use href="#bub" data-lang="DE" x="159" y="52" class="cu-partial"/><text class="cu-code ink" x="159" y="54" text-anchor="middle">DE</text>
-              <use href="#bub" data-lang="IT" x="202" y="52" class="cu-partial"/><text class="cu-code ink" x="202" y="54" text-anchor="middle">IT</text>
-              <use href="#bub" data-lang="NL" x="245" y="52" class="cu-partial"/><text class="cu-code ink" x="245" y="54" text-anchor="middle">NL</text>
-              <use href="#bub" data-lang="PT" x="288" y="52" class="cu-partial"/><text class="cu-code ink" x="288" y="54" text-anchor="middle">PT</text>
-              <use href="#bub" data-lang="PL" x="331" y="52" class="cu-partial"/><text class="cu-code ink" x="331" y="54" text-anchor="middle">PL</text>
-              <use href="#bub" data-lang="SV" x="30"  y="90" class="cu-partial"/><text class="cu-code ink" x="30"  y="92" text-anchor="middle">SV</text>
-              <use href="#bub" data-lang="DA" x="73"  y="90" class="cu-partial"/><text class="cu-code ink" x="73"  y="92" text-anchor="middle">DA</text>
-              <use href="#bub" data-lang="FI" x="116" y="90" class="cu-partial"/><text class="cu-code ink" x="116" y="92" text-anchor="middle">FI</text>
-              <use href="#bub" data-lang="EL" x="159" y="90" class="cu-risk"/><text class="cu-code ink" x="159" y="92" text-anchor="middle">EL</text>
-              <use href="#bub" data-lang="CS" x="202" y="90" class="cu-risk"/><text class="cu-code ink" x="202" y="92" text-anchor="middle">CS</text>
-              <use href="#bub" data-lang="HU" x="245" y="90" class="cu-risk"/><text class="cu-code ink" x="245" y="92" text-anchor="middle">HU</text>
-              <use href="#bub" data-lang="RO" x="288" y="90" class="cu-risk"/><text class="cu-code ink" x="288" y="92" text-anchor="middle">RO</text>
-              <use href="#bub" data-lang="BG" x="331" y="90" class="cu-risk"/><text class="cu-code ink" x="331" y="92" text-anchor="middle">BG</text>
-              <use href="#bub" data-lang="HR" x="30"  y="128" class="cu-risk"/><text class="cu-code ink" x="30"  y="130" text-anchor="middle">HR</text>
-              <use href="#bub" data-lang="SK" x="73"  y="128" class="cu-risk"/><text class="cu-code ink" x="73"  y="130" text-anchor="middle">SK</text>
-              <use href="#bub" data-lang="SL" x="116" y="128" class="cu-risk"/><text class="cu-code ink" x="116" y="130" text-anchor="middle">SL</text>
-              <use href="#bub" data-lang="LT" x="159" y="128" class="cu-risk"/><text class="cu-code ink" x="159" y="130" text-anchor="middle">LT</text>
-              <use href="#bub" data-lang="LV" x="202" y="128" class="cu-risk"/><text class="cu-code ink" x="202" y="130" text-anchor="middle">LV</text>
-              <use href="#bub" data-lang="ET" x="245" y="128" class="cu-risk"/><text class="cu-code ink" x="245" y="130" text-anchor="middle">ET</text>
-              <use href="#bub" data-lang="MT" x="288" y="128" class="cu-risk"/><text class="cu-code ink" x="288" y="130" text-anchor="middle">MT</text>
-              <use href="#bub" data-lang="GA" x="331" y="128" class="cu-risk"/><text class="cu-code ink" x="331" y="130" text-anchor="middle">GA</text>
-            </g>
+          <svg class="mn-chart" viewBox="0 0 360 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="All 24 official EU languages as a waffle grid: 3 strong, 8 partial, 13 at risk of digital extinction">
+            <text class="cu-cap" id="langCap" x="14" y="20">Only 3 of 24 EU languages are well supported</text>
+            <g class="cu-pop"><rect data-lang="EN" class="cu-strong" x="14" y="40" width="24" height="18" rx="2"/><text class="cu-code" x="26" y="52" text-anchor="middle">EN</text><rect data-lang="FR" class="cu-strong" x="42" y="40" width="24" height="18" rx="2"/><text class="cu-code" x="54" y="52" text-anchor="middle">FR</text><rect data-lang="ES" class="cu-strong" x="70" y="40" width="24" height="18" rx="2"/><text class="cu-code" x="82" y="52" text-anchor="middle">ES</text><rect data-lang="DE" class="cu-partial" x="98" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="110" y="52" text-anchor="middle">DE</text><rect data-lang="IT" class="cu-partial" x="126" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="138" y="52" text-anchor="middle">IT</text><rect data-lang="NL" class="cu-partial" x="154" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="166" y="52" text-anchor="middle">NL</text><rect data-lang="PT" class="cu-partial" x="182" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="194" y="52" text-anchor="middle">PT</text><rect data-lang="PL" class="cu-partial" x="210" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="222" y="52" text-anchor="middle">PL</text><rect data-lang="SV" class="cu-partial" x="238" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="250" y="52" text-anchor="middle">SV</text><rect data-lang="DA" class="cu-partial" x="266" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="278" y="52" text-anchor="middle">DA</text><rect data-lang="FI" class="cu-partial" x="294" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="306" y="52" text-anchor="middle">FI</text><rect data-lang="EL" class="cu-risk" x="322" y="40" width="24" height="18" rx="2"/><text class="cu-code ink" x="334" y="52" text-anchor="middle">EL</text><rect data-lang="CS" class="cu-risk" x="14" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="26" y="76" text-anchor="middle">CS</text><rect data-lang="HU" class="cu-risk" x="42" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="54" y="76" text-anchor="middle">HU</text><rect data-lang="RO" class="cu-risk" x="70" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="82" y="76" text-anchor="middle">RO</text><rect data-lang="BG" class="cu-risk" x="98" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="110" y="76" text-anchor="middle">BG</text><rect data-lang="HR" class="cu-risk" x="126" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="138" y="76" text-anchor="middle">HR</text><rect data-lang="SK" class="cu-risk" x="154" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="166" y="76" text-anchor="middle">SK</text><rect data-lang="SL" class="cu-risk" x="182" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="194" y="76" text-anchor="middle">SL</text><rect data-lang="LT" class="cu-risk" x="210" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="222" y="76" text-anchor="middle">LT</text><rect data-lang="LV" class="cu-risk" x="238" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="250" y="76" text-anchor="middle">LV</text><rect data-lang="ET" class="cu-risk" x="266" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="278" y="76" text-anchor="middle">ET</text><rect data-lang="MT" class="cu-risk" x="294" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="306" y="76" text-anchor="middle">MT</text><rect data-lang="GA" class="cu-risk" x="322" y="64" width="24" height="18" rx="2"/><text class="cu-code ink" x="334" y="76" text-anchor="middle">GA</text></g>
+            <path class="ed-bracket" d="M14 92 v5 h332 v-5" fill="none"/>
             <g class="cu-legend">
-              <circle cx="20"  cy="160" r="5" class="cu-strong"/><text id="legStrong" x="30"  y="160">3 strong</text>
-              <circle cx="118" cy="160" r="5" class="cu-partial"/><text id="legPartial" x="128" y="160">8 partial</text>
-              <circle cx="216" cy="160" r="5" class="cu-risk"/><text id="legRisk" x="226" y="160">13 at risk</text>
+              <rect x="14" y="108" width="9" height="9" rx="1.5" class="cu-strong"/><text id="legStrong" x="28" y="113">3 strong</text>
+              <rect x="104" y="108" width="9" height="9" rx="1.5" class="cu-partial"/><text id="legPartial" x="118" y="113">8 partial</text>
+              <rect x="194" y="108" width="9" height="9" rx="1.5" class="cu-risk"/><text id="legRisk" x="208" y="113">13 at risk</text>
             </g>
+            <text class="cu-cap" x="14" y="140">The bottom rows face digital extinction</text>
           </svg>
         </div>
       <div class="viz-footer">
@@ -842,32 +828,15 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="State-committed public AI funding as money-bags sized by amount: EU InvestAI €20B, Germany €5B, France €2.5B, UK €2.4B, Spain €2.1B, Italy €1B">
-            <defs>
-              <symbol id="bag" viewBox="0 0 30 38">
-                <rect x="10" y="3" width="10" height="7" rx="1.5"/>
-                <path d="M8,10 L22,10 C26,17 27.5,30 15,34.5 C2.5,30 4,17 8,10 Z"/>
-                <text class="cu-bag-sym" x="15" y="27" text-anchor="middle" font-size="13">&euro;</text>
-              </symbol>
-            </defs>
-            <text class="cu-cap" x="14" y="22">What each actually commits &mdash; bag size = &euro;B</text>
-            <line class="mn-base" x1="14" y1="114" x2="346" y2="114"/>
-            <!-- bags sized by sqrt(value); bottoms aligned to the ground line -->
-            <use href="#bag" data-cc="EU" x="27"    y="43"   width="56"   height="71"   class="cu-bag"/>
-            <use href="#bag" data-cc="DE" x="116"   y="78.5" width="28"   height="35.5" class="cu-bag"/>
-            <use href="#bag" data-cc="FR" x="170.1" y="88.9" width="19.8" height="25.1" class="cu-bag accent"/>
-            <use href="#bag" data-cc="GB" x="212.3" y="89.4" width="19.4" height="24.6" class="cu-bag"/>
-            <use href="#bag" data-cc="ES" x="253"   y="91"   width="18.1" height="23"   class="cu-bag"/>
-            <use href="#bag" data-cc="IT" x="293.75" y="98.1" width="12.5" height="15.9" class="cu-bag"/>
-            <g class="cu-bag-label" text-anchor="middle">
-              <text x="55"  y="128">EU</text><text x="55"  y="140">&euro;20B</text>
-              <text x="130" y="128">DE</text><text x="130" y="140">&euro;5B</text>
-              <text x="180" y="128" fill="#0057FF">FR</text><text x="180" y="140" fill="#0057FF">&euro;2.5B</text>
-              <text x="222" y="128">UK</text><text x="222" y="140">&euro;2.4B</text>
-              <text x="262" y="128">ES</text><text x="262" y="140">&euro;2.1B</text>
-              <text x="300" y="128">IT</text><text x="300" y="140">&euro;1B</text>
-            </g>
-            <text class="cu-cap" id="capexTotal" x="14" y="162">Your coalition commits &euro;20B in state AI funds</text>
+          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="State-committed public AI funding, ranked: EU InvestAI 20 billion euro, Germany 5, France 2.5, UK 2.4, Spain 2.1, Italy 1">
+            <text class="cu-cap" x="14" y="18">What each actually commits, state money only</text>
+            <g data-cc="EU"><text class="ed-lbl" x="62" y="43" text-anchor="end">EU fund</text><line class="ed-stem accent" x1="70" y1="40" x2="310" y2="40"/><circle class="ed-dot" cx="310" cy="40" r="3.6"/><text class="ed-val" x="318" y="43">&euro;20B</text></g>
+            <g data-cc="DE"><text class="ed-lbl" x="62" y="63" text-anchor="end">Germany</text><line class="ed-stem" x1="70" y1="60" x2="130" y2="60"/><circle class="ed-dot dim" cx="130" cy="60" r="3.2"/><text class="ed-val mut" x="138" y="63">&euro;5B</text></g>
+            <g data-cc="FR"><text class="ed-lbl" x="62" y="83" text-anchor="end">France</text><line class="ed-stem accent" x1="70" y1="80" x2="100" y2="80"/><circle class="ed-dot" cx="100" cy="80" r="3.2"/><text class="ed-val" x="108" y="83">&euro;2.5B</text></g>
+            <g data-cc="GB"><text class="ed-lbl" x="62" y="103" text-anchor="end">UK</text><line class="ed-stem" x1="70" y1="100" x2="98.8" y2="100"/><circle class="ed-dot dim" cx="98.8" cy="100" r="3.2"/><text class="ed-val mut" x="107" y="103">&euro;2.4B</text></g>
+            <g data-cc="ES"><text class="ed-lbl" x="62" y="123" text-anchor="end">Spain</text><line class="ed-stem" x1="70" y1="120" x2="95.2" y2="120"/><circle class="ed-dot dim" cx="95.2" cy="120" r="3.2"/><text class="ed-val mut" x="103" y="123">&euro;2.1B</text></g>
+            <g data-cc="IT"><text class="ed-lbl" x="62" y="143" text-anchor="end">Italy</text><line class="ed-stem" x1="70" y1="140" x2="82" y2="140"/><circle class="ed-dot dim" cx="82" cy="140" r="3.2"/><text class="ed-val mut" x="90" y="143">&euro;1B</text></g>
+            <text class="cu-cap" id="capexTotal" x="14" y="166">Your coalition commits &euro;20B in state AI funds</text>
           </svg>
         </div>
       <div class="viz-footer">
@@ -1024,32 +993,23 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap compute-pool-wrap" role="img" aria-label="EuroHPC pooled compute by contributor, compared to one US frontier cluster">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One US frontier cluster is about 2.5x all pooled EuroHPC compute: EU ~2 exaFLOPS (2 chips) vs US ~5 exaFLOPS (5 chips)">
-            <defs>
-              <g id="chip">
-                <rect x="-11" y="-11" width="22" height="22" rx="4"/>
-                <rect class="cu-die" x="-5" y="-5" width="10" height="10" rx="2"/>
-                <g class="cu-pin">
-                  <line x1="-11" y1="-5" x2="-15" y2="-5"/><line x1="-11" y1="1" x2="-15" y2="1"/>
-                  <line x1="11" y1="-5" x2="15" y2="-5"/><line x1="11" y1="1" x2="15" y2="1"/>
-                </g>
-              </g>
-            </defs>
-            <text class="cu-cap" id="computeCap" x="14" y="24">One US cluster &asymp; 2.5&times; all of EuroHPC pooled</text>
-            <text class="cu-bag-label accent" x="14" y="64">EU pooled</text>
-            <g class="cu-pop" id="computeEuChips">
-              <use href="#chip" x="170" y="60" class="cu-chip-eu"/>
-              <use href="#chip" x="205" y="60" class="cu-chip-eu"/>
+          <svg class="mn-chart" viewBox="0 0 360 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EU pooled compute vs one US frontier cluster as unit squares, one unit per exaFLOPS">
+            <text class="cu-cap" id="computeCap" x="14" y="20">One US cluster &asymp; 2.5&times; all of EuroHPC pooled</text>
+            <text class="ed-lbl" x="96" y="56" text-anchor="end">EU pooled</text>
+            <g opacity="0.6">
+              <rect class="ed-slot" x="110" y="38" width="22" height="22" rx="3"/><rect class="ed-slot" x="140" y="38" width="22" height="22" rx="3"/><rect class="ed-slot" x="170" y="38" width="22" height="22" rx="3"/><rect class="ed-slot" x="200" y="38" width="22" height="22" rx="3"/><rect class="ed-slot" x="230" y="38" width="22" height="22" rx="3"/>
             </g>
-            <text class="cu-bag-label" x="14" y="116">US frontier</text>
-            <g class="cu-pop">
-              <use href="#chip" x="170" y="112" class="cu-chip-us"/>
-              <use href="#chip" x="205" y="112" class="cu-chip-us"/>
-              <use href="#chip" x="240" y="112" class="cu-chip-us"/>
-              <use href="#chip" x="275" y="112" class="cu-chip-us"/>
-              <use href="#chip" x="310" y="112" class="cu-chip-us"/>
+            <g id="computeEuChips">
+              <rect class="ed-unit eu" x="110" y="38" width="22" height="22" rx="3"/>
+              <rect class="ed-unit eu" x="140" y="38" width="22" height="22" rx="3"/>
             </g>
-            <text class="cu-cap" x="14" y="150">each chip &asymp; 1 EF &middot; 11 EuroHPC systems</text>
+            <text class="ed-lbl" x="96" y="96" text-anchor="end">US frontier</text>
+            <g>
+              <rect class="ed-unit us" x="110" y="78" width="22" height="22" rx="3"/><rect class="ed-unit us" x="140" y="78" width="22" height="22" rx="3"/><rect class="ed-unit us" x="170" y="78" width="22" height="22" rx="3"/><rect class="ed-unit us" x="200" y="78" width="22" height="22" rx="3"/><rect class="ed-unit us" x="230" y="78" width="22" height="22" rx="3"/>
+            </g>
+            <path class="ed-bracket" d="M262 49 h8 v40 h-8" fill="none"/>
+            <text class="ed-val red" x="278" y="73">&asymp;2.5&times;</text>
+            <text class="cu-cap" x="14" y="138">1 unit = 1 EF &middot; 11 EuroHPC systems pooled</text>
           </svg>
         </div>
       </div>
@@ -1100,37 +1060,27 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="2024 private AI investment as coin stacks: US $109B towering over China $9.3B, UK $4.5B, Canada $2B">
-            <text class="cu-cap" x="14" y="22">No one competes alone &mdash; AI money, 2024</text>
-            <g class="cu-pop">
-              <!-- US: ~11 coins ($109B, 1 coin = $10B) -->
-              <ellipse class="cu-coin" cx="70" cy="120" rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="113" rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="106" rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="99"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="92"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="85"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="78"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="71"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="64"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="57"  rx="15" ry="4.7"/>
-              <ellipse class="cu-coin" cx="70" cy="50"  rx="15" ry="4.7"/>
+          <svg class="mn-chart" viewBox="0 0 360 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="2024 private AI investment on one axis: UK $4.5B, China $9.3B, EU $14B, your coalition, and the US far right at $109B">
+            <text class="cu-cap" x="14" y="18">No one competes alone &mdash; 2024 private AI investment</text>
+            <line class="ed-axis" x1="16" y1="92" x2="344" y2="92"/>
+            <g class="ed-tick" text-anchor="middle">
+              <text x="16" y="106">0</text><text x="91" y="106">$25B</text><text x="165" y="106">$50B</text><text x="240" y="106">$75B</text><text x="314" y="106">$100B</text>
             </g>
-            <!-- EU today: fixed reference (~$14B, 2024 EU private AI) the live coalition grows from -->
-            <g class="cu-pop">
-              <ellipse class="cu-coin-eu" cx="160" cy="120" rx="15" ry="4.7" opacity="0.3"/>
-              <ellipse class="cu-coin-eu" cx="160" cy="113" rx="15" ry="4.7" opacity="0.3"/>
-            </g>
-            <!-- Your coalition: JS-rendered coin stack, grows as states join -->
-            <g class="cu-pop" id="ottawaCoalition"></g>
-            <g class="cu-bag-label" text-anchor="middle">
-              <text x="70"  y="140">US $109B</text>
-              <text x="160" y="140" fill="rgba(10,10,10,0.5)">EU today</text>
-              <text x="160" y="152" fill="rgba(10,10,10,0.5)">$14B</text>
-              <text id="ottawaCoalLabel" x="300" y="140" fill="#0057FF">Your coalition</text>
-              <text id="ottawaCoalAmt"   x="300" y="152" fill="#0057FF">$14B</text>
-            </g>
-            <text class="cu-cap" id="ottawaCap" x="14" y="168">Pooled, the coalition reaches &asymp; $14B vs $109B</text>
+            <line class="ed-lead" x1="29" y1="76" x2="29" y2="88"/>
+            <text class="ed-lbl" x="29" y="71" text-anchor="middle">UK 4.5</text>
+            <line class="ed-lead" x1="44" y1="52" x2="44" y2="88"/>
+            <text class="ed-lbl" x="44" y="47" text-anchor="middle">China 9.3</text>
+            <line class="ed-lead" x1="58" y1="34" x2="58" y2="88"/>
+            <text class="ed-lbl" x="60" y="29" text-anchor="middle">EU 14</text>
+            <circle class="ed-dot dim" cx="29" cy="92" r="3"/>
+            <circle class="ed-dot dim" cx="44" cy="92" r="3"/>
+            <circle class="ed-dot dim" cx="58" cy="92" r="3"/>
+            <circle class="ed-dot red" cx="341" cy="92" r="4.2"/>
+            <text class="ed-val red" x="341" y="76" text-anchor="end">US $109B</text>
+            <circle class="ed-dot" id="ottawaCoalDot" cx="58" cy="92" r="4.2"/>
+            <text class="ed-lbl accent" id="ottawaCoalWord" x="58" y="120" text-anchor="middle">your pool</text>
+            <text class="ed-val" id="ottawaCoalAmt" x="58" y="132" text-anchor="middle">$14B</text>
+            <text class="cu-cap" id="ottawaCap" x="14" y="148">Pooled, the coalition reaches &asymp; $14B vs $109B</text>
           </svg>
         </div>
       </div>
@@ -1150,30 +1100,18 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="7 of 10 clouds are US: ~70% of Europe's cloud runs on US hyperscalers, ~15% EU, ~15% other">
-            <defs>
-              <g id="cloud"><ellipse cx="0" cy="4" rx="13" ry="7"/><circle cx="-6" cy="-1" r="6"/><circle cx="5" cy="-3" r="7.5"/></g>
-            </defs>
-            <text class="cu-fig coral" x="14" y="46">70%</text>
-            <text class="cu-cap" x="16" y="66">of Europe&rsquo;s cloud runs on US hyperscalers</text>
-            <g class="cu-pop">
-              <use href="#cloud" x="32"  y="104" fill="#B8002E"/>
-              <use href="#cloud" x="65"  y="104" fill="#B8002E"/>
-              <use href="#cloud" x="98"  y="104" fill="#B8002E"/>
-              <use href="#cloud" x="131" y="104" fill="#B8002E"/>
-              <use href="#cloud" x="164" y="104" fill="#B8002E"/>
-              <use href="#cloud" x="197" y="104" fill="#B8002E"/>
-              <use href="#cloud" x="230" y="104" fill="#B8002E"/>
-              <use href="#cloud" x="263" y="104" fill="#0057FF"/>
-              <use href="#cloud" x="296" y="104" fill="#0057FF"/>
-              <use href="#cloud" x="329" y="104" fill="rgba(10,10,10,0.3)"/>
-            </g>
-            <g class="cu-legend">
-              <circle cx="20"  cy="142" r="5" fill="#B8002E"/><text x="30" y="142">US 70%</text>
-              <circle cx="118" cy="142" r="5" fill="#0057FF"/><text x="128" y="142">EU 15%</text>
-              <circle cx="216" cy="142" r="5" fill="rgba(10,10,10,0.3)"/><text x="226" y="142">other 15%</text>
-            </g>
-            <text class="cu-cap" x="14" y="164">Clouds the Digital Liberty Act can switch off</text>
+          <svg class="mn-chart" viewBox="0 0 360 132" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Europe's cloud market as one 100% bar: US hyperscalers 70%, EU providers 15%, other 15%">
+            <text class="cu-cap" x="14" y="18">Who runs europe&rsquo;s cloud</text>
+            <rect class="ed-seg red" x="16" y="44" width="229.6" height="26" rx="2"/>
+            <rect class="ed-seg eu" x="247.6" y="44" width="49.2" height="26" rx="2"/>
+            <rect class="ed-seg dim" x="298.8" y="44" width="45.2" height="26" rx="2"/>
+            <text class="ed-seg-lbl" x="130" y="61" text-anchor="middle">US hyperscalers &middot; 70%</text>
+            <line class="ed-lead" x1="272" y1="74" x2="272" y2="86"/>
+            <text class="ed-lbl" x="272" y="97" text-anchor="middle">EU 15%</text>
+            <line class="ed-lead" x1="321" y1="74" x2="321" y2="86"/>
+            <text class="ed-lbl" x="328" y="97" text-anchor="end">other 15%</text>
+            <line class="ed-lead" x1="130" y1="74" x2="130" y2="104"/>
+            <text class="cu-cap" x="130" y="118" text-anchor="middle">one act can switch this part off</text>
           </svg>
         </div>
       </div>
@@ -1194,20 +1132,21 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helsing valuation grew from €12B (2025) toward an estimated ~$18B (2026), shown as growing shields">
-            <defs>
-              <symbol id="shield" viewBox="0 0 30 36"><path d="M15,2 L27,7 L27,18 C27,29 15,34 15,34 C15,34 3,29 3,18 L3,7 Z"/></symbol>
-            </defs>
-            <text class="cu-cap" x="14" y="24">Helsing &mdash; Europe&rsquo;s top defence-AI startup (Ek-backed)</text>
-            <g class="cu-pop">
-              <use href="#shield" x="64"  y="76" width="58" height="70" fill="#0057FF"/>
-              <use href="#shield" x="198" y="48" width="82" height="98" fill="#B8002E"/>
+          <svg class="mn-chart" viewBox="0 0 360 150" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helsing valuation as a slope: 12 billion euro at the 2025 Series D rising to an estimated 18 billion dollars in 2026 talks">
+            <text class="cu-cap" x="14" y="18">Helsing &mdash; europe&rsquo;s defence-AI champion</text>
+            <line class="ed-axis" x1="84" y1="36" x2="84" y2="112"/>
+            <line class="ed-axis" x1="276" y1="36" x2="276" y2="112"/>
+            <line class="ed-slope" x1="84" y1="92" x2="276" y2="52"/>
+            <circle class="ed-dot" cx="84" cy="92" r="4"/>
+            <circle class="ed-dot" cx="276" cy="52" r="4"/>
+            <text class="ed-val" x="76" y="96" text-anchor="end">&euro;12B</text>
+            <text class="ed-val" x="284" y="56">~$18B</text>
+            <text class="ed-lbl" x="170" y="60" text-anchor="middle" transform="rotate(-11 170 64)">+&asymp;50% in talks</text>
+            <g class="ed-tick" text-anchor="middle">
+              <text x="84" y="128">2025 &middot; series D</text>
+              <text x="276" y="128">2026 est. &middot; talks</text>
             </g>
-            <text class="cu-bag-label" x="158" y="104" fill="#B8002E">&rarr;</text>
-            <g class="cu-bag-label" text-anchor="middle">
-              <text x="93"  y="160" fill="#0057FF">2025 &middot; &euro;12B</text>
-              <text x="239" y="160" fill="#B8002E">2026 est. &middot; ~$18B</text>
-            </g>
+            <text class="cu-cap" x="14" y="146">Defence is where european capital already moves fast</text>
           </svg>
         </div>
       </div>
@@ -1228,25 +1167,13 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="About 7 of every 10 units of France's electricity are nuclear">
-            <defs>
-              <g id="bolt"><path d="M4,-14 L-8,4 L-1,4 L-5,14 L9,-5 L1,-5 Z"/></g>
-            </defs>
-            <text class="cu-fig" x="14" y="46">70%</text>
-            <text class="cu-cap" x="16" y="66">of France&rsquo;s power is nuclear &mdash; cheap, clean, dispatchable</text>
-            <g class="cu-pop">
-              <use href="#bolt" x="32"  y="106" fill="#0057FF"/>
-              <use href="#bolt" x="65"  y="106" fill="#0057FF"/>
-              <use href="#bolt" x="98"  y="106" fill="#0057FF"/>
-              <use href="#bolt" x="131" y="106" fill="#0057FF"/>
-              <use href="#bolt" x="164" y="106" fill="#0057FF"/>
-              <use href="#bolt" x="197" y="106" fill="#0057FF"/>
-              <use href="#bolt" x="230" y="106" fill="#0057FF"/>
-              <use href="#bolt" x="263" y="106" fill="rgba(10,10,10,0.25)"/>
-              <use href="#bolt" x="296" y="106" fill="rgba(10,10,10,0.25)"/>
-              <use href="#bolt" x="329" y="106" fill="rgba(10,10,10,0.25)"/>
-            </g>
-            <text class="cu-cap" x="14" y="150">Cheap clean power for home-grown AI compute</text>
+          <svg class="mn-chart" viewBox="0 0 360 126" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="France's electricity: about 7 of every 10 units are nuclear">
+            <text class="cu-cap" x="14" y="18">The french grid &mdash; each square is 10% of supply</text>
+            <g class="cu-pop"><rect class="ed-unit eu" x="16" y="46" width="24" height="24" rx="3"/><rect class="ed-unit eu" x="49" y="46" width="24" height="24" rx="3"/><rect class="ed-unit eu" x="82" y="46" width="24" height="24" rx="3"/><rect class="ed-unit eu" x="115" y="46" width="24" height="24" rx="3"/><rect class="ed-unit eu" x="148" y="46" width="24" height="24" rx="3"/><rect class="ed-unit eu" x="181" y="46" width="24" height="24" rx="3"/><rect class="ed-unit eu" x="214" y="46" width="24" height="24" rx="3"/><rect class="ed-unit off" x="247" y="46" width="24" height="24" rx="3"/><rect class="ed-unit off" x="280" y="46" width="24" height="24" rx="3"/><rect class="ed-unit off" x="313" y="46" width="24" height="24" rx="3"/></g>
+            <line class="ed-lead" x1="120" y1="74" x2="120" y2="86"/>
+            <text class="ed-val" x="120" y="98" text-anchor="middle">nuclear &middot; 70%</text>
+            <text class="ed-lbl" x="330" y="98" text-anchor="end">other 30%</text>
+            <text class="cu-cap" x="14" y="120">Firm, cheap power that can host frontier compute &middot; ~90 TWh exported</text>
           </svg>
         </div>
       </div>
@@ -1306,34 +1233,23 @@
           </ol></details>
         </div></details>
         <div class="viz-canvas-wrap">
-          <svg class="mn-chart" viewBox="0 0 360 172" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Share of the US frontier level reached alone vs pooled: capital 4% alone and 17% pooled, compute 20% alone and 82% pooled, talent 23% alone and over 100% pooled">
-            <text class="cu-cap" x="14" y="22">Share of the US level &mdash; best state alone vs ten pooled</text>
-            <text class="ci-tick" x="72" y="44" text-anchor="end">Capital</text>
-            <rect class="mn-bar-rest" x="78" y="34" width="240" height="6"/>
-            <rect class="mn-bar-muted mn-growx" x="78" y="34" width="10" height="6"/>
-            <text class="ci-tick" x="93" y="40">4%</text>
-            <rect class="mn-bar-rest" x="78" y="42" width="240" height="6"/>
-            <rect class="mn-bar mn-growx" x="78" y="42" width="41" height="6"/>
-            <text class="ci-tick" x="124" y="48" style="fill:#0057FF">17%</text>
-            <text class="ci-tick" x="72" y="74" text-anchor="end">Compute</text>
-            <rect class="mn-bar-rest" x="78" y="64" width="240" height="6"/>
-            <rect class="mn-bar-muted mn-growx" x="78" y="64" width="48" height="6"/>
-            <text class="ci-tick" x="131" y="70">20%</text>
-            <rect class="mn-bar-rest" x="78" y="72" width="240" height="6"/>
-            <rect class="mn-bar mn-growx" x="78" y="72" width="197" height="6"/>
-            <text class="ci-tick" x="280" y="78" style="fill:#0057FF">82%</text>
-            <text class="ci-tick" x="72" y="104" text-anchor="end">Talent</text>
-            <rect class="mn-bar-rest" x="78" y="94" width="240" height="6"/>
-            <rect class="mn-bar-muted mn-growx" x="78" y="94" width="55" height="6"/>
-            <text class="ci-tick" x="138" y="100">23%</text>
-            <rect class="mn-bar-rest" x="78" y="102" width="240" height="6"/>
-            <rect class="mn-bar mn-growx" x="78" y="102" width="240" height="6"/>
-            <text class="ci-tick" x="313" y="108" text-anchor="end" style="fill:#fff">100%+</text>
-            <g class="cu-legend">
-              <circle cx="20" cy="136" r="5" fill="rgba(10,10,10,0.26)"/><text x="30" y="136">best state alone</text>
-              <circle cx="170" cy="136" r="5" fill="#0057FF"/><text x="180" y="136">ten pooled</text>
-            </g>
-            <text class="cu-cap" x="14" y="164">Alone, nobody clears a quarter of the US level</text>
+          <svg class="mn-chart" viewBox="0 0 360 168" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Share of the US level reached alone vs pooled, as connected dot pairs: capital 4 to 17 percent, compute 20 to 82 percent, talent 23 to over 100 percent">
+            <text class="cu-cap" x="14" y="18">Share of the US level &mdash; best state alone &rarr; ten pooled</text>
+            <g class="ed-gridg"><line class="ed-grid" x1="90" y1="32" x2="90" y2="128"/><line class="ed-grid" x1="210" y1="32" x2="210" y2="128"/><line class="ed-grid" x1="330" y1="32" x2="330" y2="128"/></g>
+            <g class="ed-tick" text-anchor="middle"><text x="90" y="142">0%</text><text x="210" y="142">50%</text><text x="330" y="142">100%</text></g>
+            <text class="ed-lbl" x="82" y="51" text-anchor="end">capital</text>
+            <line class="ed-link" x1="99.6" y1="48" x2="130.8" y2="48"/>
+            <circle class="ed-dot hollow" cx="99.6" cy="48" r="3.4"/><circle class="ed-dot" cx="130.8" cy="48" r="4"/>
+            <text class="ed-val" x="140" y="51">17%</text>
+            <text class="ed-lbl" x="82" y="83" text-anchor="end">compute</text>
+            <line class="ed-link" x1="138" y1="80" x2="286.8" y2="80"/>
+            <circle class="ed-dot hollow" cx="138" cy="80" r="3.4"/><circle class="ed-dot" cx="286.8" cy="80" r="4"/>
+            <text class="ed-val" x="296" y="83">82%</text>
+            <text class="ed-lbl" x="82" y="115" text-anchor="end">talent</text>
+            <line class="ed-link" x1="145.2" y1="112" x2="330" y2="112"/>
+            <circle class="ed-dot hollow" cx="145.2" cy="112" r="3.4"/><circle class="ed-dot" cx="330" cy="112" r="4"/>
+            <text class="ed-val" x="324" y="100" text-anchor="end">100%+</text>
+            <text class="cu-cap" x="14" y="162">Hollow dot = best single state &middot; solid = all ten pooled</text>
           </svg>
         </div>
       </div>
@@ -1414,7 +1330,7 @@
 
 </main>
 
-<script src="scripts.js?v=45" defer></script>
+<script src="scripts.js?v=47" defer></script>
 
 </body>
 </html>
