@@ -2651,28 +2651,3 @@ html.viz-anim .scene-fig.is-in .ed-val { opacity: 1; transition: opacity 0.5s ea
 }
 .supporting-data-grid .viz-card:nth-of-type(3n) .viz-mini-value { color: #E3573E; }
 
-/* act dividers become journey milestones: white card, colored circle */
-.supporting-data-grid.is-stack > .story-act {
-  background: #fff;
-  border: 1px solid rgba(10,10,10,0.05);
-  border-radius: 22px;
-  box-shadow: 0 1px 2px rgba(10,10,10,0.04), 0 18px 44px -24px rgba(10,10,10,0.3);
-  padding: 0.85rem 1.25rem;
-}
-.supporting-data-grid.is-stack > .story-act .story-act-num {
-  width: 40px; height: 40px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent); color: #fff;
-  font-family: var(--font); font-size: 1.05rem; font-weight: 800;
-  border: 0;
-}
-.supporting-data-grid.is-stack > .story-act .story-act-title {
-  font-family: var(--font); font-weight: 800; letter-spacing: -0.02em;
-  color: var(--accent); text-transform: none; font-size: 1.05rem;
-}
-.supporting-data-grid.is-stack > .story-act .story-act-line { color: var(--text-soft); }
-.supporting-data-grid.is-stack > .story-act[data-act="2"] .story-act-num { background: #E0991A; }
-.supporting-data-grid.is-stack > .story-act[data-act="2"] .story-act-title { color: #B47A10; }
-.supporting-data-grid.is-stack > .story-act[data-act="3"] .story-act-num { background: #E3573E; }
-.supporting-data-grid.is-stack > .story-act[data-act="3"] .story-act-line { color: var(--text-soft); }
-.supporting-data-grid.is-stack > .story-act[data-act="3"] .story-act-title { color: #D14A33; }
