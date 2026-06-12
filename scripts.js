@@ -239,10 +239,24 @@
     'scene-stockholm': 'Mandate scope',
   };
 
-  // Render a single inline pick (label + chips + impact callout).
+  // Where each decision happens in the story, for the recap link.
+  const SCENE_SRC = {
+    'scene-brussels':  'Ch 4 · Brussels',
+    'scene-ottawa':    'Ch 8 · Ottawa',
+    'scene-tokyo':     'Ch 5 · Tokyo',
+    'scene-paris':     'Ch 9 · Paris',
+    'scene-berlin':    'Ch 3 · Berlin',
+    'scene-ether':     'Ch 12 · The Ether',
+    'scene-stockholm': 'Ch 6 · Stockholm',
+  };
+
+  // Render a single inline pick: the story question and its source chapter,
+  // then chips + impact callout, so nobody has to scroll back to answer.
   function pickHtml(sceneId){
     const cfg = SIM[sceneId];
     if (!cfg) return '';
+    const made = !!simState[sceneId];
+    const src = SCENE_SRC[sceneId];
     const pick = getPick(sceneId);
     const pickedOpt = cfg.options.find(o => o.id === pick) || cfg.options[0];
     const options = cfg.options.map(o => `
@@ -254,7 +268,8 @@
       </button>`).join('');
     return `
       <div class="design-pick" data-scene="${sceneId}">
-        <span class="design-pick-label">${PICK_LABELS[sceneId] || cfg.question}</span>
+        <span class="design-pick-label">${PICK_LABELS[sceneId] || ''}${src ? `<a class="design-pick-src" href="#${sceneId}">${src}</a>` : ''}</span>
+        <p class="design-pick-q">${cfg.question} <em class="design-pick-flag">${made ? 'your call from the story' : 'not called in the story yet; call it here'}</em></p>
         <div class="design-pick-options" role="radiogroup">${options}</div>
         <p class="design-pick-impact" data-strength="${pickedOpt.strength}">${pickedOpt.impact || ''}</p>
       </div>`;
@@ -1775,10 +1790,9 @@
 
 // ============================================================
 // STACKED STORY CARDS: chapters pin and pile as you scroll, like the
-// live-data cards. Desktop only; per-card sticky top + z-index in DOM order.
+// live-data cards. All widths; per-card sticky top + z-index in DOM order.
 // ============================================================
 (function(){
-  if (window.innerWidth < 1024) return;
   const story = document.querySelector('.story');
   if (!story) return;
   const scenes = Array.from(story.querySelectorAll('.scene'));
@@ -1789,8 +1803,14 @@
   // viewport pins by its BOTTOM (negative top offset): it scrolls normally
   // until all of its text has been readable, and only then does the next
   // card slide over it.
-  const BASE = 70, STEP = 52, PIN_MAX = 222, GAP = 28;
+  // Tighter stair on small screens so the pile leaves room to read.
+  function dims () {
+    return window.innerWidth < 1024
+      ? { BASE: 54, STEP: 30, PIN_MAX: 104, GAP: 14 }
+      : { BASE: 70, STEP: 52, PIN_MAX: 222, GAP: 28 };
+  }
   function applyTops () {
+    const { BASE, STEP, PIN_MAX, GAP } = dims();
     const vh = window.innerHeight;
     scenes.forEach((el, i) => {
       const stair = Math.min(BASE + i * STEP, PIN_MAX);
@@ -1820,7 +1840,7 @@
       const cs = getComputedStyle(story);
       let y = story.getBoundingClientRect().top + window.scrollY + (parseFloat(cs.paddingTop) || 0);
       for (let j = 0; j < i; j++) y += scenes[j].offsetHeight + 30; // 30 = stacked margin-bottom
-      window.scrollTo({ top: y - BASE, behavior: 'smooth' });
+      window.scrollTo({ top: y - dims().BASE, behavior: 'smooth' });
     });
   });
 })();
@@ -2350,7 +2370,8 @@
       const b = document.getElementById('usbMount');
       if (b) b.addEventListener('click', () => { setState('mounted'); renderDock(); });
     } else {
-      dock.innerHTML = '<div class="usb-port empty">Nothing to plug in here. (Chapter 2 has something for you.)</div>';
+      dock.hidden = true;
+      dock.innerHTML = '';
     }
   }
 
