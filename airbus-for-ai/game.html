@@ -427,6 +427,26 @@
   .g-side .g-panel { transition: opacity 0.18s ease; border-radius: 8px; }
   .g-side.focusing .g-panel { opacity: 0.3; }
   .g-side.focusing .g-panel.rel { opacity: 1; }
+
+  /* 8-bit rail art: pixel rack and pot replace the ascii panels */
+  .g-boil .gx-art, .gx-art {
+    display: block; width: 100%; max-width: 230px; height: auto;
+    image-rendering: pixelated; margin: 0.1rem 0 0.45rem;
+  }
+  @keyframes gxBlink { 50% { opacity: 0.15; } }
+  .gx-led { animation: gxBlink 1.1s steps(2, end) infinite; }
+  .gx-now { animation: gxBlink 1s steps(2, end) infinite; }
+  @keyframes gxBub {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-5px); opacity: 0; }
+  }
+  .gx-bub { animation: gxBub 2.2s linear infinite; }
+  @keyframes gxFlick { 50% { opacity: 0.45; } }
+  .gx-flick { animation: gxFlick 0.7s steps(2, end) infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .gx-led, .gx-now, .gx-bub, .gx-flick { animation: none; }
+  }
 </style>
 </head>
 <body>
@@ -518,7 +538,7 @@
   </aside>
 </main>
 
-<script src="data.js?v=28"></script>
-<script src="game.js?v=28"></script>
+<script src="data.js?v=29"></script>
+<script src="game.js?v=29"></script>
 </body>
 </html>

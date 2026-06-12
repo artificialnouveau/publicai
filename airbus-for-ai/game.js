@@ -193,34 +193,44 @@
     const online = Math.min(5, Math.max(0, Math.round(S.pooled ? sc.compute : 0)));
     const standby = !S.pooled ? Math.min(5, Math.round(sc.computeRaw)) : 0;
     const load = Math.min(1, (S.pooled ? sc.compute : 0) / 5);
-    const W = 25; // inner width between the cabinet rails
-    const row = body => ' │ ' + body + ' │\n';
-
-    const title = '─ EU-POOL-01 ' + (S.pooled ? '' : (standby ? '· idle ' : '· dark '));
-    let out = ' ┌' + title + '─'.repeat(Math.max(0, W - title.length)) + '┐\n';
-    for (let r = 0; r < 5; r++) {
-      const id = 'n0' + (r + 1);
-      if (r < online) {
-        let leds = '';
-        for (let c = 0; c < 8; c++) leds += Math.random() < 0.72 ? '●' : '○';
-        let net = '';
-        for (let c = 0; c < 3; c++) net += Math.random() < 0.6 ? '▮' : '▯';
-        out += row(id + ' ' + leds + ' net ' + net + ' ok');
-      } else if (r < online + standby) {
-        out += row(id + ' ········ net ▯▯▯ sb');
+    const C = { K: '#181410', face: '#2A2832', slot: '#3A3640', rail: '#57525B',
+                on: '#2E9E4F', io: '#0057FF', sb: '#8A8494', off: '#4A4550',
+                pwr: '#E2A93B', red: '#BE1234' };
+    const R = (x, y, w, h, f, cls, delay) =>
+      '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + f + '"' +
+      (cls ? ' class="' + cls + '"' : '') +
+      (delay ? ' style="animation-delay:' + delay + 's"' : '') + '/>';
+    let r = '';
+    r += R(1, 0, 28, 26, C.K);
+    r += R(2, 1, 26, 24, C.face);
+    r += R(2, 1, 1, 24, C.rail); r += R(27, 1, 1, 24, C.rail);
+    for (let n = 0; n < 5; n++) {
+      const y = 2 + n * 4;
+      r += R(4, y, 22, 3, C.slot);
+      if (n < online) {
+        for (let i = 0; i < 6; i++)
+          r += R(5 + i * 2, y + 1, 1, 1, C.on, 'gx-led', (n * 0.31 + i * 0.17).toFixed(2));
+        for (let i = 0; i < 3; i++)
+          r += R(19 + i * 2, y + 1, 2, 1, C.io, 'gx-led', (n * 0.23 + i * 0.29).toFixed(2));
+      } else if (n < online + standby) {
+        for (let i = 0; i < 6; i++) r += R(5 + i * 2, y + 1, 1, 1, C.sb);
       } else {
-        out += row(id + '          off     --');
+        r += R(5, y + 1, 1, 1, C.red);
       }
     }
-    out += ' ├' + '─'.repeat(W) + '┤\n';
-    let pbar = '';
-    for (let c = 0; c < 8; c++) pbar += (c / 8 < load ? '▮' : '▯');
-    const pct = String(Math.round(load * 100)).padStart(2, ' ');
+    const segs = Math.round(load * 8);
+    for (let i = 0; i < 8; i++) r += R(4 + i * 3, 23, 2, 1, i < segs ? C.pwr : C.off);
+    r += R(2, 26, 3, 1, C.K); r += R(25, 26, 3, 1, C.K);
+    const pct = Math.round(load * 100);
     const temp = Math.round(18 + load * 16);
-    out += row('pwr ' + pbar + ' ' + pct + '% · ' + temp + '°C');
-    out += ' └' + '─'.repeat(W) + '┘';
-    if (standby > 0) out += '\n  POOL to energize the rack';
-    el.textContent = out;
+    const status = S.pooled
+      ? 'EU-POOL-01 \u00B7 ' + online + '/5 nodes \u00B7 pwr ' + pct + '% \u00B7 ' + temp + '\u00B0C'
+      : (standby
+        ? 'EU-POOL-01 \u00B7 idle \u00B7 ' + standby + ' node' + (standby === 1 ? '' : 's') + ' on standby'
+        : 'EU-POOL-01 \u00B7 dark');
+    el.innerHTML =
+      '<svg class="gx-art" viewBox="0 0 30 28" shape-rendering="crispEdges" aria-hidden="true">' + r + '</svg>' +
+      status + (standby > 0 ? '\nPOOL to energize the rack' : '');
   }
 
   // The slow boil: the simmer line is the mood, the lines under it are the
@@ -230,24 +240,50 @@
     if (!el || !S) return;
     const turn = Math.min(S.turn, 16);
     const heat = Math.min(1, turn / 16);
-    const W = 32;
-    let line = '';
-    for (let c = 0; c < W; c++) {
-      const rnd = Math.random();
-      const p = 0.05 + heat * 0.3;
-      if (rnd < p) {
-        if (S.turn >= 13 && rnd < p * 0.3) line += '~';
-        else if (heat > 0.5 && rnd < p * 0.5) line += 'o';
-        else line += '°';
-      } else {
-        line += rnd < 0.5 ? '·' : ' ';
-      }
+    const C = { K: '#181410', pot: '#57525B', water: '#A9CCE8', surf: '#C6DFF1',
+                bub: '#FFFFFF', fl1: '#FF8E1F', fl2: '#FFD23C',
+                past: '#0057FF', now: '#181410', win: '#b8002e', fut: '#C9C4B8' };
+    const R = (x, y, w, h, f, cls, delay) =>
+      '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + f + '"' +
+      (cls ? ' class="' + cls + '"' : '') +
+      (delay ? ' style="animation-delay:' + delay + 's"' : '') + '/>';
+    let r = '';
+    // pot: rim, walls, handles
+    r += R(5, 2, 24, 1, C.K);
+    r += R(5, 3, 1, 10, C.K); r += R(28, 3, 1, 10, C.K);
+    r += R(5, 13, 24, 1, C.K);
+    r += R(3, 4, 2, 2, C.K); r += R(29, 4, 2, 2, C.K);
+    // water
+    r += R(6, 4, 22, 1, C.surf);
+    r += R(6, 5, 22, 8, C.water);
+    // bubbles: more of them as the heat rises
+    const nBub = 1 + Math.round(heat * 7);
+    for (let i = 0; i < nBub; i++) {
+      const bx = 7 + ((i * 5 + 2) % 20);
+      r += R(bx, 10, 1, 1, C.bub, 'gx-bub', (i * 0.37).toFixed(2));
     }
-    // month timeline: past █, current ◆, future ·, the Act window ~
-    let tl = '';
+    // steam once the Act window opens
+    if (turn >= 13) {
+      r += R(10, 0, 1, 1, C.fut, 'gx-bub', '0.2');
+      r += R(17, 0, 1, 1, C.fut, 'gx-bub', '0.9');
+      r += R(24, 0, 1, 1, C.fut, 'gx-bub', '1.5');
+    }
+    // flame under the pot, scaled by heat
+    const nFl = 1 + Math.round(heat * 7);
+    for (let i = 0; i < nFl; i++) {
+      const fx = 7 + ((i * 3 + 1) % 20);
+      r += R(fx, 15, 1, 2, i % 2 ? C.fl2 : C.fl1, 'gx-flick', (i * 0.21).toFixed(2));
+      if (i % 3 === 0) r += R(fx, 14, 1, 1, C.fl2, 'gx-flick', (i * 0.27).toFixed(2));
+    }
+    r += R(4, 17, 26, 1, C.K); // the stove
+    // month timeline: 16 pixel cells; past blue, current blinking, window red
     for (let m = 1; m <= 16; m++) {
-      tl += m < turn ? '█' : (m === turn ? '◆' : (m >= 13 ? '~' : '·'));
-      if (m < 16) tl += ' ';
+      const x = 3 + (m - 1) * 1.75;
+      let f = C.fut, cls = '';
+      if (m < turn) f = C.past;
+      else if (m === turn) { f = C.now; cls = 'gx-now'; }
+      else if (m >= 13) f = C.win;
+      r += R(x.toFixed(2), 20, 1.25, 1.25, f, cls, '');
     }
     const lo = Math.max(0, 13 - S.turn), hi = Math.max(0, 16 - S.turn);
     const eta = S.over
@@ -256,12 +292,11 @@
         ? 'the Act can land any month now'
         : 'the Act lands in ' + lo + ' to ' + hi + ' months');
     const word = S.over ? 'boiled over' : (S.turn >= 13 ? 'boiling' : heat > 0.5 ? 'simmering' : 'warming');
-    el.textContent =
-      line + '\n' +
-      tl + '\n' +
-      'month ' + turn + ' of 16 · ~ = the Act window\n' +
+    el.innerHTML =
+      '<svg class="gx-art" viewBox="0 0 34 22" shape-rendering="crispEdges" aria-hidden="true">' + r + '</svg>' +
+      'month ' + turn + ' of 16 \u00B7 red cells = the Act window\n' +
       eta + '\n' +
-      'the water is ' + word + ' · heat ' + Math.round(heat * 100) + '%';
+      'the water is ' + word + ' \u00B7 heat ' + Math.round(heat * 100) + '%';
   }
 
   // Text renders instantly: the decode/typewriter reveals were removed as
@@ -554,7 +589,7 @@
   // Chibi cast sprites and scene props, same pixel set as the story page.
   const SPRITES = {
     editor: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KKwKSKKSKwKK.....','.....KSwKSSSSKwSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJMJKK....','....KJJJJJWWJJJJJK....','....KJJJJJWWJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    researcher: ['......................','.......KKKKKKKK.......','......KAAAAAAAAK......','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KKAAAAAAAAKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAaaAAAAKK....','....KAAAAAaaAAAAAK....','....KAAAAAaaAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    researcher: ['.........KAAK.........','.......KKKKKKKK.......','......KAAAAAAAAK......','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KAHHHHHHHHAK.....','.....KASSSSSSSSAK.....','.....KASKSSSSKSAK.....','.....KASKSSSSKSAK.....','.....KAsSSSSSSsAK.....','.....KAASSSSSSAAK.....','.....KAAASSSSAAAK.....','.....KKAAAAAAAAKK.....','.......KAAAAKKK.......','.....KKKKKKKKKKKK.....','....KKAAAWAAWAAAKK....','....KAAAAWAAWAAAAK....','....KAAAAaaaaAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     aaron: ['........K..K..K.......','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSBSSBSBSBK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKWWWWAAWWWWKK....','....KWWWWWAAWWWWWK....','....KWWWWWAAWWWWWK....','....KSWWWWWWWWWWSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     chancellor: ['......................','......KKKKKKKKKK......','......GGGGGGGGGG......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KSKKSSSSKKSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJJJKK....','....KJJJJJFFJJJJJK....','....KJJJJJFFJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     pieter: ['......................','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSSSSSSSSBK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK....X..','.....KKKKKKKKKKKK.X...','....KKDDDDWWDDDDKKWWK.','....KDDDDDWWDDDDDKWWK.','....KDDDDDWWDDDDDKKKK.','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
