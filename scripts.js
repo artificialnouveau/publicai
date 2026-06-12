@@ -2103,26 +2103,47 @@
 // who is speaking without holding the whole story in their head.
 // ============================================================
 (function(){
-  const CAST_ART = {
-    editor: '   _______\n  /       \\\n | -o---o- |\n |    L    |\n  \\  ___  /\n __|     |__\n/  [PRESS]  \\ ',
-    researcher: '    _____\n  _/     \\_\n | | o o | |\n | |  L  | |\n |  \\ __ /  |\n  \\_|     |_/\n /  [ PhD ]  \\ ',
-    aaron: '   ~/~~~\\~\n  |  _ _  |\n  |  o o  |\n  |  ___  |\n   \\ --- /\n __|  V  |__\n/  [FILES]  \\ ',
-    chancellor: '   _______\n  |_______|\n  | __ __ |\n  |  o o  |\n  |  ___  |\n   \\_____/\n/  [ BRD ]  \\ ',
-    pieter: '   _____  (\n  /     \\  )\n |  o o  |(\n |   -   |[]\n  \\ ___ /\n __|   |__\n/  [AIDE]  \\ ',
-    execpres: '   _______\n  ((     ))\n |  o   o  |\n |    o    |\n  \\  ===  /\n __|     |__\n/  [ EU  ]  \\ ',
-    japanpm: '     (@)\n   _______\n  /       \\\n |  -   -  |\n |    _    |\n  \\_______/\n/  [ JPN ]  \\ ',
-    proghead: '   _______\n  /       \\\n |  .   .  | o\n |    _    |\n  \\  ___  /\n __|     |__\n/  [ ENG ]  \\ ',
-    swedishvc: '    _____\n   d     b\n |(  o o  )|\n  |   v   |\n   \\ ___ /\n __|     |__\n/  [STRM]  \\ ',
-    estonian: '   _______\n  /       \\\n |  O   O  |\n |   ___   |\n  \\  ___  /\n __|     |__\n/  [WISE]  \\ ',
-    skype: '   _______\n  /       \\\n |  o   o  |\n |  .vvv.  |\n  \\ vvvvv /\n __|     |__\n/  [ ~~~ ]  \\ ',
-    electrician: '  [=======]\n   |     |\n |  o   o  |\n |   ___   |\n  \\  ---  /\n __|     |__\n/  [IBEW]  \\ ',
-    saul: '   /=====\\\n  |  o  o  |\n  |  ____  |\n   \\  --  /\n  __|    |__\n /  [ TV ]  \\\n     !',
-    nasr: '   _______\n  ( ===== )\n | [o] [o] |\n |   ___   |\n  \\  ---  /\n __|     |__\n/  [ SCI ]  \\ ',
-    frenchpres: '   _______\n  /       \\\n |  o   o  |\n |   ___   |\n  \\  ---  /\n __|\\\\    |__\n/  [ \\\\FR ]  \\ ',
-    patrick: '   /\\___/\\\n  |       |\n |  -   -  |\n |    >    |\n  \\  ___  /\n __|     |__\n/  [ HQ  ]  \\ ',
-    uspres: '   _______\n  /       \\\n |  -   -  |\n |   ___   |\n  \\  ---  /\n __|*    |__\n/[=========]\\ ',
-    coalition: '  o  o  o  o\n  )  )  (  (\n  |  |  |  |\n  \\__|__|__/\n   |      |\n  [========]\n   THE CALL'
+  const SPRITES = {
+    editor: ['....................','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....kkkkkkkkkkkk....','....klkkllllkklk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kddddddlldddaddk..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    researcher: ['....................','......mmmmmmmm......','....mmmmmmmmmmmm....','...mkmmmmmmmmmmkm...','...mkmmllllllmmkm...','...mkllllllllllkm...','...mkllkllllkllkm...','...mkllllllllllkm...','...mklllddlllllkm...','...mkllllllllllkm...','...mklllkkkklllkm...','...m.kllllllllk.m...','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kaaaaaaaaaaaaaak..','..kaaaaaaaaaaaaaak..','..kaaaaaaaaaaaaaak..','..kaaaaaaaaaaaaaak..','..kkkkkkkkkkkkkkkk..'],
+    aaron: ['....................','......k.kk.kk.......','.....kk.kkkk.kk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddaaddddddk..','..kddddddaaddddddk..','..kddddddaaddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    chancellor: ['....................','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....klkkllkklllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kkkkkkkllkkkkkkk..','..kkkkkkkllkkkkkkk..','..kkkkkkkkkkkkkkkk..','..kkkkkkkkkkkkkkkk..','..kkkkkkkkkkkkkkkk..'],
+    pieter: ['....................','......kkkkkkkk......','....................','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk.a..','....kllllllllllkaa..','....klllkkkklllkaa..','.....kllllllllk.aa..','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kddddddllddddddk..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    execpres: ['....................','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kkllllllllkk....','....kklkllllklkk....','....kkllllllllkk....','....kkllddllllkk....','....kkllllllllkk....','....kkllkkkkllkk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kaaaaaallaaaaaak..','..kaaaaaallaaaaaak..','..kaaaaaaaaaaaaaak..','..kaaaaaaaaaaaaaak..','..kkkkkkkkkkkkkkkk..'],
+    japanpm: ['........kkkk........','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......llaalk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kddddddllddddddk..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    proghead: ['....................','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkka...','....kllllllllllka...','....kllllllllllk....','....kllkllllkllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kmmmmmmllmmmmmmk..','..kmmmmmmllmmmmmmk..','..kmmmmmmmmmmmmmmk..','..kmmmmmmmmmmmmmmk..','..kkkkkkkkkkkkkkkk..'],
+    swedishvc: ['....................','.....aaaaaaaaaa.....','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','..aakllkllllkllkaa..','..aakllllllllllkaa..','...aklllddlllllka...','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kddddddllddddddk..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    estonian: ['....................','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....klkklklkkllk....','....klkklllkkllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kmmmmmmllmmmmmmk..','..kmmmmmmllmmmmmmk..','..kmmmmmmmmmmmmmmk..','..kmmmmmmmmmmmmmmk..','..kkkkkkkkkkkkkkkk..'],
+    skype: ['....................','......mmmmmmmm......','.....mmmmmmmmmm.....','....kmmmmmmmmmmk....','....kmmllllllmmk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....klmmllllmmlk....','....kmmmkkkkmmmk....','.....kmmmmmmmmk.....','......kmmmmmmk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kddddddllddddddk..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    electrician: ['.......aaaaaa.......','.....aaaaaaaaaa.....','.....aaaaaaaaaa.....','...aaaaaaaaaaaaaa...','....kkkllllllkkk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kaaaaaaaaaaaaaak..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    saul: ['....................','......kkkkkkkk......','.....kkkkkkkk.......','....kkkkkkkkkkk.....','....kkklllllkkkk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk..d...','.......kllllk...k...','..kkkkkkkkkkkkkkkk..','..kkkkkkkrrkkkkkkk..','..kkkkkkkrrkkkkkkk..','..kkkkkkkrrkkkkkkk..','..kkkkkkkkkkkkkkkk..','..kkkkkkkkkkkkkkkk..'],
+    nasr: ['....................','....................','......kkkkkkkk......','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....kaklaa.akakk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kmmmmmmllmmmmmmk..','..kmmmmmmllmmmmmmk..','..kmmmmmmmmmmmmmmk..','..kmmmmmmmmmmmmmmk..','..kkkkkkkkkkkkkkkk..'],
+    frenchpres: ['....................','......kkkkkkkk......','.....kkkkkkkkkk.....','....kkkkkkkkkkkk....','....kkkllllllkkk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kkakkkkllkkkkkkk..','..kkkaakkllkkkkkkk..','..kkkkkaakkkkkkkkk..','..kkkkkkkaakkkkkkk..','..kkkkkkkkkkkkkkkk..'],
+    patrick: ['....................','....................','.....kk......kk.....','....kkkk....kkkk....','....kkkkkllkkkkk....','....kllllllllllk....','....klkkllllkklk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kddddddllddddddk..','..kddddddllddddddk..','..kddddddddddddddk..','..kddddddddddddddk..','..kkkkkkkkkkkkkkkk..'],
+    uspres: ['....................','......mmmmmmmm......','.....mmmmmmmmmm.....','....kmmmmmmmmmmk....','....kmmllllllmmk....','....kllllllllllk....','....kllkllllkllk....','....kllllllllllk....','....klllddlllllk....','....kllllllllllk....','....klllkkkklllk....','.....kllllllllk.....','......kkkkkkkk......','.......kllllk.......','..kkkkkkkkkkkkkkkk..','..kkkkkkkrrkkakkkk..','..kkkkkkkrrkkkkkkk..','..kkkkkkkrrkkkkkkk..','..kkkkkkkkkkkkkkkk..','..kkkkkkkkkkkkkkkk..'],
+    coalition: ['....................','....................','....................','.kk...kk...kk...kk..','.ll...ll...ll...ll..','.kk...kk...kk...kk..','.dd...dd...dd...dd..','....................','.kkkkkkkkkkkkkkkkkk.','.dddddddddddddddddd.','.kkkkkkkkkkkkkkkkkk.','....................','.........aa.........','........aaaa........','....................','....................','....................','....................','....................','....................']
   };
+
+  // Render a 20x20 sprite to crisp-edge pixel SVG (rows merged into runs).
+  const PX = { k: '#1A1A1A', d: '#6E6E69', m: '#BDB8AD', l: '#F6F0E4', a: '#0057FF', r: '#b8002e' };
+  function spriteSvg (key) {
+    const rows = SPRITES[key];
+    if (!rows) return '';
+    let rects = '';
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const c = row[x];
+        if (PX[c]) {
+          let x2 = x;
+          while (x2 + 1 < row.length && row[x2 + 1] === c) x2++;
+          rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + PX[c] + '"/>';
+          x = x2 + 1;
+        } else x++;
+      }
+    });
+    return '<svg class="cast-sprite" viewBox="0 0 20 20" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+  }
   const CAST = {
     'scene-nyc': [
       { art: 'editor', name: 'The Editor-in-Chief', cls: 'gatekeeper', claim: 'decides what the world reads at breakfast', trait: 'will not print what is wrong' }
@@ -2179,7 +2200,7 @@
     row.setAttribute('aria-label', 'Characters in this chapter');
     row.innerHTML = CAST[id].map(c =>
       '<div class="cast-card">' +
-        '<pre class="cast-art" aria-hidden="true">' + esc(CAST_ART[c.art] || '') + '</pre>' +
+        spriteSvg(c.art) +
         '<div class="cast-name">' + esc(c.name) + '</div>' +
         '<div class="cast-stat"><b>class</b>' + esc(c.cls) + '</div>' +
         '<div class="cast-stat"><b>claim</b>' + esc(c.claim) + '</div>' +

@@ -536,13 +536,11 @@
     background: var(--paper-2);
     padding: 0.55rem 0.7rem 0.6rem;
   }
-  .cast-art {
-    font-family: var(--mono); font-size: 0.52rem; line-height: 1.18;
-    color: var(--accent);
-    white-space: pre; overflow: hidden;
-    min-height: 4.6em;
-    margin: 0 auto 0.45rem;
-    display: block; width: fit-content;
+  .cast-sprite {
+    display: block;
+    width: 72px; height: 72px;
+    margin: 0 auto 0.5rem;
+    image-rendering: pixelated;
   }
   .cast-name {
     font-family: var(--mono); font-size: 0.66rem; font-weight: 700;
