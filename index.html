@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=56">
+<link rel="stylesheet" href="styles.css?v=57">
 </head>
 <body>
 
@@ -682,8 +682,18 @@
       </div>
       <!-- Supporting data: the live charts that inform each coalition decision -->
       <div class="supporting-data">
-      <div class="supporting-data-header">
-        <h3 class="supporting-data-title">Live data</h3>
+      <div class="supporting-data-header sd-journey-head">
+        <svg class="sd-spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0 Z" fill="#FFC23C"/></svg>
+        <svg class="sd-spark sd-spark-blue" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0 Z" fill="#0057FF"/></svg>
+        <h3 class="supporting-data-title sd-journey-title">The dependency, <span class="sd-hl-blue">measured</span> <span class="sd-hl-gold">live</span></h3>
+        <p class="sd-journey-sub">Every figure behind the story, from public sources, recomputed as you change your coalition.</p>
+        <svg class="sd-swoosh" viewBox="0 0 220 44" aria-hidden="true">
+          <defs><linearGradient id="sdSwooshGrad" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#0057FF"/><stop offset="0.55" stop-color="#FFC23C"/><stop offset="1" stop-color="#FF6F59"/>
+          </linearGradient></defs>
+          <path d="M6 36 C 64 36, 92 12, 168 12" stroke="url(#sdSwooshGrad)" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M168 2 l 20 10 -20 10 z" fill="#FF6F59"/>
+        </svg>
       </div>
       <div class="supporting-data-grid">
     <!-- VIZ: Capital Flow -->
