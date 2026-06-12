@@ -2103,49 +2103,69 @@
 // who is speaking without holding the whole story in their head.
 // ============================================================
 (function(){
+  const CAST_ART = {
+    editor: '   _______\n  /       \\\n | -o---o- |\n |    L    |\n  \\  ___  /\n __|     |__\n/  [PRESS]  \\ ',
+    researcher: '    _____\n  _/     \\_\n | | o o | |\n | |  L  | |\n |  \\ __ /  |\n  \\_|     |_/\n /  [ PhD ]  \\ ',
+    aaron: '   ~/~~~\\~\n  |  _ _  |\n  |  o o  |\n  |  ___  |\n   \\ --- /\n __|  V  |__\n/  [FILES]  \\ ',
+    chancellor: '   _______\n  |_______|\n  | __ __ |\n  |  o o  |\n  |  ___  |\n   \\_____/\n/  [ BRD ]  \\ ',
+    pieter: '   _____  (\n  /     \\  )\n |  o o  |(\n |   -   |[]\n  \\ ___ /\n __|   |__\n/  [AIDE]  \\ ',
+    execpres: '   _______\n  ((     ))\n |  o   o  |\n |    o    |\n  \\  ===  /\n __|     |__\n/  [ EU  ]  \\ ',
+    japanpm: '     (@)\n   _______\n  /       \\\n |  -   -  |\n |    _    |\n  \\_______/\n/  [ JPN ]  \\ ',
+    proghead: '   _______\n  /       \\\n |  .   .  | o\n |    _    |\n  \\  ___  /\n __|     |__\n/  [ ENG ]  \\ ',
+    swedishvc: '    _____\n   d     b\n |(  o o  )|\n  |   v   |\n   \\ ___ /\n __|     |__\n/  [STRM]  \\ ',
+    estonian: '   _______\n  /       \\\n |  O   O  |\n |   ___   |\n  \\  ___  /\n __|     |__\n/  [WISE]  \\ ',
+    skype: '   _______\n  /       \\\n |  o   o  |\n |  .vvv.  |\n  \\ vvvvv /\n __|     |__\n/  [ ~~~ ]  \\ ',
+    electrician: '  [=======]\n   |     |\n |  o   o  |\n |   ___   |\n  \\  ---  /\n __|     |__\n/  [IBEW]  \\ ',
+    saul: '   /=====\\\n  |  o  o  |\n  |  ____  |\n   \\  --  /\n  __|    |__\n /  [ TV ]  \\\n     !',
+    nasr: '   _______\n  ( ===== )\n | [o] [o] |\n |   ___   |\n  \\  ---  /\n __|     |__\n/  [ SCI ]  \\ ',
+    frenchpres: '   _______\n  /       \\\n |  o   o  |\n |   ___   |\n  \\  ---  /\n __|\\\\    |__\n/  [ \\\\FR ]  \\ ',
+    patrick: '   /\\___/\\\n  |       |\n |  -   -  |\n |    >    |\n  \\  ___  /\n __|     |__\n/  [ HQ  ]  \\ ',
+    uspres: '   _______\n  /       \\\n |  -   -  |\n |   ___   |\n  \\  ---  /\n __|*    |__\n/[=========]\\ ',
+    coalition: '  o  o  o  o\n  )  )  (  (\n  |  |  |  |\n  \\__|__|__/\n   |      |\n  [========]\n   THE CALL'
+  };
   const CAST = {
     'scene-nyc': [
-      { name: 'The Editor-in-Chief', cls: 'gatekeeper', claim: 'decides what the world reads at breakfast', trait: 'will not print what is wrong' }
+      { art: 'editor', name: 'The Editor-in-Chief', cls: 'gatekeeper', claim: 'decides what the world reads at breakfast', trait: 'will not print what is wrong' }
     ],
     'scene-dublin-apr': [
-      { name: 'The Researcher', cls: 'narrator', claim: 'moved from the San Francisco office to Dublin', trait: 'survived the layoff round' },
-      { name: 'Aaron', cls: 'policy lawyer', claim: 'kept OpenAI legal inside the EU', trait: 'hands you a hard drive on his way out' }
+      { art: 'researcher', name: 'The Researcher', cls: 'narrator', claim: 'moved from the San Francisco office to Dublin', trait: 'survived the layoff round' },
+      { art: 'aaron', name: 'Aaron', cls: 'policy lawyer', claim: 'kept OpenAI legal inside the EU', trait: 'hands you a hard drive on his way out' }
     ],
     'scene-berlin': [
-      { name: 'The German Chancellor', cls: 'cornered ally', claim: 'staked his reputation on Washington', trait: 'calls the bluff at 5am' },
-      { name: 'Pieter', cls: 'the honest aide', claim: 'cannot reach the White House', trait: 'fetches coffee, hears everything' }
+      { art: 'chancellor', name: 'The German Chancellor', cls: 'cornered ally', claim: 'staked his reputation on Washington', trait: 'calls the bluff at 5am' },
+      { art: 'pieter', name: 'Pieter', cls: 'the honest aide', claim: 'cannot reach the White House', trait: 'fetches coffee, hears everything' }
     ],
     'scene-brussels': [
-      { name: 'The Executive President of Tech Sovereignty', cls: 'true believer, twice ignored', claim: 'gave this same speech six months ago', trait: 'throws away the script' }
+      { art: 'execpres', name: 'The Executive President of Tech Sovereignty', cls: 'true believer, twice ignored', claim: 'gave this same speech six months ago', trait: 'throws away the script' }
     ],
     'scene-tokyo': [
-      { name: 'The Japanese Prime Minister', cls: 'iron politician', claim: 'sanctioned the \u00a51.067T sovereign model', trait: 'don\u2019t lie, don\u2019t tell the truth' },
-      { name: 'The Program Head', cls: 'scapegoat engineer', claim: 'warned the model wasn\u2019t ready', trait: 'speaks to his shoes' }
+      { art: 'japanpm', name: 'The Japanese Prime Minister', cls: 'iron politician', claim: 'sanctioned the \u00a51.067T sovereign model', trait: 'don\u2019t lie, don\u2019t tell the truth' },
+      { art: 'proghead', name: 'The Program Head', cls: 'scapegoat engineer', claim: 'warned the model wasn\u2019t ready', trait: 'speaks to his shoes' }
     ],
     'scene-stockholm': [
-      { name: 'The Swedish VC', cls: 'kingmaker', claim: 'founded the most popular streaming app on earth', trait: 'wants Stockholm to stay livable' },
-      { name: 'The Estonian', cls: 'fintech billionaire', claim: 'co-founded Wise', trait: 'asks the rude questions' },
-      { name: 'The Skype Co-founder', cls: 'elder statesman', claim: 'has seen this movie before', trait: 'blunt with old employees' }
+      { art: 'swedishvc', name: 'The Swedish VC', cls: 'kingmaker', claim: 'founded the most popular streaming app on earth', trait: 'wants Stockholm to stay livable' },
+      { art: 'estonian', name: 'The Estonian', cls: 'fintech billionaire', claim: 'co-founded Wise', trait: 'asks the rude questions' },
+      { art: 'skype', name: 'The Skype Co-founder', cls: 'elder statesman', claim: 'has seen this movie before', trait: 'blunt with old employees' }
     ],
     'scene-monroe': [
-      { name: 'The Electrician', cls: 'union local', claim: 'two years wiring Hyperion', trait: 'keeps his mouth shut, sees everything' }
+      { art: 'electrician', name: 'The Electrician', cls: 'union local', claim: 'two years wiring Hyperion', trait: 'keeps his mouth shut, sees everything' }
     ],
     'scene-ottawa': [
-      { name: 'Evan Saul, The Minister', cls: 'newscaster turned minister', claim: 'runs Artificial Development and Digital Innovation', trait: 'weaponizes silence' },
-      { name: 'Mona Nasr, Chief Science Officer', cls: 'empiricist', claim: 'warned about this for years', trait: 'measures everything, forgives nothing' }
+      { art: 'saul', name: 'Evan Saul, The Minister', cls: 'newscaster turned minister', claim: 'runs Artificial Development and Digital Innovation', trait: 'weaponizes silence' },
+      { art: 'nasr', name: 'Mona Nasr, Chief Science Officer', cls: 'empiricist', claim: 'warned about this for years', trait: 'measures everything, forgives nothing' }
     ],
     'scene-paris': [
-      { name: 'The French President', cls: 'grandmaster', claim: 'raised $110B for French AI', trait: 'negotiates from the back of a moving car' }
+      { art: 'frenchpres', name: 'The French President', cls: 'grandmaster', claim: 'raised $110B for French AI', trait: 'negotiates from the back of a moving car' }
     ],
     'scene-dublin-jan': [
-      { name: 'Aaron', cls: 'whistle, half blown', claim: 'rose fast by being trusted', trait: 'a USB card under his tongue' },
-      { name: 'Patrick', cls: 'the company\u2019s hand', claim: 'flew in from San Francisco overnight', trait: 'punctuates sentences like a boxer' }
+      { art: 'aaron', name: 'Aaron', cls: 'whistle, half blown', claim: 'rose fast by being trusted', trait: 'a USB card under his tongue' },
+      { art: 'patrick', name: 'Patrick', cls: 'the company\u2019s hand', claim: 'flew in from San Francisco overnight', trait: 'punctuates sentences like a boxer' }
     ],
     'scene-whitehouse': [
-      { name: 'The President', cls: 'the godfather', claim: 'a trillion-dollar budget', trait: 'makes offers no lab refuses' }
+      { art: 'uspres', name: 'The President', cls: 'the godfather', claim: 'a trillion-dollar budget', trait: 'makes offers no lab refuses' }
     ],
     'scene-ether': [
-      { name: 'The Coalition of the Doomed', cls: 'conference call', claim: 'prime ministers, chancellors, commissioners, VCs', trait: 'nobody signed' }
+      { art: 'coalition', name: 'The Coalition of the Doomed', cls: 'conference call', claim: 'prime ministers, chancellors, commissioners, VCs', trait: 'nobody signed' }
     ]
   };
   function esc (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
@@ -2159,6 +2179,7 @@
     row.setAttribute('aria-label', 'Characters in this chapter');
     row.innerHTML = CAST[id].map(c =>
       '<div class="cast-card">' +
+        '<pre class="cast-art" aria-hidden="true">' + esc(CAST_ART[c.art] || '') + '</pre>' +
         '<div class="cast-name">' + esc(c.name) + '</div>' +
         '<div class="cast-stat"><b>class</b>' + esc(c.cls) + '</div>' +
         '<div class="cast-stat"><b>claim</b>' + esc(c.claim) + '</div>' +
