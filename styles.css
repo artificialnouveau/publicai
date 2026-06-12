@@ -538,7 +538,7 @@
   }
   .cast-sprite {
     display: block;
-    width: 72px; height: 72px;
+    width: 76px; height: 86px;
     margin: 0 auto 0.5rem;
     image-rendering: pixelated;
   }
