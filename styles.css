@@ -137,6 +137,8 @@
     font-weight: 700;
   }
   .topnav-link-cta:hover { background: var(--accent); filter: brightness(1.1); color: #fff !important; }
+  .topnav-link-game { background: rgba(255,194,60,0.3); color: var(--text); }
+  .topnav-link-game:hover { background: rgba(255,194,60,0.5); color: var(--text); }
   .topnav-link.is-external::after { content: ' \2197'; opacity: 0.5; }
   .topnav-link.is-placeholder {
     color: var(--text-soft);
