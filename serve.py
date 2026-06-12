@@ -12,4 +12,7 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 if __name__ == '__main__':
-    http.server.ThreadingHTTPServer(('', PORT), NoCacheHandler).serve_forever()
+    # Bind 127.0.0.1 explicitly: a wildcard bind leaves the loopback address
+    # free for VS Code's port auto-forwarding to claim, which then shadows
+    # this server and hangs every localhost request.
+    http.server.ThreadingHTTPServer(('127.0.0.1', PORT), NoCacheHandler).serve_forever()
