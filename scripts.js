@@ -2549,3 +2549,40 @@
     });
   });
 })();
+
+// ============================================================
+// LIVE DATA ENTRANCES: cards rise in on scroll, chart marks pop with a
+// stagger, headline numerals count up. Skipped under reduced motion.
+// ============================================================
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (typeof IntersectionObserver !== 'function') return;
+  const cards = document.querySelectorAll('.supporting-data-grid .viz-card');
+  if (!cards.length) return;
+  document.documentElement.classList.add('viz-anim');
+
+  function countUp (el) {
+    const m = el.textContent.match(/^([^0-9]*)(\d+(?:\.\d+)?)(.*)$/);
+    if (!m) return;
+    const target = parseFloat(m[2]);
+    const dec = (m[2].split('.')[1] || '').length;
+    const t0 = performance.now(), dur = 900;
+    function tick (t) {
+      const p = Math.min(1, (t - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = m[1] + (target * e).toFixed(dec) + m[3];
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add('is-in');
+      en.target.querySelectorAll('.viz-mini-value').forEach(countUp);
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.2 });
+  cards.forEach(c => io.observe(c));
+})();
