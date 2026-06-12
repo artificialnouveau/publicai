@@ -408,6 +408,25 @@
   .g-month-rule::before, .g-month-rule::after {
     border-top: 1px dotted var(--hairline-strong);
   }
+
+  /* month scenes, lab HQ buildings, rail relevance */
+  .g-scene { margin: 0.15rem 0 0.6rem; }
+  .g-scene-art { display: block; height: 84px; width: auto; max-width: 100%; image-rendering: pixelated; }
+  #gLabs { display: flex; gap: 0.7rem; margin: 0.2rem 0 0.4rem; }
+  .g-lab {
+    display: inline-flex; flex-direction: column; align-items: center; gap: 0.15rem;
+    margin: 0;
+  }
+  .g-lab-hq { width: 52px; height: 58px; image-rendering: pixelated; }
+  .g-lab:not(.anchored) .g-lab-hq { opacity: 0.75; }
+  .g-lab.gone .g-lab-hq { filter: grayscale(1); opacity: 0.45; }
+  .g-lab-name { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; color: var(--text); }
+  .g-lab.anchored .g-lab-name { color: var(--accent); }
+  .g-lab.gone .g-lab-name { text-decoration: line-through; color: var(--coral); }
+  .g-lab-state { font-family: var(--mono); font-size: 0.54rem; color: var(--text-soft); }
+  .g-side .g-panel { transition: opacity 0.18s ease; border-radius: 8px; }
+  .g-side.focusing .g-panel { opacity: 0.3; }
+  .g-side.focusing .g-panel.rel { opacity: 1; }
 </style>
 </head>
 <body>
@@ -445,21 +464,21 @@
 
   <aside class="g-side">
     <div class="g-side-col">
-      <div class="g-panel">
+      <div class="g-panel" data-panel="coalition">
         <div class="g-panel-title">The Coalition &middot; the big picture</div>
         <div class="g-ring" id="gRing" aria-label="Coalition ring: links appear as states hedge and join"></div>
         <div class="g-met-note g-ring-note">The ten candidate states around your pool, named below. Gold dashed link = hedging toward you; solid blue = In; the core fills once compute is pooled. To bring states in, choose Court and pick a country card.</div>
         <div id="gStates"></div>
         <div class="g-met-note">Court each up the ladder Out &rarr; Hedging &rarr; In. Only In states pour their numbers into the ledger.</div>
       </div>
-      <div class="g-panel">
+      <div class="g-panel" data-panel="water">
         <div class="g-panel-title">The Water &middot; the countdown</div>
         <pre class="g-boil" id="gBoil" aria-hidden="true"></pre>
         <div class="g-met-note">The clock, as temperature. When the water boils, the Act lands and the game ends.</div>
       </div>
     </div>
     <div class="g-side-col">
-      <div class="g-panel">
+      <div class="g-panel" data-panel="ledger">
         <div class="g-panel-title">The Ledger &middot; what you hold</div>
         <div class="g-ledger-grid">
           <div class="g-met">
@@ -485,12 +504,12 @@
         </div>
         <div class="g-met-note g-ledger-note">Every In state pours in. The dashed coral slot in each tile is the goal: the credible minimum, not parity with the US.</div>
       </div>
-      <div class="g-panel">
+      <div class="g-panel" data-panel="cluster">
         <div class="g-panel-title">The Cluster &middot; pooled compute</div>
         <pre class="g-boil" id="gStack" aria-hidden="true"></pre>
         <div class="g-met-note">The supercomputer you are assembling. One rack node lights up per EF of pooled member compute; pwr shows its total load.</div>
       </div>
-      <div class="g-panel">
+      <div class="g-panel" data-panel="labs">
         <div class="g-panel-title">Anchor labs &middot; the firms</div>
         <div id="gLabs"></div>
         <div class="g-met-note">Mistral (France), Cohere (Canada), DeepL (Germany). FUND one once its home state is at least Hedging; anchored labs add capital and researchers, and survive the Godfather offer in month 12.</div>
@@ -499,7 +518,7 @@
   </aside>
 </main>
 
-<script src="data.js?v=27"></script>
-<script src="game.js?v=27"></script>
+<script src="data.js?v=28"></script>
+<script src="game.js?v=28"></script>
 </body>
 </html>

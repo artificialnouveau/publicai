@@ -290,6 +290,12 @@
       el.appendChild(tt);
       decodeIn(tt, title, { step: 1, tick: 30 });
     }
+    if (title && SCENES[title]) {
+      const sc = document.createElement('div');
+      sc.className = 'g-scene';
+      sc.innerHTML = sceneSvg(SCENES[title]);
+      el.appendChild(sc);
+    }
     if (cast && cast.length) {
       const cr = document.createElement('div');
       cr.className = 'g-cast';
@@ -439,7 +445,11 @@
       const l = S.labs[k];
       const el = document.createElement('span');
       el.className = 'g-lab' + (l.anchored ? ' anchored' : '') + (l.gone ? ' gone' : '');
-      el.textContent = D.LABS[k].name + (l.anchored ? ' (anchored)' : l.gone ? ' (lost)' : '');
+      el.innerHTML = buildingSvg(k, l.anchored) +
+        '<span class="g-lab-name">' + esc(D.LABS[k].name) + '</span>' +
+        '<span class="g-lab-state">' + (l.anchored ? 'anchored' : l.gone ? 'lost' : D.STATES[D.LABS[k].home].name) + '</span>';
+      el.title = D.LABS[k].name + ' (' + D.STATES[D.LABS[k].home].name + ')' +
+        (l.anchored ? ': anchored to the coalition.' : l.gone ? ': taken by the Godfather offer.' : ': fund once ' + D.STATES[D.LABS[k].home].name + ' is at least Hedging.');
       labs.appendChild(el);
     });
   }
@@ -463,6 +473,7 @@
       (sub ? '<span class="g-choice-sub">' + sub + '</span>' : '');
     b.title = locked ? lockReason : (desc || '');
     b.addEventListener('click', () => { if (!locked) onClick(); });
+    wireRail(b, relsFor(title));
     return b;
   }
 
@@ -540,15 +551,30 @@
     return '<svg class="g-tile" viewBox="0 0 20 12" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
   }
 
-  // Chibi cast sprites, same set as the story page.
+  // Chibi cast sprites and scene props, same pixel set as the story page.
   const SPRITES = {
+    editor: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KKwKSKKSKwKK.....','.....KSwKSSSSKwSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJMJKK....','....KJJJJJWWJJJJJK....','....KJJJJJWWJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     researcher: ['......................','.......KKKKKKKK.......','......KAAAAAAAAK......','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KKAAAAAAAAKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAaaAAAAKK....','....KAAAAAaaAAAAAK....','....KAAAAAaaAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    execpres: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KHSKSSSSKSHK.....','.....KHSKSSSSKSHK.....','.....KHSSSSSSSSHK.....','.....KHSSSSSSSSHK.....','.....KMSSSSSSSSMK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAWWAAAAKK....','....KAAAAAWWAAAAAK....','....KAAAAAWWAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    aaron: ['........K..K..K.......','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSBSSBSBSBK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKWWWWAAWWWWKK....','....KWWWWWAAWWWWWK....','....KWWWWWAAWWWWWK....','....KSWWWWWWWWWWSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     chancellor: ['......................','......KKKKKKKKKK......','......GGGGGGGGGG......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KSKKSSSSKKSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJJJKK....','....KJJJJJFFJJJJJK....','....KJJJJJFFJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    pieter: ['......................','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSSSSSSSSBK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK....X..','.....KKKKKKKKKKKK.X...','....KKDDDDWWDDDDKKWWK.','....KDDDDDWWDDDDDKWWK.','....KDDDDDWWDDDDDKKKK.','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    execpres: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KHSKSSSSKSHK.....','.....KHSKSSSSKSHK.....','.....KHSSSSSSSSHK.....','.....KHSSSSSSSSHK.....','.....KMSSSSSSSSMK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAWWAAAAKK....','....KAAAAAWWAAAAAK....','....KAAAAAWWAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     japanpm: ['.........KHHK.........','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKWWKKKKK.....','....KKJJJJJJJJJJKK....','....KJJJJJJJJJJJJK....','....KJJJJJJJJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    proghead: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHKX....','.....KHHHHHHHHHHKX....','.....KHTTTTTTTTHK.....','.....KTTTTTTTTTTK.....','.....KTTKTTTTKTTK.....','.....KTTKTTTTKTTK.....','.....KtTTTTTTTTtK.....','.....KTTTTTTTTTTK.....','.....KTTTTTTTTTTK.....','.....KKttttttttKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDRDDRDDDKK....','....KDDDDRWWRDDDDK....','....KDDDDDWWDDDDDK....','....KTDDDDDDDDDDTK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     swedishvc: ['.......AAAAAAAA.......','.......KKKKKKKK.......','......KYYYYYYYYK......','.....KYYYYYYYYYYK.....','.....KYYYYYYYYYYK.....','.....KYSSSSSSSSYK.....','...AAKSSSSSSSSSSKAA...','...AAKSSKSSSSKSSKAA...','...AAKSSKSSSSKSSKAA...','...AAKsSSSSSSSSsKAA...','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDDDDDDDDKK....','....KDDDDDDDDDDDDK....','....KDDDDDDDDDDDDK....','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KWWK..KWWK......','......KKKK..KKKK......','......................'],
+    estonian: ['......................','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSSSSSSSSBK.....','.....KSSSSSSSSSSK.....','.....KSKwKKKKwKSK.....','.....KSKKKSSKKKSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDDDDDDDDKK....','....KDDDDDDDDDDDDK....','....KDDDDDDDDDDDDK....','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    skype: ['......................','.......KKKKKKKK.......','......KGGGGGGGGK......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGSSSSSSSSGK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KGGSSSSSSGGK.....','.....KGGGGKKGGGGK.....','.....KKGGGGGGGGKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKNNNNWWNNNNKK....','....KNNNNNWWNNNNNK....','....KNNNNNWWNNNNNK....','....KSNNNNNNNNNNSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
     electrician: ['........KKKKKK........','.......KVVVVVVK.......','......KVVVVVVVVK......','.....KVVVVVVVVVVK.....','....KKKKKKKKKKKKKK....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKOOOOOOOOOOKK....','....KVVVVVVVVVVVVK....','....KOOOOOOOOOOOOK....','....KSOOOOOOOOOOSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    uspres: ['......................','.......KKKKKKKK.......','......KGGGGGGGGK......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGSSSSSSSSGK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJWRRWJMJKK....','....KJJJJJRRJJJJJK....','....KJJJJJRRJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................']
+    saul: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHHHHHHHSSSK.....','.....KHHSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.F...','.......KKKKKKKK...F...','.....KKKKKKKKKKKK.K...','....KKNNNWRRWNNNKKK...','....KNNNNNRRNNNNNK....','....KNNNNNRRNNNNNK....','....KSNNNNNNNNNNSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    nasr: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHKH....','.....KHTTTTTTTTHKH....','.....KAAAAAAAAAAK.....','.....KTTKTTTTKTTK.....','.....KTTKTTTTKTTK.....','.....KtTTTTTTTTtK.....','.....KTTTTTTTTTTK.....','.....KTTTTTTTTTTK.....','.....KKttttttttKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKWWWDDDDWWWKK....','....KWWWWDDDDWWWWK....','....KWWWWDDDDWWWWK....','....KTWWWWWWWWWWTK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    frenchpres: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJAWRJJJJJJKK....','....KJJJAWRJJJJJJK....','....KJJJJAWRJJJJJK....','....KSJJJJAWRJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    patrick: ['......................','.......KKKKKKKK.......','......HHHHHHHHHH......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KSSSSHHSSSSK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKFFFFSSFFFFKK....','....KFFFFFWWFFFFFK....','....KFFFFFFFFFFFFK....','....KSFFFFFFFFFFSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    uspres: ['......................','.......KKKKKKKK.......','......KGGGGGGGGK......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGSSSSSSSSGK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJWRRWJMJKK....','....KJJJJJRRJJJJJK....','....KJJJJJRRJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    coalition: ['......................','......................','......................','......................','......................','......................','......................','..KK...KK....KK...KK..','.KHHK.KGGK..KYYK.KBBK.','.KSSK.KTTK..KSSK.KTTK.','.KSSK.KTTK..KSSK.KTTK.','..KK...KK....KK...KK..','.NNNN.AAAA..DDDD.RRRR.','.NNNN.AAAAAADDDD.RRRR.','.KKKKKKKKKKKKKKKKKKKK.','.FFFFFFFFFFFFFFFFFFFF.','.FFFFFFFFFFFFFFFFFFFF.','.FFFFFFFFFFFFFFFFFFFF.','.KKKKKKKKKKKKKKKKKKKK.','......................','......................','......................','......................','......................','......................'],
+    euflag: ['....M.................','....K.................','....KAAAAAAAAAAAAAA...','....KAAAAAAMAAAAAAA...','....KAAAAMAAAMAAAAA...','....KAAAAAAAAAAAAAA...','....KAAAMAAAAAMAAAA...','....KAAAAAAAAAAAAAA...','....KAAAAMAAAMAAAAA...','....KAAAAAAMAAAAAAA...','....KAAAAAAAAAAAAAA...','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','....K.................','...KKK................','......................'],
+    rack: ['......................','....KKKKKKKKKKKKKK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPMPAPK....','....KFFFFFFFFFFFFK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPPPRPK....','....KFFFFFFFFFFFFK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPPPAPK....','....KFFFFFFFFFFFFK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPMPRPK....','....KFFFFFFFFFFFFK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPPPAPK....','....KFFFFFFFFFFFFK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPPPRPK....','....KFFFFFFFFFFFFK....','....KPPPPPPPPPPPPK....','....KPPPPPPPPMPAPK....','....KFFFFFFFFFFFFK....','....KKKKKKKKKKKKKK....','.....K..........K.....'],
+    eiffel: ['..........FF..........','..........FF..........','..........FF..........','.........FFFF.........','.........F..F.........','.........FFFF.........','........FFFFFF........','.........FFFF.........','.........F..F.........','.........FFFF.........','.......FFFFFFFF.......','........FF..FF........','........FFFFFF........','........FF..FF........','.......FF....FF.......','.......FF....FF.......','.......FFFFFFFF.......','......FF......FF......','......FF......FF......','......FF......FF......','.....FF........FF.....','.....FF........FF.....','.....FF........FF.....','....FF..........FF....','......................'],
+    redphone: ['......................','......................','......................','......................','......................','......................','......................','......................','......................','......................','.....RRR......RRR.....','.....RRR......RRR.....','.....RRRRRRRRRRRR.....','......RRRRRRRRRR......','..........KK..........','........RRRRRR........','........RRRRRR........','....KKKKKKKKKKKKKK....','.....FF........FF.....','.....FF........FF.....','.....FF........FF.....','.....FF........FF.....','.....FF........FF.....','.....FF........FF.....','......................']
   };
   const PX = {
     K: '#181410', S: '#F2C18F', s: '#D89B5E', T: '#B97C4D', t: '#92582F',
@@ -567,9 +593,19 @@
     'The Electrician': 'electrician',
     'The President': 'uspres'
   };
-  function spriteSvg (key) {
-    const rows = SPRITES[key];
-    if (!rows) return '';
+  // One pixel scene per month event, keyed by dispatch title.
+  const SCENES = {
+    'The layoffs': ['researcher', 'researcher', 'researcher'],
+    'The speech': ['euflag', 'execpres'],
+    'The condition': ['chancellor', 'pieter'],
+    'The hallucination': ['japanpm', 'proghead'],
+    'The liferaft': ['swedishvc', 'estonian', 'skype'],
+    'Hyperion': ['rack', 'electrician', 'rack'],
+    'The visitor': ['saul', 'nasr'],
+    'The raise': ['eiffel', 'frenchpres'],
+    'The Godfather offer': ['uspres', 'redphone']
+  };
+  function spriteRects (rows, dx) {
     let rects = '';
     rows.forEach((row, y) => {
       let x = 0;
@@ -578,12 +614,25 @@
         if (PX[ch]) {
           let x2 = x;
           while (x2 + 1 < row.length && row[x2 + 1] === ch) x2++;
-          rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + PX[ch] + '"/>';
+          rects += '<rect x="' + (dx + x) + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + PX[ch] + '"/>';
           x = x2 + 1;
         } else x++;
       }
     });
-    return '<svg class="g-chip-sprite" viewBox="0 0 22 25" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+    return rects;
+  }
+  function spriteSvg (key) {
+    const rows = SPRITES[key];
+    if (!rows) return '';
+    return '<svg class="g-chip-sprite" viewBox="0 0 22 25" shape-rendering="crispEdges" aria-hidden="true">' + spriteRects(rows, 0) + '</svg>';
+  }
+  function sceneSvg (keys) {
+    let rects = '';
+    keys.forEach((k, i) => {
+      if (SPRITES[k]) rects += spriteRects(SPRITES[k], i * 23);
+    });
+    const w = keys.length * 23 - 1;
+    return '<svg class="g-scene-art" viewBox="0 0 ' + w + ' 25" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
   }
 
 
@@ -612,6 +661,86 @@
       el.classList.add('cin');
       el.style.animationDelay = (i * 0.12) + 's';
     });
+  }
+
+
+  // Lab HQ buildings: shared shell, home-flag banner, windows light on anchor.
+  const LAB_FLAGS = {
+    mistral: ['#0057FF', '#F7F3E9', '#BE1234'],
+    cohere:  ['#BE1234', '#F7F3E9', '#BE1234'],
+    deepl:   ['#2A241E', '#BE1234', '#E2A93B']
+  };
+  const BUILDING = [
+    '..KKKKKKKKKK....',
+    '..KwwwwwwwwK....',
+    '..K123wwwwwK....',
+    '..K123wwwwwK....',
+    '..K123wwwwwK....',
+    '..KwwwwwwwwK..a.',
+    '..KooKooKooK.aa.',
+    '..KooKooKooKaaa.',
+    '..KwwwwwwwwKKKK.',
+    '..KooKooKooKwwK.',
+    '..KooKooKooKwwK.',
+    '..KwwwwwwwwKooK.',
+    '..KooKooKooKooK.',
+    '..KooKooKooKwwK.',
+    '..KwwwwwwwwKwwK.',
+    '..KwwwddwwwKooK.',
+    '..KwwwddwwwKwwK.',
+    'KKKKKKKKKKKKKKKK'
+  ];
+  function buildingSvg (key, lit) {
+    const flag = LAB_FLAGS[key] || ['#888', '#888', '#888'];
+    const colors = {
+      K: '#181410', w: '#D8D2C4', d: '#2A2832', a: '#9BA4B2',
+      o: lit ? '#E2A93B' : '#4A4550',
+      1: flag[0], 2: flag[1], 3: flag[2]
+    };
+    let rects = '';
+    BUILDING.forEach((r, y) => {
+      let x = 0;
+      while (x < r.length) {
+        const ch = r[x];
+        if (colors[ch]) {
+          let x2 = x;
+          while (x2 + 1 < r.length && r[x2 + 1] === ch) x2++;
+          rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + colors[ch] + '"/>';
+          x = x2 + 1;
+        } else x++;
+      }
+    });
+    return '<svg class="g-lab-hq" viewBox="0 0 16 18" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+  }
+
+
+  // Which rail panels a choice touches; hovering or focusing the choice
+  // highlights those panels and dims the rest.
+  function relsFor (title) {
+    const t = (title || '').toLowerCase();
+    if (/court|summit/.test(t)) return ['coalition'];
+    if (/pool/.test(t)) return ['cluster', 'ledger'];
+    if (/fund|anchor|lab/.test(t)) return ['labs', 'ledger'];
+    if (/hedge|cloud/.test(t)) return ['cluster', 'water'];
+    if (/hold/.test(t)) return ['water'];
+    if (/sign|hang/.test(t)) return ['coalition', 'water'];
+    return [];
+  }
+  function railFocus (rels) {
+    const side = document.querySelector('.g-side');
+    if (!side) return;
+    const on = !!(rels && rels.length);
+    side.classList.toggle('focusing', on);
+    side.querySelectorAll('.g-panel').forEach(p => {
+      p.classList.toggle('rel', on && rels.indexOf(p.dataset.panel) !== -1);
+    });
+  }
+  function wireRail (el, rels) {
+    if (!rels.length) return;
+    el.addEventListener('mouseenter', () => railFocus(rels));
+    el.addEventListener('mouseleave', () => railFocus(null));
+    el.addEventListener('focus', () => railFocus(rels));
+    el.addEventListener('blur', () => railFocus(null));
   }
 
   function renderActions () {
@@ -664,6 +793,7 @@
           '<span class="g-country-brings">' + d.ef + ' EF · $' + d.cap + 'B · ' + d.talent + 'k' +
             (d.langs.length ? ' · ' + d.langs.join('/') : '') + '</span>';
         if (!lock) b.addEventListener('click', () => doCourt(k));
+        wireRail(b, ['coalition']);
         grid.appendChild(b);
         n++;
       });
