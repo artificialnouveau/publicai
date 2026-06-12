@@ -2408,9 +2408,9 @@
 @media (max-width: 1099px) { .scroll-rail { display: none; } }
 @media (prefers-reduced-motion: reduce) { .scroll-rail, .scroll-rail-dot, .scroll-rail-label { transition: none; } }
 
-/* Collapsible coalition scorecard (minimise on mobile so it isn't always open). */
+/* Collapsible coalition scorecard: the minimize control sits bottom-right. */
 .cl-toggle {
-  margin-left: auto; flex: 0 0 auto;
+  display: block; margin-left: auto; margin-top: 0.3rem;
   width: 26px; height: 26px; line-height: 1; font-size: 1.1rem;
   border: 1px solid var(--hairline-strong); border-radius: 7px;
   background: transparent; color: var(--text-soft); cursor: pointer;
