@@ -2557,7 +2557,7 @@
 (function(){
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (typeof IntersectionObserver !== 'function') return;
-  const cards = document.querySelectorAll('.supporting-data-grid .viz-card');
+  const cards = document.querySelectorAll('.supporting-data-grid .viz-card, .scene-fig');
   if (!cards.length) return;
   document.documentElement.classList.add('viz-anim');
 

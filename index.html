@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=54">
+<link rel="stylesheet" href="styles.css?v=55">
 </head>
 <body>
 
@@ -65,6 +65,39 @@
       <p>Why? Problems naturally arise when a government does not control its own data, when a very small group of heavily-capitalized firms dominate access to tech infrastructure, the US and its potential ability to access data through the CLOUD Act and FISA, and there exists an ever-tightening relationship between these American-based tech companies and the current administration.</p>
       <p>We want to stress the inevitability of a conflict in sovereignty when middle powers, like the EU, are dependent on access to infrastructure they don&rsquo;t own. We want this to be a call to action as the first step towards a coalition built to establish a greater degree of authorship over their own decision-making. AI systems require an unusually high degree of coordination amongst pieces of a process that are tightly complementary. The central sin of the EU and other middle powers is the inability to coordinate across national interests to build genuinely powerful technology infrastructure.</p>
       <p>The scale is worldwide, and so is the process of coalition-building. But if proper democratic sovereignty is to be assured, then we must think together about the interoperability standards of a new general purpose technology. We can&rsquo;t continue to hide behind our borders and hope that we can chip away at the dependency problem alone. It&rsquo;s time to get on the phone.</p>
+
+      <figure class="scene-fig" aria-label="Who owns each layer of the AI stack; the EU share is shown in blue">
+        <div class="scene-fig-title">Who owns the stack, layer by layer</div>
+        <svg viewBox="0 0 360 168" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img">
+          <g class="cu-legend">
+            <rect x="0" y="2" width="9" height="9" rx="1.5" class="ed-seg eu"/><text class="ed-tick" x="14" y="10">EU</text>
+            <rect x="44" y="2" width="9" height="9" rx="1.5" class="ed-seg red"/><text class="ed-tick" x="58" y="10">US</text>
+            <rect x="88" y="2" width="9" height="9" rx="1.5" class="ed-seg dim"/><text class="ed-tick" x="102" y="10">Asia &amp; other</text>
+          </g>
+          <text class="ed-lbl" x="0" y="36">Lithography</text>
+          <rect class="ed-seg eu" x="92" y="28" width="178" height="10" rx="2"/>
+          <text class="ed-val" x="276" y="37">ASML ~100%</text>
+          <text class="ed-lbl" x="0" y="64">Advanced fabs</text>
+          <rect class="ed-seg dim" x="92" y="56" width="178" height="10" rx="2"/>
+          <text class="ed-val mut" x="276" y="65">TSMC ~90%</text>
+          <text class="ed-lbl" x="0" y="92">AI chips</text>
+          <rect class="ed-seg red" x="92" y="84" width="160" height="10" rx="2"/>
+          <rect class="ed-seg dim" x="254" y="84" width="16" height="10" rx="2"/>
+          <text class="ed-val red" x="276" y="93">NVIDIA ~90%</text>
+          <text class="ed-lbl" x="0" y="120">Cloud, EU spend</text>
+          <rect class="ed-seg red" x="92" y="112" width="128" height="10" rx="2"/>
+          <rect class="ed-seg eu" x="222" y="112" width="22" height="10" rx="2"/>
+          <rect class="ed-seg dim" x="246" y="112" width="24" height="10" rx="2"/>
+          <text class="ed-val red" x="276" y="121">US clouds 72%</text>
+          <text class="ed-lbl" x="0" y="148">Frontier models</text>
+          <rect class="ed-seg red" x="92" y="140" width="142" height="10" rx="2"/>
+          <rect class="ed-seg eu" x="236" y="140" width="7" height="10" rx="2"/>
+          <rect class="ed-seg dim" x="245" y="140" width="25" height="10" rx="2"/>
+          <text class="ed-val red" x="276" y="149">US labs ~80%</text>
+        </svg>
+        <div class="scene-fig-note">Share of each layer of the AI stack. Europe owns the top (ASML&rsquo;s effective monopoly on EUV lithography) and almost nothing beneath it: advanced fabrication sits in Taiwan and Korea, accelerator design and cloud capacity in the US, and roughly 80% of consumer AI prompts run through US labs. Sovereignty fails at the weakest layer.</div>
+      </figure>
+
       <p class="scene-part">2027: You Sleep With a Scorpion, You&rsquo;re Going to Get Stung</p>
     </div>
   </section>
@@ -1330,7 +1363,7 @@
 
 </main>
 
-<script src="scripts.js?v=54" defer></script>
+<script src="scripts.js?v=55" defer></script>
 
 </body>
 </html>

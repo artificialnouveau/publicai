@@ -758,7 +758,7 @@
     if (/fund|anchor|lab/.test(t)) return ['labs', 'ledger'];
     if (/hedge|cloud/.test(t)) return ['cluster', 'water'];
     if (/hold/.test(t)) return ['water'];
-    if (/sign|hang/.test(t)) return ['coalition', 'water'];
+    if (/sign|hang|washington/.test(t)) return ['coalition', 'water'];
     return [];
   }
   function railFocus (rels) {
@@ -895,6 +895,9 @@
     bar.appendChild(choiceRow(n++, 'Hold', 'gain 1 influence',
       'Spend a move doing nothing visible; bank +1 influence for a bigger month later.',
       lockWhy(0), doHold));
+    bar.appendChild(choiceRow(n++, 'Call Washington', 'ends the game',
+      'The back channel, always open. Sign early on negotiated terms: managed access with carve-outs instead of whatever tier the Act assigns you later. You bring only the coalition you have today. Asks for confirmation first.',
+      '', () => { pendingRed = true; renderAll(); }, 'quiet'));
     const util = document.createElement('div');
     util.className = 'g-utilrow';
     util.appendChild(choiceRow('', 'Undo last move', '', '',
@@ -1196,17 +1199,6 @@
       if (b && !b.disabled) b.click();
     }
   });
-
-  // The red phone: always there, never explained.
-  (function () {
-    const rp = $('#gRedPhone');
-    if (!rp || !rp.addEventListener) return;
-    rp.addEventListener('click', () => {
-      if (!S || S.over) return;
-      pendingRed = true;
-      renderActions();
-    });
-  })();
 
   // Import your read: story checkpoints (same-tab session) seed the game.
   function importRead () {

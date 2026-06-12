@@ -2534,3 +2534,31 @@ html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):
 html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):nth-of-type(24) { transition-delay: 792ms; }
 html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):nth-of-type(25) { transition-delay: 820ms; }
 html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):nth-of-type(26) { transition-delay: 848ms; }
+
+/* Inline story figure (preface stack-ownership chart). */
+.scene-fig { margin: 1.7rem 0 1.9rem; max-width: 480px; }
+.scene-fig-title {
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.55rem;
+}
+.scene-fig svg { display: block; width: 100%; height: auto; }
+.scene-fig-note {
+  font-family: var(--mono); font-size: 0.6rem; line-height: 1.65;
+  color: var(--text-soft); margin-top: 0.5rem; max-width: 56ch;
+}
+html.viz-anim .scene-fig .ed-seg {
+  transform-box: fill-box; transform-origin: left center;
+  transform: scaleX(0);
+}
+html.viz-anim .scene-fig.is-in .ed-seg {
+  transform: scaleX(1);
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+html.viz-anim .scene-fig.is-in .ed-seg:nth-of-type(2) { transition-delay: 0.12s; }
+html.viz-anim .scene-fig.is-in .ed-seg:nth-of-type(3) { transition-delay: 0.24s; }
+html.viz-anim .scene-fig.is-in .ed-seg:nth-of-type(4) { transition-delay: 0.36s; }
+html.viz-anim .scene-fig.is-in .ed-seg:nth-of-type(5) { transition-delay: 0.48s; }
+html.viz-anim .scene-fig.is-in .ed-seg:nth-of-type(n+6) { transition-delay: 0.6s; }
+html.viz-anim .scene-fig .ed-val { opacity: 0; }
+html.viz-anim .scene-fig.is-in .ed-val { opacity: 1; transition: opacity 0.5s ease 0.7s; }
