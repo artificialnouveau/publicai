@@ -294,7 +294,8 @@
       const cr = document.createElement('div');
       cr.className = 'g-cast';
       cr.innerHTML = cast.map(c =>
-        '<span class="g-cast-chip"><b>' + esc(c.n) + '</b>' + esc(c.c) + '</span>').join('');
+        '<span class="g-cast-chip">' + spriteSvg(CHIP_ART[c.n] || '') +
+        '<span class="g-cast-txt"><b>' + esc(c.n) + '</b>' + esc(c.c) + '</span></span>').join('');
       el.appendChild(cr);
     }
     const p = document.createElement('p');
@@ -503,19 +504,88 @@
     return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
   }
 
-  // Hand-drawn ascii silhouettes for the courting tiles; padded to 5 rows.
-  const COUNTRY_ART = {
-    CA: ' _,.-^-._,_\n|          \\\n|    CA     >\n \\_,--._   /\n        \\_/',
-    GB: '     _\n o  ( \\\n    |  \\\n    | GB\\\n    |___/',
-    FR: '  _,---._\n /        \\\n{    FR    \\\n \\       ,-\'\n  `-,___/',
-    DE: '   _,--._\n  (      \\\n  |  DE   |\n   \\    ,-\'\n    `--\'',
-    ES: '  ,-------.\n (   ES    )\n  \\     ,-\'\n   `---\'\n',
-    SE: '    ,^.\n   /  |\n  | SE|\n   | |\n   |_|',
-    CH: '\n   _/\\/\\_\n  <  CH  >\n   `-..-\'\n',
-    JP: '     ,.\n     \\ \\\n     JP\\\n      \\ \\\n       `o',
-    KR: '\n   |`-.\n   | KR\\\n    \\  |\n     `-\'',
-    SG: '\n\n    ,-,\n   (SG )\n    `-\''
+  // 8-bit overworld tiles for the courting grid: land, coast, water.
+  const TILES = {
+    CA: ['BbbGGGbbGGGbbbGGGcbB','bbGgggGbGggGbbGggGbb','bGgwgggGgwggGGgwggGb','bGggggwgggggwgggggGb','bbGggggggggGGGgggGbb','bbGgggggggGbbbGggGbb','bbbGgggggGbbbbbGGGbb','bbbbGggggGbcbbbbbbbb','bbbbbGggGbbbbbbBbbbb','bbcbbBGGbbbbbbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    GB: ['BbbbbbbbbbbbbbbbbcbB','bbbbcbbbbGGGbbbbbbbb','bbbbbbbbcGggGbbbbbBb','bbbbbbbbBbGgGbbbbbbb','bbbGGGbbbGgggGbbcBbb','bbGggGbBbGgggGbbbbbb','bbbGgGbcGggggGbbBbbb','bbbGGbBbGgggggGbbbbb','bbbbbbbbbGggggGBbbbb','bbcbbBbbbbGGGGbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    FR: ['BbbbbbbbbbbbbbbbbcbB','bbbbcbbbbBbbbbbbbbbb','bbbbbbbGGGGGGbbbbbBb','bbbbbGGggggggGGbbbbb','bbGGGggggggggggGcBbb','bbGGgggggggggggGbbbb','bbbbGgggggggggGbBbbb','bbbbbGggggggGGbbbbbb','bbbbbbGgggGGbbbBbbbb','bbcbbBbGGGbbbbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    DE: ['BbbbbbbbbbbbbbbbbcbB','bbbbcbbGGGGGGbbbbbbb','bbbbbbGggggggGbbbbBb','bbbbbbGggggggGbbbbbb','bbbbbbbGggggggGbcBbb','bbbcbbbGggggggGbbbbb','bbbbbbGggggggGbbBbbb','bbbbbbBGgggggGbbbbbb','bbbbbbbGggggGbbBbbbb','bbcbbBbbGGGGGbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    ES: ['BbbbbbbbbbbbbbbbbcbB','bbbbcbbbbBbbbbbbbbbb','bbbbbbbbcbbbbbbbbbBb','bbbbGGGGGGGGGGGGbbbb','bbbGggggggggggggGBbb','bbbGggggggggggggGbbb','bbbbGgggggggggGGBbbb','bbbbGgggggggGGbbbbbb','bbbbbGggggGGbbbBbbbb','bbcbbBGGGGbbbbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    SE: ['BbbbbbbbbGGGbbbbbcbB','bbbbcbbbGwgwGbbbbbbb','bbbbbbbbGgwgGbbbbbBb','bbbbbbbbGwgGcbbbbbbb','bbbbbbbGgggGbbbbcBbb','bbbcbbbGggGbbbbbbbbb','bbbbbbGgggGbbbbbBbbb','bbbbbbGggGbcbbbbbbbb','bbbbbbbGgGbbbbbBbbbb','bbcbbBbGggGbbbbbbbbc','bbbbbbcbGGGbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    CH: ['gggggggggggggggggggg','gggggggggggggggggggg','gggggggggggggggggggg','ggggggwggggggwgggggg','gggggmwmggggmwmggggg','ggggmmmmmggmmmmmgggg','gggmmmmmmmmmmmmmmggg','gggggggggggggggggggg','gggggggggggggggggggg','gggggggggggggggggggg','gggggggggggggggggggg','gggggggggggggggggggg'],
+    JP: ['BbbbbbbbbbbbbbbbbcbB','bbbbcbbbbBbbbbGGGbbb','bbbbbbbbcbbbbGggGbBb','bbbbbbbbBbbbGgGGbbbb','bbbbbbbbbbGGgGbbcBbb','bbbcbbbBGGgGGbbbbbbb','bbbbbbbGGgGbbbbbBbbb','bbbbbGGbbGGcbbbbbbbb','bbbbGGGbbbbbbbbBbbbb','bbcGGBbbbbbbbbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    KR: ['GGGGGGGGGGGGGGGGGGGG','GGGGGGGGggggggGbbbbb','bbbbbbbbGggggGbbbbBb','bbbbbbbbBGggGbbbbbbb','bbbbbbbbbGggGbbbcBbb','bbbcbbbBbGgGbbbbbbbb','bbbbbbbcGggGbbbbBbbb','bbbbbbBbbGGGbbbbbbbb','bbbbbbbbbbbbbbbBbbbb','bbcbbBbbbGGbbbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb'],
+    SG: ['GGGGGGGGGGGGGGGGGGGG','bbbGGGggggggggGGGbbb','bbbbbbGGggggGGbbbbBb','bbbbbbbbGGGGcbbbbbbb','bbbbbbbbbbbbbbbbcBbb','bbbcbbbBbbbbbbbbbbbb','bbbbbbbGGGGGGGbbBbbb','bbbbbbGgrgrgrGbbbbbb','bbbbbbbGGGGGGbbBbbbb','bbcbbBbbbbbbbbbbbbbc','bbbbbbcbbbbbbbBbbbbb','bbbbBbbbbbcbbbbbbbbb']
   };
+  const TILE_PX = {
+    G: '#4E7A3C', g: '#94C06A', b: '#A9CCE8', B: '#C6DFF1', c: '#8FB9DD',
+    w: '#FBF9F3', m: '#A39A8C', r: '#C24A38'
+  };
+  function tileSvg (key) {
+    const rows = TILES[key];
+    if (!rows) return '';
+    let rects = '';
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const ch = row[x];
+        if (TILE_PX[ch]) {
+          let x2 = x;
+          while (x2 + 1 < row.length && row[x2 + 1] === ch) x2++;
+          rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + TILE_PX[ch] + '"/>';
+          x = x2 + 1;
+        } else x++;
+      }
+    });
+    return '<svg class="g-tile" viewBox="0 0 20 12" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+  }
+
+  // Chibi cast sprites, same set as the story page.
+  const SPRITES = {
+    researcher: ['......................','.......KKKKKKKK.......','......KAAAAAAAAK......','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KASSSSSSSSAK.....','.....KKAAAAAAAAKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAaaAAAAKK....','....KAAAAAaaAAAAAK....','....KAAAAAaaAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    execpres: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KHSKSSSSKSHK.....','.....KHSKSSSSKSHK.....','.....KHSSSSSSSSHK.....','.....KHSSSSSSSSHK.....','.....KMSSSSSSSSMK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAWWAAAAKK....','....KAAAAAWWAAAAAK....','....KAAAAAWWAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    chancellor: ['......................','......KKKKKKKKKK......','......GGGGGGGGGG......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KSKKSSSSKKSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJJJKK....','....KJJJJJFFJJJJJK....','....KJJJJJFFJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    japanpm: ['.........KHHK.........','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKWWKKKKK.....','....KKJJJJJJJJJJKK....','....KJJJJJJJJJJJJK....','....KJJJJJJJJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    swedishvc: ['.......AAAAAAAA.......','.......KKKKKKKK.......','......KYYYYYYYYK......','.....KYYYYYYYYYYK.....','.....KYYYYYYYYYYK.....','.....KYSSSSSSSSYK.....','...AAKSSSSSSSSSSKAA...','...AAKSSKSSSSKSSKAA...','...AAKSSKSSSSKSSKAA...','...AAKsSSSSSSSSsKAA...','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDDDDDDDDKK....','....KDDDDDDDDDDDDK....','....KDDDDDDDDDDDDK....','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KWWK..KWWK......','......KKKK..KKKK......','......................'],
+    electrician: ['........KKKKKK........','.......KVVVVVVK.......','......KVVVVVVVVK......','.....KVVVVVVVVVVK.....','....KKKKKKKKKKKKKK....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKOOOOOOOOOOKK....','....KVVVVVVVVVVVVK....','....KOOOOOOOOOOOOK....','....KSOOOOOOOOOOSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
+    uspres: ['......................','.......KKKKKKKK.......','......KGGGGGGGGK......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGSSSSSSSSGK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJWRRWJMJKK....','....KJJJJJRRJJJJJK....','....KJJJJJRRJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................']
+  };
+  const PX = {
+    K: '#181410', S: '#F2C18F', s: '#D89B5E', T: '#B97C4D', t: '#92582F',
+    H: '#2A241E', G: '#B7B1A7', Y: '#E3BE56', B: '#82542B',
+    N: '#36435F', J: '#2A2832', D: '#6F6A62', F: '#57525B',
+    A: '#0057FF', a: '#0040BF', W: '#F7F3E9', w: '#DDD8CB',
+    R: '#BE1234', O: '#FF8E1F', V: '#FFD23C',
+    P: '#3B3742', Q: '#4E6E97', E: '#24212A', M: '#E2A93B', X: '#8FC1FF'
+  };
+  const CHIP_ART = {
+    'The Laid-off': 'researcher',
+    'The Commissioner': 'execpres',
+    'The German Chancellor': 'chancellor',
+    'The Japanese Prime Minister': 'japanpm',
+    'The Swedish VC': 'swedishvc',
+    'The Electrician': 'electrician',
+    'The President': 'uspres'
+  };
+  function spriteSvg (key) {
+    const rows = SPRITES[key];
+    if (!rows) return '';
+    let rects = '';
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const ch = row[x];
+        if (PX[ch]) {
+          let x2 = x;
+          while (x2 + 1 < row.length && row[x2 + 1] === ch) x2++;
+          rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + PX[ch] + '"/>';
+          x = x2 + 1;
+        } else x++;
+      }
+    });
+    return '<svg class="g-chip-sprite" viewBox="0 0 22 25" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+  }
+
 
   // Section header above the decision list: pips show the move budget.
   function movesHeader (txt, withPips) {
@@ -588,7 +658,7 @@
         if (n <= 9) b.dataset.key = n;
         b.title = lock ? lock : pickText(k);
         b.innerHTML =
-          '<pre>' + esc(COUNTRY_ART[k] || k) + '</pre>' +
+          tileSvg(k) +
           '<span class="g-country-name">' + (n <= 9 ? '<b>' + n + '</b> ' : '') + esc(d.name) + '</span>' +
           '<span class="g-country-meta">' + COMMIT_LABELS[st.commit] + ' → ' + COMMIT_LABELS[st.commit + 1] + ' · ' + pct + '% chance</span>' +
           '<span class="g-country-brings">' + d.ef + ' EF · $' + d.cap + 'B · ' + d.talent + 'k' +
