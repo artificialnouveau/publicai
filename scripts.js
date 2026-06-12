@@ -1656,7 +1656,7 @@
     kids.forEach((el, i) => {
       el.style.top = top + 'px';
       el.style.zIndex = String(i + 1); // later (visual) cards sit on top and cover earlier ones
-      top += el.classList.contains('story-act') ? 48 : 32;
+      top += el.classList.contains('story-act') ? 48 : 58; // 58 clears the journey card's padding + pill chip header
     });
   }
   grid.classList.add('is-stack');
