@@ -441,35 +441,46 @@
 
   /* === CAST CARDS: RPG-style character dossiers under each chapter header === */
   .cast-row {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 0.55rem; margin: 0 0 1.6rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(212px, 1fr));
+    gap: 0.6rem; margin: 0 0 1.6rem;
   }
   .cast-card {
     border: 1px solid var(--hairline-strong);
-    border-top: 3px solid var(--accent);
+    border-top: 3px solid var(--cat, var(--accent));
     border-radius: 6px;
     background: var(--paper-2);
-    padding: 0.55rem 0.7rem 0.6rem;
+    padding: 0.6rem 0.75rem 0.7rem;
   }
-  .cast-avatar {
-    display: block;
-    width: 72px; height: 72px;
-    margin: 0 auto 0.5rem;
+  .cast-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.5rem; margin-bottom: 0.5rem;
+  }
+  .cast-case {
+    font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.16em; color: var(--text-soft);
+  }
+  .cast-cat {
+    font-family: var(--mono); font-size: 0.5rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #fff; background: var(--cat, var(--accent));
+    border-radius: 999px; padding: 0.14rem 0.5rem 0.1rem;
+    white-space: nowrap;
   }
   .cast-name {
-    font-family: var(--mono); font-size: 0.66rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text); margin-bottom: 0.35rem;
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 600;
+    line-height: 1.15; letter-spacing: -0.01em;
+    color: var(--text); margin-bottom: 0.45rem;
+    padding-bottom: 0.45rem; border-bottom: 1px solid var(--hairline);
   }
   .cast-stat {
-    display: flex; gap: 0.5rem; align-items: baseline;
-    font-family: var(--font); font-size: 0.72rem; line-height: 1.45;
-    color: var(--text-soft); margin-bottom: 0.15rem;
+    display: flex; gap: 0.55rem; align-items: baseline;
+    font-family: var(--font); font-size: 0.74rem; line-height: 1.4;
+    color: var(--text-soft); margin-bottom: 0.2rem;
   }
   .cast-stat b {
-    font-family: var(--mono); font-size: 0.52rem; font-weight: 700;
+    font-family: var(--mono); font-size: 0.5rem; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); flex: 0 0 2.9rem;
+    color: var(--cat, var(--accent)); flex: 0 0 2.4rem;
   }
 
   /* Part divider line inside the preface */
