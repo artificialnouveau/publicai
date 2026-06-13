@@ -2139,53 +2139,71 @@
 // who is speaking without holding the whole story in their head.
 // ============================================================
 (function(){
-  const SPRITES = {
-    editor: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KKwKSKKSKwKK.....','.....KSwKSSSSKwSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJMJKK....','....KJJJJJWWJJJJJK....','....KJJJJJWWJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    researcher: ['.........KAAK.........','.......KKKKKKKK.......','......KAAAAAAAAK......','.....KAAAAAAAAAAK.....','.....KAAAAAAAAAAK.....','.....KAHHHHHHHHAK.....','.....KASSSSSSSSAK.....','.....KASKSSSSKSAK.....','.....KASKSSSSKSAK.....','.....KAsSSSSSSsAK.....','.....KAASSSSSSAAK.....','.....KAAASSSSAAAK.....','.....KKAAAAAAAAKK.....','.......KAAAAKKK.......','.....KKKKKKKKKKKK.....','....KKAAAWAAWAAAKK....','....KAAAAWAAWAAAAK....','....KAAAAaaaaAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    aaron: ['........K..K..K.......','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSBSSBSBSBK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKWWWWAAWWWWKK....','....KWWWWWAAWWWWWK....','....KWWWWWAAWWWWWK....','....KSWWWWWWWWWWSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    chancellor: ['......................','......KKKKKKKKKK......','......GGGGGGGGGG......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KSKKSSSSKKSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJJWWJJJJKK....','....KJJJJJFFJJJJJK....','....KJJJJJFFJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    pieter: ['......................','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSSSSSSSSBK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK....X..','.....KKKKKKKKKKKK.X...','....KKDDDDWWDDDDKKWWK.','....KDDDDDWWDDDDDKWWK.','....KDDDDDWWDDDDDKKKK.','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    execpres: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KHSKSSSSKSHK.....','.....KHSKSSSSKSHK.....','.....KHSSSSSSSSHK.....','.....KHSSSSSSSSHK.....','.....KMSSSSSSSSMK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKAAAAWWAAAAKK....','....KAAAAAWWAAAAAK....','....KAAAAAWWAAAAAK....','....KSAAAAAAAAAASK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    japanpm: ['.........KHHK.........','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKWWKKKKK.....','....KKJJJJJJJJJJKK....','....KJJJJJJJJJJJJK....','....KJJJJJJJJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    proghead: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHKX....','.....KHHHHHHHHHHKX....','.....KHTTTTTTTTHK.....','.....KTTTTTTTTTTK.....','.....KTTKTTTTKTTK.....','.....KTTKTTTTKTTK.....','.....KtTTTTTTTTtK.....','.....KTTTTTTTTTTK.....','.....KTTTTTTTTTTK.....','.....KKttttttttKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDRDDRDDDKK....','....KDDDDRWWRDDDDK....','....KDDDDDWWDDDDDK....','....KTDDDDDDDDDDTK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    swedishvc: ['.......AAAAAAAA.......','.......KKKKKKKK.......','......KYYYYYYYYK......','.....KYYYYYYYYYYK.....','.....KYYYYYYYYYYK.....','.....KYSSSSSSSSYK.....','...AAKSSSSSSSSSSKAA...','...AAKSSKSSSSKSSKAA...','...AAKSSKSSSSKSSKAA...','...AAKsSSSSSSSSsKAA...','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDDDDDDDDKK....','....KDDDDDDDDDDDDK....','....KDDDDDDDDDDDDK....','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KWWK..KWWK......','......KKKK..KKKK......','......................'],
-    estonian: ['......................','.......KKKKKKKK.......','......KBBBBBBBBK......','.....KBBBBBBBBBBK.....','.....KBBBBBBBBBBK.....','.....KBSSSSSSSSBK.....','.....KSSSSSSSSSSK.....','.....KSKwKKKKwKSK.....','.....KSKKKSSKKKSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKDDDDDDDDDDKK....','....KDDDDDDDDDDDDK....','....KDDDDDDDDDDDDK....','....KSDDDDDDDDDDSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    skype: ['......................','.......KKKKKKKK.......','......KGGGGGGGGK......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGSSSSSSSSGK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KGGSSSSSSGGK.....','.....KGGGGKKGGGGK.....','.....KKGGGGGGGGKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKNNNNWWNNNNKK....','....KNNNNNWWNNNNNK....','....KNNNNNWWNNNNNK....','....KSNNNNNNNNNNSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    electrician: ['........KKKKKK........','.......KVVVVVVK.......','......KVVVVVVVVK......','.....KVVVVVVVVVVK.....','....KKKKKKKKKKKKKK....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKOOOOOOOOOOKK....','....KVVVVVVVVVVVVK....','....KOOOOOOOOOOOOK....','....KSOOOOOOOOOOSK....','....KKKKKKKKKKKKKK....','......KQQK..KQQK......','......KQQK..KQQK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    saul: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHHHHHHHSSSK.....','.....KHHSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.F...','.......KKKKKKKK...F...','.....KKKKKKKKKKKK.K...','....KKNNNWRRWNNNKKK...','....KNNNNNRRNNNNNK....','....KNNNNNRRNNNNNK....','....KSNNNNNNNNNNSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    nasr: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHKH....','.....KHTTTTTTTTHKH....','.....KAAAAAAAAAAK.....','.....KTTKTTTTKTTK.....','.....KTTKTTTTKTTK.....','.....KtTTTTTTTTtK.....','.....KTTTTTTTTTTK.....','.....KTTTTTTTTTTK.....','.....KKttttttttKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKWWWDDDDWWWKK....','....KWWWWDDDDWWWWK....','....KWWWWDDDDWWWWK....','....KTWWWWWWWWWWTK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    frenchpres: ['......................','.......KKKKKKKK.......','......KHHHHHHHHK......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KHSSSSSSSSHK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJAWRJJJJJJKK....','....KJJJAWRJJJJJJK....','....KJJJJAWRJJJJJK....','....KSJJJJAWRJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    patrick: ['......................','.......KKKKKKKK.......','......HHHHHHHHHH......','.....KHHHHHHHHHHK.....','.....KHHHHHHHHHHK.....','.....KSSSSHHSSSSK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKFFFFSSFFFFKK....','....KFFFFFWWFFFFFK....','....KFFFFFFFFFFFFK....','....KSFFFFFFFFFFSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    uspres: ['......................','.......KKKKKKKK.......','......KGGGGGGGGK......','.....KGGGGGGGGGGK.....','.....KGGGGGGGGGGK.....','.....KGSSSSSSSSGK.....','.....KSSSSSSSSSSK.....','.....KSSKSSSSKSSK.....','.....KSSKSSSSKSSK.....','.....KsSSSSSSSSsK.....','.....KSSSSSSSSSSK.....','.....KSSSSSSSSSSK.....','.....KKssssssssKK.....','.......KKKKKKKK.......','.....KKKKKKKKKKKK.....','....KKJJJWRRWJMJKK....','....KJJJJJRRJJJJJK....','....KJJJJJRRJJJJJK....','....KSJJJJJJJJJJSK....','....KKKKKKKKKKKKKK....','......KPPK..KPPK......','......KPPK..KPPK......','......KEEK..KEEK......','......KKKK..KKKK......','......................'],
-    coalition: ['......................','......................','......................','......................','......................','......................','......................','..KK...KK....KK...KK..','.KHHK.KGGK..KYYK.KBBK.','.KSSK.KTTK..KSSK.KTTK.','.KSSK.KTTK..KSSK.KTTK.','..KK...KK....KK...KK..','.NNNN.AAAA..DDDD.RRRR.','.NNNN.AAAAAADDDD.RRRR.','.KKKKKKKKKKKKKKKKKKKK.','.FFFFFFFFFFFFFFFFFFFF.','.FFFFFFFFFFFFFFFFFFFF.','.FFFFFFFFFFFFFFFFFFFF.','.KKKKKKKKKKKKKKKKKKKK.','......................','......................','......................','......................','......................','......................']
+  // Deterministic Bauhaus avatar per character key: a bicolour head over a
+  // semicircle bust, in the site's primary-forward palette. The same key
+  // always yields the same mark, so the cast reads as a designed set.
+  function hash (str) {
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return h >>> 0;
+  }
+  const PAL = {
+    blue: '#0057FF', gold: '#E3BE56', red: '#BE1234', ink: '#181410',
+    orange: '#FF8E1F', sky: '#8FC1FF', cream: '#FBF7EE'
   };
+  const BOLD = [PAL.blue, PAL.gold, PAL.red, PAL.ink, PAL.orange, PAL.sky];
+  const PALE = ['#E9EEFF', '#F4EAC9', '#F3DBDF', '#FFE7CC'];
 
-  // Render a 22x25 sprite to crisp-edge pixel SVG (rows merged into runs).
-  const PX = {
-    K: '#181410', S: '#F2C18F', s: '#D89B5E', T: '#B97C4D', t: '#92582F',
-    H: '#2A241E', G: '#B7B1A7', Y: '#E3BE56', B: '#82542B',
-    N: '#36435F', J: '#2A2832', D: '#6F6A62', F: '#57525B',
-    A: '#0057FF', a: '#0040BF', W: '#F7F3E9', w: '#DDD8CB',
-    R: '#BE1234', O: '#FF8E1F', V: '#FFD23C',
-    P: '#3B3742', Q: '#4E6E97', E: '#24212A', M: '#E2A93B', X: '#8FC1FF'
-  };
   function spriteSvg (key) {
-    const rows = SPRITES[key];
-    if (!rows) return '';
-    let rects = '';
-    rows.forEach((row, y) => {
-      let x = 0;
-      while (x < row.length) {
-        const c = row[x];
-        if (PX[c]) {
-          let x2 = x;
-          while (x2 + 1 < row.length && row[x2 + 1] === c) x2++;
-          rects += '<rect x="' + x + '" y="' + y + '" width="' + (x2 - x + 1) + '" height="1" fill="' + PX[c] + '"/>';
-          x = x2 + 1;
-        } else x++;
+    if (!key) return '';
+    const H = s => hash(key + '|' + s);
+    const headC = BOLD[H('head') % BOLD.length];
+    let s2 = H('split') % BOLD.length; if (BOLD[s2] === headC) s2 = (s2 + 1) % BOLD.length;
+    const splitC = BOLD[s2];
+    let s3 = H('body') % BOLD.length;
+    while (BOLD[s3] === headC || BOLD[s3] === splitC) s3 = (s3 + 1) % BOLD.length;
+    const bodyC = BOLD[s3];
+    const rot = (H('rot') % 4) * 90;
+    const feat = H('feat') % 4;
+    const featC = (headC === PAL.ink || splitC === PAL.ink) ? PAL.cream : PAL.ink;
+    const id = 'avh' + (H('id') % 100000);
+    const tint = PALE[H('tint') % PALE.length];
+    const gstyle = H('ground') % 3;
+
+    // The coalition is the bloc itself: four bicolour discs, not one figure.
+    if (key === 'coalition') {
+      const xs = [13, 24, 35, 24], ys = [16, 14, 16, 31];
+      let g = '';
+      for (let i = 0; i < 4; i++) {
+        const a = BOLD[H('c' + i) % BOLD.length];
+        let bi = H('d' + i) % BOLD.length; if (BOLD[bi] === a) bi = (bi + 1) % BOLD.length;
+        g += '<circle cx="' + xs[i] + '" cy="' + ys[i] + '" r="6.5" fill="' + a + '"/>' +
+             '<path d="M' + xs[i] + ' ' + (ys[i] - 6.5) + ' A6.5 6.5 0 0 1 ' + xs[i] + ' ' + (ys[i] + 6.5) + ' Z" fill="' + BOLD[bi] + '"/>';
       }
-    });
-    return '<svg class="cast-sprite" viewBox="0 0 22 25" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+      return '<svg class="cast-avatar" viewBox="0 0 48 48" aria-hidden="true">' +
+        '<rect width="48" height="48" rx="3" fill="' + PAL.cream + '"/>' + g + '</svg>';
+    }
+
+    // Geometric ground: a pale band or wedge behind the figure.
+    let ground = '';
+    if (gstyle === 1) ground = '<rect x="24" width="24" height="48" fill="' + tint + '"/>';
+    else if (gstyle === 2) ground = '<path d="M0 48 L48 48 L48 12 Z" fill="' + tint + '"/>';
+
+    let feature;
+    if (feat === 0) feature = '<circle cx="24" cy="18" r="3" fill="' + featC + '"/>';
+    else if (feat === 1) feature = '<circle cx="20" cy="17" r="2.2" fill="' + featC + '"/><circle cx="28" cy="17" r="2.2" fill="' + featC + '"/>';
+    else if (feat === 2) feature = '<rect x="22.6" y="11" width="2.8" height="14" fill="' + featC + '"/>';
+    else feature = '<path d="M24 12 L29 21 L19 21 Z" fill="' + featC + '"/>';
+
+    return '<svg class="cast-avatar" viewBox="0 0 48 48" aria-hidden="true">' +
+      '<rect width="48" height="48" rx="3" fill="' + PAL.cream + '"/>' +
+      ground +
+      '<path d="M7 46 A17 17 0 0 1 41 46 Z" fill="' + bodyC + '"/>' +
+      '<circle cx="24" cy="18" r="12" fill="' + headC + '" stroke="' + PAL.ink + '" stroke-width="0.9"/>' +
+      '<clipPath id="' + id + '"><circle cx="24" cy="18" r="12"/></clipPath>' +
+      '<g clip-path="url(#' + id + ')"><rect x="24" y="6" width="12" height="24" fill="' + splitC + '" transform="rotate(' + rot + ' 24 18)"/></g>' +
+      feature +
+      '</svg>';
   }
   const CAST = {
     'scene-nyc': [
