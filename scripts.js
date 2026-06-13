@@ -2139,72 +2139,66 @@
 // who is speaking without holding the whole story in their head.
 // ============================================================
 (function(){
-  // Deterministic Bauhaus avatar per character key: a bicolour head over a
-  // semicircle bust, in the site's primary-forward palette. The same key
-  // always yields the same mark, so the cast reads as a designed set.
-  function hash (str) {
-    let h = 2166136261 >>> 0;
-    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-    return h >>> 0;
-  }
-  const PAL = {
-    blue: '#0057FF', gold: '#E3BE56', red: '#BE1234', ink: '#181410',
-    orange: '#FF8E1F', sky: '#8FC1FF', cream: '#FBF7EE'
-  };
-  const BOLD = [PAL.blue, PAL.gold, PAL.red, PAL.ink, PAL.orange, PAL.sky];
-  const PALE = ['#E9EEFF', '#F4EAC9', '#F3DBDF', '#FFE7CC'];
+// Deterministic monoline editorial portrait per character key. Same key
+// always yields the same face, so the story and game read as one set.
+function hash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}h^=h>>>16;h=Math.imul(h,2246822507)>>>0;h^=h>>>13;h=Math.imul(h,3266489909)>>>0;h^=h>>>16;return h>>>0;}
+const INK='#1d1a15',TILE='#FBF7EE';
+const ACCS=['#0057FF','#C99A2E','#BE1234','#1d1a15'];
+function portraitInner(key){
+  const H=s=>hash(key+'|'+s);
+  if(key==='coalition') return coalitionInner();
+  const hair=H('hair')%8, glasses=H('gl')%3, face=H('fh')%4, acc=ACCS[H('ac')%ACCS.length];
+  const jaw=H('jaw')%2, mo=H('mo')%3;
+  const ear=(hair!==4&&hair!==5&&hair!==7);
+  const w=1.5;
+  let s=`<rect width="48" height="48" rx="2" fill="${TILE}"/><rect width="48" height="3" fill="${acc}"/>`;
+  // shoulders / collar
+  s+=`<path d="M8 48 C9 39 15 35 24 35 C33 35 39 39 40 48" fill="#fff" stroke="${INK}" stroke-width="${w}"/>`;
+  s+=`<path d="M24 35 l-3 5 M24 35 l3 5" fill="none" stroke="${INK}" stroke-width="${w}"/>`;
+  if(H('tie')%3===0) s+=`<path d="M24 36 l-1.6 4 l1.6 4 l1.6 -4 z" fill="${acc}"/>`; // accent tie/scarf
+  // ears
+  if(ear) s+=`<circle cx="14.2" cy="21" r="1.7" fill="#fff" stroke="${INK}" stroke-width="1.1"/><circle cx="33.8" cy="21" r="1.7" fill="#fff" stroke="${INK}" stroke-width="1.1"/>`;
+  // head
+  if(jaw===0) s+=`<path d="M14 19 q0 -11 10 -11 q10 0 10 11 q0 9 -3.4 12.2 q-2.6 2.4 -6.6 2.4 q-4 0 -6.6 -2.4 q-3.4 -3.2 -3.4 -12.2 z" fill="#fff" stroke="${INK}" stroke-width="${w}"/>`;
+  else s+=`<path d="M14.6 18 q0 -10 9.4 -10 q9.4 0 9.4 10 q0 11 -2.6 14 q-2.4 2.6 -6.8 2.6 q-4.4 0 -6.8 -2.6 q-2.6 -3 -2.6 -14 z" fill="#fff" stroke="${INK}" stroke-width="${w}"/>`;
+  // brows + eyes
+  s+=`<path d="M18 17.4 q2 -1.1 3.8 0" stroke="${INK}" stroke-width="0.9" fill="none"/><path d="M26.2 17.4 q2 -1.1 3.8 0" stroke="${INK}" stroke-width="0.9" fill="none"/>`;
+  if(glasses===1){s+=`<circle cx="19.8" cy="20.4" r="2.6" fill="none" stroke="${INK}" stroke-width="1"/><circle cx="28.2" cy="20.4" r="2.6" fill="none" stroke="${INK}" stroke-width="1"/><path d="M22.4 20.2 h3.2" stroke="${INK}" stroke-width="1"/>`;}
+  else if(glasses===2){s+=`<rect x="17.3" y="18.6" width="5" height="3.6" rx="0.6" fill="none" stroke="${INK}" stroke-width="1"/><rect x="25.7" y="18.6" width="5" height="3.6" rx="0.6" fill="none" stroke="${INK}" stroke-width="1"/><path d="M22.3 20.4 h3.4" stroke="${INK}" stroke-width="1"/>`;}
+  s+=`<circle cx="19.8" cy="20.4" r="1" fill="${INK}"/><circle cx="28.2" cy="20.4" r="1" fill="${INK}"/>`;
+  // nose + mouth
+  s+=`<path d="M24 21 v3 l-1.4 1" fill="none" stroke="${INK}" stroke-width="0.8"/>`;
+  const mq=mo===0?1.7:mo===1?0.3:-1.3;
+  s+=`<path d="M21.4 27.4 q2.6 ${mq} 5.2 0" stroke="${INK}" stroke-width="1.1" fill="none"/>`;
+  // facial hair
+  if(face===1) s+=`<path d="M20.6 26 q3.4 1.6 6.8 0" stroke="${INK}" stroke-width="1.4" fill="none"/>`; // moustache
+  else if(face===2) s+=`<path d="M15.6 23 q1.5 9 8.4 9 q6.9 0 8.4 -9 q-3 3 -8.4 3 q-5.4 0 -8.4 -3 z" fill="${INK}"/>`; // full beard
+  else if(face===3) s+=`<path d="M21 29 q3 3 6 0 q0 3 -3 3.4 q-3 -0.4 -3 -3.4 z" fill="${INK}"/>`; // goatee
+  // hair
+  if(hair===0){} // bald
+  else if(hair===1) s+=`<path d="M13.6 18 q1 -12 10.4 -12 q9.4 0 10.4 12 q-3 -6.5 -10.4 -6.5 q-7.4 0 -10.4 6.5 z" fill="${INK}"/>`; // full
+  else if(hair===2) s+=`<path d="M13.6 16.5 q3 -10.5 10.4 -10.5 q4 0 6.4 3 q-4 -0.6 -8 1 q-4 1.6 -8.8 6.5 z" fill="${INK}"/>`; // side part
+  else if(hair===3) s+=`<path d="M14 15.5 q5 -9.5 20 -8 q-2 1.4 -3 3 q-9 -2 -17 5 z" fill="${INK}"/>`; // swept back
+  else if(hair===4) s+=`<path d="M14.4 17 q1 -11 9.6 -11 q8.6 0 9.6 11 q-3 -5.5 -9.6 -5.5 q-6.6 0 -9.6 5.5 z" fill="${INK}"/><circle cx="24" cy="6.5" r="3.4" fill="${INK}"/>`; // bun
+  else if(hair===5) s+=`<path d="M13.4 30 q-1 -24 10.6 -24 q11.6 0 10.6 24 q-2.2 -4 -3 -12 q-2 6 -3 14 q-1.6 -16 -4.6 -16 q-3 0 -4.6 16 q-1 -8 -3 -14 q-0.8 8 -3 12 z" fill="${INK}"/>`; // long
+  else if(hair===6) s+=`<path d="M12.6 15 q11.4 -4 22.8 0 l-0.6 2.4 q-10.8 -3.6 -21.6 0 z" fill="${INK}"/><path d="M14 15 q10 -8 20 0" fill="none" stroke="${INK}" stroke-width="1.4"/>`; // cap brim
+  else s+=`<path d="M13 16 q-1 -8 5 -9 q2 -3 6 -3 q4 0 6 3 q6 1 5 9 q-2 -4 -5 -5 q-2 4 -6 4 q-4 0 -6 -4 q-3 1 -5 5 z" fill="${INK}"/>`; // curly
+  return s;
+}
+function coalitionInner(){
+  let s=`<rect width="48" height="48" rx="2" fill="${TILE}"/><rect width="48" height="3" fill="#0057FF"/>`;
+  const pos=[[13,20],[24,17],[35,20],[24,32]];
+  pos.forEach((p,i)=>{
+    s+=`<circle cx="${p[0]}" cy="${p[1]}" r="5.2" fill="#fff" stroke="${INK}" stroke-width="1.3"/>`;
+    s+=`<path d="M${p[0]-3.4} ${p[1]-1} q3.4 -5 6.8 0" fill="${INK}"/>`;
+    s+=`<circle cx="${p[0]-1.8}" cy="${p[1]+0.4}" r="0.7" fill="${INK}"/><circle cx="${p[0]+1.8}" cy="${p[1]+0.4}" r="0.7" fill="${INK}"/>`;
+  });
+  return s;
+}
+function spriteSvg (key) {
+  return '<svg class="cast-avatar" viewBox="0 0 48 48" aria-hidden="true">' + portraitInner(key) + '</svg>';
+}
 
-  function spriteSvg (key) {
-    if (!key) return '';
-    const H = s => hash(key + '|' + s);
-    const headC = BOLD[H('head') % BOLD.length];
-    let s2 = H('split') % BOLD.length; if (BOLD[s2] === headC) s2 = (s2 + 1) % BOLD.length;
-    const splitC = BOLD[s2];
-    let s3 = H('body') % BOLD.length;
-    while (BOLD[s3] === headC || BOLD[s3] === splitC) s3 = (s3 + 1) % BOLD.length;
-    const bodyC = BOLD[s3];
-    const rot = (H('rot') % 4) * 90;
-    const feat = H('feat') % 4;
-    const featC = (headC === PAL.ink || splitC === PAL.ink) ? PAL.cream : PAL.ink;
-    const id = 'avh' + (H('id') % 100000);
-    const tint = PALE[H('tint') % PALE.length];
-    const gstyle = H('ground') % 3;
-
-    // The coalition is the bloc itself: four bicolour discs, not one figure.
-    if (key === 'coalition') {
-      const xs = [13, 24, 35, 24], ys = [16, 14, 16, 31];
-      let g = '';
-      for (let i = 0; i < 4; i++) {
-        const a = BOLD[H('c' + i) % BOLD.length];
-        let bi = H('d' + i) % BOLD.length; if (BOLD[bi] === a) bi = (bi + 1) % BOLD.length;
-        g += '<circle cx="' + xs[i] + '" cy="' + ys[i] + '" r="6.5" fill="' + a + '"/>' +
-             '<path d="M' + xs[i] + ' ' + (ys[i] - 6.5) + ' A6.5 6.5 0 0 1 ' + xs[i] + ' ' + (ys[i] + 6.5) + ' Z" fill="' + BOLD[bi] + '"/>';
-      }
-      return '<svg class="cast-avatar" viewBox="0 0 48 48" aria-hidden="true">' +
-        '<rect width="48" height="48" rx="3" fill="' + PAL.cream + '"/>' + g + '</svg>';
-    }
-
-    // Geometric ground: a pale band or wedge behind the figure.
-    let ground = '';
-    if (gstyle === 1) ground = '<rect x="24" width="24" height="48" fill="' + tint + '"/>';
-    else if (gstyle === 2) ground = '<path d="M0 48 L48 48 L48 12 Z" fill="' + tint + '"/>';
-
-    let feature;
-    if (feat === 0) feature = '<circle cx="24" cy="18" r="3" fill="' + featC + '"/>';
-    else if (feat === 1) feature = '<circle cx="20" cy="17" r="2.2" fill="' + featC + '"/><circle cx="28" cy="17" r="2.2" fill="' + featC + '"/>';
-    else if (feat === 2) feature = '<rect x="22.6" y="11" width="2.8" height="14" fill="' + featC + '"/>';
-    else feature = '<path d="M24 12 L29 21 L19 21 Z" fill="' + featC + '"/>';
-
-    return '<svg class="cast-avatar" viewBox="0 0 48 48" aria-hidden="true">' +
-      '<rect width="48" height="48" rx="3" fill="' + PAL.cream + '"/>' +
-      ground +
-      '<path d="M7 46 A17 17 0 0 1 41 46 Z" fill="' + bodyC + '"/>' +
-      '<circle cx="24" cy="18" r="12" fill="' + headC + '" stroke="' + PAL.ink + '" stroke-width="0.9"/>' +
-      '<clipPath id="' + id + '"><circle cx="24" cy="18" r="12"/></clipPath>' +
-      '<g clip-path="url(#' + id + ')"><rect x="24" y="6" width="12" height="24" fill="' + splitC + '" transform="rotate(' + rot + ' 24 18)"/></g>' +
-      feature +
-      '</svg>';
-  }
   const CAST = {
     'scene-nyc': [
       { art: 'editor', name: 'The Editor-in-Chief', cls: 'gatekeeper', claim: 'decides what the world reads at breakfast', trait: 'will not print what is wrong' }
