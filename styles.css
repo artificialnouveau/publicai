@@ -452,20 +452,28 @@
     padding: 0.6rem 0.75rem 0.7rem;
   }
   .cast-head {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 0.5rem; margin-bottom: 0.5rem;
+    display: flex; align-items: center;
+    gap: 0.45rem; margin-bottom: 0.5rem;
   }
+  .cast-flag {
+    flex: 0 0 auto; width: 25px; height: 16px;
+    border: 1px solid var(--hairline); border-radius: 2px;
+    overflow: hidden; display: block;
+  }
+  .cast-flag svg { width: 100%; height: 100%; display: block; }
   .cast-case {
     font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
     letter-spacing: 0.16em; color: var(--text-soft);
   }
   .cast-cat {
+    display: inline-flex; align-items: center; margin-left: auto;
     font-family: var(--mono); font-size: 0.5rem; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase;
     color: #fff; background: var(--cat, var(--accent));
-    border-radius: 999px; padding: 0.14rem 0.5rem 0.1rem;
+    border-radius: 999px; padding: 0.16rem 0.5rem 0.12rem;
     white-space: nowrap;
   }
+  .cast-pip { width: 9px; height: 9px; margin-right: 0.32rem; display: block; flex: 0 0 auto; }
   .cast-name {
     font-family: var(--serif); font-size: 1.05rem; font-weight: 600;
     line-height: 1.15; letter-spacing: -0.01em;

@@ -328,9 +328,16 @@
     if (cast && cast.length) {
       const cr = document.createElement('div');
       cr.className = 'g-cast';
-      cr.innerHTML = cast.map(c =>
-        '<span class="g-cast-chip">' +
-        '<span class="g-cast-txt"><b>' + esc(c.n) + '</b>' + esc(c.c) + '</span></span>').join('');
+      cr.innerHTML = cast.map(c => {
+        const key = window.CastMarks && CastMarks.key(c.n);
+        const mark = key
+          ? '<span class="g-cast-flag" aria-hidden="true"><svg viewBox="0 0 18 12">' + CastMarks.faceInner(key) + '</svg></span>' +
+            '<svg class="g-cast-pip" viewBox="0 0 10 10" aria-hidden="true">' + CastMarks.pipInner(CastMarks.facOf(key), CastMarks.color(key)) + '</svg>'
+          : '';
+        const style = key ? ' style="border-left-color:' + CastMarks.color(key) + '"' : '';
+        return '<span class="g-cast-chip"' + style + '>' + mark +
+          '<span class="g-cast-txt"><b>' + esc(c.n) + '</b>' + esc(c.c) + '</span></span>';
+      }).join('');
       el.appendChild(cr);
     }
     const p = document.createElement('p');

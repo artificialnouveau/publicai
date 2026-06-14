@@ -2139,12 +2139,20 @@
 // who is speaking without holding the whole story in their head.
 // ============================================================
 (function(){
-// Typographic dossier: no avatar. Each character is a colour-coded case file
-// (case number, archetype chip, serif role name, claim/trait). Category colour
-// is derived deterministically from the archetype string.
-function hash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}h^=h>>>16;h=Math.imul(h,2246822507)>>>0;h^=h>>>13;h=Math.imul(h,3266489909)>>>0;h^=h>>>16;return h>>>0;}
-const CATCOLORS=['#0057FF','#B8860B','#BE1234','#2B6E4F','#1d1a15'];
-function catColor(c){return CATCOLORS[hash(String(c))%CATCOLORS.length];}
+// Case-file dossier with two symbolic markers (no avatar): a flag or role glyph
+// for who they answer to, and a faction pip + colour for their bloc. Markers and
+// colours come from CastMarks (cast-markers.js), shared with the game chips.
+function markerChip(key){
+  return (window.CastMarks && CastMarks.has(key))
+    ? '<span class="cast-flag" aria-hidden="true"><svg viewBox="0 0 18 12">' + CastMarks.faceInner(key) + '</svg></span>'
+    : '';
+}
+function factionTag(key){
+  if(!(window.CastMarks && CastMarks.has(key))) return '';
+  return '<span class="cast-cat"><svg class="cast-pip" viewBox="0 0 10 10" aria-hidden="true">'
+    + CastMarks.pipInner(CastMarks.facOf(key), '#FBF7EE') + '</svg>' + CastMarks.label(key) + '</span>';
+}
+function castCat(key){ return (window.CastMarks && CastMarks.has(key)) ? CastMarks.color(key) : 'var(--accent)'; }
   const CAST = {
     'scene-nyc': [
       { art: 'editor', name: 'The Editor-in-Chief', cls: 'gatekeeper', claim: 'decides what the world reads at breakfast', trait: 'will not print what is wrong' }
@@ -2205,12 +2213,14 @@ function catColor(c){return CATCOLORS[hash(String(c))%CATCOLORS.length];}
     row.className = 'cast-row';
     row.setAttribute('aria-label', 'Characters in this chapter');
     row.innerHTML = CAST[id].map(c =>
-      '<div class="cast-card" style="--cat:' + catColor(c.cls) + '">' +
+      '<div class="cast-card" style="--cat:' + castCat(c.art) + '">' +
         '<div class="cast-head">' +
+          markerChip(c.art) +
           '<span class="cast-case">CASE ' + caseId[c.art] + '</span>' +
-          '<span class="cast-cat">' + esc(c.cls) + '</span>' +
+          factionTag(c.art) +
         '</div>' +
         '<div class="cast-name">' + esc(c.name) + '</div>' +
+        '<div class="cast-stat"><b>type</b><span>' + esc(c.cls) + '</span></div>' +
         '<div class="cast-stat"><b>claim</b><span>' + esc(c.claim) + '</span></div>' +
         '<div class="cast-stat"><b>trait</b><span>' + esc(c.trait) + '</span></div>' +
       '</div>').join('');
