@@ -325,17 +325,11 @@
       el.appendChild(tt);
       decodeIn(tt, title, { step: 1, tick: 30 });
     }
-    if (title && SCENES[title]) {
-      const sc = document.createElement('div');
-      sc.className = 'g-scene';
-      sc.innerHTML = sceneSvg(SCENES[title]);
-      el.appendChild(sc);
-    }
     if (cast && cast.length) {
       const cr = document.createElement('div');
       cr.className = 'g-cast';
       cr.innerHTML = cast.map(c =>
-        '<span class="g-cast-chip">' + spriteSvg(CHIP_ART[c.n] || '') +
+        '<span class="g-cast-chip">' +
         '<span class="g-cast-txt"><b>' + esc(c.n) + '</b>' + esc(c.c) + '</span></span>').join('');
       el.appendChild(cr);
     }
@@ -585,79 +579,6 @@
     });
     return '<svg class="g-tile" viewBox="0 0 20 12" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
   }
-
-// Typographic dossier: each character is a colour-coded monogram tile, the
-// same case-file language as the story cast. Same key -> same colour + initial.
-function hash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}h^=h>>>16;h=Math.imul(h,2246822507)>>>0;h^=h>>>13;h=Math.imul(h,3266489909)>>>0;h^=h>>>16;return h>>>0;}
-const INK='#1d1a15',TILE='#FBF7EE';
-const CATCOLORS=['#0057FF','#B8860B','#BE1234','#2B6E4F','#1d1a15'];
-function catColor(c){return CATCOLORS[hash(String(c))%CATCOLORS.length];}
-const LABELS={editor:'E',researcher:'R',aaron:'A',chancellor:'GC',pieter:'PT',execpres:'EC',japanpm:'JP',proghead:'PH',swedishvc:'VC',estonian:'ES',skype:'SK',electrician:'EL',saul:'S',nasr:'N',frenchpres:'FP',patrick:'PK',uspres:'US'};
-  const CHIP_ART = {
-    'The Laid-off': 'researcher',
-    'The Commissioner': 'execpres',
-    'The German Chancellor': 'chancellor',
-    'The Japanese Prime Minister': 'japanpm',
-    'The Swedish VC': 'swedishvc',
-    'The Electrician': 'electrician',
-    'The President': 'uspres'
-  };
-  // One pixel scene per month event, keyed by dispatch title.
-  const SCENES = {
-    'The layoffs': ['researcher', 'researcher', 'researcher'],
-    'The speech': ['euflag', 'execpres'],
-    'The condition': ['chancellor', 'pieter'],
-    'The hallucination': ['japanpm', 'proghead'],
-    'The liferaft': ['swedishvc', 'estonian', 'skype'],
-    'Hyperion': ['rack', 'electrician', 'rack'],
-    'The visitor': ['saul', 'nasr'],
-    'The raise': ['eiffel', 'frenchpres'],
-    'The Godfather offer': ['uspres', 'redphone']
-  };
-function portraitInner(key){
-  const col=catColor(key);
-  const init=LABELS[key]||key.slice(0,1).toUpperCase();
-  return '<rect width="48" height="48" rx="3" fill="'+col+'"/>'+
-    '<text x="24" y="30" font-family="&apos;JetBrains Mono&apos;, ui-monospace, monospace" font-size="'+(init.length>1?15:21)+'" font-weight="700" fill="#FBF7EE" text-anchor="middle" letter-spacing="0.4">'+init+'</text>';
-}
-const PROPS={euflag:1,rack:1,eiffel:1,redphone:1};
-function propInner(key){
-  let s=`<rect width="48" height="48" rx="2" fill="${TILE}"/><rect width="48" height="3" fill="${INK}"/>`;
-  if(key==='euflag'){
-    s+=`<rect x="9" y="9" width="30" height="30" rx="2" fill="none" stroke="${INK}" stroke-width="1.4"/>`;
-    const pts=[[0,-10],[5,-8.7],[8.7,-5],[10,0],[8.7,5],[5,8.7],[0,10],[-5,8.7],[-8.7,5],[-10,0],[-8.7,-5],[-5,-8.7]];
-    pts.forEach(p=>{s+=`<circle cx="${(24+p[0]).toFixed(1)}" cy="${(24+p[1]).toFixed(1)}" r="1.3" fill="none" stroke="#C99A2E" stroke-width="1"/>`;});
-    return s;
-  }
-  if(key==='rack'){
-    s+=`<rect x="10" y="6" width="28" height="36" rx="1.5" fill="none" stroke="${INK}" stroke-width="1.5"/>`;
-    for(let i=0;i<5;i++){s+=`<line x1="13" y1="${11+i*6}" x2="35" y2="${11+i*6}" stroke="${INK}" stroke-width="1"/><circle cx="32" cy="${11+i*6}" r="1" fill="${i%2?'#C99A2E':'#0057FF'}"/>`;}
-    return s;
-  }
-  if(key==='eiffel'){
-    s+=`<path d="M24 7 L33 41 M24 7 L15 41" fill="none" stroke="${INK}" stroke-width="1.5"/><path d="M19 25 h10 M16.5 34 h15 M21 16 h6" stroke="${INK}" stroke-width="1.2"/><path d="M17 41 q7 -5 14 0" fill="none" stroke="${INK}" stroke-width="1.2"/>`;
-    return s;
-  }
-  if(key==='redphone'){
-    s+=`<circle cx="24" cy="24" r="14" fill="none" stroke="${INK}" stroke-width="1.5"/><path d="M15 18 q9 12 18 0 l-3 -3 q-6 6 -12 0 z" fill="#BE1234"/>`;
-    return s;
-  }
-  return s;
-}
-function spriteSvg (key) {
-  return key ? '<svg class="g-chip-sprite" viewBox="0 0 48 48" aria-hidden="true">' + portraitInner(key) + '</svg>' : '';
-}
-function sceneSvg (keys) {
-  const cell = 48, gap = 4;
-  let inner = '';
-  keys.forEach((k, i) => {
-    const piece = PROPS[k] ? propInner(k) : portraitInner(k);
-    inner += '<g transform="translate(' + (i * (cell + gap)) + ',0)">' + piece + '</g>';
-  });
-  const w = keys.length * cell + (keys.length - 1) * gap;
-  return '<svg class="g-scene-art" viewBox="0 0 ' + w + ' ' + cell + '" aria-hidden="true">' + inner + '</svg>';
-}
-
 
   // Section header above the decision list: pips show the move budget.
   function movesHeader (txt, withPips) {

@@ -2140,7 +2140,8 @@
 // ============================================================
 (function(){
 // Typographic dossier: no avatar. Each character is a colour-coded case file
-// (archetype chip, role name, claim, trait), built from the existing type system.
+// (case number, archetype chip, serif role name, claim/trait). Category colour
+// is derived deterministically from the archetype string.
 function hash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}h^=h>>>16;h=Math.imul(h,2246822507)>>>0;h^=h>>>13;h=Math.imul(h,3266489909)>>>0;h^=h>>>16;return h>>>0;}
 const CATCOLORS=['#0057FF','#B8860B','#BE1234','#2B6E4F','#1d1a15'];
 function catColor(c){return CATCOLORS[hash(String(c))%CATCOLORS.length];}
