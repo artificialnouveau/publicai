@@ -1,5 +1,5 @@
 // ============================================================
-// CAST MARKERS — two symbolic, non-representational marks per character:
+// CAST MARKERS, two symbolic, non-representational marks per character:
 //   1. a flag (national figures) or a role glyph (the few without a nation)
 //   2. a faction pip + colour for which bloc they sit in
 // No avatars, no faces, no initials. Shared by the story (index.html) and the

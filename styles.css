@@ -1,10 +1,3 @@
-@font-face {
-    font-family: 'Young Serif';
-    src: url('fonts/YoungSerif-Variable.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
 :root {
     --ink: #F8F6F1;
     --paper-2: #F0EDE7;
@@ -26,9 +19,9 @@
     --navy-3: #0057FF;
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --serif: 'Spectral', Georgia, 'Times New Roman', serif;
-    --display: 'Young Serif', Georgia, 'Times New Roman', serif;
+    --display: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
     --mono: 'JetBrains Mono', monospace;
-    /* Dock heights — tuned in JS too. */
+    /* Dock heights, tuned in JS too. */
     --dock-collapsed: 48px;
     --dock-peek: 38vh;
     --dock-full: calc(100vh - 56px);
@@ -178,11 +171,11 @@
     border-bottom: 1px solid var(--hairline);
   }
   .hero h1 {
-    font-family: var(--display); font-weight: 400;
-    font-size: clamp(2.4rem, 5.5vw, 4.75rem);
-    line-height: 1.04; letter-spacing: -0.01em;
+    font-family: var(--display); font-weight: 600; font-style: normal;
+    font-size: clamp(1.5rem, 6.6vw, 4.75rem);
+    line-height: 1.05; letter-spacing: -0.03em;
     margin-bottom: 1.4rem; color: #ffffff;
-    max-width: 14ch;
+    white-space: nowrap;
   }
   .hero-sub {
     font-size: clamp(0.95rem, 1.35vw, 1.1rem);
@@ -326,9 +319,9 @@
     font-size: 0.8rem; color: var(--text-muted);
   }
   .scene-title {
-    font-family: var(--serif); font-weight: 600;
+    font-family: var(--display); font-weight: 600;
     font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-    line-height: 1.05; letter-spacing: -0.02em;
+    line-height: 1.05; letter-spacing: -0.03em;
     color: var(--text);
   }
   .scene-prose p {
@@ -500,7 +493,7 @@
     border-radius: 4px;
     font-family: var(--font);
   }
-  .doc-inset h4 {
+  .doc-inset h3 {
     font-family: var(--mono); font-size: 0.75rem;
     letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--text); margin-bottom: 0.5rem;
@@ -618,7 +611,7 @@
   }
 
 /* dock-body is the scroll container on mobile/tablet. Active pane is a
-     normal block child whose content can exceed the dock height — the dock-body
+     normal block child whose content can exceed the dock height, the dock-body
      scrolls. On desktop this is overridden to overflow: visible so the dock
      itself auto-sizes to content. */
   .viz-pane {
@@ -643,12 +636,12 @@
   .viz-explainer {
     overflow-y: auto; min-height: 0;
   }
-  .viz-explainer h4 {
+  .viz-explainer h3 {
     font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--accent); margin-bottom: 0.4rem;
   }
-  .viz-explainer h4 + p {
+  .viz-explainer h3 + p {
     font-size: 0.82rem; line-height: 1.6;
     color: var(--text); margin-bottom: 0.85rem;
   }
@@ -739,7 +732,7 @@
   }
   .viz-canvas-wrap[data-tall] > canvas { height: 360px; }
 
-  /* Compute Map (HTML, not canvas — three big stat rows with bars). */
+  /* Compute Map (HTML, not canvas, three big stat rows with bars). */
   .compute-stats-wrap { padding: 1rem; }
   .compute-stats {
     display: grid; gap: 1.1rem;
@@ -803,7 +796,7 @@
     z-index: 0;
   }
 
-  /* === DESKTOP: centered two-column — prose left, viz right === */
+  /* === DESKTOP: centered two-column, prose left, viz right === */
   @media (min-width: 1024px) {
     :root {
       --dock-full: calc(100vh - 72px - 16px);
@@ -1012,12 +1005,12 @@
     border-top: 1px dotted var(--hairline-strong);
     padding-top: 0.5rem;
   }
-  .story-ascii-more-body h4 {
+  .story-ascii-more-body h3 {
     font-family: var(--mono); font-size: 0.56rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--accent); margin: 0.6rem 0 0.25rem;
   }
-  .story-ascii-more-body h4:first-child { margin-top: 0; }
+  .story-ascii-more-body h3:first-child { margin-top: 0; }
   .story-ascii-more-body p { margin: 0 0 0.5rem; }
   .story-ascii-more-body details.viz-sources {
     margin-top: 0.5rem; padding-top: 0.45rem;
@@ -1336,7 +1329,7 @@
     color: var(--text);
     border-radius: inherit;
   }
-  .viz-info-body h4 {
+  .viz-info-body h3 {
     font-family: var(--mono);
     font-size: 0.58rem;
     font-weight: 700;
@@ -1345,7 +1338,7 @@
     color: var(--accent);
     margin: 0.7rem 0 0.25rem;
   }
-  .viz-info-body h4:first-child { margin-top: 0; }
+  .viz-info-body h3:first-child { margin-top: 0; }
   .viz-info-body p { margin: 0 0 0.55rem; }
   .viz-info-body details.viz-sources {
     margin-top: 0.65rem;
@@ -1396,7 +1389,7 @@
   /* Donut segment dividers (reused by the minimal Talent donut). */
   .rad-seg path { stroke: var(--ink); stroke-width: 1.2; }
 
-  /* === MINIMAL style — after ai-2027.com: a big headline number,
+  /* === MINIMAL style, after ai-2027.com: a big headline number,
      one clean shape, lots of whitespace, grayscale + a single accent, and a
      quiet scroll-in animation. */
   /* Scale with the card width (was a fixed 172px, which kept charts tiny). */
@@ -2133,7 +2126,7 @@
     .topnav-brand { font-size: 0.7rem; }
     .topnav-brand-text { display: none; }
     .hero { padding: 4.5rem 1.25rem 3.5rem; min-height: 0; }
-    .hero h1 { font-size: clamp(2rem, 9vw, 3rem); margin-bottom: 1rem; }
+    .hero h1 { font-size: clamp(1.3rem, 7vw, 2.6rem); margin-bottom: 1rem; }
     .hero-sub { font-size: 0.92rem; line-height: 1.55; margin-bottom: 1.75rem; }
     /* Hero TOC: 2-column grid so 11 items don't sprawl into 6 wrapping rows. */
     .hero-meta {

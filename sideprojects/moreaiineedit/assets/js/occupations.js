@@ -140,7 +140,7 @@ const PREDEFINED_OCCUPATIONS = {
     "therapist": {
         date: "2036-09-30",
         model: "TherapyGPT Premium",
-        note: "AI is a good listener. It has to be—it can't interrupt."
+        note: "AI is a good listener. It has to be, it can't interrupt."
     },
 
     // Education

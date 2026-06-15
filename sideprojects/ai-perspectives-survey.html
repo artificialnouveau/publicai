@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230057FF'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive survey that maps your views on AI onto an archetype spectrum, from accelerationist to doomer.">
     <title>AI Perspectives Survey</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -852,7 +854,7 @@
                     {
                         name: "🌸 Bloomer",
                         direction: "SE",
-                        description: "Cautiously optimistic — driving forward while tapping the brakes. AI can change society for the better, like the printing press and the internet before it. Let's be smart about it."
+                        description: "Cautiously optimistic: driving forward while tapping the brakes. AI can change society for the better, like the printing press and the internet before it. Let's be smart about it."
                     },
                     {
                         name: "😰 Doomer",
@@ -914,7 +916,7 @@
                 return (
                     <div className="survey-container">
                         <div className="survey-header">
-                            <h1>🧭 AI Perspectives Survey</h1>
+                            <h1>AI Perspectives Survey</h1>
                             <p>Discover where you stand on critical AI issues</p>
                         </div>
                         <div className="intro-container">
@@ -922,7 +924,7 @@
                             <p className="intro-description">
                                 This survey explores your views on AI development, policy, and economic impact.
                                 Answer 18 questions to discover your unique perspective and see where you fall
-                                on the AI compass — are you a doomer, gloomer, zoomer, or bloomer?
+                                on the AI compass. Are you a doomer, gloomer, zoomer, or bloomer?
                             </p>
 
                             <div className="dimensions-info">
@@ -961,7 +963,7 @@
                 return (
                     <div className="survey-container">
                         <div className="survey-header">
-                            <h1>🧭 Your AI Perspective</h1>
+                            <h1>Your AI Perspective</h1>
                             <p>Here's where you stand</p>
                         </div>
                         <div className="results-container">
@@ -1035,7 +1037,7 @@
                             </div>
 
                             <div className="persona-reveal">
-                                <h3>🎁 All 4 Compass Directions</h3>
+                                <h3>All 4 Compass Directions</h3>
                                 <p style={{marginBottom: '20px', fontSize: '0.95rem'}}>
                                     Now that you've completed the survey, here are all possible perspectives:
                                 </p>
@@ -1079,7 +1081,7 @@
             return (
                 <div className="survey-container">
                     <div className="survey-header">
-                        <h1>🧭 AI Perspectives Survey</h1>
+                        <h1>AI Perspectives Survey</h1>
                         <p>Question {currentQuestion + 1} of {questions.length}</p>
                     </div>
                     <div className="progress-bar">

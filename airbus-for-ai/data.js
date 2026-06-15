@@ -1,4 +1,4 @@
-// The Slow Boil — game data.
+// Airbus for AI, the negotiation game: data.
 // States, labs, events and endings. Numbers mirror the illustrative
 // per-member tables used by the story site's coalition simulator.
 
@@ -182,7 +182,7 @@ window.GAME_DATA = (function () {
       prose: 'The coalition exists. It has a flag, a secretariat, and no machine room. When the Act lands, your members get the managed-access tier and a yearly audit from the Department of Commerce. You bought a seat at the table. The table is in Washington. {STATS}'
     },
     survived: {
-      title: 'THE SLOW BOIL, SURVIVED',
+      title: 'THE COALITION SURVIVED',
       prose: 'When the Act lands, the call assembles in minutes, and this time nobody asks whether anyone signed. They ask when the pooled cluster comes online. There is a real number to give. The leverage is thin, but it is leverage, and eighteen months ago there was none. {STATS}'
     },
     negotiated: {

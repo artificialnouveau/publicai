@@ -1,4 +1,4 @@
-# The Slow Boil: a minimalist text game
+# Airbus for AI: a minimalist text game
 
 Proposal for a playable companion to the Airbus for AI story.
 
@@ -55,9 +55,9 @@ Sixteen turns. A full run takes 15 to 25 minutes.
 
 ### Endings (computed from the scorecard when the Act lands)
 
-- Fragmentation: fewer than 3 states In. Everyone signs separately. The boil finished.
+- Fragmentation: fewer than 3 states In. Everyone signs separately. The window closed.
 - Vassal stability: coalition exists but compute under 2 EF; you bought managed access, not sovereignty.
-- The Slow Boil survived: 3 of 4 tracks past 50% of target; the Ether call happens with leverage.
+- The coalition survived: 3 of 4 tracks past 50% of target; the Ether call happens with leverage.
 - Airbus for AI: all 4 tracks past 60% and a lab anchored; the final dispatch is the chapter 11 call, rewritten as a founding meeting.
 
 Each ending renders as a final dispatch in story prose plus the player's FIG. 16: their run's scorecard, in the exact visual language of the site.
@@ -75,7 +75,7 @@ The game uses the site's existing figure system, no new chart styles:
 
 ```
 +--------------------------------------------------------------+
-|  THE SLOW BOIL                                  TURN 07/16   |
+|  AIRBUS FOR AI                                  TURN 07/16   |
 |  ----------------------------------------------------------  |
 |  Apr.16.2027 / Berlin                                        |
 |  Merz has stopped returning calls from Washington. His       |

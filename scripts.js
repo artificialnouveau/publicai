@@ -1,9 +1,9 @@
 // ============================================================
-// SCROLL OBSERVER + SIMULATION — bind scenes to viz pane and sim state
+// SCROLL OBSERVER + SIMULATION, bind scenes to viz pane and sim state
 // ============================================================
 (function(){
   // Sim config keyed by scene element id. Defaults are the passive/inaction
-  // option, so a reader who scrolls without interacting ends in "Slow Boil".
+  // option, so a reader who scrolls without interacting ends in the worst case.
   const SIM = {
     'scene-preface':    { type:'observe', label:'Why this scenario exists.' },
     'scene-nyc':        { type:'observe', label:'The flip switches.' },
@@ -435,11 +435,11 @@
             </div>
             <div class="design-summary-row">
               <span class="design-summary-row-label">Governance</span>
-              <span class="design-summary-row-value">${(GOVERNANCE.find(g=>g.id===shape.governance)||{}).name || '&mdash;'}</span>
+              <span class="design-summary-row-value">${(GOVERNANCE.find(g=>g.id===shape.governance)||{}).name || '&ndash;'}</span>
             </div>
             <div class="design-summary-row">
               <span class="design-summary-row-label">Mandate</span>
-              <span class="design-summary-row-value">${(SCOPE.find(s=>s.id===shape.scope)||{}).name || '&mdash;'}</span>
+              <span class="design-summary-row-value">${(SCOPE.find(s=>s.id===shape.scope)||{}).name || '&ndash;'}</span>
             </div>
             <div class="design-summary-row">
               <span class="design-summary-row-label">MVP</span>
@@ -521,7 +521,7 @@
   }
 
   // =====================================================================
-  // CHAPTER CHECKPOINTS — make the calls inside the story (FT Uber-Game
+  // CHAPTER CHECKPOINTS, make the calls inside the story (FT Uber-Game
   // style). Each decide-chapter ends with "Your call"; picking an option
   // writes the same simState the coalition designer reads, so Your
   // Coalition is already built by the time the reader reaches it.
@@ -569,7 +569,7 @@
 })();
 
 // ============================================================
-// SIGN-ON FORM — mailto fallback if Formspree id is the placeholder
+// SIGN-ON FORM, mailto fallback if Formspree id is the placeholder
 // ============================================================
 (function(){
   const form = document.getElementById('signonForm');
@@ -586,7 +586,7 @@
         'Outcome: ' + get('signonOutcome') + '\n\n' +
         get('signonReason')
       );
-      const subject = encodeURIComponent('Airbus for AI — sign-on');
+      const subject = encodeURIComponent('Airbus for AI, sign-on');
       window.location.href = 'mailto:hello@publicai.co?subject=' + subject + '&body=' + body;
       document.getElementById('signon').classList.add('is-submitted');
     }
@@ -596,7 +596,7 @@
 
 
 // ============================================================
-// COUNTRY MAP — orthographic globe; spins to the chapter's country on scroll
+// COUNTRY MAP, orthographic globe; spins to the chapter's country on scroll
 // ============================================================
 (function(){
   const root = document.getElementById('countryMap');
@@ -2075,7 +2075,7 @@
 })();
 
 // ============================================================
-// YOU DRAW IT — guess the number before the data shows it (NYT-style).
+// YOU DRAW IT, guess the number before the data shows it (NYT-style).
 // Five key stats get a guess slider inside their chapter; the reveal
 // compares intuition to the sourced figure, and the outcome section
 // totals the misses.
@@ -2167,7 +2167,7 @@
 })();
 
 // ============================================================
-// CAST CARDS — every chapter opens with its characters as small RPG-style
+// CAST CARDS, every chapter opens with its characters as small RPG-style
 // dossiers (archetype, claim to fame, defining trait), so readers can parse
 // who is speaking without holding the whole story in their head.
 // ============================================================
@@ -2262,7 +2262,7 @@ function castCat(key){ return (window.CastMarks && CastMarks.has(key)) ? CastMar
 })();
 
 // ============================================================
-// AARON'S DRIVE — take the hard drive in chapter 2, carry it in the rail,
+// AARON'S DRIVE, take the hard drive in chapter 2, carry it in the rail,
 // plug it in at the outcome to mount the real documents behind the fiction.
 // ============================================================
 (function(){
@@ -2331,7 +2331,7 @@ function castCat(key){ return (window.CastMarks && CastMarks.has(key)) ? CastMar
 })();
 
 // ============================================================
-// BRIEFING TOGGLE — every chapter flips between the fiction and a
+// BRIEFING TOGGLE, every chapter flips between the fiction and a
 // three-bullet policy briefing with its chart, for readers in policy mode.
 // ============================================================
 (function(){

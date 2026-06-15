@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230057FF'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A retro-styled 36-quarter AI policy strategy game. Pick a stance and balance Big Tech, citizens, military, and climate factions.">
 <title>AI GOVERNANCE SIMULATOR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -273,7 +275,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Press 
 .has-tip:hover::after{display:block}
 .sg.has-tip::after{left:100%;top:0;transform:none}
 
-/* Character hover cards — global floating tooltip */
+/* Character hover cards: global floating tooltip */
 #char-tip{display:none;position:fixed;background:#0a0a2a;border:2px solid var(--border);padding:8px;
   min-width:180px;max-width:220px;z-index:100;text-align:left;pointer-events:none;
   font-family:'Press Start 2P',monospace}
@@ -408,7 +410,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
 .arc-connector{flex-shrink:0;width:16px;display:flex;align-items:center;justify-content:center;
   color:var(--text3);font-size:8px;opacity:.4}
 
-/* Arc chip hover tooltip — positioned fixed via JS */
+/* Arc chip hover tooltip: positioned fixed via JS */
 .arc-tooltip-float{display:none;position:fixed;
   background:#0a0a2a;border:2px solid var(--border);padding:12px 14px;min-width:260px;max-width:340px;
   z-index:100;white-space:normal;text-align:left;
@@ -465,11 +467,11 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
       <div class="ih">Each quarter, a REAL AI CRISIS hits your desk. Choose your response.</div>
       <div class="ih">Your choices shift 14 STATS and your reputation with 4 FACTIONS.</div>
       <div class="ih">Allocate POLITICAL CAPITAL each round to boost priorities.</div>
-      <div class="ih">Survive 36 QUARTERS. If any faction revolts or a stat collapses — GAME OVER.</div>
+      <div class="ih">Survive 36 QUARTERS. If any faction revolts or a stat collapses: GAME OVER.</div>
     </div>
     <button class="intro-btn" onclick="startGame()">► PLAY MANUALLY</button>
     <div class="intro-auto">
-      <p class="intro-auto-label">— or pick a stance to auto-play —</p>
+      <p class="intro-auto-label">or pick a stance to auto-play</p>
       <div class="stance-btns">
         <button class="stance-btn sb-accel" onclick="startAutoPlay('accel')">⚡ ACCELERATIONIST</button>
         <button class="stance-btn sb-doomer" onclick="startAutoPlay('doomer')">💀 DOOMER</button>
@@ -493,7 +495,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
       <div class="top-stat has-tip" data-icon="🌍" data-tip="Global geopolitical stability. Threatened by AI arms races, chip wars, and unilateral actions." style="--ts-color:var(--purple)"><span class="top-stat-label">Stability</span><span class="top-stat-val" id="tp-stab">50</span><div class="top-stat-bar"><div class="top-stat-bar-fill" id="tpb-stab" style="width:50%;background:var(--purple)"></div></div></div>
     </div>
   </div>
-  <div id="autoplay-banner" onclick="stopAutoPlay()">⚡ AUTO-PLAYING AS <span id="ap-stance"></span> — click to take control</div>
+  <div id="autoplay-banner" onclick="stopAutoPlay()">⚡ AUTO-PLAYING AS <span id="ap-stance"></span>, click to take control</div>
   <div id="story-arc"></div>
 
   <div id="side-left">
@@ -1201,12 +1203,12 @@ const BREAKING_CONDITIONS=[
 // Character dialogue quotes - 2 happy + 2 angry per character
 const CHAR_DIALOGUES={
   tech:{
-    happy:["Finally, someone who understands that progress can't wait. Ship it, regulate later — that's how we got the internet!",
+    happy:["Finally, someone who understands that progress can't wait. Ship it, regulate later. That's how we got the internet!",
            "This is exactly the kind of bold policy we need. AGI isn't going to build itself... well, actually it might."],
     angry:["You're strangling the most important technology in human history with red tape. We'll move our operations overseas.",
            "Every regulation you pass gives China a six-month head start. Is that what you want for national security?"]},
   dario:{
-    happy:["Responsible scaling isn't just a slogan — it's the only path that doesn't end in catastrophe. Thank you for listening.",
+    happy:["Responsible scaling isn't just a slogan; it's the only path that doesn't end in catastrophe. Thank you for listening.",
            "Safety and progress aren't opposites. You've proven that today. The models will be better for it."],
     angry:["We built guardrails for a reason. Every shortcut you take is a bet with humanity's future as collateral.",
            "I've seen what happens when safety takes a backseat to speed. The next incident won't be contained."]},
@@ -1226,7 +1228,7 @@ const CHAR_DIALOGUES={
     angry:["Export controls don't work. China builds their own. We lose revenue AND security. Nobody wins.",
            "You're bottlenecking the entire AI revolution over geopolitics. The semiconductor supply chain can't survive this."]},
   thiel:{
-    happy:["Power respects power. This is how you maintain technological supremacy — no apologies, no hand-wringing.",
+    happy:["Power respects power. This is how you maintain technological supremacy: no apologies, no hand-wringing.",
            "Finally, someone who understands that civilization runs on progress, not on safety theater."],
     angry:["The Luddites are winning. Every safety regulation is a brick in the wall between us and the future.",
            "This is civilizational suicide by committee. History will not be kind to the cautious."]},
@@ -1234,7 +1236,7 @@ const CHAR_DIALOGUES={
     happy:["This gives me hope. When policy centers the people affected by AI, not just the people profiting from it, we all win.",
            "Accountability isn't anti-innovation. It's the foundation of trust. Today we proved that."],
     angry:["Once again, the most powerful technology in history is shaped by the most powerful people, not the most affected.",
-           "Communities are being experimented on without consent. This isn't governance — it's corporate colonialism."]},
+           "Communities are being experimented on without consent. This isn't governance; it's corporate colonialism."]},
   green:{
     happy:["The planet can breathe a little easier today. AI doesn't have to mean environmental destruction.",
            "Every megawatt saved is a glacier preserved. This is what climate-conscious tech policy looks like."],
@@ -1248,7 +1250,7 @@ const CHAR_DIALOGUES={
   asml:{
     happy:["Free trade in technology benefits everyone. Our EUV machines work best when the whole world innovates together.",
            "Good policy keeps supply chains stable. We can ship to our customers and everyone prospers."],
-    angry:["Export controls are destroying our order book. You can't contain knowledge — you can only lose market share.",
+    angry:["Export controls are destroying our order book. You can't contain knowledge; you can only lose market share.",
            "We spent decades building the most complex machines on Earth. Now politics decides who gets to use them."]},
   tsmc:{
     happy:["Stability means we can keep fabricating. The world needs chips, and we need peace to make them.",
@@ -1256,9 +1258,9 @@ const CHAR_DIALOGUES={
     angry:["We sit on the most dangerous fault line in technology. Every escalation threatens 90% of the world's advanced chips.",
            "If tensions keep rising, the semiconductor supply chain collapses. No one is prepared for that."]},
   workers:{
-    happy:["Someone finally sees us. We're not just data points — we're the humans who make AI possible.",
+    happy:["Someone finally sees us. We're not just data points; we're the humans who make AI possible.",
            "Fair wages, mental health support, recognition. That's all we're asking for. Today you delivered."],
-    angry:["We label the data, moderate the horrors, train the models — and we're invisible. Two dollars an hour. Remember that.",
+    angry:["We label the data, moderate the horrors, train the models, and we're invisible. Two dollars an hour. Remember that.",
            "Every AI output has human labor behind it. Exploited, traumatized, underpaid labor. When does it end?"]}
 };
 
@@ -1907,7 +1909,7 @@ function getWinText(){
 const ARC_STORIES={
   faction_allied:{
     tech:'Silicon Valley rallied behind you. Sam Altman called it "the partnership of the century." Tech lobbying now works in your favor.',
-    citizens:'The people marched — but this time in your support. Timnit Gebru praised your leadership. Public opinion is your shield now.',
+    citizens:'The people marched, but this time in your support. Timnit Gebru praised your leadership. Public opinion is your shield now.',
     military:'The Pentagon considers you a trusted ally. Classified briefings land on your desk. Military resources flow to your priorities.',
     green:'Greta Thunberg called your policies "a blueprint for the future." Green subsidies are reshaping the energy grid in your favor.'},
   faction_hostile:{
@@ -1916,7 +1918,7 @@ const ARC_STORIES={
     military:'The Pentagon stopped returning your calls. Classified AI weapons programs now operate without your oversight. You\'ve lost control.',
     green:'Greta Thunberg named you in a viral speech. Environmental groups filed coordinated lawsuits. Your data center plans are dead.'},
   faction_warming:{
-    tech:'Tech CEOs are starting to nod along at your press conferences. The relationship is thawing — keep it up.',
+    tech:'Tech CEOs are starting to nod along at your press conferences. The relationship is thawing. Keep it up.',
     citizens:'Community organizers are cautiously optimistic. Town halls are getting friendlier. The public is watching closely.',
     military:'Defense officials have started inviting you to strategy meetings. Respect is building, but it\'s fragile.',
     green:'Environmental groups mentioned your policies favorably in a report. It\'s a small win, but the Greens are paying attention.'},
@@ -1926,8 +1928,8 @@ const ARC_STORIES={
     military:'Defense officials questioned your competence in a leaked memo. The relationship is deteriorating fast.',
     green:'Environmentalists staged a small protest outside your office. It\'s just the beginning if you don\'t change course.'},
   stat_crisis:{
-    innovation:'The brightest minds are leaving the country. Lab after lab goes dark. The innovation engine that powered your agenda has stalled — possibly for good.',
-    gdp:'Markets are in freefall. Pension funds wiped out overnight. Economists compare it to 2008, but worse — because this time, the machines did it.',
+    innovation:'The brightest minds are leaving the country. Lab after lab goes dark. The innovation engine that powered your agenda has stalled, possibly for good.',
+    gdp:'Markets are in freefall. Pension funds wiped out overnight. Economists compare it to 2008, but worse, because this time, the machines did it.',
     public_trust:'Nobody believes a word you say anymore. Every announcement is met with mockery or rage. Governing without trust is like building on quicksand.',
     global_stability:'The international order is fracturing. Former allies are arming independently. One miscalculation and this becomes a shooting war.',
     unemployment:'Breadlines form outside automation centers. A generation of workers has been discarded. The social fabric is tearing at the seams.',
@@ -1948,7 +1950,7 @@ const ARC_STORIES={
     carbon:'Green computing initiatives slashed emissions. Data centers run on renewables. Your environmental record is a model for the world.',
     water:'Innovative cooling systems cut water usage dramatically. The tech sector is finally sustainable. Environmentalists are cautiously celebrating.'},
   stat_rising_bad:{
-    unemployment:'Layoff announcements are becoming a weekly ritual. The trend lines are ominous — this could become a full-blown crisis.',
+    unemployment:'Layoff announcements are becoming a weekly ritual. The trend lines are ominous. This could become a full-blown crisis.',
     safety_incidents:'Near-misses are becoming more frequent. It\'s only a matter of time before something goes catastrophically wrong.',
     arms_race:'Military budgets are climbing. AI weapons programs are expanding. The arms race is quietly accelerating.',
     misinformation:'Deepfakes are getting better. Fact-checkers can\'t keep up. The information environment is deteriorating.',
@@ -1960,7 +1962,7 @@ const ARC_STORIES={
     public_trust:'People are starting to come around. Trust is rebuilding, slowly but visibly.',
     global_stability:'Diplomatic channels are opening up. International cooperation is gaining momentum.'},
   stat_dropping_bad:{
-    innovation:'Funding is drying up. Researchers are leaving for the private sector — or other countries entirely.',
+    innovation:'Funding is drying up. Researchers are leaving for the private sector, or other countries entirely.',
     gdp:'Economic warning signs everywhere. Consumer confidence is sliding.',
     public_trust:'Trust is eroding. Small scandals that once would have been forgiven now spark outrage.',
     global_stability:'Cracks in the international coalition are widening. Allies are hedging their bets.'},
@@ -1992,7 +1994,7 @@ function choiceNarrative(ch){
   let verb;
   if(topV>0)verb=bad?(phrases_up_bad[topK]||`raising ${name}`):(phrases_up[topK]||`raising ${name}`);
   else verb=bad?(phrases_down[topK]||`lowering ${name}`):(phrases_down[topK]||`lowering ${name}`);
-  let sentence=`A bold move — ${verb}`;
+  let sentence=`A bold move: ${verb}`;
   if(sorted.length>1){
     const s2=sorted[1];const n2=SN[s2[0]]||s2[0];
     const bad2=badStats.includes(s2[0]);
@@ -2038,7 +2040,7 @@ function checkStoryArc(ch){
         detail:bad?ARC_STORIES.stat_surge[k]:ARC_STORIES.stat_crisis[k],cls:bad?'arc-good':'arc-bad'});
   });
 
-  // Stat crosses danger zone (>60 or <25) — early warning
+  // Stat crosses danger zone (>60 or <25): early warning
   Object.keys(critStats).forEach(k=>{
     const bad=badStats.includes(k);
     if(S[k]>60&&(prevS[k]||50)<=60&&S[k]<=80){
@@ -2225,10 +2227,10 @@ function generateRecap(){
   // Outlook
   const goodCount=Object.keys(DEF).filter(k=>badStats.includes(k)?S[k]<30:S[k]>60).length;
   const crisisCount=Object.keys(DEF).filter(k=>badStats.includes(k)?S[k]>70:S[k]<25).length;
-  const outlook=goodCount>=8?'The outlook is bright — your policies are working.':
-    goodCount>=5?'The situation is mixed — challenges remain.':
+  const outlook=goodCount>=8?'The outlook is bright. Your policies are working.':
+    goodCount>=5?'The situation is mixed. Challenges remain.':
     crisisCount>=3?'Multiple crises are spiraling. Drastic action needed.':
-    'The outlook is grim — your leadership is being questioned.';
+    'The outlook is grim. Your leadership is being questioned.';
   html+=`<div class="recap-section"><h4>Outlook</h4><p>${outlook}</p></div>`;
   return html;
 }
@@ -2236,7 +2238,7 @@ function generateRecap(){
 // === ENHANCED END SCREEN ===
 function getArcNarrative(){
   if(!storyArc.length)return'';
-  // Show the most impactful moments (good, bad, and neutral — up to 8)
+  // Show the most impactful moments (good, bad, and neutral, up to 8)
   const important=storyArc.filter(e=>e.cls!=='arc-neutral').concat(
     storyArc.filter(e=>e.cls==='arc-neutral')
   ).slice(0,8);
@@ -2983,11 +2985,11 @@ const WorldView=(function(){
     rect(0,groundY,W,4,'#2a3a2a');
 
     const sc=Math.max(1,Math.floor(h/30));
-    // People count based on AI services — more people now
+    // People count based on AI services: more people now
     const pplCount=Math.max(4,Math.min(14,Math.floor(ai/7)));
     const spacing=Math.floor(W/(pplCount+1));
 
-    // Mix of sprites based on trust — vary per person
+    // Mix of sprites based on trust: vary per person
     const userSprites=['user_happy','user_worried','user_angry'];
     function pickUserSprite(i){
       if(trust>60)return i%5===0?'user_worried':'user_happy';

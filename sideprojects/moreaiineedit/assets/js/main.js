@@ -37,7 +37,7 @@ const MYSTERY_SERVICES = [
     {
         icon: '🚽',
         title: 'Kohler PureWash AI Smart Toilet',
-        desc: 'Voice-controlled bidet with personalized wash profiles. "Alexa, wash my—" You get the idea. $400+ for AI-powered cleanliness.'
+        desc: 'Voice-controlled bidet with personalized wash profiles. "Alexa, wash my..." You get the idea. $400+ for AI-powered cleanliness.'
     },
     {
         icon: '🚲',

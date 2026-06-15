@@ -1,4 +1,4 @@
-// The Slow Boil — engine.
+// Airbus for AI, the negotiation game: engine.
 // One turn = one month. Two actions a month. The Act lands somewhere
 // in turns 13-16; the scorecard at that moment decides the ending.
 
@@ -140,7 +140,11 @@
     O: ['███', '█ █', '█ █', '█ █', '███'],
     W: ['█ █', '█ █', '█ █', '███', '█ █'],
     B: ['██ ', '█ █', '██ ', '█ █', '██ '],
-    I: ['███', ' █ ', ' █ ', ' █ ', '███']
+    I: ['███', ' █ ', ' █ ', ' █ ', '███'],
+    A: ['███', '█ █', '███', '█ █', '█ █'],
+    R: ['██ ', '█ █', '██ ', '█ █', '█ █'],
+    U: ['█ █', '█ █', '█ █', '█ █', '███'],
+    F: ['███', '█  ', '██ ', '█  ', '█  ']
   };
 
   function logoLines (text) {
@@ -155,7 +159,7 @@
   // The logotype ignites: filled cells appear in random order, with a few
   // sparking glyphs running ahead of the burn.
   function buildLogo (el) {
-    const final = logoLines('THE SLOW BOIL');
+    const final = logoLines('AIRBUS FOR AI');
     if (!canAnimate || reducedMotion()) { el.textContent = final; return; }
     const chars = final.split('');
     const targets = [];
@@ -233,7 +237,7 @@
       status + (standby > 0 ? '\nPOOL to energize the rack' : '');
   }
 
-  // The slow boil: the simmer line is the mood, the lines under it are the
+  // The pressure gauge: the status line is the mood, the lines under it are the
   // facts. Timeline of 16 months, the Act window, and the time you have left.
   function renderBoil () {
     const el = $('#gBoil');
@@ -291,12 +295,12 @@
       : (S.turn >= 13
         ? 'the Act can land any month now'
         : 'the Act lands in ' + lo + ' to ' + hi + ' months');
-    const word = S.over ? 'boiled over' : (S.turn >= 13 ? 'boiling' : heat > 0.5 ? 'simmering' : 'warming');
+    const word = S.over ? 'past the deadline' : (S.turn >= 13 ? 'critical' : heat > 0.5 ? 'rising' : 'low');
     el.innerHTML =
       '<svg class="gx-art" viewBox="0 0 34 22" shape-rendering="crispEdges" aria-hidden="true">' + r + '</svg>' +
       'month ' + turn + ' of 16 \u00B7 red cells = the Act window\n' +
       eta + '\n' +
-      'the water is ' + word + ' \u00B7 heat ' + Math.round(heat * 100) + '%';
+      'pressure ' + word + ' \u00B7 ' + Math.round(heat * 100) + '%';
   }
 
   // Text renders instantly: the decode/typewriter reveals were removed as
@@ -1150,7 +1154,7 @@
   })();
   buildLogo($('#gLogo'));
 
-  // The water simmers, the racks blink, the marked phrases slip, each on its
+  // The gauge ticks, the racks blink, the marked phrases slip, each on its
   // own quiet clock (browser only; static under reduced motion).
   if (canAnimate && !reducedMotion()) {
     setInterval(renderBoil, 600);
