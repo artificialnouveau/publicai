@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Young Serif';
+    src: url('fonts/YoungSerif-Variable.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
 :root {
     --ink: #F8F6F1;
     --paper-2: #F0EDE7;
@@ -19,6 +26,7 @@
     --navy-3: #0057FF;
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --serif: 'Spectral', Georgia, 'Times New Roman', serif;
+    --display: 'Young Serif', Georgia, 'Times New Roman', serif;
     --mono: 'JetBrains Mono', monospace;
     /* Dock heights — tuned in JS too. */
     --dock-collapsed: 48px;
@@ -90,8 +98,6 @@
       scroll-behavior: auto !important;
     }
     html { scroll-behavior: auto; }
-    .hero-arrow { animation: none; }
-    .hero-eyebrow .dot { animation: none; opacity: 1; }
   }
   /* sr-only utility for visually-hidden but screen-reader-readable text */
   .sr-only {
@@ -171,21 +177,10 @@
     color: #ffffff; position: relative; overflow: hidden;
     border-bottom: 1px solid var(--hairline);
   }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 0.55rem;
-    font-family: var(--mono);
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.7); margin-bottom: 1.75rem;
-  }
-  .hero-eyebrow .dot {
-    width: 6px; height: 6px; border-radius: 50%; background: #00b4d8;
-    animation: blink 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
   .hero h1 {
-    font-family: var(--serif); font-weight: 600;
+    font-family: var(--display); font-weight: 400;
     font-size: clamp(2.4rem, 5.5vw, 4.75rem);
-    line-height: 1.05; letter-spacing: -0.02em;
+    line-height: 1.04; letter-spacing: -0.01em;
     margin-bottom: 1.4rem; color: #ffffff;
     max-width: 14ch;
   }
@@ -229,13 +224,6 @@
     font-weight: 700;
   }
   .hero-meta a:hover .hero-meta-num { color: #00b4d8; }
-  .hero-arrow {
-    margin-top: 2.25rem;
-    font-size: 1.3rem; color: rgba(255,255,255,0.45);
-    animation: bob 2.5s ease-in-out infinite;
-  }
-  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
-
   /* === EXPERIENCE SHELL (story + viz as centered pair) === */
   .experience-shell {
     max-width: min(1280px, 94vw);
@@ -2155,7 +2143,6 @@
       max-width: 100%;
     }
     .hero-meta a { white-space: normal; line-height: 1.35; }
-    .hero-arrow { margin-top: 1.75rem; }
     .story { padding: 3rem 1.25rem var(--dock-peek); }
     .scene { margin-bottom: 4.5rem; }
     .scene-prose p { font-size: 1.04rem; }

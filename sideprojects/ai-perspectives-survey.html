@@ -511,14 +511,17 @@
             measurementId: "G-4FQYY56ZYN"
         };
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
+        // Only initialize when a real key is present; the redacted placeholder
+        // would half-initialize and then fail on first write.
+        const firebaseConfigured = firebaseConfig.apiKey && !/^(YOUR_API_KEY|REDACTED)/.test(firebaseConfig.apiKey);
+        if (firebaseConfigured && !firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        const db = firebase.firestore();
+        const db = firebaseConfigured ? firebase.firestore() : null;
 
         // Save function
         const saveToFirebase = async (data) => {
+            if (!db) { return; }
             try {
                 await db.collection('ai_perspectives_survey').add({
                     ...data,
@@ -778,17 +781,21 @@
                     });
 
                     // Fetch all results from Firebase (don't block on this)
-                    db.collection('ai_perspectives_survey')
-                        .get()
-                        .then(snapshot => {
-                            const allData = snapshot.docs.map(doc => doc.data());
-                            console.log('Fetched all results:', allData.length);
-                            setAllResults(allData);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching results:', error);
-                            setAllResults([]);
-                        });
+                    if (db) {
+                        db.collection('ai_perspectives_survey')
+                            .get()
+                            .then(snapshot => {
+                                const allData = snapshot.docs.map(doc => doc.data());
+                                console.log('Fetched all results:', allData.length);
+                                setAllResults(allData);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching results:', error);
+                                setAllResults([]);
+                            });
+                    } else {
+                        setAllResults([]);
+                    }
 
                     // Show results immediately
                     console.log('Setting showResults to true');
@@ -1028,7 +1035,7 @@
                             </div>
 
                             <div className="persona-reveal">
-                                <h3>🎁 All 8 Compass Directions</h3>
+                                <h3>🎁 All 4 Compass Directions</h3>
                                 <p style={{marginBottom: '20px', fontSize: '0.95rem'}}>
                                     Now that you've completed the survey, here are all possible perspectives:
                                 </p>

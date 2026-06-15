@@ -128,7 +128,7 @@
     },
     {
       name: 'Cohere',   country: 'Canada',  type: 'Private champion',
-      evidence: '~$240M ARR; AMD-backed Series E.',
+      evidence: '~$240M ARR; AMD-backed Series D.',
       gate: 'In when Canada is in. Activated by <strong>Ottawa</strong> = <em>EU + Canada</em> or <em>EU + Five Eyes</em>.',
     },
     {
@@ -1038,7 +1038,19 @@
     if (!chart) return false;
     pop.innerHTML = '';
     if (name){ const t=document.createElement('div'); t.className='viz-pop-title'; t.textContent=name.textContent; pop.appendChild(t); }
-    pop.appendChild(chart.cloneNode(true));
+    const clone = chart.cloneNode(true);
+    // cloneNode copies a <canvas> element but not its rendered bitmap, so the
+    // two canvas-backed charts (viz-capital, viz-talent) would clone blank.
+    // Copy the pixels across so their popovers aren't empty boxes.
+    const srcCanvases = chart.querySelectorAll('canvas');
+    const dstCanvases = clone.matches && clone.matches('canvas') ? [clone] : clone.querySelectorAll('canvas');
+    srcCanvases.forEach((src, i) => {
+      const dst = dstCanvases[i];
+      if (!dst || !src.width || !src.height) return;
+      dst.width = src.width; dst.height = src.height;
+      try { dst.getContext('2d').drawImage(src, 0, 0); } catch (e) {}
+    });
+    pop.appendChild(clone);
     return true;
   }
   function place(trigger){
@@ -1140,7 +1152,7 @@
   }
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { return; }
     ctx.clearRect(0,0,W,H);
     const fs=Math.max(7.5, Math.min(9, W*0.018));
     const lfs=Math.max(9.5, Math.min(11, W*0.021));
@@ -1170,9 +1182,17 @@
       const labelY=Math.max(26,ny-12);
       pill(n.label,labelX,labelY,align,'600 '+lfs+'px Inter, sans-serif','rgba(10,10,10,0.78)');
     });});
-    if (!reduceMotion) requestAnimationFrame(draw);
   }
-  draw();
+  // Only animate while the canvas is on-screen and the tab is visible, so the
+  // RAF loop doesn't burn CPU/battery for the whole (long) page.
+  let running=false, inView=false;
+  function tick(){ if (reduceMotion || document.hidden || !inView){ running=false; return; } draw(); requestAnimationFrame(tick); }
+  function start(){ if (!running){ running=true; requestAnimationFrame(tick); } }
+  if (reduceMotion){ draw(); }
+  else if (window.IntersectionObserver){
+    new IntersectionObserver(es=>{ inView=es[0].isIntersecting; if (inView) start(); else draw(); }).observe(canvas);
+    document.addEventListener('visibilitychange',()=>{ if (!document.hidden) start(); });
+  } else { inView=true; start(); }
 })();
 
 // --- Talent Migration flow (restored) ---
@@ -1194,13 +1214,13 @@
   resize();window.addEventListener('resize',resize);
   if (window.ResizeObserver) new ResizeObserver(() => { resize(); if (reduceMotion) draw(); }).observe(canvas);
   const educated=[{label:'EU-West',y:0.14,col:'#0057FF',pct:'22%'},{label:'EU-East',y:0.28,col:'#0057FF',pct:'8%'},{label:'UK / CH',y:0.42,col:'#8e8e8e',pct:'12%'},{label:'China',y:0.56,col:'#6a6a6a',pct:'29%'},{label:'India',y:0.70,col:'#7a7a7a',pct:'11%'},{label:'US',y:0.84,col:'#4a4a4a',pct:'18%'}];
-  const working=[{label:'Work in US',y:0.20,col:'#b8002e',pct:'~60%'},{label:'Work in EU',y:0.42,col:'#0057FF',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#8e8e8e',pct:'~10%'},{label:'China',y:0.74,col:'#6a6a6a',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'#7a7a7a',pct:'~5%'}];
+  const working=[{label:'Work in US',y:0.20,col:'#b8002e',pct:'~57%'},{label:'Work in EU',y:0.42,col:'#0057FF',pct:'~15%'},{label:'UK / CH',y:0.58,col:'#8e8e8e',pct:'~10%'},{label:'China',y:0.74,col:'#6a6a6a',pct:'~10%'},{label:'Elsewhere',y:0.88,col:'#7a7a7a',pct:'~5%'}];
   const flows=[{from:0,to:0,w:0.10},{from:0,to:1,w:0.08},{from:0,to:2,w:0.03},{from:1,to:0,w:0.03},{from:1,to:1,w:0.04},{from:2,to:0,w:0.05},{from:2,to:2,w:0.05},{from:3,to:0,w:0.14},{from:3,to:3,w:0.10},{from:3,to:1,w:0.03},{from:4,to:0,w:0.06},{from:4,to:2,w:0.02},{from:4,to:4,w:0.02},{from:5,to:0,w:0.14},{from:5,to:4,w:0.03}];
   let particles=flows.map(()=>Math.random());
   function bezPt(a,b,c,d,s){const s2=1-s;return s2*s2*s2*a+3*s2*s2*s*b+3*s2*s*s*c+s*s*s*d;}
   function draw(){
     const dpr=window.devicePixelRatio||1;ctx.setTransform(dpr,0,0,dpr,0,0);const W=canvas.width/dpr,H=canvas.height/dpr;
-    if (W < 4 || H < 4) { requestAnimationFrame(draw); return; }
+    if (W < 4 || H < 4) { return; }
     ctx.clearRect(0,0,W,H);
     const insetPx = W < 380 ? 80 : 100;
     const LX = Math.max(0.18, insetPx / W);
@@ -1236,9 +1256,16 @@
       ctx.textAlign='left';ctx.font='600 '+lfs+'px Inter, sans-serif';ctx.fillStyle='rgba(10,10,10,0.75)';ctx.fillText(n.label,RX*W+14,n.y*H+4);
       ctx.font=pfs+'px JetBrains Mono, monospace';ctx.fillStyle=n.col;ctx.fillText(n.pct,RX*W+14,n.y*H+18);
     });
-    if (!reduceMotion) requestAnimationFrame(draw);
   }
-  draw();
+  // Only animate while on-screen and the tab is visible (see Capital Flow above).
+  let running=false, inView=false;
+  function tick(){ if (reduceMotion || document.hidden || !inView){ running=false; return; } draw(); requestAnimationFrame(tick); }
+  function start(){ if (!running){ running=true; requestAnimationFrame(tick); } }
+  if (reduceMotion){ draw(); }
+  else if (window.IntersectionObserver){
+    new IntersectionObserver(es=>{ inView=es[0].isIntersecting; if (inView) start(); else draw(); }).observe(canvas);
+    document.addEventListener('visibilitychange',()=>{ if (!document.hidden) start(); });
+  } else { inView=true; start(); }
 })();
 
 // --- Section -> chart connectors: hover a decision section to draw a dotted line
@@ -2038,7 +2065,13 @@
   window.addEventListener('scroll', pickActive, { passive: true });
   window.addEventListener('resize', pickActive);
   pickActive();
-  if (!reduced) setInterval(draw, 150);
+  // Pause the ticker when the tab is backgrounded so it doesn't run ~6.7x/sec
+  // for the lifetime of the page.
+  let ticker = null;
+  function startTicker () { if (!reduced && !ticker) ticker = setInterval(draw, 150); }
+  function stopTicker () { if (ticker) { clearInterval(ticker); ticker = null; } }
+  document.addEventListener('visibilitychange', () => { document.hidden ? stopTicker() : startTicker(); });
+  startTicker();
 })();
 
 // ============================================================
@@ -2198,7 +2231,7 @@ function castCat(key){ return (window.CastMarks && CastMarks.has(key)) ? CastMar
       { art: 'coalition', name: 'The Coalition of the Doomed', cls: 'conference call', claim: 'prime ministers, chancellors, commissioners, VCs', trait: 'nobody signed' }
     ]
   };
-  function esc (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function esc (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
   // Stable case number per character, in order of first appearance.
   let caseNo = 0; const caseId = {};
   Object.keys(CAST).forEach(id => CAST[id].forEach(c => {

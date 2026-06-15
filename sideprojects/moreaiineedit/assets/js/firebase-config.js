@@ -25,8 +25,12 @@ const firebaseConfig = {
 let firebaseInitialized = false;
 let db = null;
 
+// Treat the unconfigured placeholder and the redacted key as "not configured"
+// so we don't half-initialize Firebase with a key that will fail on first write.
+const firebaseConfigured = firebaseConfig.apiKey && !/^(YOUR_API_KEY|REDACTED)/.test(firebaseConfig.apiKey);
+
 try {
-    if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+    if (firebaseConfigured) {
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
         firebaseInitialized = true;

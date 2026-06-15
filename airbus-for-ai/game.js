@@ -101,7 +101,7 @@
 
   // ---------- rendering ----------
 
-  function esc (s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function esc (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
   function monthRule () {
     const el = document.createElement('div');
@@ -801,7 +801,7 @@
       'Migrate a slice of public-sector cloud off the US hyperscalers. With 4 or more slices when the Act lands, a Vassal verdict softens into Survived. You have ' + (S.hedges || 0) + '.',
       lockWhy(1), doHedge));
     if (S.summitUnlocked) {
-      const sumLock = S.actionsLeft !== ACTIONS_PER_TURN
+      const sumLock = S.actionsLeft !== (S.actionsTotal || ACTIONS_PER_TURN)
         ? 'Needs a whole untouched month: make it your first move, before spending any action.'
         : (S.influence < 1 ? 'Not enough influence: costs 1, you have ' + S.influence + '.' : '');
       bar.appendChild(choiceRow(n++, 'Summit', '1 influence · whole month',
@@ -889,7 +889,9 @@
 
   function doSummit () {
     pushUndo();
-    spend(ACTIONS_PER_TURN, 1);
+    // "Whole month": consume every move this turn, including any bonus action
+    // (the Paris event grants a 3rd), not just the base two.
+    spend(S.actionsTotal || ACTIONS_PER_TURN, 1);
     S.warm = 2;
     const out = Object.keys(S.states).filter(k => S.states[k].commit === 0);
     if (out.length) {
