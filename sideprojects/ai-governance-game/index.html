@@ -485,7 +485,7 @@ body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
 <div id="game">
   <div id="topbar">
     <div class="logo"><span class="logo-icon">🏛️</span><h1>AI GOV SIMULATOR</h1></div>
-    <span id="round-pill">Q1/20</span>
+    <span id="round-pill">Q1/36</span>
     <button id="recap-btn" onclick="showRecap()">📖</button>
     <div id="capital-hud"></div>
     <div class="top-stats">
@@ -1870,7 +1870,7 @@ function renderEnd(win,reasons){
   </div>
   <div class="end">
     <div class="end-title ${win?'win':'lose'}">${win?'YOU SURVIVED!':'GAME OVER'}</div>
-    <div class="end-sub">${win?'All 20 quarters as':'Lasted '+round+'/'+maxR+' as'} "${title}"</div>
+    <div class="end-sub">${win?'All '+maxR+' quarters as':'Lasted '+round+'/'+maxR+' as'} "${title}"</div>
     <div class="end-story">${win?getWinText():reasons.join('<br>')}${getArcNarrative()}</div>
     <div class="end-grid">
       <div class="end-s"><div class="end-sl">INN</div><div class="end-sv">${S.innovation}</div></div>

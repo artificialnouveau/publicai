@@ -67,6 +67,7 @@ Hot reload isn't necessary because there's no build step; just refresh the brows
 
 - Fellowship convener: [MetaGov](https://metagov.org/).
 - Project partner: [Public AI](https://publicai.co/about).
-- Fellowship leads: [Joshua Tan](https://metagov.org/people/joshua-tan) (MetaGov, Public AI) and [Andy Reischling](https://www.andrewreischling.com/).
+- Fellowship lead: [Joshua Tan](https://metagov.org/people/joshua-tan) (MetaGov, Public AI).
 - Creative Technologist Fellow: [Ahnjili ZhuParris](https://artificialnouveau.com).
+- Creative Fellow: [Andy Reischling](https://www.andrewreischling.com/).
 - Source brief: Tan, J., Jackson, B., Berjon, R. and Coyle, D. (2025). *Airbus for AI: A global strategy for public value creation.* Bennett School of Public Policy, University of Cambridge. [PDF](https://publicai.co/airbus-for-ai.pdf).
