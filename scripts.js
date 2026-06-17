@@ -1716,10 +1716,24 @@
   if (!grid) return;
   const BASE = 70;
   function apply(){
-    // Cards flow normally. The previous sticky-pile accumulated a per-card top
-    // offset with no cap, so with ~18 cards the stacked headers grew taller than
-    // the viewport and trapped scrolling past the first few. Clear any pinning.
-    Array.from(grid.children).forEach(el => { el.style.top = ''; el.style.zIndex = ''; });
+    const kids = Array.from(grid.children).filter(
+      el => el.classList.contains('viz-card') || el.classList.contains('story-act')
+    );
+    kids.sort((a, b) =>
+      (parseInt(getComputedStyle(a).order, 10) || 0) - (parseInt(getComputedStyle(b).order, 10) || 0)
+    );
+    // Pin each card with an accumulating peek strip, but CAP the offset so the
+    // stacked headers never grow taller than the viewport. An uncapped stack
+    // (BASE + 58 per card across ~18 cards) exceeded the viewport and trapped
+    // scrolling. Past the cap, later cards pin at the same offset and cover the
+    // ones beneath, so the pile always stays scrollable to the end.
+    const cap = Math.max(BASE + 174, Math.round(window.innerHeight * 0.42));
+    let top = BASE;
+    kids.forEach((el, i) => {
+      el.style.top = Math.min(top, cap) + 'px';
+      el.style.zIndex = String(i + 1); // later (visual) cards sit on top
+      top += el.classList.contains('story-act') ? 48 : 58;
+    });
   }
   grid.classList.add('is-stack');
   apply();

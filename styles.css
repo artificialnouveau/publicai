@@ -2243,7 +2243,7 @@
 /* Live coalition readout above the decisions (makes member-linked data visible). */
 .coalition-live {
   position: sticky;
-  top: 0.75rem;
+  top: calc(56px + 0.75rem);
   z-index: 6;
   background: var(--paper, #fff);
   border: 1px solid var(--hairline-strong, rgba(10,10,10,0.18));
@@ -2258,6 +2258,11 @@
   letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--text-soft); margin-bottom: 0.55rem;
 }
+.cl-legend {
+  font-family: var(--mono); font-size: 0.6rem; line-height: 1.55;
+  color: var(--text-soft); margin: 0.55rem 0 0.1rem;
+}
+.cl-legend b { color: var(--text-muted); font-weight: 700; }
 .coalition-live-stats { display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; }
 .cl-stat { display: flex; flex-direction: column; line-height: 1.1; }
 .cl-stat b { font-family: var(--serif); font-size: 1.55rem; font-weight: 600; color: var(--accent); font-style: normal; }
@@ -2306,7 +2311,7 @@
 .supporting-data-grid.is-stack::before { display: none; }            /* drop the dotted spine */
 .supporting-data-grid.is-stack > .viz-card,
 .supporting-data-grid.is-stack > .story-act {
-  position: relative;
+  position: sticky;
   margin-left: 0;
   margin-bottom: 16px;
   background: var(--paper, #fff);
