@@ -398,6 +398,7 @@
   .g-intro { max-width: 62ch; margin-bottom: 1.6rem; }
   .g-intro h1 { font-family: var(--serif); font-weight: 600; font-size: 2rem; line-height: 1.2; margin-bottom: 0.6rem; }
   .g-intro p { font-family: var(--serif); font-size: 1rem; line-height: 1.7; margin-bottom: 0.6rem; }
+  .g-intro a { color: var(--accent); }
   .g-intro .g-how { font-family: var(--mono); font-size: 0.68rem; line-height: 1.8; color: var(--text-soft); }
   #gEnd {
     margin: 1.5rem 0; padding: 1.2rem 1.4rem; max-width: 62ch;
@@ -415,6 +416,9 @@
   .g-end-goal.miss { color: var(--coral); }
   .g-end-left { font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text-soft); }
   #gEndStats { font-family: var(--mono); font-size: 0.66rem; color: var(--text-soft); margin-top: 0.8rem; border-top: 1px solid var(--hairline); padding-top: 0.55rem; }
+  #gEndReality { margin-top: 1rem; border-top: 1px solid var(--hairline); padding-top: 0.7rem; }
+  #gEndReality p { font-family: var(--serif); font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0.5rem; }
+  #gEndReality a { color: var(--accent); }
 
   @media (prefers-reduced-motion: reduce) {
     .g-slot.fill { animation: none; }
@@ -503,6 +507,7 @@
       <pre class="g-logo" id="gLogo" aria-hidden="true"></pre>
       <h1>Sixteen months. Ten states. One phone.</h1>
       <p>You are the convener. Roughly 80% of the world&rsquo;s consumer AI prompts run through a single US lab, and somewhere in Washington a draft is circulating that will price access by allegiance. You have until it lands, sometime in the dashed months above, to pool enough compute, capital, talent and languages to matter.</p>
+      <p>It is a game, but the proposal is real: the Bennett School&rsquo;s <a href="../research.html">Airbus for AI</a> brief, with the numbers drawn from the <a href="../index.html">story&rsquo;s sourced data</a>.</p>
       <p class="g-how">Two moves a month. COURT states toward In. POOL their compute once two are in. FUND a lab before Washington buys it. HEDGE the cloud. Every move is paid for in influence, your political currency: you start with 3, gain 2 each new month, and HOLD banks an extra 1. The dashed coral slots are the credible minimum, not parity. Keys 1-9 work. If you made calls while reading the story, the game starts from them.</p>
     </div>
     <div class="g-log" id="gLog" aria-live="polite"></div>
@@ -514,6 +519,11 @@
       <div id="gEndLeft"></div>
       <div id="gEndStats"></div>
       <div id="gEndDoc"></div>
+      <div id="gEndReality">
+        <div class="g-end-section">What&rsquo;s real here</div>
+        <p>The compute gap is real: the EU&rsquo;s EuroHPC supercomputers run separately under each host state, while a single US training cluster dwarfs them even pooled. The Digital Liberty Act is fiction, but the US AI Diffusion Rule (January 2025) really did sort the world into tiers of chip access, and the CLOUD Act lets US authorities reach data held by US providers anywhere. Mistral, Cohere, Helsing, and Aleph Alpha are real European labs. The coalition is the open question.</p>
+        <p><a href="../research.html">Read the story and its sources &rarr;</a></p>
+      </div>
     </div>
   </section>
 
