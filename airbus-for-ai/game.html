@@ -118,6 +118,8 @@
   .g-dot.window { border-style: dashed; border-color: var(--coral); }
   .g-dot.done { background: var(--accent); border-color: var(--accent); }
   .g-dot.now { background: var(--text); border-color: var(--text); }
+  .g-rail-legend { text-align: center; font-family: var(--mono); font-size: 0.58rem; color: var(--text-soft); letter-spacing: 0.03em; margin-top: 0.5rem; }
+  .g-rail-legend b { font-weight: 700; color: var(--text-muted); }
 
   .g-main {
     max-width: 1080px; margin: 0 auto;
@@ -493,6 +495,7 @@
 </header>
 
 <div class="g-railwrap"><div id="gRail" aria-label="Sixteen months; the Act window is the dashed tail"></div></div>
+<div class="g-rail-legend">Each circle is a month (16 total) &middot; <b>blue</b> elapsed &middot; <b>dark</b> now &middot; grey upcoming &middot; <b>dashed red</b> the window when the Act can land</div>
 
 <main class="g-main">
   <section class="g-log-col">
