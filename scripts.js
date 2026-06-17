@@ -1762,7 +1762,15 @@
       btn.setAttribute('aria-label', it.label);            // dot-only at rest, so label the button
       btn.innerHTML = '<span class="scroll-rail-dot"></span><span class="scroll-rail-label"></span>';
       btn.querySelector('.scroll-rail-label').textContent = it.label;
-      btn.addEventListener('click', () => it.el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      btn.addEventListener('click', () => {
+        // scrollIntoView misfires on the sticky-pinned story cards (a stuck
+        // card reads as already in view, so it won't scroll back up). Compute
+        // the target's natural flow position by walking offsetParents, which
+        // ignores the current sticky offset, then scroll there.
+        let y = 0, n = it.el;
+        while (n){ y += n.offsetTop; n = n.offsetParent; }
+        window.scrollTo({ top: Math.max(0, y - 80), behavior: 'smooth' });
+      });
       rail.appendChild(btn);
       return btn;
     });
