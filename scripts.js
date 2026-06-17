@@ -1727,12 +1727,14 @@
     // (BASE + 58 per card across ~18 cards) exceeded the viewport and trapped
     // scrolling. Past the cap, later cards pin at the same offset and cover the
     // ones beneath, so the pile always stays scrollable to the end.
-    const cap = Math.max(BASE + 174, Math.round(window.innerHeight * 0.42));
+    const cap = Math.max(BASE + 300, Math.round(window.innerHeight * 0.5));
     let top = BASE;
     kids.forEach((el, i) => {
       el.style.top = Math.min(top, cap) + 'px';
       el.style.zIndex = String(i + 1); // later (visual) cards sit on top
-      top += el.classList.contains('story-act') ? 48 : 58;
+      // Smaller peek per card => more cards keep a visible header strip before
+      // they reach the cap and start overlapping fully.
+      top += el.classList.contains('story-act') ? 34 : 42;
     });
   }
   grid.classList.add('is-stack');
