@@ -1875,6 +1875,48 @@
 })();
 
 // ============================================================
+// SVG CHART TOOLTIPS: native <title> tooltips are slow and only fire over
+// painted geometry. Drive an instant, styled tooltip from each row's <title>,
+// triggered by a full-row transparent hit rect so the whole band is hoverable.
+// ============================================================
+(function(){
+  const rows = document.querySelectorAll('.scene-fig .ed-row');
+  if (!rows.length) return;
+  let tip = null;
+  function ensureTip(){
+    if (!tip){
+      tip = document.createElement('div');
+      tip.className = 'chart-tip';
+      tip.setAttribute('role', 'tooltip');
+      document.body.appendChild(tip);
+    }
+    return tip;
+  }
+  function place(e){
+    const t = ensureTip();
+    const pad = 14;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    if (x + t.offsetWidth > window.innerWidth - 8) x = e.clientX - t.offsetWidth - pad;
+    if (y + t.offsetHeight > window.innerHeight - 8) y = e.clientY - t.offsetHeight - pad;
+    t.style.left = Math.max(8, x) + 'px';
+    t.style.top = Math.max(8, y) + 'px';
+  }
+  rows.forEach(row => {
+    const titleEl = row.querySelector('title');
+    if (!titleEl) return;
+    const text = titleEl.textContent.trim();
+    row.addEventListener('mouseenter', e => {
+      const t = ensureTip();
+      t.textContent = text;
+      t.classList.add('is-on');
+      place(e);
+    });
+    row.addEventListener('mousemove', place);
+    row.addEventListener('mouseleave', () => { if (tip) tip.classList.remove('is-on'); });
+  });
+})();
+
+// ============================================================
 // STACKED STORY CARDS: chapters pin and pile as you scroll, like the
 // live-data cards. All widths; per-card sticky top + z-index in DOM order.
 // ============================================================

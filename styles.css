@@ -1504,6 +1504,8 @@
   .ed-axis { stroke: rgba(10,10,10,0.3); stroke-width: 0.8; }
   .ed-grid { stroke: rgba(10,10,10,0.14); stroke-width: 0.6; stroke-dasharray: 0.5 3; stroke-linecap: round; }
   .ed-row { cursor: help; }
+  .ed-hit { fill: transparent; pointer-events: all; }
+  .ed-sub { font-family: var(--mono); font-size: 6.5px; font-weight: 600; fill: rgba(10,10,10,0.42); }
   .ed-tick { font-family: var(--mono); font-size: 7.5px; fill: rgba(10,10,10,0.45); }
   .ed-lbl { font-family: var(--mono); font-size: 8.5px; font-weight: 600; fill: rgba(10,10,10,0.62); }
   .ed-lbl.accent { fill: var(--accent); }
@@ -2556,6 +2558,18 @@ html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):
   opacity: 1; visibility: visible;
 }
 @media (max-width: 600px) { .gloss::after { max-width: 210px; } }
+/* Instant styled tooltip for SVG chart rows (native <title> is slow and only
+   fires over painted geometry, so we drive our own). */
+.chart-tip {
+  position: fixed; z-index: 200; max-width: 300px;
+  background: #14233f; color: #f4f6fb;
+  font-family: var(--font); font-size: 0.82rem; font-weight: 400; line-height: 1.45;
+  padding: 0.6rem 0.72rem; border-radius: 8px;
+  box-shadow: 0 12px 32px -12px rgba(0,0,0,0.55);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+.chart-tip.is-on { opacity: 1; visibility: visible; }
 html.viz-anim .scene-fig .ed-seg {
   transform-box: fill-box; transform-origin: left center;
   transform: scaleX(0);
