@@ -1727,14 +1727,14 @@
     // (BASE + 58 per card across ~18 cards) exceeded the viewport and trapped
     // scrolling. Past the cap, later cards pin at the same offset and cover the
     // ones beneath, so the pile always stays scrollable to the end.
-    const cap = Math.max(BASE + 300, Math.round(window.innerHeight * 0.5));
+    const cap = Math.max(BASE + 380, Math.round(window.innerHeight * 0.62));
     let top = BASE;
     kids.forEach((el, i) => {
       el.style.top = Math.min(top, cap) + 'px';
       el.style.zIndex = String(i + 1); // later (visual) cards sit on top
-      // Smaller peek per card => more cards keep a visible header strip before
-      // they reach the cap and start overlapping fully.
-      top += el.classList.contains('story-act') ? 34 : 42;
+      // Small peek per card so many more title strips stay visible, while the
+      // cap still keeps the stack within the viewport so scrolling never traps.
+      top += el.classList.contains('story-act') ? 30 : 26;
     });
   }
   grid.classList.add('is-stack');
@@ -1946,11 +1946,7 @@
   const VIZ = {
     'scene-nyc': { label: 'us export controls', href: '#viz-export', r: t => {
       const p = P(t);
-      const steps = Math.max(1, Math.round(7 * p));
-      let stair = '';
-      for (let i = 0; i < 7; i++) stair += i < steps ? '_/' : '  ';
-      const blink = (t >> 2) % 2 ? 'x3 reversed' : '   reversed';
-      return 'us chip rules, 2022-26\n\n ' + stair + '\n 10 actions ' + blink + '\n\n policy that flips yearly\n is not infrastructure';
+      return 'us chip rules, 2022-26\n\n actions ' + B(p, 13) + ' 10\n 3 later reversed\n\n policy that flips yearly\n is not infrastructure';
     }},
     'scene-dublin-apr': { label: 'talent migration', href: '#viz-talent', r: t => {
       const p = P(t);
@@ -1958,8 +1954,7 @@
     }},
     'scene-berlin': { label: 'cloud dependence', href: '#viz-cloud', r: t => {
       const p = P(t);
-      const blink = (t >> 2) % 2 ? '_' : ' ';
-      return 'who runs europe’s cloud\n\n US    ' + B(0.70 * p, 13) + ' 70%\n EU    ' + B(0.15 * p, 13) + ' 15%\n other ' + B(0.15 * p, 13) + ' 15%\n\n one act can switch it off' + blink;
+      return 'who runs europe’s cloud\n\n US    ' + B(0.70 * p, 13) + ' 70%\n EU    ' + B(0.15 * p, 13) + ' 15%\n other ' + B(0.15 * p, 13) + ' 15%\n\n one act can switch it off';
     }},
     'scene-brussels': { label: 'language coverage', href: '#viz-language', r: t => {
       const p = P(t);
@@ -1971,8 +1966,7 @@
     }},
     'scene-stockholm': { label: 'defence-AI boom', href: '#viz-defense', r: t => {
       const p = P(t);
-      const spin = '|/-\\'[t % 4];
-      return 'helsing, valuation\n\n 2025      ' + B(12 / 18 * p, 13) + ' €12B\n 2026 est. ' + B(p, 13) + ' ~$18B\n\n radar ' + spin + ' · defence is\n the saleable wedge';
+      return 'helsing, valuation\n\n 2025      ' + B(12 / 18 * p, 13) + ' €12B\n 2026 est. ' + B(p, 13) + ' ~$18B\n\n defence is where Europe\n can move fastest';
     }},
     'scene-monroe': { label: 'capital flow', href: '#viz-capital', r: t => {
       const p = P(t);
@@ -1983,7 +1977,7 @@
         for (let c = 0; c < 8; c++) l += (c < fr ? '*' : '·') + (c < 7 ? ' ' : '');
         racks += ' r0' + (r + 1) + ' [' + l + ']\n';
       }
-      return 'hyperion data center, monroe LA\n server racks coming online\n\n' + racks + '\n $27B to build one site\n EU 2024 AI total: $14B';
+      return 'hyperion data center, monroe LA\n server racks coming online\n\n' + racks + '\n $27B: one US site\n $14B: all EU AI in 2024';
     }},
     'scene-ottawa': { label: 'why pool', href: '#viz-ottawa', r: t => {
       const p = P(t);
@@ -1991,8 +1985,7 @@
     }},
     'scene-paris': { label: 'france’s power edge', href: '#viz-energy', r: t => {
       const p = P(t);
-      const hum = (t >> 2) % 2 ? '~' : '-';
-      return 'the french grid\n\n nuclear ' + B(0.70 * p, 13) + ' 70%\n other   ' + B(0.30 * p, 13) + ' 30%\n\n ~90 TWh exported ' + hum + '\n power for compute';
+      return 'the french grid\n\n nuclear ' + B(0.70 * p, 13) + ' 70%\n other   ' + B(0.30 * p, 13) + ' 30%\n\n ~90 TWh exported\n power for compute';
     }},
     'scene-dublin-jan': { label: 'brain drain', href: '#viz-brain', r: t => {
       return 'EU-trained, still in EU\n\n 2019 ' + B(0.50 * Math.min(1, t / 8), 13) + ' ~50%\n 2022 ' + B(0.43 * Math.min(1, Math.max(0, t - 5) / 8), 13) + ' ~43%\n 2026 ' + B(0.40 * Math.min(1, Math.max(0, t - 10) / 8), 13) + ' ~40%';
