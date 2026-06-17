@@ -1940,13 +1940,15 @@
       return 'helsing, valuation\n\n 2025      ' + B(12 / 18 * p, 13) + ' €12B\n 2026 est. ' + B(p, 13) + ' ~$18B\n\n radar ' + spin + ' · defence is\n the saleable wedge';
     }},
     'scene-monroe': { label: 'capital flow', href: '#viz-capital', r: t => {
+      const p = P(t);
       let racks = '';
       for (let r = 0; r < 3; r++) {
+        const fr = Math.max(0, Math.min(8, Math.round((p - r * 0.12) * 9)));
         let l = '';
-        for (let c = 0; c < 8; c++) l += (Math.random() < 0.5 ? '*' : '·') + (c < 7 ? ' ' : '');
+        for (let c = 0; c < 8; c++) l += (c < fr ? '*' : '·') + (c < 7 ? ' ' : '');
         racks += ' r0' + (r + 1) + ' [' + l + ']\n';
       }
-      return 'hyperion, monroe LA\n\n' + racks + '\n $27B · one building\n EU 2024 AI total: $14B';
+      return 'hyperion data center, monroe LA\n server racks coming online\n\n' + racks + '\n $27B to build one site\n EU 2024 AI total: $14B';
     }},
     'scene-ottawa': { label: 'why pool', href: '#viz-ottawa', r: t => {
       const p = P(t);
