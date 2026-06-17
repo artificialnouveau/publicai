@@ -1958,7 +1958,7 @@
       return 'the french grid\n\n nuclear ' + B(0.70 * p, 13) + ' 70%\n other   ' + B(0.30 * p, 13) + ' 30%\n\n ~90 TWh exported ' + hum + '\n power for compute';
     }},
     'scene-dublin-jan': { label: 'brain drain', href: '#viz-brain', r: t => {
-      return 'EU-trained, still in EU\n\n 2019 ' + B(0.50 * Math.min(1, t / 8), 13) + ' ~50%\n 2022 ' + B(0.43 * Math.min(1, Math.max(0, t - 5) / 8), 13) + ' ~43%\n 2026 ' + B(0.40 * Math.min(1, Math.max(0, t - 10) / 8), 13) + ' ~40%\n\n the line is not bottoming';
+      return 'EU-trained, still in EU\n\n 2019 ' + B(0.50 * Math.min(1, t / 8), 13) + ' ~50%\n 2022 ' + B(0.43 * Math.min(1, Math.max(0, t - 5) / 8), 13) + ' ~43%\n 2026 ' + B(0.40 * Math.min(1, Math.max(0, t - 10) / 8), 13) + ' ~40%';
     }},
     'scene-whitehouse': { label: 'pentagon money', href: '#viz-pentagon', r: t => {
       const labs = ['OPENAI', 'ANTHROPIC', 'GOOGLE', 'XAI'];

@@ -1173,11 +1173,7 @@
   }
   .country-map .cm-dot.is-hidden { opacity: 0; }
   .country-map .cm-dot.is-visible {
-    animation: cm-pulse 1.8s ease-in-out infinite;
-  }
-  @keyframes cm-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.6); }
+    opacity: 1;
   }
   @media (prefers-reduced-motion: reduce) {
     .country-map .cm-dot.is-visible { animation: none; }
@@ -2507,16 +2503,16 @@ html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):
 html.viz-anim .viz-card.is-in svg :is(.ed-dot, .ed-unit, .cu-pop rect, .ed-seg):nth-of-type(26) { transition-delay: 848ms; }
 
 /* Inline story figure (preface stack-ownership chart). */
-.scene-fig { margin: 1.7rem 0 1.9rem; max-width: 480px; }
+.scene-fig { margin: 1.7rem 0 1.9rem; }
 .scene-fig-title {
   font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
   letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--accent); margin-bottom: 0.55rem;
 }
-.scene-fig svg { display: block; width: 100%; height: auto; }
+.scene-fig svg { display: block; width: 100%; max-width: 480px; height: auto; }
 .scene-fig-note {
-  font-family: var(--mono); font-size: 0.6rem; line-height: 1.65;
-  color: var(--text-soft); margin-top: 0.5rem; max-width: 56ch;
+  font-family: var(--serif); font-size: 1.05rem; line-height: 1.7;
+  color: var(--text-muted); margin-top: 0.9rem;
 }
 html.viz-anim .scene-fig .ed-seg {
   transform-box: fill-box; transform-origin: left center;
