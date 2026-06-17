@@ -568,9 +568,9 @@
     color: var(--text); line-height: 1.7; text-align: justify;
     margin-bottom: 1.6rem;
   }
-  .doc-official ul.doc-bullets { list-style: decimal; margin-left: 1.5rem; }
-  .doc-official ul.doc-bullets ul { list-style: lower-alpha; }
-  .doc-official ul.doc-bullets ul ul { list-style: lower-roman; }
+  .doc-official ul.doc-bullets { list-style: upper-roman; margin-left: 1.7rem; }
+  .doc-official ul.doc-bullets ul { list-style: upper-alpha; }
+  .doc-official ul.doc-bullets ul ul { list-style: decimal; }
   .doc-inset.doc-official ul.doc-bullets li {
     font-family: var(--serif); font-size: 0.92rem; line-height: 1.65;
     margin-bottom: 0.5rem;
