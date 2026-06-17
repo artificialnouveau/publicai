@@ -399,6 +399,22 @@
   .g-intro h1 { font-family: var(--serif); font-weight: 600; font-size: 2rem; line-height: 1.2; margin-bottom: 0.6rem; }
   .g-intro p { font-family: var(--serif); font-size: 1rem; line-height: 1.7; margin-bottom: 0.6rem; }
   .g-intro a { color: var(--accent); }
+  /* Hover/focus glossary tooltips for real-world terms. */
+  .gloss { border-bottom: 1px dotted currentColor; cursor: help; position: relative; }
+  .gloss:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .gloss::after {
+    content: attr(data-tip);
+    position: absolute; left: 50%; bottom: calc(100% + 9px); transform: translateX(-50%);
+    width: max-content; max-width: 260px;
+    background: #14233f; color: #f4f6fb;
+    font-family: var(--mono); font-size: 0.66rem; font-weight: 400; font-style: normal;
+    line-height: 1.5; text-align: left; letter-spacing: 0; text-transform: none;
+    padding: 0.55rem 0.65rem; border-radius: 7px;
+    box-shadow: 0 12px 30px -12px rgba(0,0,0,0.55);
+    opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s ease; z-index: 200;
+  }
+  .gloss:hover::after, .gloss:focus::after, .gloss:focus-visible::after { opacity: 1; visibility: visible; }
+  @media (max-width: 600px) { .gloss::after { max-width: 200px; } }
   .g-intro .g-how { font-family: var(--mono); font-size: 0.68rem; line-height: 1.8; color: var(--text-soft); }
   #gEnd {
     margin: 1.5rem 0; padding: 1.2rem 1.4rem; max-width: 62ch;
@@ -521,7 +537,7 @@
       <div id="gEndDoc"></div>
       <div id="gEndReality">
         <div class="g-end-section">What&rsquo;s real here</div>
-        <p>The compute gap is real: the EU&rsquo;s EuroHPC supercomputers run separately under each host state, while a single US training cluster dwarfs them even pooled. The Digital Liberty Act is fiction, but the US AI Diffusion Rule (January 2025) really did sort the world into tiers of chip access, and the CLOUD Act lets US authorities reach data held by US providers anywhere. Mistral, Cohere, Helsing, and Aleph Alpha are real European labs. The coalition is the open question.</p>
+        <p>The compute gap is real: the EU&rsquo;s <span class="gloss" tabindex="0" data-tip="The EU&rsquo;s joint supercomputing programme: a network of state-hosted supercomputers (LUMI, Leonardo, JUPITER and others) that today run separately rather than as one pooled cluster.">EuroHPC</span> supercomputers run separately under each host state, while a single US training cluster dwarfs them even pooled. The <span class="gloss" tabindex="0" data-tip="This story&rsquo;s fictional US law: it ties access to American AI to how closely a country aligns with the US against China.">Digital Liberty Act</span> is fiction, but the US <span class="gloss" tabindex="0" data-tip="A real US export-control framework (January 2025) that sorted countries into tiers governing access to advanced AI chips; later rescinded.">AI Diffusion Rule</span> (January 2025) really did sort the world into tiers of chip access, and the <span class="gloss" tabindex="0" data-tip="The 2018 US law letting American authorities compel US-based providers to hand over data wherever in the world it is stored.">CLOUD Act</span> lets US authorities reach data held by US providers anywhere. Mistral, Cohere, Helsing, and Aleph Alpha are real European labs. The coalition is the open question.</p>
         <p><a href="../research.html">Read the story and its sources &rarr;</a></p>
       </div>
     </div>

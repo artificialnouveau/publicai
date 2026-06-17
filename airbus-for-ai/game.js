@@ -434,7 +434,7 @@
     setVal('#gVal-compute', (S.pooled ? '~' + sc.compute.toFixed(1) : '0') + ' / ' + S.efTarget + ' EF', sc.compute >= D.TRACKS.compute.goal);
     $('#gNote-compute').innerHTML = (!S.pooled && sc.computeRaw > 0)
       ? 'Pooled training compute. <span class="warn">dashed = unpooled; POOL to make it count</span>'
-      : '1 chip = 1 EF (exaFLOPS of training compute) &middot; goal 3 &middot; US &asymp; ' + S.efTarget;
+      : '1 chip = 1 EF (<span class="gloss" tabindex="0" data-tip="A measure of computing speed: one exaFLOP is 10^18 (a quintillion) operations per second. AI-training clusters are rated in exaFLOPS.">exaFLOPS</span> of training compute) &middot; goal 3 &middot; US &asymp; ' + S.efTarget;
 
     // Capital: 1 coin = $4B, goal at the 5th coin ($20B).
     slotRow('#gPicto-capital', 8, Math.min(8, Math.round(sc.capital / 4)), 5, 'coin');
