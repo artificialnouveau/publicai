@@ -1152,6 +1152,12 @@
     stroke-width: 0.6;
     filter: drop-shadow(0 0 2px rgba(0,119,200,0.55));
   }
+  /* Preface overview: every country in the story, lit in blue at once. */
+  .country-map .cm-country.is-story {
+    fill: var(--accent);
+    stroke: #001540;
+    stroke-width: 0.5;
+  }
   /* Coalition trail: a curved, dotted hop between consecutive capitals.
      Per-hop opacity is set in JS so older hops fade further back. */
   .country-map .cm-arc {
@@ -2300,7 +2306,7 @@
 .supporting-data-grid.is-stack::before { display: none; }            /* drop the dotted spine */
 .supporting-data-grid.is-stack > .viz-card,
 .supporting-data-grid.is-stack > .story-act {
-  position: sticky;
+  position: relative;
   margin-left: 0;
   margin-bottom: 16px;
   background: var(--paper, #fff);

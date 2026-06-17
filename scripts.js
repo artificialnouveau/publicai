@@ -916,13 +916,43 @@
     })
     .catch(err => { console.warn('Country map failed to load', err); });
 
+  // Every country that appears in the story (by topojson id), for the preface
+  // overview where the whole coalition is lit at once.
+  const STORY_IDS = Array.from(new Set(
+    Array.from(document.querySelectorAll('.scene[data-country-id]'))
+      .map(s => s.dataset.countryId).filter(Boolean)
+  ));
+  const cmReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let spinning = false, spinRaf = 0, prefaceActive = false;
+  function spinStep() {
+    if (!spinning) return;
+    viewLng += 0.12; if (viewLng > 180) viewLng -= 360;
+    redraw();
+    spinRaf = requestAnimationFrame(spinStep);
+  }
+  function startSpin() { if (cmReduce || spinning || document.hidden) return; spinning = true; spinRaf = requestAnimationFrame(spinStep); }
+  function stopSpin() { spinning = false; if (spinRaf) cancelAnimationFrame(spinRaf); spinRaf = 0; }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopSpin(); else if (prefaceActive) startSpin(); });
+
   function setupHighlighter() {
     const scenes = Array.from(document.querySelectorAll('.scene[data-country-id]'));
     if (!scenes.length || !('IntersectionObserver' in window)) return;
     let active = null;
     function setActive(sceneEl) {
       const id = sceneEl ? sceneEl.dataset.countryId : null;
-      group.querySelectorAll('.cm-country.is-active').forEach(p => p.classList.remove('is-active'));
+      group.querySelectorAll('.cm-country.is-active, .cm-country.is-story').forEach(p => p.classList.remove('is-active', 'is-story'));
+      // Preface: light up every country in the story and let the globe turn.
+      if (sceneEl && sceneEl.id === 'scene-preface') {
+        STORY_IDS.forEach(cid => {
+          const p = group.querySelector('.cm-country[data-id="' + cid + '"]');
+          if (p) p.classList.add('is-story');
+        });
+        if (dotEl) { dotEl.classList.add('is-hidden'); dotEl.classList.remove('is-visible'); dotEl._sceneEl = null; }
+        active = 'preface'; prefaceActive = true;
+        startSpin();
+        return;
+      }
+      prefaceActive = false; stopSpin();
       if (!sceneEl || !id) {
         if (dotEl) {
           dotEl.classList.add('is-hidden');
@@ -1686,21 +1716,10 @@
   if (!grid) return;
   const BASE = 70;
   function apply(){
-    const kids = Array.from(grid.children).filter(
-      el => el.classList.contains('viz-card') || el.classList.contains('story-act')
-    );
-    kids.sort((a, b) =>
-      (parseInt(getComputedStyle(a).order, 10) || 0) - (parseInt(getComputedStyle(b).order, 10) || 0)
-    );
-    // Accumulate the sticky top per card so EVERY card keeps a peek strip (act
-    // dividers get a taller strip so their title row shows). No cap, so later
-    // cards never collide onto the same offset.
-    let top = BASE;
-    kids.forEach((el, i) => {
-      el.style.top = top + 'px';
-      el.style.zIndex = String(i + 1); // later (visual) cards sit on top and cover earlier ones
-      top += el.classList.contains('story-act') ? 48 : 58; // 58 clears the journey card's padding + pill chip header
-    });
+    // Cards flow normally. The previous sticky-pile accumulated a per-card top
+    // offset with no cap, so with ~18 cards the stacked headers grew taller than
+    // the viewport and trapped scrolling past the first few. Clear any pinning.
+    Array.from(grid.children).forEach(el => { el.style.top = ''; el.style.zIndex = ''; });
   }
   grid.classList.add('is-stack');
   apply();
