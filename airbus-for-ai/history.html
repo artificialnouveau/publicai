@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230057FF'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How Europe built Airbus to rival the United States, told as a scroll-scrubbed parallel between flying machines and the AI stack.">
+<link rel="canonical" href="https://www.artificialnouveau.com/publicai/airbus-for-ai/history.html">
+<meta property="og:title" content="History of Airbus: the original coalition">
+<meta property="og:description" content="How a fragmented Europe pooled itself into a rival to American aviation, and why it rhymes with AI.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/history.html">
+<title>History of Airbus: the original coalition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #F8F6F1;
+    --paper-2: #F0EDE7;
+    --hairline: rgba(10,10,10,0.10);
+    --hairline-strong: rgba(10,10,10,0.20);
+    --text: #1A1A1A;
+    --text-soft: #6E6E69;
+    --accent: #0057FF;
+    --red: #b8002e;
+    --coral: #FF6F59;
+    --gold: #FFC23C;
+    --font: 'Inter', -apple-system, sans-serif;
+    --serif: 'Spectral', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font); color: var(--text); background: var(--ink);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* --- shared header, matched to the game --- */
+  .g-top {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0 1.25rem; height: 52px;
+    background: rgba(248,246,241,0.94); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .g-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; color: var(--text-soft); }
+  .g-brand { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .g-tabs { display: flex; gap: 0.3rem; }
+  .g-tab {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-soft); padding: 0.32rem 0.7rem; border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .g-tab:hover { text-decoration: none; color: var(--text); }
+  .g-tab.is-active { color: var(--accent); border-color: rgba(0,87,255,0.4); background: rgba(0,87,255,0.07); }
+  .g-meta { margin-left: auto; font-family: var(--mono); font-size: 0.64rem; color: var(--text-soft); letter-spacing: 0.04em; }
+  @media (max-width: 640px) { .g-tab { font-size: 0.56rem; padding: 0.3rem 0.5rem; } .g-brand, .g-meta { display: none; } }
+
+  /* --- hero --- */
+  .h-hero { max-width: 760px; margin: 0 auto; padding: 4.5rem 1.5rem 1.5rem; }
+  .h-eyebrow { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.1rem; }
+  .h-hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.08; letter-spacing: -0.01em; }
+  .h-hero h1 em { font-style: italic; color: var(--accent); }
+  .h-lede { font-family: var(--serif); font-size: 1.18rem; color: #2c2c2c; margin-top: 1.2rem; }
+  .h-cue { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-top: 2rem; display: flex; align-items: center; gap: 0.6rem; }
+  .h-cue::after { content: ''; flex: 1; height: 1px; background: var(--hairline-strong); }
+
+  /* --- scrolly: sticky stage + scrolling steps --- */
+  .h-scrolly { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 2.5rem; align-items: start; }
+  @media (max-width: 900px) { .h-scrolly { grid-template-columns: 1fr; gap: 0; } }
+
+  .h-stage-wrap { position: sticky; top: 52px; height: calc(100vh - 52px); display: flex; align-items: center; }
+  .h-stage {
+    width: 100%; background: #11141c; color: #d7e2ff;
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+    padding: 1.2rem 1.1rem 1rem; box-shadow: 0 26px 60px -30px rgba(0,0,0,0.7);
+  }
+  .h-stage-label { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: #8aa0d6; margin-bottom: 0.5rem; }
+  .h-stage-label b { color: var(--gold); font-weight: 700; }
+  .h-art { font-family: var(--mono); font-size: clamp(0.5rem, 1.5vw, 0.8rem); line-height: 1.32; white-space: pre; overflow: hidden; color: #cfe0ff; margin: 0; }
+  .h-art.sky { color: #bcd0ff; }
+  .h-art.rack { color: #7fe0b0; margin-top: 0.2rem; }
+  .h-stage-divider { display: flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6b7ba6; margin: 0.7rem 0 0.35rem; }
+  .h-stage-divider::before, .h-stage-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+  .h-parallel { margin-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.7rem; font-size: 0.86rem; color: #e7edfb; }
+  .h-parallel b { color: var(--gold); font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 0.25rem; }
+  .h-scrub { width: 100%; margin-top: 0.9rem; accent-color: var(--accent); cursor: pointer; }
+  .h-scrub-note { font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7ba6; text-align: center; margin-top: 0.3rem; }
+
+  .h-steps { padding: 30vh 0; }
+  @media (max-width: 900px) { .h-steps { padding: 4vh 0 30vh; } }
+  .h-step { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; opacity: 0.32; transition: opacity 0.3s ease; }
+  @media (max-width: 900px) { .h-step { min-height: 0; padding: 18vh 0; opacity: 1; } }
+  .h-step.is-active { opacity: 1; }
+  .h-step-year { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); }
+  .h-step-place { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 0.6rem; }
+  .h-step h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.4rem, 3vw, 1.95rem); line-height: 1.15; margin-bottom: 0.7rem; }
+  .h-step p { font-size: 1.02rem; color: #2c2c2c; }
+  .h-step .h-step-parallel { margin-top: 0.9rem; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--text-soft); border-left: 2px solid var(--gold); padding-left: 0.8rem; }
+
+  /* --- people + outro --- */
+  .h-people { max-width: 900px; margin: 1rem auto 0; padding: 2.5rem 1.5rem; border-top: 1px solid var(--hairline-strong); }
+  .h-section-title { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.4rem; }
+  .h-people-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.1rem; }
+  .h-person { border: 1px solid var(--hairline); border-radius: 10px; padding: 1rem 1.1rem; background: var(--paper-2); }
+  .h-person h3 { font-family: var(--serif); font-weight: 600; font-size: 1.1rem; margin-bottom: 0.15rem; }
+  .h-person .h-role { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .h-person p { font-size: 0.9rem; color: #3a3a3a; }
+
+  .h-outro { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; text-align: center; }
+  .h-outro p { font-family: var(--serif); font-size: 1.25rem; color: #2c2c2c; margin-bottom: 1.6rem; }
+  .h-cta { display: inline-flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+  .h-cta a { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.7rem 1.3rem; border-radius: 999px; border: 1px solid var(--accent); }
+  .h-cta a.solid { background: var(--accent); color: #fff; }
+  .h-cta a.solid:hover { text-decoration: none; background: #0046d0; }
+  .h-foot { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.05em; color: var(--text-soft); margin-top: 2.5rem; line-height: 1.7; }
+
+  @media (prefers-reduced-motion: reduce) { .h-step { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="g-top">
+  <a class="g-back" href="../index.html">&larr; the story</a>
+  <div class="g-brand">Airbus for AI</div>
+  <nav class="g-tabs" aria-label="Sections">
+    <a class="g-tab" href="game.html">The game</a>
+    <a class="g-tab is-active" href="history.html" aria-current="page">History of Airbus</a>
+  </nav>
+  <div class="g-meta">the original coalition</div>
+</header>
+
+<section class="h-hero">
+  <div class="h-eyebrow">History of Airbus</div>
+  <h1>Once, the sky belonged to America. <em>Europe pooled itself</em> and built a rival.</h1>
+  <p class="h-lede">Airbus is the proof behind the proposal: a fragmented Europe, unable to compete one nation at a time, agreed to build together, survived a near-fatal start, and ended up the largest planemaker on earth. The same recipe is what an "Airbus for AI" is asking for. Here is the short version, with the parallel running alongside.</p>
+  <div class="h-cue">Scroll to fly the timeline &middot; or drag the slider</div>
+</section>
+
+<div class="h-scrolly">
+  <!-- sticky stage: a plane flies across while the stack comes online -->
+  <div class="h-stage-wrap">
+    <div class="h-stage" aria-hidden="true">
+      <div class="h-stage-label"><span>The aircraft &middot; pooled and flying</span><b id="hYear">1969</b></div>
+      <pre class="h-art sky" id="hSky"></pre>
+      <div class="h-stage-divider">the same move, one stack down</div>
+      <div class="h-stage-label"><span>The stack &middot; coming online</span><span id="hRackPct">0%</span></div>
+      <pre class="h-art rack" id="hRack"></pre>
+      <div class="h-parallel">
+        <b>The AI parallel</b>
+        <span id="hParallel">No single European country was large enough to compete with the United States alone.</span>
+      </div>
+      <input class="h-scrub" id="hScrub" type="range" min="0" max="1000" value="0" aria-label="Scrub the timeline">
+      <div class="h-scrub-note">Paris 1969 &rarr; Toulouse, today</div>
+    </div>
+  </div>
+
+  <!-- scrolling milestone steps -->
+  <div class="h-steps" id="hSteps"></div>
+</div>
+
+<section class="h-people">
+  <div class="h-section-title">Who made it happen</div>
+  <div class="h-people-grid">
+    <div class="h-person">
+      <h3>Roger B&eacute;teille</h3>
+      <div class="h-role">"Mister Airbus"</div>
+      <p>The engineer who set the shared fuselage and the work-share deal that gave each country a real stake. Bought the bulbous Super Guppy planes to ferry the parts to Toulouse.</p>
+    </div>
+    <div class="h-person">
+      <h3>Henri Ziegler</h3>
+      <div class="h-role">First chief executive</div>
+      <p>Won French government backing for the A300 in 1969 and became Airbus Industrie's first CEO. "There would be no Airbus without Henri Ziegler," a later boss said.</p>
+    </div>
+    <div class="h-person">
+      <h3>Franz Josef Strauss</h3>
+      <div class="h-role">German political muscle</div>
+      <p>The Bavarian heavyweight who pushed the German side and served as chairman. Munich's airport carries his name.</p>
+    </div>
+    <div class="h-person">
+      <h3>Chamant &amp; Schiller</h3>
+      <div class="h-role">The signatories, May 1969</div>
+      <p>France's transport minister and Germany's economics minister signed the founding agreement at the Paris Air Show. A political decision, not a commercial one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="h-outro">
+  <p>Airbus took a treaty, shared money and risk, one agreed standard, and the patience to lose for a decade first. That is the bet the game asks you to make in sixteen months.</p>
+  <div class="h-cta">
+    <a class="solid" href="game.html">Play the game &rarr;</a>
+    <a href="../index.html">Read the story</a>
+    <a href="../research.html">The proposal</a>
+  </div>
+  <p class="h-foot">
+    Overview compiled and rewritten from Airbus corporate history, the "25 years as an integrated company" note, and Wikipedia entries on Airbus, Roger B&eacute;teille, Henri Ziegler and Franz Josef Strauss. Figures are approximate and for orientation, not citation.
+  </p>
+</section>
+
+<script>
+(function(){
+  // ---- the milestones, rewritten short ----
+  var STEPS = [
+    {
+      year: '1960s', place: 'The Atlantic gap',
+      title: 'The sky belonged to America',
+      body: 'Boeing, Douglas and Lockheed built almost every jet airliner in the world. Each European country had a national planemaker, but none had a home market big enough to take on the Americans alone.',
+      parallel: 'Today the AI stack, the chips, the clouds and the frontier models, is overwhelmingly American, and no single European state can match it by itself.'
+    },
+    {
+      year: 'May 1969', place: 'Paris Air Show',
+      title: 'The handshake',
+      body: 'French and German ministers signed an agreement to build one wide-body jet together, the A300. The civil-jet market was entirely US-dominated, so giving the go-ahead was a bold strategic bet to pool two nations rather than lose separately.',
+      parallel: 'An "Airbus for AI" begins the same way: a treaty-level decision to build together instead of competing capital by capital.'
+    },
+    {
+      year: 'Dec 1970', place: 'Toulouse',
+      title: 'One consortium, not five rivals',
+      body: 'Airbus Industrie was created as a shared venture under French law (a GIE), pooling French, German and British firms. Spain joined in 1971, Britain formally in 1979. A normal company could not have held the national interests together; the consortium could.',
+      parallel: 'Pool EuroHPC compute, national capital and scattered talent into one coalition vehicle, rather than a dozen competing national programmes.'
+    },
+    {
+      year: '1970s', place: 'Across borders',
+      title: 'The division of labour',
+      body: 'Wings were built in Britain, the fuselage in Germany, the cockpit and final assembly in France. Each country got real work and real jobs, which is what kept the politics alive, even though shuttling the parts by giant Super Guppy planes was anything but efficient.',
+      parallel: 'Deciding who builds what is the hard part, except AI rewards concentration: the work-share that wins the politics can cost you performance.'
+    },
+    {
+      year: '1972-1978', place: 'On the tarmac',
+      title: 'The near-death years',
+      body: 'The A300 barely sold at first. Unsold "whitetail" jets sat parked, and there were calls to scrap the whole programme. A 1976 rule change that let twin-engine jets fly longer routes, plus a 1978 order from a US airline, finally cracked the market open.',
+      parallel: 'Expect a long, unprofitable runway. The coalition has to survive the lean years before the bet pays off.'
+    },
+    {
+      year: '1987', place: 'A new cockpit',
+      title: 'Fly-by-wire, and lift-off',
+      body: 'The A320 introduced digital flight controls and became a runaway success, seeding a whole family of aircraft that shared one cockpit design. This was the product that proved the consortium could not just compete but lead.',
+      parallel: 'The breakthrough product that vindicates the bet: Europe’s equivalent of a frontier-grade model running on a pooled cluster.'
+    },
+    {
+      year: '2000-2025', place: 'One company',
+      title: 'From consortium to champion',
+      body: 'The national champions merged into a single listed company (EADS in 2000, renamed Airbus by 2017) with around 150,000 staff. The original plan foresaw 300 A300s; Airbus has since delivered thousands of jets, and in 2025 its A320 family passed the Boeing 737 as the most-delivered airliner ever.',
+      parallel: 'The endgame is a single, durable institution, not a temporary committee, and eventually parity with, then advantage over, the incumbent.'
+    }
+  ];
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- build the step DOM ----
+  var stepsWrap = document.getElementById('hSteps');
+  STEPS.forEach(function(s, i){
+    var el = document.createElement('div');
+    el.className = 'h-step' + (i === 0 ? ' is-active' : '');
+    el.setAttribute('data-i', i);
+    el.innerHTML =
+      '<div class="h-step-year">' + s.year + '</div>' +
+      '<div class="h-step-place">' + s.place + '</div>' +
+      '<h2>' + s.title + '</h2>' +
+      '<p>' + s.body + '</p>' +
+      '<p class="h-step-parallel">' + s.parallel + '</p>';
+    stepsWrap.appendChild(el);
+  });
+  var stepEls = Array.prototype.slice.call(stepsWrap.children);
+
+  // ---- ASCII renderers ----
+  var skyEl = document.getElementById('hSky');
+  var rackEl = document.getElementById('hRack');
+  var rackPct = document.getElementById('hRackPct');
+  var yearEl = document.getElementById('hYear');
+  var parallelEl = document.getElementById('hParallel');
+  var scrub = document.getElementById('hScrub');
+
+  var TRACK = 50;           // sky width in chars
+  var SPRITE_W = 17;        // plane footprint
+  // plane sprite, nose pointing right (3 rows)
+  var SPRITE = ['     /|', '  __/_|____', ' (__________)===>'];
+
+  function sky(p){
+    var x = Math.round(p * (TRACK - SPRITE_W));
+    if (x < 0) x = 0;
+    var pad = new Array(x + 1).join(' ');
+    var trail = new Array(x + 1).join('·');   // middot contrail
+    var rows = [
+      '  ' + pad + SPRITE[0],
+      '  ' + pad + SPRITE[1],
+      '  ' + trail + SPRITE[2],
+      '  ' + new Array(TRACK + 1).join('_')
+    ];
+    return rows.join('\n');
+  }
+
+  function rack(p){
+    var COLS = 16, ROWS = 4, total = COLS * ROWS;
+    var lit = Math.round(p * total);
+    var lines = ['  +' + new Array(COLS + 1).join('-') + '+'];
+    for (var r = 0; r < ROWS; r++){
+      var row = '  |';
+      for (var c = 0; c < COLS; c++){
+        var idx = c * ROWS + r;            // fill column by column: racks light left to right
+        row += idx < lit ? '▉' : '·';
+      }
+      lines.push(row + '|');
+    }
+    lines.push('  +' + new Array(COLS + 1).join('-') + '+');
+    var pw = Math.round(p * COLS);
+    lines.push('  pwr [' + new Array(pw + 1).join('=') + new Array(COLS - pw + 1).join(' ') + ']');
+    return lines.join('\n');
+  }
+
+  function render(p){
+    skyEl.textContent = sky(p);
+    rackEl.textContent = rack(p);
+    rackPct.textContent = Math.round(p * 100) + '%';
+  }
+
+  // ---- active step -> stage caption ----
+  function setActive(i){
+    stepEls.forEach(function(el, k){ el.classList.toggle('is-active', k === i); });
+    yearEl.textContent = STEPS[i].year;
+    parallelEl.textContent = STEPS[i].parallel;
+  }
+
+  // ---- scroll-driven scrubbing ----
+  var scrolly = document.querySelector('.h-scrolly');
+  var ticking = false;
+  function progress(){
+    var rect = scrolly.getBoundingClientRect();
+    var total = rect.height - window.innerHeight;
+    if (total <= 0) return 0;
+    var p = -rect.top / total;
+    return p < 0 ? 0 : (p > 1 ? 1 : p);
+  }
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var p = progress();
+      render(p);
+      scrub.value = Math.round(p * 1000);
+      ticking = false;
+    });
+  }
+
+  // slider scrubs by scrolling the page to the matching position
+  scrub.addEventListener('input', function(){
+    var p = scrub.value / 1000;
+    var top = scrolly.offsetTop + p * (scrolly.offsetHeight - window.innerHeight);
+    window.scrollTo({ top: top, behavior: 'auto' });
+    render(p);
+  });
+
+  // IntersectionObserver picks the active milestone
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) setActive(parseInt(e.target.getAttribute('data-i'), 10));
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    stepEls.forEach(function(el){ io.observe(el); });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  render(0);
+  setActive(0);
+})();
+</script>
+</body>
+</html>

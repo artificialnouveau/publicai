@@ -58,6 +58,19 @@
     font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
   }
+  .g-tabs { display: flex; gap: 0.3rem; }
+  .g-tab {
+    font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-soft); padding: 0.32rem 0.7rem; border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .g-tab:hover { text-decoration: none; color: var(--text); }
+  .g-tab.is-active {
+    color: var(--accent); border-color: rgba(0,87,255,0.4);
+    background: rgba(0,87,255,0.07);
+  }
+  @media (max-width: 640px) { .g-tab { font-size: 0.56rem; padding: 0.3rem 0.5rem; } .g-brand { display: none; } }
   .g-meta { margin-left: auto; display: flex; align-items: center; gap: 0.9rem; font-family: var(--mono); font-size: 0.68rem; color: var(--text-soft); }
   .g-meta b { color: var(--accent); }
   .g-redphone {
@@ -509,6 +522,10 @@
 <header class="g-top">
   <a class="g-back" href="../index.html">&larr; the story</a>
   <div class="g-brand">Airbus for AI</div>
+  <nav class="g-tabs" aria-label="Sections">
+    <a class="g-tab is-active" href="game.html" aria-current="page">The game</a>
+    <a class="g-tab" href="history.html">History of Airbus</a>
+  </nav>
   <div class="g-meta">
     <span id="gTurnLabel">Month 1 of 16</span>
   </div>
