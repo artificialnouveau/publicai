@@ -5,11 +5,11 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230057FF'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="Video clips of political leaders, tech CEOs, and financiers speaking about public AI and AI sovereignty, arranged by how close their positions sit to one another, with clustered transcripts.">
-<link rel="canonical" href="https://www.artificialnouveau.com/publicai/airbus-for-ai/public-support.html">
+<link rel="canonical" href="https://www.artificialnouveau.com/publicai/public-support.html">
 <meta property="og:title" content="Public Support: voices on public AI and sovereignty">
 <meta property="og:description" content="A spectrum of leaders and CEOs on public AI and AI sovereignty, arranged by proximity of position, with clustered transcripts.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://www.artificialnouveau.com/publicai/airbus-for-ai/public-support.html">
+<meta property="og:url" content="https://www.artificialnouveau.com/publicai/public-support.html">
 <meta property="og:image" content="https://www.artificialnouveau.com/publicai/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -200,7 +200,7 @@
 <body>
 
 <nav class="topnav" aria-label="Site navigation">
-  <a href="../index.html" class="topnav-brand" aria-label="Airbus for AI, home">
+  <a href="index.html" class="topnav-brand" aria-label="Airbus for AI, home">
     <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
       <path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -209,11 +209,11 @@
     <span class="topnav-brand-text">Airbus for AI</span>
   </a>
   <div class="topnav-links">
-    <a class="topnav-link" href="../index.html">Story</a>
-    <a class="topnav-link" href="../summary.html">Summary</a>
-    <a class="topnav-link" href="../research.html">Research</a>
+    <a class="topnav-link" href="index.html">Story</a>
+    <a class="topnav-link" href="summary.html">Summary</a>
+    <a class="topnav-link" href="research.html">Research</a>
     <a class="topnav-link" href="public-support.html" aria-current="page">Public Support</a>
-    <a class="topnav-link" href="../index.html#signon">Sign on</a>
+    <a class="topnav-link" href="index.html#signon">Sign on</a>
   </div>
 </nav>
 
@@ -267,7 +267,7 @@
 </main>
 
 <footer class="page-footer">
-  <p><a href="../index.html">Back to Story</a> &middot; <a href="../research.html">Research</a> &middot; <a href="../../">Public AI Fellowship</a></p>
+  <p><a href="index.html">Back to Story</a> &middot; <a href="research.html">Research</a> &middot; <a href="../">Public AI Fellowship</a></p>
 </footer>
 
 <script>
@@ -579,12 +579,12 @@ function fmtTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+String(sec
 // Three categories, each ranked on its own scale (blue left to red right).
 const CATS = [
   { id:'corp', title:'Companies', left:'Open / distributed', right:'Closed / concentrated' },
-  { id:'pol',  title:'Politicians', left:'More free market', right:'Sovereign / state-controlled' },
+  { id:'pol',  title:'Governments & officials', left:'Light-touch / global', right:'Sovereign / state-controlled' },
   { id:'fin',  title:'Money: funds, banks & VCs', left:'Private / market capital', right:'Public / state capital' }
 ];
 const ORDER_BY_CAT = {
   corp: ['mensch','andrulis','gomez','huang','garman','suleyman','nadella','pichai','cook','amodei','altman','ek','asml','pengxiao'],
-  pol:  ['vance','starmer','alolama','mattarella','meloni','jetten','burnham','sanders','vonderleyen','macron','merz','modi','lee','takaichi','schoof','rutte','xi','putin'],
+  pol:  ['vance','starmer','alolama','burnham','mattarella','meloni','sanders','jetten','vonderleyen','macron','merz','modi','lee','takaichi','schoof','rutte','xi','putin'],
   fin:  ['thiel','son','furstenberg','tangen','calvino','lagarde']
 };
 const CAT = {};
