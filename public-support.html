@@ -167,6 +167,7 @@
   .person-sov .rlabel { display: block; margin-bottom: 0.3rem; color: var(--accent); }
   .person-org { font-size: 0.94rem; color: var(--text-muted); border-left: 3px solid var(--hairline-strong); padding: 0.65rem 0 0.65rem 0.95rem; margin-bottom: 1rem; }
   .person-org .rlabel { display: block; margin-bottom: 0.3rem; color: var(--text-soft); }
+  .pm-content .person-stance .rlabel { display: block; margin-bottom: 0.3rem; color: var(--accent); }
   .person-reading { font-size: 0.85rem; margin-bottom: 1.4rem; }
   .videos { display: grid; gap: 1.4rem; }
   @media (min-width: 700px) { .videos { grid-template-columns: 1fr 1fr; } }
@@ -239,6 +240,13 @@
   <nav class="rail" id="rail" aria-label="Speakers"></nav>
 </section>
 
+<div class="section-wrap" style="padding-bottom:0">
+  <p class="kicker">Personas</p>
+  <p class="lead-note">The full roster as trading cards. Click any card to open its dossier: stance, AI-sovereignty position, sources, and clips. The colour strip echoes the spectrum above.</p>
+</div>
+
+<section class="content"><div class="cardgrid" id="people"></div></section>
+
 <section class="section-wrap" aria-label="Clustered transcripts">
   <details class="collapsible">
     <summary class="collapsible-summary">
@@ -249,13 +257,6 @@
     <div class="clusters" id="clusters"></div>
   </details>
 </section>
-
-<div class="section-wrap" style="padding-bottom:0">
-  <p class="kicker">Personas</p>
-  <p class="lead-note">The full roster as trading cards. Click any card to open its dossier: stance, AI-sovereignty position, sources, and clips. The top badge marks where they locate sovereignty; the colour strip echoes the spectrum above.</p>
-</div>
-
-<section class="content"><div class="cardgrid" id="people"></div></section>
 
 <div class="pmodal" id="pmodal" hidden>
   <div class="pmodal-backdrop" data-close></div>
@@ -675,7 +676,7 @@ const PHOTOS = {
   suleyman: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Mustafa_Suleyman_photo_%28cropped%29.jpg/330px-Mustafa_Suleyman_photo_%28cropped%29.jpg',
   nadella: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/MS-Exec-Nadella-Satya-2017-08-31-22_%28cropped%29.jpg/330px-MS-Exec-Nadella-Satya-2017-08-31-22_%28cropped%29.jpg',
   pichai: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Sundar_Pichai_-_2023_%28cropped%29.jpg/330px-Sundar_Pichai_-_2023_%28cropped%29.jpg',
-  garman: null,
+  garman: 'data:image/jpeg;base64,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',
   mensch: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Arthur_Mensch.png/330px-Arthur_Mensch.png',
   gomez: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Aidan_Gomez_at_%22ALL_IN%22_2025_06.jpg/330px-Aidan_Gomez_at_%22ALL_IN%22_2025_06.jpg',
   andrulis: 'https://commons.wikimedia.org/wiki/Special:FilePath/Andrulis%20DLD.jpg?width=400',
@@ -784,7 +785,7 @@ function renderCards(list){
 function buildModal(p){
   const idx = String(PEOPLE.indexOf(p)+1).padStart(2,'0');
   const sov = SOV[p.id] ? `<p class="person-sov"><span class="rlabel">On AI sovereignty</span>${esc(SOV[p.id])}</p>` : '';
-  const org = ORG[p.id] ? `<p class="person-org"><span class="rlabel">Involvement in AI</span>${esc(ORG[p.id])}</p>` : '';
+  const org = ORG[p.id] ? `<p class="person-org"><span class="rlabel">Their institution / company</span>${esc(ORG[p.id])}</p>` : '';
   const reading = p.reading ? `<p class="person-reading"><span class="rlabel">Reading</span><a href="${p.reading.url}" target="_blank" rel="noopener">${esc(p.reading.label)} &rarr;</a></p>` : '';
   return `<div class="pm-head" style="--ax:${colorFor[p.id]}">
        <span class="pm-photo">${photoHtml(p)}</span>
@@ -795,9 +796,9 @@ function buildModal(p){
        </span>
      </div>
      <div class="pm-content">
-       <p class="person-stance">${esc(p.stance)}</p>
-       ${sov}
        ${org}
+       <p class="person-stance"><span class="rlabel">On AI</span>${esc(p.stance)}</p>
+       ${sov}
        ${reading}
        <div class="videos">${videoHtml(p)}</div>
      </div>`;
