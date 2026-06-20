@@ -202,7 +202,7 @@
 </section>
 
 <section class="section-wrap" aria-label="Clustered transcripts">
-  <details class="collapsible" open>
+  <details class="collapsible">
     <summary class="collapsible-summary">
       <span class="kicker collapsible-kicker">Transcripts, clustered by AI sovereignty stance</span>
       <span class="collapsible-chevron" aria-hidden="true"></span>
@@ -211,6 +211,11 @@
     <div class="clusters" id="clusters"></div>
   </details>
 </section>
+
+<div class="section-wrap" style="padding-bottom:0">
+  <p class="kicker">Personas</p>
+  <p class="lead-note">The full roster as expandable tabs. Open a name for their stance, AI-sovereignty position, sources, and clips.</p>
+</div>
 
 <section class="content" id="people"></section>
 
@@ -266,7 +271,7 @@ const PEOPLE = [
     reading:{label:'American Presidency Project, full remarks', url:'https://www.presidency.ucsb.edu/documents/remarks-the-vice-president-the-artificial-intelligence-action-summit-paris-france'},
     videos:[
       {id:'CC2GOUXSO7o', title:'Address at the AI Action Summit, Paris', desc:'Vance lays out a deregulatory, opportunity-first vision and says the US intends to keep its AI lead. February 11, 2025.', ts:'Approx.', channel:'Roll Call Factbase Videos'},
-      {id:'n_0c6F4ykSs', title:'Vance at the AI Action Summit', desc:'A second upload of the same Paris address.', ts:'Approx.', channel:'PodiumVC'}
+      {id:'FnA34z4aSXU', title:'"Always center American workers in our AI policy"', desc:'At the American Dynamism Summit in Washington, Vance pledges to keep US workers at the center of AI policy. March 2025.', ts:'Approx.', channel:'Forbes Breaking News'}
     ]},
   { id:'son', name:'Masayoshi Son', short:'Masayoshi Son', role:'CEO, SoftBank Group', cluster:'opportunity',
     stance:'The most bullish investor voice: AI as a wave far larger than the internet, worth staking the firm on.',
@@ -347,14 +352,16 @@ const PEOPLE = [
     stance:'Pitches a distinctly European route to AI sovereignty: large public investment, shared infrastructure, and rules, so the bloc is a builder and not just a market.',
     quote:'Europe will be a builder of AI, not just a market for it.', verbatim:false,
     videos:[
-      {id:'5nby8hra8Js', title:'Address at the AI Action Summit, Paris', desc:'Von der Leyen sets out Europe’s AI investment push and the case for a European model. February 2025.', ts:'Approx.', channel:'The New Citizen'}
+      {id:'5nby8hra8Js', title:'Address at the AI Action Summit, Paris', desc:'Von der Leyen sets out Europe’s AI investment push and the case for a European model. February 2025.', ts:'Approx.', channel:'The New Citizen'},
+      {id:'_pDYT-cu0SA', title:'"We will spare no effort to make Europe an AI continent"', desc:'Von der Leyen on Europe’s ambition to build, not just buy, its AI capacity.', ts:'Approx.', channel:'European Commission'}
     ]},
   { id:'macron', name:'Emmanuel Macron', short:'Emmanuel Macron', role:'President of France', cluster:'sovereignty',
     stance:'Pairs a 109-billion-euro investment pledge with a vision of European, nuclear-powered, rights-respecting AI.',
     quote:'"France is back in the AI race."', verbatim:true,
     reading:{label:'Élysée, statement on AI', url:'https://www.elysee.fr/en/emmanuel-macron/2025/02/11/statement-on-inclusive-and-sustainable-artificial-intelligence-for-people-and-the-planet'},
     videos:[
-      {id:'XN0UchHnWPI', title:'AI Action Summit, Paris (leaders livestream)', desc:'The official summit stream co-chaired by Macron, where he frames France and Europe’s return to the AI race. February 2025.', ts:'Approx.', channel:'Associated Press'}
+      {id:'XN0UchHnWPI', title:'AI Action Summit, Paris (leaders livestream)', desc:'The official summit stream co-chaired by Macron, where he frames France and Europe’s return to the AI race. February 2025.', ts:'Approx.', channel:'Associated Press'},
+      {id:'r7omaj8BDh8', title:'AI is an opportunity for Europe and India to seize', desc:'An exclusive interview where Macron frames AI as an opportunity and presses the case for European tech sovereignty.', ts:'Approx.', channel:'Firstpost'}
     ]},
   { id:'merz', name:'Friedrich Merz', short:'Friedrich Merz', role:'Chancellor of Germany', cluster:'sovereignty',
     stance:'Frames Europe’s digital and tech sovereignty, including AI and quantum, as a strategic necessity for the continent.',
@@ -458,6 +465,7 @@ function lerpColor(t){
   return 'rgb('+c[0]+','+c[1]+','+c[2]+')';
 }
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+String(sec).padStart(2,'0'); }
 const colorFor = {};
 PEOPLE.forEach((p,i)=>{ colorFor[p.id] = lerpColor(PEOPLE.length>1 ? i/(PEOPLE.length-1) : 0); });
 
@@ -550,21 +558,24 @@ function renderPeople(list){
       ? `<p class="person-sov"><span class="rlabel">On AI sovereignty</span>${esc(SOV[p.id])}</p>` : '';
     const reading = p.reading
       ? `<p class="person-reading"><span class="rlabel">Reading</span><a href="${p.reading.url}" target="_blank" rel="noopener">${esc(p.reading.label)} &rarr;</a></p>` : '';
-    const videos = p.videos.map(v =>
-      `<div class="video">
-         <div class="video-frame"><iframe src="https://www.youtube.com/embed/${v.id}" title="${esc(p.name)}: ${esc(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+    const videos = p.videos.map(v => {
+      const emb = 'https://www.youtube.com/embed/' + v.id + (v.start ? '?start=' + v.start : '');
+      const watch = 'https://www.youtube.com/watch?v=' + v.id + (v.start ? '&t=' + v.start + 's' : '');
+      const badge = v.start ? ('Starts ' + fmtTime(v.start)) : v.ts;
+      return `<div class="video">
+         <div class="video-frame"><iframe src="${emb}" title="${esc(p.name)}: ${esc(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
          <div class="video-body">
            <p class="video-title">${esc(v.title)}</p>
            <p class="video-desc">${esc(v.desc)}</p>
            <blockquote class="video-quote ${p.verbatim ? '' : 'paraphrase'}"><span class="vq-label">${p.verbatim ? 'Transcript excerpt' : 'What they argue'}</span>${esc(p.quote)}</blockquote>
            <div class="video-meta">
-             <a class="video-source" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">Source &rarr;</a>
-             <span class="video-ts">${esc(v.ts)}</span>
+             <a class="video-source" href="${watch}" target="_blank" rel="noopener">Source &rarr;</a>
+             <span class="video-ts">${esc(badge)}</span>
            </div>
            <p class="video-channel">${esc(v.channel)}</p>
          </div>
-       </div>`
-    ).join('');
+       </div>`;
+    }).join('');
     return `<details class="person" id="${p.id}">
        <summary class="person-summary">
          <span class="person-index">${idx}</span>
