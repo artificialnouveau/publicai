@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230057FF'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23fff'/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Video clips of political leaders, tech CEOs, and financiers speaking about public AI and AI sovereignty, arranged by how close their positions sit to one another, with clustered transcripts.">
+<link rel="canonical" href="https://www.artificialnouveau.com/publicai/public-support.html">
+<meta property="og:title" content="Public Support: voices on public AI and sovereignty">
+<meta property="og:description" content="A spectrum of leaders and CEOs on public AI and AI sovereignty, arranged by proximity of position, with clustered transcripts.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.artificialnouveau.com/publicai/public-support.html">
+<meta property="og:image" content="https://www.artificialnouveau.com/publicai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Public Support: voices on public AI and sovereignty">
+<meta name="twitter:description" content="A spectrum of leaders and CEOs on public AI and AI sovereignty.">
+<meta name="twitter:image" content="https://www.artificialnouveau.com/publicai/og-image.png">
+<title>Public Support: voices on public AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #F8F6F1;
+    --paper-2: #F0EDE7;
+    --hairline: rgba(10,10,10,0.10);
+    --hairline-strong: rgba(10,10,10,0.20);
+    --text: #1A1A1A;
+    --text-muted: #5B5B57;
+    --text-soft: #6E6E69;
+    --accent: #0057FF;
+    --accent-bright: #2a72ff;
+    --accent-dim: rgba(0,87,255,0.08);
+    --navy-1: #001540;
+    --navy-2: #00205b;
+    --navy-3: #0057FF;
+    --red: #9a3b3b;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif: 'Spectral', Georgia, 'Times New Roman', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); color: var(--text); background: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-bright); text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .topnav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 56px; background: rgba(248,246,241,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--hairline); }
+  .topnav-brand { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+  .topnav-brand svg { width: 22px; height: 22px; color: var(--accent); }
+  .topnav-links { display: flex; gap: 0.25rem; flex-wrap: wrap; justify-content: flex-end; }
+  .topnav-link { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); padding: 0.5rem 0.8rem; border-radius: 4px; text-decoration: none; transition: color 0.2s, background 0.2s; }
+  .topnav-link:hover { color: var(--text); background: var(--paper-2); text-decoration: none; }
+  .topnav-link[aria-current="page"] { color: var(--accent); background: var(--accent-dim); }
+
+  .hero { text-align: center; padding: 4rem 2rem 3rem; background: linear-gradient(170deg, var(--navy-1) 0%, var(--navy-2) 40%, var(--navy-3) 100%); color: #fff; border-bottom: 1px solid var(--hairline); }
+  .hero-eyebrow { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 1rem; }
+  .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 4.5vw, 3.25rem); line-height: 1.08; margin-bottom: 1rem; }
+  .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.78); max-width: 58ch; margin: 0 auto 1.5rem; line-height: 1.65; }
+
+  .filterbar { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; padding: 1.6rem 1.5rem 0; }
+  .filter-btn { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); background: var(--paper-2); border: 1px solid var(--hairline-strong); border-radius: 999px; padding: 0.5rem 1.15rem; cursor: pointer; transition: color 0.15s, background 0.15s, border-color 0.15s; }
+  .filter-btn:hover { color: var(--text); border-color: var(--accent); }
+  .filter-btn.is-active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 1rem; }
+  .kicker { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; text-align: center; }
+  .collapsible > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 0.4rem 0; }
+  .collapsible > summary::-webkit-details-marker { display: none; }
+  .collapsible-kicker { margin-bottom: 0; }
+  .collapsible-chevron { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid var(--accent); transition: transform 0.2s; }
+  .collapsible[open] .collapsible-chevron { transform: rotate(180deg); }
+  .lead-note { font-size: 0.95rem; color: var(--text-muted); max-width: 70ch; margin: 0 auto 2rem; text-align: center; }
+
+  /* Proximity spectrum */
+  .rail-ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 0.5rem; }
+  .rail-ends span { max-width: 40%; }
+  .rail-ends span:last-child { text-align: right; }
+  .rail-axis { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) 0%, #6f8bd6 55%, var(--red) 100%); margin-bottom: 0.4rem; }
+  .rail-hint { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.04em; color: var(--text-soft); text-align: center; margin-bottom: 1.25rem; }
+  .rail { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 1rem 0.4rem; }
+  .node { flex: 0 1 84px; display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; padding: 0 0.2rem; }
+  .node:hover { text-decoration: none; }
+  .node-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink); box-shadow: 0 0 0 1px var(--hairline-strong); transition: transform 0.15s; }
+  .node:hover .node-dot { transform: scale(1.4); }
+  .node-name { margin-top: 0.55rem; font-family: var(--font); font-size: 0.68rem; font-weight: 600; color: var(--text); line-height: 1.18; overflow-wrap: anywhere; }
+  .node-role { font-family: var(--mono); font-size: 0.52rem; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; color: var(--text-soft); margin-top: 0.18rem; white-space: normal; overflow-wrap: anywhere; line-height: 1.25; }
+
+  .callout { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+  .callout-inner { background: var(--accent-dim); border: 1px solid rgba(0,87,255,0.2); border-radius: 6px; padding: 1.1rem 1.25rem; font-size: 0.9rem; color: var(--text-muted); }
+  .callout-inner strong { color: var(--text); font-weight: 600; }
+
+  /* Transcript clusters */
+  .clusters { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .clusters { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1040px) { .clusters { grid-template-columns: repeat(4, 1fr); } }
+  .cluster { background: var(--paper-2); border: 1px solid var(--hairline-strong); border-radius: 8px; padding: 1.1rem 1rem 1.25rem; }
+  .cluster-title { font-family: var(--serif); font-weight: 600; font-size: 1.08rem; line-height: 1.2; margin-bottom: 0.3rem; }
+  .cluster-desc { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 1rem; }
+  .qcard { margin-bottom: 1.1rem; }
+  .qcard:last-child { margin-bottom: 0; }
+  .qtext { font-family: var(--serif); font-size: 0.92rem; line-height: 1.4; color: var(--text); }
+  .qtext.paraphrase { font-style: italic; color: var(--text-muted); }
+  .qconnect { display: flex; flex-direction: column; align-items: flex-start; margin: 0.3rem 0 0 0.6rem; }
+  .qline { width: 2px; height: 14px; background: var(--accent); }
+  .qarrow { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--accent); margin-left: -3px; }
+  .qchip { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.02em; color: var(--text); background: var(--ink); border: 1px solid var(--hairline-strong); border-radius: 999px; padding: 0.22rem 0.6rem; text-decoration: none; }
+  .qchip:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .qchip-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .qchip-role { color: var(--text-soft); font-weight: 500; }
+
+  /* People */
+  .content { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+  .person { border-top: 1px solid var(--hairline-strong); scroll-margin-top: 64px; }
+  .person:last-child { border-bottom: 1px solid var(--hairline-strong); }
+  .person > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; padding: 1.3rem 0; }
+  .person > summary::-webkit-details-marker { display: none; }
+  .person > summary:hover .person-sum-name { color: var(--accent); }
+  .person-index { font-family: var(--mono); font-size: 0.8rem; font-weight: 700; color: var(--accent); flex: none; }
+  .person-sum-dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+  .person-sum-main { flex: 1; display: flex; flex-direction: column; gap: 0.18rem; }
+  .person-sum-name { font-family: var(--serif); font-weight: 600; font-size: clamp(1.2rem, 2.6vw, 1.6rem); line-height: 1.15; color: var(--text); transition: color 0.15s; }
+  .person-sum-role { font-family: var(--mono); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); }
+  .person[open] > summary .collapsible-chevron { transform: rotate(180deg); }
+  .person-content { padding: 0.2rem 0 2rem; }
+  .person-stance { font-size: 0.98rem; color: var(--text-muted); max-width: none; margin-bottom: 0.9rem; }
+  .person-sov { font-size: 0.94rem; color: var(--text); background: var(--accent-dim); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 0.75rem 1rem; margin-bottom: 1rem; }
+  .rlabel { font-family: var(--mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-soft); margin-right: 0.4rem; }
+  .person-sov .rlabel { display: block; margin-bottom: 0.3rem; color: var(--accent); }
+  .person-reading { font-size: 0.85rem; margin-bottom: 1.4rem; }
+  .videos { display: grid; gap: 1.4rem; }
+  @media (min-width: 700px) { .videos { grid-template-columns: 1fr 1fr; } }
+  .video { background: var(--paper-2); border: 1px solid var(--hairline-strong); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+  .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+  .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-body { padding: 0.9rem 1rem 1.05rem; flex: 1; display: flex; flex-direction: column; }
+  .video-title { font-family: var(--serif); font-weight: 600; font-size: 1rem; line-height: 1.3; margin-bottom: 0.3rem; }
+  .video-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+  .video-quote { font-family: var(--serif); font-size: 0.9rem; line-height: 1.42; color: var(--text); border-left: 2px solid var(--accent); padding-left: 0.75rem; margin-bottom: 0.85rem; }
+  .video-quote.paraphrase { font-style: italic; color: var(--text-muted); }
+  .video-quote .vq-label { display: block; font-family: var(--mono); font-size: 0.56rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 0.3rem; font-style: normal; }
+  .video-meta { margin-top: auto; padding-top: 0.7rem; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+  .video-source { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; }
+  .video-ts { font-family: var(--mono); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-soft); padding: 0.2rem 0.5rem; border: 1px solid var(--hairline-strong); border-radius: 3px; white-space: nowrap; }
+  .video-channel { font-family: var(--mono); font-size: 0.62rem; color: var(--text-soft); margin-top: 0.4rem; }
+
+  .page-footer { text-align: center; padding: 2.5rem 1.5rem; font-size: 0.85rem; color: var(--text-soft); border-top: 1px solid var(--hairline); }
+
+  @media (max-width: 768px) {
+    .topnav { padding: 0 0.85rem; }
+    .topnav-brand-text { display: none; }
+    .content { padding: 1.5rem 1.1rem 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Site navigation">
+  <a href="index.html" class="topnav-brand" aria-label="Airbus for AI, home">
+    <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="24" height="24" rx="6" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M8 18 L14 8 L20 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="10" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="topnav-brand-text">Airbus for AI</span>
+  </a>
+  <div class="topnav-links">
+    <a class="topnav-link" href="index.html">Story</a>
+    <a class="topnav-link" href="summary.html">Summary</a>
+    <a class="topnav-link" href="research.html">Research</a>
+    <a class="topnav-link" href="public-support.html" aria-current="page">Public Support</a>
+    <a class="topnav-link" href="index.html#signon">Sign on</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="hero">
+  <div class="hero-eyebrow">Voices on public AI</div>
+  <h1>Public Support</h1>
+  <p class="hero-sub">Political leaders, tech CEOs, and financiers in their own words on the future of AI, public AI, and AI sovereignty. Arranged by how close their positions sit to one another, and clustered by what they actually argue.</p>
+</header>
+
+<div class="filterbar" role="group" aria-label="Filter speakers by type">
+  <button class="filter-btn is-active" data-filter="all" type="button">All</button>
+  <button class="filter-btn" data-filter="pol" type="button">Politicians</button>
+  <button class="filter-btn" data-filter="corp" type="button">Corporate bigwigs</button>
+</div>
+
+<section class="section-wrap" aria-label="Proximity spectrum">
+  <p class="kicker">Arranged by proximity of position</p>
+  <p class="lead-note">This is an interpretive axis, not a ranking. Speakers who frame AI in similar terms sit next to each other. Frontier-lab founders cluster on the left. State-power framing sits on the right. Tap any name to jump to their clips.</p>
+  <div class="rail-ends">
+    <span>Build fast / frontier opportunity</span>
+    <span>AI as national and state power</span>
+  </div>
+  <div class="rail-axis" aria-hidden="true"></div>
+  <p class="rail-hint">Dot colour marks position on the axis, blue (build fast) to red (state power)</p>
+  <nav class="rail" id="rail" aria-label="Speakers"></nav>
+</section>
+
+<section class="section-wrap" aria-label="Clustered transcripts">
+  <details class="collapsible" open>
+    <summary class="collapsible-summary">
+      <span class="kicker collapsible-kicker">Transcripts, clustered by AI sovereignty stance</span>
+      <span class="collapsible-chevron" aria-hidden="true"></span>
+    </summary>
+    <p class="lead-note">The same voices, grouped by where they locate AI sovereignty rather than who they are. Each card carries a representative line, then a connector down to the person who said it. Tap the name to watch the clip it came from. Lines in italics are paraphrased positions; lines in quotation marks are close to verbatim.</p>
+    <div class="clusters" id="clusters"></div>
+  </details>
+</section>
+
+<section class="content" id="people"></section>
+
+</main>
+
+<footer class="page-footer">
+  <p><a href="index.html">Back to Story</a> &middot; <a href="research.html">Research</a> &middot; <a href="../">Public AI Fellowship</a></p>
+</footer>
+
+<script>
+// Spectrum order: left (build fast / frontier opportunity) to right (AI as state power).
+// Sam Altman and Jensen Huang are adjacent (closest); Vladimir Putin is at the far end.
+const PEOPLE = [
+  { id:'altman', name:'Sam Altman', short:'Sam Altman', role:'CEO, OpenAI', cluster:'opportunity',
+    stance:'Frames AI as a transformative opportunity that still needs guardrails, and has asked governments directly to regulate frontier models. Closest on this axis to Jensen Huang: both speak to heads of state about building the technology fast.',
+    quote:'"Regulatory intervention by governments will be critical to mitigate the risks of increasingly powerful models."', verbatim:true,
+    reading:{label:'Written testimony, U.S. Senate Judiciary', url:'https://www.judiciary.senate.gov/imo/media/doc/2023-05-16%20-%20Bio%20&%20Testimony%20-%20Altman.pdf'},
+    videos:[
+      {id:'fP5YdyjTfG0', title:'Senate testimony on AI oversight', desc:'Altman tells the Senate Judiciary subcommittee that regulation will be critical to manage increasingly powerful models. May 16, 2023.', ts:'Approx.', channel:'CNBC Television'},
+      {id:'15UZCAr3shU', title:'World Government Summit, Dubai', desc:'Altman speaks with the UAE AI minister on AI’s trajectory and what governments should do. February 2024.', ts:'Approx.', channel:'Reuters'}
+    ]},
+  { id:'huang', name:'Jensen Huang', short:'Jensen Huang', role:'CEO, NVIDIA', cluster:'sovereignty',
+    stance:'The most-quoted voice on sovereign AI: every nation should own the production of its own intelligence, its data, and its culture. Sits closest to Altman, one step toward the state side because his pitch is aimed squarely at governments.',
+    quote:'"Every country needs to own the production of their own intelligence."', verbatim:true,
+    reading:{label:'NVIDIA, Every Country Needs Sovereign AI', url:'https://blogs.nvidia.com/blog/world-governments-summit/'},
+    videos:[
+      {id:'o6CUzsxH-2I', title:'How NVIDIA’s CEO envisions AI transforming governments', desc:'At the World Governments Summit in Dubai, Huang argues every country needs sovereign AI to codify its own culture and history.', ts:'Approx.', channel:'ExpovistaTV'},
+      {id:'I-nYjAfemY0', title:'Full remarks at Davos', desc:'Huang makes the case at the World Economic Forum that data is a national resource and AI infrastructure is the new industrial base.', ts:'Approx.', channel:'Forbes'}
+    ]},
+  { id:'amodei', name:'Dario Amodei', short:'Dario Amodei', role:'CEO, Anthropic', cluster:'power',
+    stance:'A frontier-lab founder who ties AI leadership to the future of democracy, export controls, and competition with China.',
+    quote:'AI leadership will decide whether democracies or autocracies set the terms of the technology.', verbatim:false,
+    videos:[
+      {id:'3gu6a1WiGNI', title:'AI competition, export controls, and democracy', desc:'Amodei argues that who leads in AI shapes whether democracies or autocracies write the rules.', ts:'Approx.', channel:'Interview clip'}
+    ]},
+  { id:'suleyman', name:'Mustafa Suleyman', short:'M. Suleyman', role:'CEO, Microsoft AI', cluster:'guard',
+    stance:'Argues in The Coming Wave that AI and synthetic biology will test the power of the nation-state itself, and that containment, not just opportunity, is the central problem.',
+    quote:'The coming wave will test the power of the nation-state itself; containment is the central problem.', verbatim:false,
+    videos:[
+      {id:'eJf6QPN9yic', title:'The AI pioneer on The Coming Wave', desc:'A wide-ranging talk on how AI reshapes power between citizens, companies, and states.', ts:'Approx.', channel:'Intelligence Squared'},
+      {id:'Zc4csOv7QtM', title:'Technology, power, and the future of AI', desc:'Suleyman on why governments need new tools to keep pace with the coming wave.', ts:'Approx.', channel:'Metis Strategy'},
+      {id:'JmrA_BZ7XMA', title:'"There is no off switch"', desc:'On the speed of AI development and why containment is harder than it sounds.', ts:'Approx.', channel:'Dr. Mayim Bialik'}
+    ]},
+  { id:'pichai', name:'Sundar Pichai', short:'Sundar Pichai', role:'CEO, Google and Alphabet', cluster:'opportunity',
+    stance:'Frames AI as a platform shift on the scale of fire or electricity, delivered through global cloud infrastructure.',
+    quote:'AI is more profound than fire or electricity for what humanity is working on.', verbatim:false,
+    videos:[
+      {id:'BYx63PKKPvg', title:'Full interview: the AI boom and the future of AI', desc:'Pichai on opportunity, risk, and Google’s role in deploying AI at global scale.', ts:'Approx.', channel:'BBC'}
+    ]},
+  { id:'vance', name:'JD Vance', short:'JD Vance', role:'Vice President of the United States', cluster:'opportunity',
+    stance:'Rejected European-style precaution at the Paris summit in favour of an opportunity-first, deregulatory, American-dominance framing of AI.',
+    quote:'"I’m not here to talk about AI safety. I’m here to talk about AI opportunity."', verbatim:true,
+    reading:{label:'American Presidency Project, full remarks', url:'https://www.presidency.ucsb.edu/documents/remarks-the-vice-president-the-artificial-intelligence-action-summit-paris-france'},
+    videos:[
+      {id:'CC2GOUXSO7o', title:'Address at the AI Action Summit, Paris', desc:'Vance lays out a deregulatory, opportunity-first vision and says the US intends to keep its AI lead. February 11, 2025.', ts:'Approx.', channel:'Roll Call Factbase Videos'},
+      {id:'n_0c6F4ykSs', title:'Vance at the AI Action Summit', desc:'A second upload of the same Paris address.', ts:'Approx.', channel:'PodiumVC'}
+    ]},
+  { id:'son', name:'Masayoshi Son', short:'Masayoshi Son', role:'CEO, SoftBank Group', cluster:'opportunity',
+    stance:'The most bullish investor voice: AI as a wave far larger than the internet, worth staking the firm on.',
+    quote:'The AI wave is roughly fifty times bigger than the dotcom boom.', verbatim:false,
+    videos:[
+      {id:'jLSLZ6zYq2Y', title:'AI is "50x bigger" than the dotcom boom', desc:'Son on why he sees the AI wave dwarfing the internet era, and his investment thesis.', ts:'Approx.', channel:'CNBC International Live'},
+      {id:'aEF3OrhIJ7M', title:'On AGI timelines and exponential AI', desc:'Son predicts artificial superintelligence and exponential capability gains.', ts:'Approx.', channel:'Xiao Yang'}
+    ]},
+  { id:'thiel', name:'Peter Thiel', short:'Peter Thiel', role:'Investor, Founders Fund', cluster:'opportunity',
+    stance:'A contrarian who questions both the techno-stagnation story and the wildest AI hype, and whose firms sit close to defence and the state.',
+    quote:'Are we dreaming big enough about AI, or has innovation stalled?', verbatim:false,
+    videos:[
+      {id:'vV7YgnPUxcU', title:'AI, Mars, and immortality', desc:'A long-form interview on AI, the pace of innovation, and the future of technology.', ts:'Approx.', channel:'Interesting Times with Ross Douthat'},
+      {id:'GHfVMOAERzU', title:'Intelligent, conscious, or merely evil?', desc:'COSM 2022 talk on whether AI is genuinely intelligent and what its risks are.', ts:'Approx.', channel:'Center for Natural and Artificial Intelligence'}
+    ]},
+  { id:'ek', name:'Daniel Ek', short:'Daniel Ek', role:'CEO, Spotify; chairman, Helsing', cluster:'sovereignty',
+    stance:'Increasingly vocal that Europe must build its own defining technology and defence companies rather than depend on others.',
+    quote:'Europe has to build its own defining technology companies, not just consume them.', verbatim:false,
+    videos:[
+      {id:'AoYAEOr2R_s', title:'In Good Company interview', desc:'A long sit-down with Norway’s sovereign wealth fund on AI and building European tech.', ts:'Approx.', channel:'Norges Bank Investment Management'},
+      {id:'rtTKF29zCxY', title:'On AI, free speech, and the future of music', desc:'Ek on AI’s impact and Spotify’s direction.', ts:'Approx.', channel:'NYNext by New York Post'}
+    ]},
+  { id:'tangen', name:'Nicolai Tangen', short:'Nicolai Tangen', role:'CEO, Norges Bank Investment Management', cluster:'sovereignty',
+    stance:'Runs the world’s largest sovereign wealth fund and treats AI as both a portfolio-defining force and a possible bubble.',
+    quote:'AI is reshaping markets, and the fund has to take a view on it; watch for bubbles.', verbatim:false,
+    videos:[
+      {id:'iBh2u1iFk2o', title:'On markets, real estate, AI, and China', desc:'The head of the roughly two-trillion-dollar fund on AI’s market impact.', ts:'Approx.', channel:'Bloomberg Television'},
+      {id:'zyvuM3J9QqQ', title:'Managing $2 trillion: AI bubbles and contrarian investing', desc:'Long-form interview on running the fund through the AI cycle.', ts:'Approx.', channel:'The Knowledge Project Podcast'}
+    ]},
+  { id:'furstenberg', name:'Jeannette zu Fürstenberg', short:'J. zu Fürstenberg', role:'Managing Director, General Catalyst Europe', cluster:'sovereignty',
+    stance:'A leading European venture voice arguing the continent must not merely keep pace on AI but win.',
+    quote:'"Progress is not enough. We have to win."', verbatim:true,
+    videos:[
+      {id:'Lts8estlPho', title:'Innovate or die: Europe’s and the US’ future', desc:'A Davos panel on European tech and AI competitiveness against the US.', ts:'Approx.', channel:'Victor Pinchuk Foundation'},
+      {id:'aRkGp4sRQaw', title:'Europe must win the AI race (in German)', desc:'FAZ interview where she argues Europe has to win, not just keep up. German-language.', ts:'Approx.', channel:'FAZ'}
+    ]},
+  { id:'asml', name:'Christophe Fouquet', short:'C. Fouquet', role:'CEO, ASML', cluster:'sovereignty',
+    stance:'Runs the company whose lithography machines every advanced chip depends on, a hinge between industry and statecraft. Warns Europe has become a consumer rather than a builder of AI.',
+    quote:'Europe has become a consumer of AI rather than a builder of it.', verbatim:false,
+    videos:[
+      {id:'UvnhLZi-f_A', title:'On AI, China, chips, and US restrictions', desc:'Fouquet on export controls and how chip-equipment supply shapes who can build sovereign AI.', ts:'Approx.', channel:'Bloomberg Television'}
+    ]},
+  { id:'cook', name:'Tim Cook', short:'Tim Cook', role:'CEO, Apple', cluster:'guard',
+    stance:'Comes at AI from privacy and on-device processing, the close cousin of the sovereignty case: keep the data on the user’s own hardware.',
+    quote:'Keep the intelligence private and on the user’s own device.', verbatim:false,
+    videos:[
+      {id:'rx6O-3XUTQU', title:'On Apple Intelligence and AI', desc:'Cook on Apple’s privacy-first, on-device approach to AI and what sets it apart.', ts:'Approx.', channel:'SuperSaf'}
+    ]},
+  { id:'alolama', name:'Omar Sultan Al Olama', short:'O. Al Olama', role:'UAE Minister of State for AI', cluster:'sovereignty',
+    stance:'The canonical Gulf government voice on sovereign AI, positioning the UAE as a neutral global hub.',
+    quote:'The UAE wants to be a neutral hub, a Switzerland for AI.', verbatim:false,
+    videos:[
+      {id:'KrUk2fM5eVo', title:'UAE trying to be the Switzerland of the Middle East', desc:'The UAE’s AI minister on strategy, regulation, and positioning the country as a neutral AI hub.', ts:'Approx.', channel:'Quest Means Business'},
+      {id:'3KdHhEJsBY4', title:'Interview on the UAE’s AI ambitions', desc:'The minister on the Gulf’s sovereign-AI push.', ts:'Approx.', channel:'ADIPEC Official'}
+    ]},
+  { id:'pengxiao', name:'Peng Xiao', short:'Peng Xiao', role:'Group CEO, G42', cluster:'sovereignty',
+    stance:'Leads the Gulf’s flagship sovereign-AI infrastructure company, building national compute capacity.',
+    quote:'"We’re on a path to building an intelligence grid."', verbatim:true,
+    videos:[
+      {id:'Q0uFk3tMPEM', title:'Building an intelligence grid', desc:'G42’s CEO on building national, sovereign AI infrastructure in the Gulf.', ts:'Approx.', channel:'GZERO Media'},
+      {id:'wcz7luRGzXs', title:'On UAE chip imports and AI', desc:'A Davos interview on chip access and the UAE’s AI buildout.', ts:'Approx.', channel:'Bloomberg Television'}
+    ]},
+  { id:'calvino', name:'Nadia Calviño', short:'Nadia Calviño', role:'President, European Investment Bank', cluster:'sovereignty',
+    stance:'Directs Europe’s public bank toward financing strategic priorities, including digital and tech sovereignty.',
+    quote:'Financing Europe’s strategic priorities, including tech and digital sovereignty.', verbatim:false,
+    videos:[
+      {id:'GEOgQJ5bq1I', title:'EIB Group Forum keynote', desc:'The EIB President on the bank’s financing priorities, including digital and tech investment in Europe.', ts:'Approx.', channel:'European Investment Bank'},
+      {id:'zq-3ADq_Tgc', title:'Financing Europe’s priorities', desc:'A conversation on financing security, competitiveness, and tech sovereignty.', ts:'Approx.', channel:'Atlantic Council'}
+    ]},
+  { id:'lagarde', name:'Christine Lagarde', short:'C. Lagarde', role:'President, European Central Bank', cluster:'guard',
+    stance:'Brings the macro-and-regulation lens: AI’s effect on the economy and the case for governing it.',
+    quote:'On stabilising the economy and regulating AI for the global economy.', verbatim:false,
+    videos:[
+      {id:'iSRgnpulpLo', title:'On rates, geopolitics, and AI', desc:'Lagarde addresses AI’s economic implications alongside monetary policy.', ts:'Approx.', channel:'Bloomberg Television'},
+      {id:'bmA4z24I7Xc', title:'Inflation and regulating AI', desc:'Lagarde with Jon Stewart on inflation and regulating AI for the global economy.', ts:'Approx.', channel:'The Daily Show'}
+    ]},
+  { id:'vonderleyen', name:'Ursula von der Leyen', short:'Ursula von der Leyen', role:'President, European Commission', cluster:'sovereignty',
+    stance:'Pitches a distinctly European route to AI sovereignty: large public investment, shared infrastructure, and rules, so the bloc is a builder and not just a market.',
+    quote:'Europe will be a builder of AI, not just a market for it.', verbatim:false,
+    videos:[
+      {id:'5nby8hra8Js', title:'Address at the AI Action Summit, Paris', desc:'Von der Leyen sets out Europe’s AI investment push and the case for a European model. February 2025.', ts:'Approx.', channel:'The New Citizen'}
+    ]},
+  { id:'macron', name:'Emmanuel Macron', short:'Emmanuel Macron', role:'President of France', cluster:'sovereignty',
+    stance:'Pairs a 109-billion-euro investment pledge with a vision of European, nuclear-powered, rights-respecting AI.',
+    quote:'"France is back in the AI race."', verbatim:true,
+    reading:{label:'Élysée, statement on AI', url:'https://www.elysee.fr/en/emmanuel-macron/2025/02/11/statement-on-inclusive-and-sustainable-artificial-intelligence-for-people-and-the-planet'},
+    videos:[
+      {id:'XN0UchHnWPI', title:'AI Action Summit, Paris (leaders livestream)', desc:'The official summit stream co-chaired by Macron, where he frames France and Europe’s return to the AI race. February 2025.', ts:'Approx.', channel:'Associated Press'}
+    ]},
+  { id:'merz', name:'Friedrich Merz', short:'Friedrich Merz', role:'Chancellor of Germany', cluster:'sovereignty',
+    stance:'Frames Europe’s digital and tech sovereignty, including AI and quantum, as a strategic necessity for the continent.',
+    quote:'Europe must secure its digital and technological sovereignty.', verbatim:false,
+    videos:[
+      {id:'j1O-5V3Y2wY', title:'Unveiling Europe’s digital future', desc:'A keynote on Europe’s push for digital and tech sovereignty, AI adoption, and reducing dependence.', ts:'Approx.', channel:'DWS News'},
+      {id:'k2MvgOgO3Ls', title:'Macron and Merz on EU digital sovereignty', desc:'Joint announcement on digital sovereignty, AI adoption, and quantum chips.', ts:'Approx.', channel:'DRM News'}
+    ]},
+  { id:'modi', name:'Narendra Modi', short:'Narendra Modi', role:'Prime Minister of India', cluster:'sovereignty',
+    stance:'Co-chaired the Paris summit and frames India’s sovereignty across the full AI stack: applications, models, compute, talent, and energy, with open-source and the Global South in mind.',
+    quote:'India’s AI ambition spans the full stack and the Global South.', verbatim:false,
+    reading:{label:'PM India, AI superpower vision', url:'https://www.pmindia.gov.in/en/news_updates/india-should-be-among-the-top-three-ai-superpowers-globally-pm-modi-sets-2047-vision/'},
+    videos:[
+      {id:'2x2ZnoJ77kY', title:'Full speech at the Paris AI Summit', desc:'Modi on the dawn of the AI age, guarding against bias, and India’s role co-chairing the summit. February 2025.', ts:'Approx.', channel:'Mint'}
+    ]},
+  { id:'starmer', name:'Keir Starmer', short:'Keir Starmer', role:'Prime Minister of the United Kingdom', cluster:'sovereignty',
+    stance:'Ties AI opportunity to building sovereign UK compute and an activist industrial approach.',
+    quote:'Seize the AI opportunity and build the UK’s own sovereign compute.', verbatim:false,
+    videos:[
+      {id:'fmNtI25byj8', title:'Speech on AI', desc:'Starmer sets out the UK’s AI strategy and opportunity agenda.', ts:'Approx.', channel:'10 Downing Street'},
+      {id:'wYVGdew4FHA', title:'In full: the AI Action Plan speech', desc:'The full speech launching the Government’s AI Action Plan, including sovereign compute.', ts:'Approx.', channel:'The Mirror'}
+    ]},
+  { id:'burnham', name:'Andy Burnham', short:'Andy Burnham', role:'Mayor of Greater Manchester', cluster:'guard',
+    stance:'A regional voice on digital inclusion: making sure the technology shift does not leave people behind.',
+    quote:'Make the digital future work for everyone, not just the few.', verbatim:false,
+    videos:[
+      {id:'nfzXDRO7XC8', title:'Digital futures for good', desc:'Burnham on digital inclusion and the tech future of Greater Manchester. (Digital policy; AI-adjacent.)', ts:'Approx.', channel:'Good Things Foundation'}
+    ]},
+  { id:'jetten', name:'Rob Jetten', short:'Rob Jetten', role:'Prime Minister of the Netherlands', cluster:'power',
+    stance:'Brings digital-sovereignty language to the multilateral stage, warning that AI threats to peace and security demand global rules.',
+    quote:'AI threats to peace and security demand global rules, not complacency.', verbatim:false,
+    videos:[
+      {id:'vcArCe0Mr_A', title:'Warning to the UN on AI, peace, and security', desc:'Jetten argues AI risks to global security call for shared rules, not complacency.', ts:'Approx.', channel:'DRM News'}
+    ]},
+  { id:'lee', name:'Lee Jae-myung', short:'Lee Jae-myung', role:'President of South Korea', cluster:'sovereignty',
+    stance:'Declares AI the answer to Korea’s transformation and a national strategic priority.',
+    quote:'"Unprecedented change in Korea, and the answer is AI."', verbatim:true,
+    videos:[
+      {id:'GSRrSMHRjOs', title:'"The answer is AI"', desc:'Lee makes AI the centrepiece of Korea’s national transformation agenda.', ts:'Approx.', channel:'SBS D Forum'},
+      {id:'GHcBSwe-s2M', title:'Statesmen’s Forum address (English)', desc:'A CSIS forum touching on Korea’s technology and AI ambitions.', ts:'Approx.', channel:'Center for Strategic & International Studies'}
+    ]},
+  { id:'takaichi', name:'Sanae Takaichi', short:'Sanae Takaichi', role:'Prime Minister of Japan', cluster:'sovereignty',
+    stance:'Names AI and advanced technology among strategic growth-investment priorities for Japan.',
+    quote:'AI and advanced tech are strategic growth-investment priorities for Japan.', verbatim:false,
+    videos:[
+      {id:'4ToyAAwtYkY', title:'Press conference as Prime Minister', desc:'Her agenda sets AI and advanced technology as strategic priorities. October 2025.', ts:'Approx.', channel:'Prime Minister’s Office of Japan'},
+      {id:'yIU8AYJeJzg', title:'Policies to make Japan "strong and rich"', desc:'A news package on her program emphasising AI and semiconductors.', ts:'Approx.', channel:'Nippon Television News Japan'}
+    ]},
+  { id:'rutte', name:'Mark Rutte', short:'Mark Rutte', role:'Secretary General, NATO', cluster:'power',
+    stance:'Speaks to AI through collective defence and industrial capacity, where sovereignty over technology becomes a security question.',
+    quote:'Technology and industrial capacity are now security questions for the alliance.', verbatim:false,
+    videos:[
+      {id:'zEza6fjUBFI', title:'Speech at the NATO-Industry Forum', desc:'Rutte on defence, technology, and industrial capacity. November 6, 2025. (Defence-focused; tech sovereignty features.)', ts:'Approx.', channel:'NATO News'}
+    ]},
+  { id:'sanders', name:'Bernie Sanders', short:'Bernie Sanders', role:'U.S. Senator, Vermont', cluster:'guard',
+    stance:'The sharpest labour-and-democracy warning: AI built by billionaires could hollow out the working class.',
+    quote:'AI built by billionaires could wipe out the working class.', verbatim:false,
+    videos:[
+      {id:'dthbi4lzO58', title:'"AI could wipe out the working class"', desc:'Sanders warns AI and robotics could eliminate tens of millions of decent-paying jobs.', ts:'Approx.', channel:'Senator Bernie Sanders'},
+      {id:'M__l4j6LtBQ', title:'On AI billionaires and democracy', desc:'A Senate-floor speech on concentrated AI power and the threat to democracy.', ts:'Approx.', channel:'PoliticsJOE'}
+    ]},
+  { id:'xi', name:'Xi Jinping', short:'Xi Jinping', role:'President of China', cluster:'power',
+    stance:'Frames AI as a strategic industry to be developed in an orderly way and under national control, tied to tech self-reliance.',
+    quote:'Promote the healthy, orderly development of AI, with self-reliance.', verbatim:false,
+    videos:[
+      {id:'R3GVkcMGwys', title:'On healthy, orderly AI development', desc:'Xi calls for governing AI’s development at a CPC study session. April 2025.', ts:'Approx.', channel:'CGTN'},
+      {id:'MubtvEkGog8', title:'AI is a young industry, one for the young', desc:'Xi frames AI as an emerging strategic industry on a Shanghai inspection.', ts:'Approx.', channel:'CGTN'}
+    ]},
+  { id:'putin', name:'Vladimir Putin', short:'Vladimir Putin', role:'President of Russia', cluster:'power',
+    stance:'The far end of the axis. AI as raw geopolitical power, full stop.',
+    quote:'"Whoever becomes the leader in this sphere will become the ruler of the world."', verbatim:true,
+    reading:{label:'CNBC, Putin on AI and world power', url:'https://www.cnbc.com/2017/09/04/putin-leader-in-artificial-intelligence-will-rule-world.html'},
+    videos:[
+      {id:'dcfs-r5Uk4I', title:'"AI will decide who rules tomorrow"', desc:'A news package on Putin’s framing of AI as the decisive lever of national power.', ts:'Full clip', channel:'Times Now World'},
+      {id:'uR2C-pi_Mkk', title:'"Whoever controls AI will rule the world"', desc:'The original 2017 remark to Russian students on Knowledge Day.', ts:'Full clip', channel:'Archive upload'}
+    ]}
+];
+
+// Clusters by where each speaker locates AI sovereignty.
+const CLUSTERS = [
+  { id:'stack', title:'Own the national stack', desc:'Sovereignty as a country building its own models, compute, data, and chips.' },
+  { id:'race', title:'Win the great-power race', desc:'Sovereignty as national or bloc dominance; whoever leads sets the terms.' },
+  { id:'shared', title:'Pool it under shared rules', desc:'Sovereignty best protected through multilateral governance and containment.' },
+  { id:'beyond', title:'Locate it beyond the state', desc:'Sovereignty placed with individuals, democracy, or global platforms instead of the nation-state.' }
+];
+
+// Which sovereignty cluster each person falls into.
+const SOVCLUSTER = {
+  huang:'stack', vonderleyen:'stack', macron:'stack', merz:'stack', modi:'stack', starmer:'stack',
+  lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
+  furstenberg:'stack', asml:'stack', tangen:'stack',
+  vance:'race', altman:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
+  suleyman:'shared', jetten:'shared', lagarde:'shared',
+  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond'
+};
+
+function lerpColor(t){
+  // accent blue #0057FF to red #9a3b3b
+  const a=[0x00,0x57,0xff], b=[0x9a,0x3b,0x3b];
+  const c=a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+  return 'rgb('+c[0]+','+c[1]+','+c[2]+')';
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+const colorFor = {};
+PEOPLE.forEach((p,i)=>{ colorFor[p.id] = lerpColor(PEOPLE.length>1 ? i/(PEOPLE.length-1) : 0); });
+
+// Short affiliation tags for the spectrum rail (company or country, not job title).
+const TAGS = {
+  altman:'OpenAI', huang:'NVIDIA', amodei:'Anthropic', suleyman:'Microsoft AI', pichai:'Google',
+  vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund',
+  furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
+  calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
+  modi:'India PM', starmer:'UK PM', burnham:'Manchester Mayor', jetten:'Netherlands PM', lee:'Korea President',
+  takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
+};
+
+// Category for the top filter: 'pol' = politician / public official, 'corp' = company exec or investor.
+const TYPE = {
+  altman:'corp', huang:'corp', amodei:'corp', suleyman:'corp', pichai:'corp', vance:'pol',
+  son:'corp', thiel:'corp', ek:'corp', tangen:'corp', furstenberg:'corp', asml:'corp',
+  cook:'corp', alolama:'pol', pengxiao:'corp', calvino:'pol', lagarde:'pol', vonderleyen:'pol',
+  macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', lee:'pol',
+  takaichi:'pol', rutte:'pol', sanders:'pol', xi:'pol', putin:'pol'
+};
+
+// One line on each person's specific stance toward AI sovereignty.
+const SOV = {
+  altman:'Less a sovereignty hawk than a builder: frames the priority as US and allied leadership on frontier models, with compute and energy as the real strategic bottleneck.',
+  huang:'The defining sovereign-AI evangelist. Every nation should build its own models on its own data and compute, so its culture and intelligence are not outsourced.',
+  amodei:'Casts AI leadership as a democratic-sovereignty contest, backing export controls to keep frontier capability with the US and its allies rather than authoritarian states.',
+  suleyman:'Argues sovereignty itself is at stake: nation-states must build the capacity to contain AI, or cede power to whoever controls the technology.',
+  pichai:'A platform view more than a sovereignty one. Offers sovereign-cloud and in-country options, but sees AI delivered globally through Google’s infrastructure.',
+  vance:'Equates sovereignty with American dominance of the full AI stack, and warns allies against regulation that would surrender that lead.',
+  son:'Treats AI leadership as capital and infrastructure: whoever funds the largest compute build-out, his central bet, sets the terms.',
+  thiel:'Skeptical of centralized control. Frames the real contest as US versus China and worries about AI as a tool of state surveillance and concentration.',
+  ek:'A European-sovereignty voice from industry: the continent must own its defence and AI champions rather than depend on US or Chinese platforms.',
+  tangen:'Speaks as an asset owner rather than an advocate, but flags national concentration and bubble risk in who ends up owning the AI build-out.',
+  furstenberg:'Argues European sovereignty means winning, not just regulating: backing homegrown AI champions with real capital and ambition.',
+  asml:'The hardware chokepoint of sovereignty. Without advanced lithography no country can build frontier AI, and he warns Europe is consuming it rather than building it.',
+  cook:'Reframes sovereignty as individual data sovereignty: keep AI on the user’s own device, so neither a company nor a state holds the data.',
+  alolama:'Pursues sovereignty by neutrality: position the UAE as an independent global AI hub with its own compute, talent, and governance.',
+  pengxiao:'Builds the physical layer of sovereignty: national compute and an "intelligence grid" so the Gulf owns its AI infrastructure.',
+  calvino:'Channels EU public finance toward strategic autonomy, funding the chips, compute, and AI capacity Europe needs to not depend on others.',
+  lagarde:'Comes at it through stability and regulation, but stresses Europe should not be a passive taker of AI built elsewhere.',
+  vonderleyen:'The standard-bearer for European AI sovereignty: mobilize public investment and shared infrastructure so the bloc builds AI, not just buys it.',
+  macron:'Champions European sovereign AI: domestic, nuclear-powered compute, homegrown labs, and rules, so France and Europe do not depend on the US or China.',
+  merz:'Frames digital and technological sovereignty as a strategic necessity for Germany and Europe, spanning AI, chips, and quantum.',
+  modi:'Defines sovereignty across the full stack, from applications to compute to energy, with open models and the Global South so AI is not a monopoly of a few nations.',
+  starmer:'Ties opportunity to sovereign capability: build the UK’s own compute and AI infrastructure rather than rely entirely on US clouds.',
+  burnham:'Comes at it from inclusion rather than statecraft: make sure the AI transition does not leave regions and workers behind.',
+  jetten:'Pushes digital sovereignty through multilateral rules, arguing AI’s security risks need shared governance, not unilateral control.',
+  lee:'Makes sovereign AI a national mission for Korea: domestic models and compute as the answer to the country’s transformation.',
+  takaichi:'Treats AI and semiconductors as strategic assets for Japan, to be built at home as part of an economic-security agenda.',
+  rutte:'Views it through collective defence: technological sovereignty and industrial capacity are now alliance security questions.',
+  sanders:'Concerned less with national sovereignty than democratic sovereignty: AI owned by a handful of billionaires threatens workers and self-government.',
+  xi:'Pursues sovereignty as self-reliance: indigenous AI and chips under national control, insulated from US restrictions.',
+  putin:'The purest power framing: AI leadership equals national supremacy, and whoever leads will rule.'
+};
+
+const railEl = document.getElementById('rail');
+const clustersEl = document.getElementById('clusters');
+const peopleEl = document.getElementById('people');
+
+function renderRail(list){
+  railEl.innerHTML = list.map(p =>
+    `<a class="node" href="#${p.id}">
+       <span class="node-dot" style="background:${colorFor[p.id]}"></span>
+       <span class="node-name">${esc(p.short)}</span>
+       <span class="node-role">${esc(TAGS[p.id] || p.role)}</span>
+     </a>`
+  ).join('');
+}
+
+function renderClusters(list){
+  clustersEl.innerHTML = CLUSTERS.map(cl => {
+    const members = list.filter(p => SOVCLUSTER[p.id] === cl.id);
+    if (!members.length) return '';
+    const cards = members.map(p =>
+      `<div class="qcard">
+         <p class="qtext ${p.verbatim ? '' : 'paraphrase'}">${esc(p.quote)}</p>
+         <div class="qconnect"><span class="qline"></span><span class="qarrow"></span></div>
+         <a class="qchip" href="#${p.id}"><span class="qchip-dot" style="background:${colorFor[p.id]}"></span>${esc(p.short)} <span class="qchip-role">&middot; ${esc(p.role.split(',')[0])}</span></a>
+       </div>`
+    ).join('');
+    return `<div class="cluster"><h3 class="cluster-title">${esc(cl.title)}</h3><p class="cluster-desc">${esc(cl.desc)}</p>${cards}</div>`;
+  }).join('');
+}
+
+function renderPeople(list){
+  peopleEl.innerHTML = list.map((p, i) => {
+    const idx = String(i+1).padStart(2,'0');
+    const sov = SOV[p.id]
+      ? `<p class="person-sov"><span class="rlabel">On AI sovereignty</span>${esc(SOV[p.id])}</p>` : '';
+    const reading = p.reading
+      ? `<p class="person-reading"><span class="rlabel">Reading</span><a href="${p.reading.url}" target="_blank" rel="noopener">${esc(p.reading.label)} &rarr;</a></p>` : '';
+    const videos = p.videos.map(v =>
+      `<div class="video">
+         <div class="video-frame"><iframe src="https://www.youtube.com/embed/${v.id}" title="${esc(p.name)}: ${esc(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+         <div class="video-body">
+           <p class="video-title">${esc(v.title)}</p>
+           <p class="video-desc">${esc(v.desc)}</p>
+           <blockquote class="video-quote ${p.verbatim ? '' : 'paraphrase'}"><span class="vq-label">${p.verbatim ? 'Transcript excerpt' : 'What they argue'}</span>${esc(p.quote)}</blockquote>
+           <div class="video-meta">
+             <a class="video-source" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">Source &rarr;</a>
+             <span class="video-ts">${esc(v.ts)}</span>
+           </div>
+           <p class="video-channel">${esc(v.channel)}</p>
+         </div>
+       </div>`
+    ).join('');
+    return `<details class="person" id="${p.id}">
+       <summary class="person-summary">
+         <span class="person-index">${idx}</span>
+         <span class="person-sum-dot" style="background:${colorFor[p.id]}"></span>
+         <span class="person-sum-main">
+           <span class="person-sum-name">${esc(p.name)}</span>
+           <span class="person-sum-role">${esc(p.role)}</span>
+         </span>
+         <span class="collapsible-chevron" aria-hidden="true"></span>
+       </summary>
+       <div class="person-content">
+         <p class="person-stance">${esc(p.stance)}</p>
+         ${sov}
+         ${reading}
+         <div class="videos">${videos}</div>
+       </div>
+     </details>`;
+  }).join('');
+}
+
+function applyFilter(type){
+  const list = type === 'all' ? PEOPLE : PEOPLE.filter(p => TYPE[p.id] === type);
+  renderRail(list);
+  renderClusters(list);
+  renderPeople(list);
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.toggle('is-active', b.dataset.filter === type));
+}
+
+document.querySelectorAll('.filter-btn').forEach(b =>
+  b.addEventListener('click', () => applyFilter(b.dataset.filter)));
+
+// Expand a persona tab when its rail node or transcript chip is clicked.
+function openPerson(hash){
+  if(!hash || hash.charAt(0) !== '#') return;
+  const el = document.getElementById(hash.slice(1));
+  if(el && el.classList.contains('person')) el.open = true;
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if(a) openPerson(a.getAttribute('href'));
+});
+window.addEventListener('hashchange', () => openPerson(location.hash));
+
+applyFilter('all');
+openPerson(location.hash);
+</script>
+
+</body>
+</html>
