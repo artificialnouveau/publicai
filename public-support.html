@@ -139,6 +139,7 @@
   .pcard-type { font-family: var(--mono); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; background: var(--ax, var(--accent)); padding: 0.16rem 0.42rem; border-radius: 999px; }
   .pcard-photo { position: relative; width: 92px; height: 92px; border-radius: 50%; overflow: hidden; border: 3px solid var(--ax, var(--accent)); margin-bottom: 0.6rem; display: flex; align-items: center; justify-content: center; background: var(--ink); }
   .pc-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .pc-logo { object-fit: contain; background: #fff; padding: 15%; }
   .pc-initials { font-family: var(--serif); font-weight: 600; font-size: 1.65rem; }
   .pcard-name { font-family: var(--serif); font-weight: 600; font-size: 0.96rem; line-height: 1.15; color: var(--text); }
   .pcard-tag { font-family: var(--mono); font-size: 0.56rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; color: var(--text-soft); margin-top: 0.28rem; }
@@ -164,6 +165,8 @@
   .person-sov { font-size: 0.94rem; color: var(--text); background: var(--accent-dim); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 0.75rem 1rem; margin-bottom: 1rem; }
   .rlabel { font-family: var(--mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-soft); margin-right: 0.4rem; }
   .person-sov .rlabel { display: block; margin-bottom: 0.3rem; color: var(--accent); }
+  .person-org { font-size: 0.94rem; color: var(--text-muted); border-left: 3px solid var(--hairline-strong); padding: 0.65rem 0 0.65rem 0.95rem; margin-bottom: 1rem; }
+  .person-org .rlabel { display: block; margin-bottom: 0.3rem; color: var(--text-soft); }
   .person-reading { font-size: 0.85rem; margin-bottom: 1.4rem; }
   .videos { display: grid; gap: 1.4rem; }
   @media (min-width: 700px) { .videos { grid-template-columns: 1fr 1fr; } }
@@ -303,12 +306,47 @@ const PEOPLE = [
       {id:'Zc4csOv7QtM', title:'Technology, power, and the future of AI', desc:'Suleyman on why governments need new tools to keep pace with the coming wave.', ts:'Approx.', channel:'Metis Strategy'},
       {id:'JmrA_BZ7XMA', title:'"There is no off switch"', desc:'On the speed of AI development and why containment is harder than it sounds.', ts:'Approx.', channel:'Dr. Mayim Bialik'}
     ]},
+  { id:'nadella', name:'Satya Nadella', short:'Satya Nadella', role:'CEO, Microsoft', cluster:'beyond',
+    stance:'Frames AI as a general-purpose platform shift Microsoft delivers at global scale through Azure, Copilot, and the OpenAI partnership, with sovereign-cloud options for governments.',
+    quote:'AI should empower every person and organization on the planet.', verbatim:false,
+    videos:[
+      {id:'w87UvmMcmW4', title:'On the future of AI', desc:'Nadella on where AI is heading and how Microsoft is rebuilding its products around it.', ts:'Approx.', channel:'Matthew Berman'},
+      {id:'8-boBsWcr5A', title:'How Microsoft thinks about AGI', desc:'A long-form interview on AGI, compute, and Microsoft’s AI strategy.', ts:'Approx.', channel:'Dwarkesh Patel'}
+    ]},
   { id:'pichai', name:'Sundar Pichai', short:'Sundar Pichai', role:'CEO, Google and Alphabet', cluster:'opportunity',
     stance:'Frames AI as a platform shift on the scale of fire or electricity, delivered through global cloud infrastructure.',
     quote:'AI is more profound than fire or electricity for what humanity is working on.', verbatim:false,
     videos:[
       {id:'BYx63PKKPvg', title:'Full interview: the AI boom and the future of AI', desc:'Pichai on opportunity, risk, and Google’s role in deploying AI at global scale.', ts:'Approx.', channel:'BBC'},
       {id:'RgV57kDzcng', title:'On AI backlash, the future of work, and Google’s next era', desc:'Pichai on the pushback against AI, the impact on jobs, and where Google goes next.', ts:'Approx.', channel:'Hard Fork'}
+    ]},
+  { id:'garman', name:'Matt Garman', short:'Matt Garman', role:'CEO, Amazon Web Services', cluster:'beyond',
+    stance:'Pitches AWS as the neutral infrastructure layer of AI: its own Trainium chips, the widest model choice through Bedrock, a deep Anthropic partnership, and sovereign-cloud regions.',
+    quote:'The cloud with the best, broadest AI infrastructure will power the AI era.', verbatim:false,
+    videos:[
+      {id:'q3Sb9PemsSo', title:'re:Invent 2025 keynote', desc:'Garman unveils AWS AI infrastructure, chips, and services at the cloud’s flagship event.', ts:'Approx.', channel:'AWS Events'},
+      {id:'PPVkOq-vKrw', title:'On the AI race', desc:'Garman on AWS’s AI strategy, Anthropic, and competition with Microsoft and Google.', ts:'Approx.', channel:'Bloomberg Podcasts'}
+    ]},
+  { id:'mensch', name:'Arthur Mensch', short:'Arthur Mensch', role:'CEO, Mistral AI', cluster:'stack',
+    stance:'Europe’s leading frontier-model founder, arguing the continent can and must build its own competitive, open-weight AI rather than depend on US labs.',
+    quote:'Europe has about two years to build sovereign AI, or become dependent.', verbatim:false,
+    videos:[
+      {id:'325gGv0eWV8', title:'Europe’s $14 billion AI challenger', desc:'Mensch on Mistral’s bid to prove Europe can build frontier AI of its own.', ts:'Approx.', channel:'CNBC International'},
+      {id:'J-DDSskLgOM', title:'"Europe can build successful AI tech"', desc:'Mensch makes the case that European sovereign AI is viable, not just aspirational.', ts:'Approx.', channel:'CNBC International Live'}
+    ]},
+  { id:'gomez', name:'Aidan Gomez', short:'Aidan Gomez', role:'CEO, Cohere', cluster:'stack',
+    stance:'Builds enterprise-and-government AI that runs inside the customer’s own environment, positioning Cohere as the private, sovereign alternative to consumer AI giants.',
+    quote:'AI should make people more effective, deployed privately inside the enterprise.', verbatim:false,
+    videos:[
+      {id:'jW6wAz2nYls', title:'On the next wave of generative AI', desc:'Gomez on enterprise adoption and where generative AI is heading.', ts:'Approx.', channel:'Bloomberg Live'},
+      {id:'2XRpTZpHjfc', title:'No Priors: foundation models and Cohere', desc:'A long-form conversation on enterprise AI, agents, and Cohere’s strategy.', ts:'Approx.', channel:'No Priors'}
+    ]},
+  { id:'andrulis', name:'Jonas Andrulis', short:'Jonas Andrulis', role:'CEO, Aleph Alpha', cluster:'stack',
+    stance:'Germany’s sovereign-AI founder, building transparent, auditable models and infrastructure for European governments and industry rather than chasing consumer scale.',
+    quote:'Europe needs its own trustworthy, transparent AI and the tech sovereignty to run it.', verbatim:false,
+    videos:[
+      {id:'KGxEdotG0-4', title:'Why does Europe need more tech sovereignty?', desc:'Andrulis on Europe’s case for sovereign, transparent AI. Innovate Europe podcast.', ts:'Approx.', channel:'Innovate Europe Foundation'},
+      {id:'AZEQ7et_Lrk', title:'On AI regulation, competition, and investment', desc:'Andrulis on Europe’s AI position, regulation, and Aleph Alpha’s role.', ts:'Approx.', channel:'CNBC Television'}
     ]},
   { id:'vance', name:'JD Vance', short:'JD Vance', role:'Vice President of the United States', cluster:'opportunity',
     stance:'Rejected European-style precaution at the Paris summit in favour of an opportunity-first, deregulatory, American-dominance framing of AI.',
@@ -439,18 +477,19 @@ const PEOPLE = [
       {id:'nfzXDRO7XC8', title:'Digital futures for good', desc:'Burnham on digital inclusion and the tech future of Greater Manchester. (Digital policy; AI-adjacent.)', ts:'Approx.', channel:'Good Things Foundation'},
       {id:'fX8sf5Xah_I', title:'Leading the digital and social revolution', desc:'Burnham’s vision for Manchester as a leader in the digital revolution. (Digital and tech-focused; AI-adjacent.)', ts:'Approx.', channel:'Manchester Blockchain Alliance'}
     ]},
-  { id:'jetten', name:'Rob Jetten', short:'Rob Jetten', role:'Prime Minister of the Netherlands', cluster:'power',
-    stance:'Brings digital-sovereignty language to the multilateral stage, warning that AI threats to peace and security demand global rules.',
-    quote:'AI threats to peace and security demand global rules, not complacency.', verbatim:false,
+  { id:'jetten', name:'Rob Jetten', short:'Rob Jetten', role:'Prime Minister of the Netherlands', cluster:'stack',
+    stance:'A centrist, tech-forward Dutch PM who frames innovation and investment, including in AI and semiconductors, as central to the Netherlands’ future and its partnerships.',
+    quote:'Innovation and investment, including in AI and chips, are central to the Netherlands’ future.', verbatim:false,
     videos:[
-      {id:'vcArCe0Mr_A', title:'Warning to the UN on AI, peace, and security', desc:'A Dutch PM argues AI risks to global security call for shared rules, not complacency. (Note: this UN clip may be Dick Schoof rather than Jetten; attribution being confirmed.)', ts:'Approx.', channel:'DRM News'}
+      {id:'NJpmMP5fZP0', title:'On India-Netherlands tech ties', desc:'As PM, Jetten discusses Netherlands-India relations, including cooperation on technology, AI, and semiconductors.', ts:'Approx.', channel:'DD News'}
     ]},
   { id:'schoof', name:'Dick Schoof', short:'Dick Schoof', role:'Former Prime Minister of the Netherlands', cluster:'shared',
     stance:'As Dutch PM, tied AI to security and to the chip supply chain, pressing for global rules while deepening AI and semiconductor ties abroad.',
     quote:'We must be ready for AI warfare, and AI’s risks demand global rules.', verbatim:false,
     videos:[
       {id:'uxYAo7pAvUo', title:'Address at the India AI Impact Summit', desc:'Schoof on deepening Dutch-India cooperation across AI and semiconductors. New Delhi, 2026.', ts:'Approx.', channel:'The Hindu'},
-      {id:'9scd8kJWtys', title:'"We must be ready for AI warfare"', desc:'Speaking alongside Zelenskyy, Schoof warns of AI-driven and drone warfare.', ts:'Approx.', channel:'DRM News'}
+      {id:'9scd8kJWtys', title:'"We must be ready for AI warfare"', desc:'Speaking alongside Zelenskyy, Schoof warns of AI-driven and drone warfare.', ts:'Approx.', channel:'DRM News'},
+      {id:'vcArCe0Mr_A', title:'Warning to the UN on AI, peace, and security', desc:'Schoof argues AI risks to global security call for shared rules, not complacency.', ts:'Approx.', channel:'DRM News'}
     ]},
   { id:'lee', name:'Lee Jae-myung', short:'Lee Jae-myung', role:'President of South Korea', cluster:'sovereignty',
     stance:'Declares AI the answer to Korea’s transformation and a national strategic priority.',
@@ -508,10 +547,10 @@ const CLUSTERS = [
 const SOVCLUSTER = {
   huang:'stack', vonderleyen:'stack', macron:'stack', merz:'stack', modi:'stack', starmer:'stack',
   lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
-  furstenberg:'stack', asml:'stack', tangen:'stack',
+  furstenberg:'stack', asml:'stack', tangen:'stack', jetten:'stack', mensch:'stack', gomez:'stack', andrulis:'stack',
   vance:'race', altman:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
-  suleyman:'shared', jetten:'shared', schoof:'shared', lagarde:'shared',
-  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond'
+  suleyman:'shared', schoof:'shared', lagarde:'shared',
+  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond', nadella:'beyond', garman:'beyond'
 };
 
 function lerpColor(t){
@@ -527,7 +566,7 @@ PEOPLE.forEach((p,i)=>{ colorFor[p.id] = lerpColor(PEOPLE.length>1 ? i/(PEOPLE.l
 
 // Short affiliation tags for the spectrum rail (company or country, not job title).
 const TAGS = {
-  altman:'OpenAI', huang:'NVIDIA', amodei:'Anthropic', suleyman:'Microsoft AI', pichai:'Google',
+  altman:'OpenAI', huang:'NVIDIA', amodei:'Anthropic', suleyman:'Microsoft AI', nadella:'Microsoft', pichai:'Google', garman:'AWS', mensch:'Mistral AI', gomez:'Cohere', andrulis:'Aleph Alpha',
   vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund',
   furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
   calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
@@ -537,7 +576,7 @@ const TAGS = {
 
 // Category for the top filter: 'pol' = politician / public official, 'corp' = company exec or investor.
 const TYPE = {
-  altman:'corp', huang:'corp', amodei:'corp', suleyman:'corp', pichai:'corp', vance:'pol',
+  altman:'corp', huang:'corp', amodei:'corp', suleyman:'corp', nadella:'corp', pichai:'corp', garman:'corp', mensch:'corp', gomez:'corp', andrulis:'corp', vance:'pol',
   son:'corp', thiel:'corp', ek:'corp', tangen:'corp', furstenberg:'corp', asml:'corp',
   cook:'corp', alolama:'pol', pengxiao:'corp', calvino:'pol', lagarde:'pol', vonderleyen:'pol',
   macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', schoof:'pol', lee:'pol',
@@ -550,6 +589,11 @@ const SOV = {
   huang:'The defining sovereign-AI evangelist. Every nation should build its own models on its own data and compute, so its culture and intelligence are not outsourced.',
   amodei:'Casts AI leadership as a democratic-sovereignty contest, backing export controls to keep frontier capability with the US and its allies rather than authoritarian states.',
   suleyman:'Argues sovereignty itself is at stake: nation-states must build the capacity to contain AI, or cede power to whoever controls the technology.',
+  nadella:'Offers sovereignty as a service: in-country sovereign cloud and data residency on Azure, while the underlying models and global scale stay Microsoft and partner.',
+  garman:'Sells sovereignty as infrastructure: the AWS European Sovereign Cloud and in-region data control on top of a globally standardised platform.',
+  mensch:'The sharpest European-sovereignty case from a builder: open-weight models, European compute, and data control so the continent owns its AI rather than renting it.',
+  gomez:'Sells sovereignty to enterprises and governments: deploy models privately, on your own cloud or on-prem, so sensitive data never leaves your control.',
+  andrulis:'Pitches sovereignty as trust and control: on-prem, transparent models for European states and firms that cannot hand data to US or Chinese clouds.',
   pichai:'A platform view more than a sovereignty one. Offers sovereign-cloud and in-country options, but sees AI delivered globally through Google’s infrastructure.',
   vance:'Equates sovereignty with American dominance of the full AI stack, and warns allies against regulation that would surrender that lead.',
   son:'Treats AI leadership as capital and infrastructure: whoever funds the largest compute build-out, his central bet, sets the terms.',
@@ -569,7 +613,7 @@ const SOV = {
   modi:'Defines sovereignty across the full stack, from applications to compute to energy, with open models and the Global South so AI is not a monopoly of a few nations.',
   starmer:'Ties opportunity to sovereign capability: build the UK’s own compute and AI infrastructure rather than rely entirely on US clouds.',
   burnham:'Comes at it from inclusion rather than statecraft: make sure the AI transition does not leave regions and workers behind.',
-  jetten:'Pushes digital sovereignty through multilateral rules, arguing AI’s security risks need shared governance, not unilateral control.',
+  jetten:'Approaches sovereignty as innovation capacity and partnership: invest in knowledge, AI, and chips, and deepen ties such as with India rather than go it alone.',
   schoof:'Links Dutch sovereignty to chips and AI: deepens semiconductor and AI ties abroad while pressing for global rules and readiness for AI-enabled warfare.',
   lee:'Makes sovereign AI a national mission for Korea: domestic models and compute as the answer to the country’s transformation.',
   takaichi:'Treats AI and semiconductors as strategic assets for Japan, to be built at home as part of an economic-security agenda.',
@@ -579,8 +623,49 @@ const SOV = {
   putin:'The purest power framing: AI leadership equals national supremacy, and whoever leads will rule.'
 };
 
-// Short badge label per sovereignty cluster.
-const CLABEL = { stack:'Owns the stack', race:'Great-power', shared:'Shared rules', beyond:'Beyond the state' };
+// Per-photo crop override and logo flag.
+const POS = { asml:'right top' };
+const LOGO = { pengxiao:true };
+
+// One line on what each person's company, country, or institution is doing in AI.
+const ORG = {
+  altman:'OpenAI built ChatGPT and the GPT models and is one of the handful of labs defining the frontier.',
+  huang:'NVIDIA designs the GPUs that train and run nearly all frontier AI, the pick-and-shovel giant of the boom.',
+  amodei:'Anthropic builds the Claude models and champions safety-focused frontier AI as a leading US lab.',
+  suleyman:'Microsoft AI runs Copilot and consumer AI on a deep OpenAI partnership and vast Azure compute.',
+  nadella:'Microsoft runs Copilot across its products, hosts much of OpenAI on Azure, and is among the biggest builders of AI data-centre capacity.',
+  garman:'AWS builds custom AI chips (Trainium), hosts Anthropic’s Claude, and runs a large share of the world’s cloud and AI compute.',
+  mensch:'Mistral builds open-weight European models (Le Chat, Mistral Large) and is France’s flagship sovereign-AI champion.',
+  gomez:'Cohere builds enterprise LLMs (Command) and retrieval tooling, and partners with governments on private, sovereign deployments.',
+  andrulis:'Aleph Alpha builds sovereign, transparent AI infrastructure for European governments and industry, a German answer to OpenAI.',
+  pichai:'Google builds the Gemini models and DeepMind research, shipping AI through Search, Cloud, and Android at planetary scale.',
+  vance:'The US hosts most frontier labs and compute; the administration pushes an opportunity-first, dominance-minded AI policy.',
+  son:'SoftBank is betting heavily on AI through Arm, an OpenAI stake, and the Stargate compute build-out.',
+  thiel:'Thiel-backed Palantir and Founders Fund sit at the intersection of AI, defence, and government data.',
+  ek:'Ek chairs and funds Helsing, Europe’s defence-AI champion, and invests in European deep tech.',
+  tangen:'Norway’s fund is among the largest shareholders across the AI supply chain, from chipmakers to hyperscalers.',
+  furstenberg:'General Catalyst funds European AI and defence startups, pushing the continent to build its own champions.',
+  asml:'ASML holds a near-monopoly on the EUV lithography machines without which no advanced AI chip can be made.',
+  cook:'Apple ships on-device Apple Intelligence to billions of devices with a privacy-first, hybrid-cloud design.',
+  alolama:'The UAE funds sovereign compute (G42, MGX) and the Falcon models, aiming to be a global AI hub.',
+  pengxiao:'G42 builds the Gulf’s sovereign AI: data centres, the Jais Arabic model, and major US chip and cloud deals.',
+  calvino:'The EIB is scaling financing for European chips, compute, and AI to back strategic autonomy.',
+  lagarde:'The ECB studies AI’s effect on productivity, jobs, and financial stability, and uses AI in its own work.',
+  vonderleyen:'The Commission runs the AI Act, the AI Continent plan, and InvestAI to mobilise European AI capacity.',
+  macron:'France hosts Mistral and a 100-billion-euro investment wave, and convened the Paris AI Action Summit.',
+  merz:'Germany backs Aleph Alpha, industrial AI, and a European push on chips and quantum.',
+  modi:'India runs the IndiaAI Mission, building shared compute, datasets, and homegrown models for a billion-plus people.',
+  starmer:'The UK has the AI Safety Institute, DeepMind’s home base, and an AI plan for sovereign compute.',
+  burnham:'Greater Manchester pitches itself as a UK tech and digital hub, with AI and skills investment.',
+  jetten:'The Netherlands hosts ASML, the chip-tool linchpin, and is deepening AI and semiconductor ties abroad.',
+  schoof:'Dutch AI weight runs through ASML and the chip supply chain, paired with AI-security diplomacy.',
+  lee:'Korea backs sovereign models and compute, with Samsung and SK Hynix supplying much of the world’s AI memory.',
+  takaichi:'Japan invests in domestic AI and semiconductors, including Rapidus, as part of an economic-security agenda.',
+  rutte:'NATO runs the DIANA accelerator and an innovation fund, treating AI as an alliance capability.',
+  sanders:'US lawmakers shape AI through labour, antitrust, and safety debates; Sanders focuses on its effect on workers.',
+  xi:'China fields DeepSeek, Alibaba, and Huawei chips, pursuing AI self-reliance under state direction.',
+  putin:'Russia trails on frontier AI but pushes military AI and a state-led national AI strategy.'
+};
 
 // Portrait photos (Wikipedia / Wikimedia Commons). null falls back to initials.
 const PHOTOS = {
@@ -588,17 +673,22 @@ const PHOTOS = {
   huang: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Jen-Hsun_Huang_2025.jpg/330px-Jen-Hsun_Huang_2025.jpg',
   amodei: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Dario_Amodei_at_TechCrunch_Disrupt_2023_01_%28cropped%29.jpg/330px-Dario_Amodei_at_TechCrunch_Disrupt_2023_01_%28cropped%29.jpg',
   suleyman: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Mustafa_Suleyman_photo_%28cropped%29.jpg/330px-Mustafa_Suleyman_photo_%28cropped%29.jpg',
+  nadella: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/MS-Exec-Nadella-Satya-2017-08-31-22_%28cropped%29.jpg/330px-MS-Exec-Nadella-Satya-2017-08-31-22_%28cropped%29.jpg',
   pichai: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Sundar_Pichai_-_2023_%28cropped%29.jpg/330px-Sundar_Pichai_-_2023_%28cropped%29.jpg',
+  garman: null,
+  mensch: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Arthur_Mensch.png/330px-Arthur_Mensch.png',
+  gomez: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Aidan_Gomez_at_%22ALL_IN%22_2025_06.jpg/330px-Aidan_Gomez_at_%22ALL_IN%22_2025_06.jpg',
+  andrulis: 'https://commons.wikimedia.org/wiki/Special:FilePath/Andrulis%20DLD.jpg?width=400',
   vance: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/March_2026_Official_Vice_Presidential_Portrait_of_JD_Vance_%28head-and-shoulders_cropped%29.jpg/330px-March_2026_Official_Vice_Presidential_Portrait_of_JD_Vance_%28head-and-shoulders_cropped%29.jpg',
   son: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Masayoshi_Son_%28P066533-522034%2C_cropped%29.jpg/330px-Masayoshi_Son_%28P066533-522034%2C_cropped%29.jpg',
   thiel: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Peter_Thiel_by_Gage_Skidmore.jpg/330px-Peter_Thiel_by_Gage_Skidmore.jpg',
   ek: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Daniel_Ek_EC_2025_%28cropped%29.jpg/330px-Daniel_Ek_EC_2025_%28cropped%29.jpg',
   tangen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/NicolaiTangen.jpg/330px-NicolaiTangen.jpg',
-  furstenberg: null,
-  asml: null,
+  furstenberg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9QxHbEDnRnuxJMWeDFBavgesBU4hyJUEUidcvsaBtjaaBervT-RhU5Fl7tv3f0ammEsXYzz3DtW-HLJJRRfKiqyeYxPlEY0uLEdTFheAHOA&s=10',
+  asml: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ursula%20von%20der%20Leyen%20%26%20Christophe%20Fouquet%20-%202025.jpg?width=400',
   cook: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Tim_Cook_March_2026_%28cropped_2%29.jpg/330px-Tim_Cook_March_2026_%28cropped_2%29.jpg',
   alolama: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Omar_Sultan_Al_Olama_at_the_2023_World_Economic_Forum_%28cropped%29.jpg/330px-Omar_Sultan_Al_Olama_at_the_2023_World_Economic_Forum_%28cropped%29.jpg',
-  pengxiao: null,
+  pengxiao: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Group_42_logo.png/330px-Group_42_logo.png',
   calvino: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Nadia_Calvi%C3%B1o_2023_%28cropped%29.jpg/330px-Nadia_Calvi%C3%B1o_2023_%28cropped%29.jpg',
   lagarde: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Lagarde_ECB_Portrait_2019.jpg/330px-Lagarde_ECB_Portrait_2019.jpg',
   vonderleyen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Prime_Minister_of_Bharat%2C_Shri_Narendra_Damodardas_Modi_greets_the_President_of_the_European_Council%2C_Mr._Ant%C3%B3nio_Costa_and_the_President_of_the_European_Commission%2C_Ms._Ursula_von_der_Leyen_%283x4_cropped%29.jpg/330px-thumbnail.jpg',
@@ -649,8 +739,12 @@ function renderClusters(list){
 function initials(name){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w => w.charAt(0)).join('').toUpperCase(); }
 
 function photoHtml(p){
-  const img = PHOTOS[p.id] ? `<img class="pc-img" src="${PHOTOS[p.id]}" alt="${esc(p.name)}" loading="lazy" onerror="this.remove()">` : '';
-  return `<span class="pc-initials" style="color:${colorFor[p.id]}">${esc(initials(p.name))}</span>${img}`;
+  const url = PHOTOS[p.id];
+  const initialsSpan = `<span class="pc-initials" style="color:${colorFor[p.id]}">${esc(initials(p.name))}</span>`;
+  if(!url) return initialsSpan;
+  const cls = LOGO[p.id] ? 'pc-img pc-logo' : 'pc-img';
+  const pos = POS[p.id] ? ` style="object-position:${POS[p.id]}"` : '';
+  return `${initialsSpan}<img class="${cls}" src="${url}" alt="${esc(p.name)}" loading="lazy"${pos} onerror="this.remove()">`;
 }
 
 function videoHtml(p){
@@ -677,9 +771,8 @@ function videoHtml(p){
 function renderCards(list){
   peopleEl.innerHTML = list.map(p => {
     const idx = String(PEOPLE.indexOf(p)+1).padStart(2,'0');
-    const type = CLABEL[SOVCLUSTER[p.id]] || '';
     return `<button class="pcard" type="button" data-id="${p.id}" style="--ax:${colorFor[p.id]}">
-       <span class="pcard-top"><span class="pcard-rank">#${idx}</span><span class="pcard-type">${esc(type)}</span></span>
+       <span class="pcard-top"><span class="pcard-rank">#${idx}</span></span>
        <span class="pcard-photo">${photoHtml(p)}</span>
        <span class="pcard-name">${esc(p.name)}</span>
        <span class="pcard-tag">${esc(TAGS[p.id] || p.role)}</span>
@@ -690,13 +783,13 @@ function renderCards(list){
 
 function buildModal(p){
   const idx = String(PEOPLE.indexOf(p)+1).padStart(2,'0');
-  const type = CLABEL[SOVCLUSTER[p.id]] || '';
   const sov = SOV[p.id] ? `<p class="person-sov"><span class="rlabel">On AI sovereignty</span>${esc(SOV[p.id])}</p>` : '';
+  const org = ORG[p.id] ? `<p class="person-org"><span class="rlabel">Involvement in AI</span>${esc(ORG[p.id])}</p>` : '';
   const reading = p.reading ? `<p class="person-reading"><span class="rlabel">Reading</span><a href="${p.reading.url}" target="_blank" rel="noopener">${esc(p.reading.label)} &rarr;</a></p>` : '';
   return `<div class="pm-head" style="--ax:${colorFor[p.id]}">
        <span class="pm-photo">${photoHtml(p)}</span>
        <span class="pm-headtext">
-         <span class="pm-rank">#${idx} &middot; ${esc(type)}</span>
+         <span class="pm-rank">#${idx}</span>
          <span class="pm-name">${esc(p.name)}</span>
          <span class="pm-role">${esc(p.role)}</span>
        </span>
@@ -704,6 +797,7 @@ function buildModal(p){
      <div class="pm-content">
        <p class="person-stance">${esc(p.stance)}</p>
        ${sov}
+       ${org}
        ${reading}
        <div class="videos">${videoHtml(p)}</div>
      </div>`;
