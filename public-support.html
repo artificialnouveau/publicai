@@ -125,6 +125,41 @@
   .person-sum-role { font-family: var(--mono); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); }
   .person[open] > summary .collapsible-chevron { transform: rotate(180deg); }
   .person-content { padding: 0.2rem 0 2rem; }
+
+  /* Persona trading cards */
+  .cardgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 1rem; }
+  .pcard { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;
+    background: var(--paper-2); border: 1px solid var(--hairline-strong); border-top: 4px solid var(--ax, var(--accent));
+    border-radius: 10px; padding: 0.85rem 0.8rem 1rem; cursor: pointer; font-family: var(--font);
+    transition: transform 0.12s, box-shadow 0.12s; }
+  .pcard:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(10,10,10,0.13); }
+  .pcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pcard-top { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.55rem; }
+  .pcard-rank { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; color: var(--text-soft); }
+  .pcard-type { font-family: var(--mono); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; background: var(--ax, var(--accent)); padding: 0.16rem 0.42rem; border-radius: 999px; }
+  .pcard-photo { position: relative; width: 92px; height: 92px; border-radius: 50%; overflow: hidden; border: 3px solid var(--ax, var(--accent)); margin-bottom: 0.6rem; display: flex; align-items: center; justify-content: center; background: var(--ink); }
+  .pc-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .pc-initials { font-family: var(--serif); font-weight: 600; font-size: 1.65rem; }
+  .pcard-name { font-family: var(--serif); font-weight: 600; font-size: 0.96rem; line-height: 1.15; color: var(--text); }
+  .pcard-tag { font-family: var(--mono); font-size: 0.56rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; color: var(--text-soft); margin-top: 0.28rem; }
+  .pcard-cta { margin-top: 0.65rem; font-family: var(--mono); font-size: 0.54rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ax, var(--accent)); }
+
+  /* Persona modal */
+  .pmodal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-start; justify-content: center; padding: 4vh 1rem; overflow-y: auto; }
+  .pmodal[hidden] { display: none; }
+  .pmodal-backdrop { position: fixed; inset: 0; background: rgba(8,12,28,0.6); backdrop-filter: blur(3px); }
+  .pmodal-card { position: relative; z-index: 1; width: 100%; max-width: 860px; background: var(--ink); border-radius: 12px; box-shadow: 0 24px 60px rgba(0,0,0,0.4); overflow: hidden; margin-bottom: 4vh; }
+  .pmodal-close { position: absolute; top: 0.6rem; right: 0.6rem; z-index: 2; width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(255,255,255,0.88); font-size: 1.4rem; line-height: 1; cursor: pointer; color: var(--text); }
+  .pmodal-close:hover { background: #fff; }
+  .pm-head { display: flex; align-items: center; gap: 1.1rem; padding: 1.6rem 1.5rem; background: linear-gradient(120deg, var(--navy-1), var(--navy-2)); color: #fff; border-top: 5px solid var(--ax, var(--accent)); }
+  .pm-photo { position: relative; width: 84px; height: 84px; flex: none; border-radius: 50%; overflow: hidden; border: 3px solid var(--ax, #fff); display: flex; align-items: center; justify-content: center; background: #0b1430; }
+  .pm-headtext { display: flex; flex-direction: column; gap: 0.22rem; }
+  .pm-rank { font-family: var(--mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.72); }
+  .pm-name { font-family: var(--serif); font-weight: 600; font-size: 1.5rem; line-height: 1.1; }
+  .pm-role { font-family: var(--mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
+  .pm-content { padding: 1.4rem 1.5rem 2rem; }
+  .pm-content .person-stance { font-size: 1rem; color: var(--text); }
+  .pm-content .videos { margin-top: 1.1rem; }
   .person-stance { font-size: 0.98rem; color: var(--text-muted); max-width: none; margin-bottom: 0.9rem; }
   .person-sov { font-size: 0.94rem; color: var(--text); background: var(--accent-dim); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 0.75rem 1rem; margin-bottom: 1rem; }
   .rlabel { font-family: var(--mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-soft); margin-right: 0.4rem; }
@@ -214,10 +249,18 @@
 
 <div class="section-wrap" style="padding-bottom:0">
   <p class="kicker">Personas</p>
-  <p class="lead-note">The full roster as expandable tabs. Open a name for their stance, AI-sovereignty position, sources, and clips.</p>
+  <p class="lead-note">The full roster as trading cards. Click any card to open its dossier: stance, AI-sovereignty position, sources, and clips. The top badge marks where they locate sovereignty; the colour strip echoes the spectrum above.</p>
 </div>
 
-<section class="content" id="people"></section>
+<section class="content"><div class="cardgrid" id="people"></div></section>
+
+<div class="pmodal" id="pmodal" hidden>
+  <div class="pmodal-backdrop" data-close></div>
+  <div class="pmodal-card" role="dialog" aria-modal="true" aria-label="Persona detail">
+    <button class="pmodal-close" type="button" data-close aria-label="Close">&times;</button>
+    <div id="pmodal-body"></div>
+  </div>
+</div>
 
 </main>
 
@@ -249,7 +292,8 @@ const PEOPLE = [
     stance:'A frontier-lab founder who ties AI leadership to the future of democracy, export controls, and competition with China.',
     quote:'AI leadership will decide whether democracies or autocracies set the terms of the technology.', verbatim:false,
     videos:[
-      {id:'3gu6a1WiGNI', title:'AI competition, export controls, and democracy', desc:'Amodei argues that who leads in AI shapes whether democracies or autocracies write the rules.', ts:'Approx.', channel:'Interview clip'}
+      {id:'3gu6a1WiGNI', title:'AI competition, export controls, and democracy', desc:'Amodei argues that who leads in AI shapes whether democracies or autocracies write the rules.', ts:'Approx.', channel:'Interview clip'},
+      {id:'x2VHFgyawPE', title:'Inside the mind of Dario Amodei', desc:'An extended interview on Anthropic, the race with rivals, and the stakes of frontier AI.', ts:'Approx.', channel:'Bloomberg Originals'}
     ]},
   { id:'suleyman', name:'Mustafa Suleyman', short:'M. Suleyman', role:'CEO, Microsoft AI', cluster:'guard',
     stance:'Argues in The Coming Wave that AI and synthetic biology will test the power of the nation-state itself, and that containment, not just opportunity, is the central problem.',
@@ -263,7 +307,8 @@ const PEOPLE = [
     stance:'Frames AI as a platform shift on the scale of fire or electricity, delivered through global cloud infrastructure.',
     quote:'AI is more profound than fire or electricity for what humanity is working on.', verbatim:false,
     videos:[
-      {id:'BYx63PKKPvg', title:'Full interview: the AI boom and the future of AI', desc:'Pichai on opportunity, risk, and Google’s role in deploying AI at global scale.', ts:'Approx.', channel:'BBC'}
+      {id:'BYx63PKKPvg', title:'Full interview: the AI boom and the future of AI', desc:'Pichai on opportunity, risk, and Google’s role in deploying AI at global scale.', ts:'Approx.', channel:'BBC'},
+      {id:'RgV57kDzcng', title:'On AI backlash, the future of work, and Google’s next era', desc:'Pichai on the pushback against AI, the impact on jobs, and where Google goes next.', ts:'Approx.', channel:'Hard Fork'}
     ]},
   { id:'vance', name:'JD Vance', short:'JD Vance', role:'Vice President of the United States', cluster:'opportunity',
     stance:'Rejected European-style precaution at the Paris summit in favour of an opportunity-first, deregulatory, American-dominance framing of AI.',
@@ -312,13 +357,15 @@ const PEOPLE = [
     stance:'Runs the company whose lithography machines every advanced chip depends on, a hinge between industry and statecraft. Warns Europe has become a consumer rather than a builder of AI.',
     quote:'Europe has become a consumer of AI rather than a builder of it.', verbatim:false,
     videos:[
-      {id:'UvnhLZi-f_A', title:'On AI, China, chips, and US restrictions', desc:'Fouquet on export controls and how chip-equipment supply shapes who can build sovereign AI.', ts:'Approx.', channel:'Bloomberg Television'}
+      {id:'UvnhLZi-f_A', title:'On AI, China, chips, and US restrictions', desc:'Fouquet on export controls and how chip-equipment supply shapes who can build sovereign AI.', ts:'Approx.', channel:'Bloomberg Television'},
+      {id:'2VAHVIrFSqU', title:'CNBC full interview', desc:'A wide-ranging interview on AI demand, chips, energy, and Europe’s place in the AI build-out.', ts:'Approx.', channel:'CNBC International Live'}
     ]},
   { id:'cook', name:'Tim Cook', short:'Tim Cook', role:'CEO, Apple', cluster:'guard',
     stance:'Comes at AI from privacy and on-device processing, the close cousin of the sovereignty case: keep the data on the user’s own hardware.',
     quote:'Keep the intelligence private and on the user’s own device.', verbatim:false,
     videos:[
-      {id:'rx6O-3XUTQU', title:'On Apple Intelligence and AI', desc:'Cook on Apple’s privacy-first, on-device approach to AI and what sets it apart.', ts:'Approx.', channel:'SuperSaf'}
+      {id:'rx6O-3XUTQU', title:'On Apple Intelligence and AI', desc:'Cook on Apple’s privacy-first, on-device approach to AI and what sets it apart.', ts:'Approx.', channel:'SuperSaf'},
+      {id:'PfVfS8wphW8', title:'"AI is ours to grab"', desc:'Cook rallies Apple staff around AI, calling it a major opportunity Apple intends to seize.', ts:'Approx.', channel:'Bloomberg Podcasts'}
     ]},
   { id:'alolama', name:'Omar Sultan Al Olama', short:'O. Al Olama', role:'UAE Minister of State for AI', cluster:'sovereignty',
     stance:'The canonical Gulf government voice on sovereign AI, positioning the UAE as a neutral global hub.',
@@ -375,7 +422,8 @@ const PEOPLE = [
     quote:'India’s AI ambition spans the full stack and the Global South.', verbatim:false,
     reading:{label:'PM India, AI superpower vision', url:'https://www.pmindia.gov.in/en/news_updates/india-should-be-among-the-top-three-ai-superpowers-globally-pm-modi-sets-2047-vision/'},
     videos:[
-      {id:'2x2ZnoJ77kY', title:'Full speech at the Paris AI Summit', desc:'Modi on the dawn of the AI age, guarding against bias, and India’s role co-chairing the summit. February 2025.', ts:'Approx.', channel:'Mint'}
+      {id:'2x2ZnoJ77kY', title:'Full speech at the Paris AI Summit', desc:'Modi on the dawn of the AI age, guarding against bias, and India’s role co-chairing the summit. February 2025.', ts:'Approx.', channel:'Mint'},
+      {id:'YD4iC02EZeA', title:'Speech at the India AI Impact Summit', desc:'Hosting the summit in New Delhi, Modi argues India is not catching up on AI but leaping ahead. February 2026.', ts:'Approx.', channel:'Narendra Modi'}
     ]},
   { id:'starmer', name:'Keir Starmer', short:'Keir Starmer', role:'Prime Minister of the United Kingdom', cluster:'sovereignty',
     stance:'Ties AI opportunity to building sovereign UK compute and an activist industrial approach.',
@@ -388,13 +436,21 @@ const PEOPLE = [
     stance:'A regional voice on digital inclusion: making sure the technology shift does not leave people behind.',
     quote:'Make the digital future work for everyone, not just the few.', verbatim:false,
     videos:[
-      {id:'nfzXDRO7XC8', title:'Digital futures for good', desc:'Burnham on digital inclusion and the tech future of Greater Manchester. (Digital policy; AI-adjacent.)', ts:'Approx.', channel:'Good Things Foundation'}
+      {id:'nfzXDRO7XC8', title:'Digital futures for good', desc:'Burnham on digital inclusion and the tech future of Greater Manchester. (Digital policy; AI-adjacent.)', ts:'Approx.', channel:'Good Things Foundation'},
+      {id:'fX8sf5Xah_I', title:'Leading the digital and social revolution', desc:'Burnham’s vision for Manchester as a leader in the digital revolution. (Digital and tech-focused; AI-adjacent.)', ts:'Approx.', channel:'Manchester Blockchain Alliance'}
     ]},
   { id:'jetten', name:'Rob Jetten', short:'Rob Jetten', role:'Prime Minister of the Netherlands', cluster:'power',
     stance:'Brings digital-sovereignty language to the multilateral stage, warning that AI threats to peace and security demand global rules.',
     quote:'AI threats to peace and security demand global rules, not complacency.', verbatim:false,
     videos:[
-      {id:'vcArCe0Mr_A', title:'Warning to the UN on AI, peace, and security', desc:'Jetten argues AI risks to global security call for shared rules, not complacency.', ts:'Approx.', channel:'DRM News'}
+      {id:'vcArCe0Mr_A', title:'Warning to the UN on AI, peace, and security', desc:'A Dutch PM argues AI risks to global security call for shared rules, not complacency. (Note: this UN clip may be Dick Schoof rather than Jetten; attribution being confirmed.)', ts:'Approx.', channel:'DRM News'}
+    ]},
+  { id:'schoof', name:'Dick Schoof', short:'Dick Schoof', role:'Former Prime Minister of the Netherlands', cluster:'shared',
+    stance:'As Dutch PM, tied AI to security and to the chip supply chain, pressing for global rules while deepening AI and semiconductor ties abroad.',
+    quote:'We must be ready for AI warfare, and AI’s risks demand global rules.', verbatim:false,
+    videos:[
+      {id:'uxYAo7pAvUo', title:'Address at the India AI Impact Summit', desc:'Schoof on deepening Dutch-India cooperation across AI and semiconductors. New Delhi, 2026.', ts:'Approx.', channel:'The Hindu'},
+      {id:'9scd8kJWtys', title:'"We must be ready for AI warfare"', desc:'Speaking alongside Zelenskyy, Schoof warns of AI-driven and drone warfare.', ts:'Approx.', channel:'DRM News'}
     ]},
   { id:'lee', name:'Lee Jae-myung', short:'Lee Jae-myung', role:'President of South Korea', cluster:'sovereignty',
     stance:'Declares AI the answer to Korea’s transformation and a national strategic priority.',
@@ -454,7 +510,7 @@ const SOVCLUSTER = {
   lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
   furstenberg:'stack', asml:'stack', tangen:'stack',
   vance:'race', altman:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
-  suleyman:'shared', jetten:'shared', lagarde:'shared',
+  suleyman:'shared', jetten:'shared', schoof:'shared', lagarde:'shared',
   cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond'
 };
 
@@ -475,7 +531,7 @@ const TAGS = {
   vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund',
   furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
   calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
-  modi:'India PM', starmer:'UK PM', burnham:'Manchester Mayor', jetten:'Netherlands PM', lee:'Korea President',
+  modi:'India PM', starmer:'UK PM', burnham:'Manchester Mayor', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', lee:'Korea President',
   takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
 };
 
@@ -484,7 +540,7 @@ const TYPE = {
   altman:'corp', huang:'corp', amodei:'corp', suleyman:'corp', pichai:'corp', vance:'pol',
   son:'corp', thiel:'corp', ek:'corp', tangen:'corp', furstenberg:'corp', asml:'corp',
   cook:'corp', alolama:'pol', pengxiao:'corp', calvino:'pol', lagarde:'pol', vonderleyen:'pol',
-  macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', lee:'pol',
+  macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', schoof:'pol', lee:'pol',
   takaichi:'pol', rutte:'pol', sanders:'pol', xi:'pol', putin:'pol'
 };
 
@@ -514,12 +570,51 @@ const SOV = {
   starmer:'Ties opportunity to sovereign capability: build the UK’s own compute and AI infrastructure rather than rely entirely on US clouds.',
   burnham:'Comes at it from inclusion rather than statecraft: make sure the AI transition does not leave regions and workers behind.',
   jetten:'Pushes digital sovereignty through multilateral rules, arguing AI’s security risks need shared governance, not unilateral control.',
+  schoof:'Links Dutch sovereignty to chips and AI: deepens semiconductor and AI ties abroad while pressing for global rules and readiness for AI-enabled warfare.',
   lee:'Makes sovereign AI a national mission for Korea: domestic models and compute as the answer to the country’s transformation.',
   takaichi:'Treats AI and semiconductors as strategic assets for Japan, to be built at home as part of an economic-security agenda.',
   rutte:'Views it through collective defence: technological sovereignty and industrial capacity are now alliance security questions.',
   sanders:'Concerned less with national sovereignty than democratic sovereignty: AI owned by a handful of billionaires threatens workers and self-government.',
   xi:'Pursues sovereignty as self-reliance: indigenous AI and chips under national control, insulated from US restrictions.',
   putin:'The purest power framing: AI leadership equals national supremacy, and whoever leads will rule.'
+};
+
+// Short badge label per sovereignty cluster.
+const CLABEL = { stack:'Owns the stack', race:'Great-power', shared:'Shared rules', beyond:'Beyond the state' };
+
+// Portrait photos (Wikipedia / Wikimedia Commons). null falls back to initials.
+const PHOTOS = {
+  altman: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Meeting_with_Masayoshi_Son_and_Sam_Altman_%28February_3%2C_2025%29_%283x4_cropped_on_Altman%29.jpg/330px-Meeting_with_Masayoshi_Son_and_Sam_Altman_%28February_3%2C_2025%29_%283x4_cropped_on_Altman%29.jpg',
+  huang: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Jen-Hsun_Huang_2025.jpg/330px-Jen-Hsun_Huang_2025.jpg',
+  amodei: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Dario_Amodei_at_TechCrunch_Disrupt_2023_01_%28cropped%29.jpg/330px-Dario_Amodei_at_TechCrunch_Disrupt_2023_01_%28cropped%29.jpg',
+  suleyman: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Mustafa_Suleyman_photo_%28cropped%29.jpg/330px-Mustafa_Suleyman_photo_%28cropped%29.jpg',
+  pichai: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Sundar_Pichai_-_2023_%28cropped%29.jpg/330px-Sundar_Pichai_-_2023_%28cropped%29.jpg',
+  vance: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/March_2026_Official_Vice_Presidential_Portrait_of_JD_Vance_%28head-and-shoulders_cropped%29.jpg/330px-March_2026_Official_Vice_Presidential_Portrait_of_JD_Vance_%28head-and-shoulders_cropped%29.jpg',
+  son: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Masayoshi_Son_%28P066533-522034%2C_cropped%29.jpg/330px-Masayoshi_Son_%28P066533-522034%2C_cropped%29.jpg',
+  thiel: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Peter_Thiel_by_Gage_Skidmore.jpg/330px-Peter_Thiel_by_Gage_Skidmore.jpg',
+  ek: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Daniel_Ek_EC_2025_%28cropped%29.jpg/330px-Daniel_Ek_EC_2025_%28cropped%29.jpg',
+  tangen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/NicolaiTangen.jpg/330px-NicolaiTangen.jpg',
+  furstenberg: null,
+  asml: null,
+  cook: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Tim_Cook_March_2026_%28cropped_2%29.jpg/330px-Tim_Cook_March_2026_%28cropped_2%29.jpg',
+  alolama: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Omar_Sultan_Al_Olama_at_the_2023_World_Economic_Forum_%28cropped%29.jpg/330px-Omar_Sultan_Al_Olama_at_the_2023_World_Economic_Forum_%28cropped%29.jpg',
+  pengxiao: null,
+  calvino: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Nadia_Calvi%C3%B1o_2023_%28cropped%29.jpg/330px-Nadia_Calvi%C3%B1o_2023_%28cropped%29.jpg',
+  lagarde: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Lagarde_ECB_Portrait_2019.jpg/330px-Lagarde_ECB_Portrait_2019.jpg',
+  vonderleyen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Prime_Minister_of_Bharat%2C_Shri_Narendra_Damodardas_Modi_greets_the_President_of_the_European_Council%2C_Mr._Ant%C3%B3nio_Costa_and_the_President_of_the_European_Commission%2C_Ms._Ursula_von_der_Leyen_%283x4_cropped%29.jpg/330px-thumbnail.jpg',
+  macron: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Emmanuel_Macron_2025_%28cropped%29.jpg/330px-Emmanuel_Macron_2025_%28cropped%29.jpg',
+  merz: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg/330px-2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg',
+  modi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg/330px-The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg',
+  starmer: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Prime_Minister_Keir_Starmer_Portrait_%28cropped%29.jpg/330px-Prime_Minister_Keir_Starmer_Portrait_%28cropped%29.jpg',
+  burnham: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Andy_Burnham_on_13_August_2024_%28cropped_2%29.jpg/330px-Andy_Burnham_on_13_August_2024_%28cropped_2%29.jpg',
+  jetten: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rob_Jetten%2C_March_2026_-_02.jpg/330px-Rob_Jetten%2C_March_2026_-_02.jpg',
+  schoof: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Dick_Schoof_in_2025.jpg/330px-Dick_Schoof_in_2025.jpg',
+  lee: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/President_Lee_Jae_Myung_20260306.jpg/330px-President_Lee_Jae_Myung_20260306.jpg',
+  takaichi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Official_portrait_of_Sanae_Takaichi%2C_Prime_Minister_of_Japan_%28HD%29.jpg/330px-Official_portrait_of_Sanae_Takaichi%2C_Prime_Minister_of_Japan_%28HD%29.jpg',
+  rutte: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mark_Rutte%2C_23.03.23_%28cropped%29.jpg/330px-Mark_Rutte%2C_23.03.23_%28cropped%29.jpg',
+  sanders: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Bernie_Sanders_February_2026_%28cropped%29.jpg/330px-Bernie_Sanders_February_2026_%28cropped%29.jpg',
+  xi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Xi_Jinping_meets_Putin_May_2026.jpg/330px-Xi_Jinping_meets_Putin_May_2026.jpg',
+  putin: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9F%D1%83%D1%82%D0%B8%D0%BD_%2808-03-2024%29_%28cropped%29_%28higher_res%29_2.jpg/330px-%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9F%D1%83%D1%82%D0%B8%D0%BD_%2808-03-2024%29_%28cropped%29_%28higher_res%29_2.jpg'
 };
 
 const railEl = document.getElementById('rail');
@@ -551,18 +646,19 @@ function renderClusters(list){
   }).join('');
 }
 
-function renderPeople(list){
-  peopleEl.innerHTML = list.map((p, i) => {
-    const idx = String(i+1).padStart(2,'0');
-    const sov = SOV[p.id]
-      ? `<p class="person-sov"><span class="rlabel">On AI sovereignty</span>${esc(SOV[p.id])}</p>` : '';
-    const reading = p.reading
-      ? `<p class="person-reading"><span class="rlabel">Reading</span><a href="${p.reading.url}" target="_blank" rel="noopener">${esc(p.reading.label)} &rarr;</a></p>` : '';
-    const videos = p.videos.map(v => {
-      const emb = 'https://www.youtube.com/embed/' + v.id + (v.start ? '?start=' + v.start : '');
-      const watch = 'https://www.youtube.com/watch?v=' + v.id + (v.start ? '&t=' + v.start + 's' : '');
-      const badge = v.start ? ('Starts ' + fmtTime(v.start)) : v.ts;
-      return `<div class="video">
+function initials(name){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w => w.charAt(0)).join('').toUpperCase(); }
+
+function photoHtml(p){
+  const img = PHOTOS[p.id] ? `<img class="pc-img" src="${PHOTOS[p.id]}" alt="${esc(p.name)}" loading="lazy" onerror="this.remove()">` : '';
+  return `<span class="pc-initials" style="color:${colorFor[p.id]}">${esc(initials(p.name))}</span>${img}`;
+}
+
+function videoHtml(p){
+  return p.videos.map(v => {
+    const emb = 'https://www.youtube.com/embed/' + v.id + (v.start ? '?start=' + v.start : '');
+    const watch = 'https://www.youtube.com/watch?v=' + v.id + (v.start ? '&t=' + v.start + 's' : '');
+    const badge = v.start ? ('Starts ' + fmtTime(v.start)) : v.ts;
+    return `<div class="video">
          <div class="video-frame"><iframe src="${emb}" title="${esc(p.name)}: ${esc(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
          <div class="video-body">
            <p class="video-title">${esc(v.title)}</p>
@@ -575,32 +671,49 @@ function renderPeople(list){
            <p class="video-channel">${esc(v.channel)}</p>
          </div>
        </div>`;
-    }).join('');
-    return `<details class="person" id="${p.id}">
-       <summary class="person-summary">
-         <span class="person-index">${idx}</span>
-         <span class="person-sum-dot" style="background:${colorFor[p.id]}"></span>
-         <span class="person-sum-main">
-           <span class="person-sum-name">${esc(p.name)}</span>
-           <span class="person-sum-role">${esc(p.role)}</span>
-         </span>
-         <span class="collapsible-chevron" aria-hidden="true"></span>
-       </summary>
-       <div class="person-content">
-         <p class="person-stance">${esc(p.stance)}</p>
-         ${sov}
-         ${reading}
-         <div class="videos">${videos}</div>
-       </div>
-     </details>`;
   }).join('');
+}
+
+function renderCards(list){
+  peopleEl.innerHTML = list.map(p => {
+    const idx = String(PEOPLE.indexOf(p)+1).padStart(2,'0');
+    const type = CLABEL[SOVCLUSTER[p.id]] || '';
+    return `<button class="pcard" type="button" data-id="${p.id}" style="--ax:${colorFor[p.id]}">
+       <span class="pcard-top"><span class="pcard-rank">#${idx}</span><span class="pcard-type">${esc(type)}</span></span>
+       <span class="pcard-photo">${photoHtml(p)}</span>
+       <span class="pcard-name">${esc(p.name)}</span>
+       <span class="pcard-tag">${esc(TAGS[p.id] || p.role)}</span>
+       <span class="pcard-cta">View card</span>
+     </button>`;
+  }).join('');
+}
+
+function buildModal(p){
+  const idx = String(PEOPLE.indexOf(p)+1).padStart(2,'0');
+  const type = CLABEL[SOVCLUSTER[p.id]] || '';
+  const sov = SOV[p.id] ? `<p class="person-sov"><span class="rlabel">On AI sovereignty</span>${esc(SOV[p.id])}</p>` : '';
+  const reading = p.reading ? `<p class="person-reading"><span class="rlabel">Reading</span><a href="${p.reading.url}" target="_blank" rel="noopener">${esc(p.reading.label)} &rarr;</a></p>` : '';
+  return `<div class="pm-head" style="--ax:${colorFor[p.id]}">
+       <span class="pm-photo">${photoHtml(p)}</span>
+       <span class="pm-headtext">
+         <span class="pm-rank">#${idx} &middot; ${esc(type)}</span>
+         <span class="pm-name">${esc(p.name)}</span>
+         <span class="pm-role">${esc(p.role)}</span>
+       </span>
+     </div>
+     <div class="pm-content">
+       <p class="person-stance">${esc(p.stance)}</p>
+       ${sov}
+       ${reading}
+       <div class="videos">${videoHtml(p)}</div>
+     </div>`;
 }
 
 function applyFilter(type){
   const list = type === 'all' ? PEOPLE : PEOPLE.filter(p => TYPE[p.id] === type);
   renderRail(list);
   renderClusters(list);
-  renderPeople(list);
+  renderCards(list);
   document.querySelectorAll('.filter-btn').forEach(b =>
     b.classList.toggle('is-active', b.dataset.filter === type));
 }
@@ -608,20 +721,35 @@ function applyFilter(type){
 document.querySelectorAll('.filter-btn').forEach(b =>
   b.addEventListener('click', () => applyFilter(b.dataset.filter)));
 
-// Expand a persona tab when its rail node or transcript chip is clicked.
-function openPerson(hash){
-  if(!hash || hash.charAt(0) !== '#') return;
-  const el = document.getElementById(hash.slice(1));
-  if(el && el.classList.contains('person')) el.open = true;
+// Persona modal: open from a card, a rail node, or a transcript chip.
+const modalEl = document.getElementById('pmodal');
+const modalBody = document.getElementById('pmodal-body');
+function openModal(id){
+  const p = PEOPLE.find(x => x.id === id);
+  if(!p) return;
+  modalBody.innerHTML = buildModal(p);
+  modalEl.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  modalEl.hidden = true;
+  modalBody.innerHTML = '';
+  document.body.style.overflow = '';
 }
 document.addEventListener('click', e => {
+  const card = e.target.closest('.pcard');
+  if(card){ openModal(card.dataset.id); return; }
+  if(e.target.closest('[data-close]')){ closeModal(); return; }
   const a = e.target.closest('a[href^="#"]');
-  if(a) openPerson(a.getAttribute('href'));
+  if(a){
+    const id = a.getAttribute('href').slice(1);
+    if(PEOPLE.some(x => x.id === id)){ e.preventDefault(); openModal(id); }
+  }
 });
-window.addEventListener('hashchange', () => openPerson(location.hash));
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !modalEl.hidden) closeModal(); });
 
 applyFilter('all');
-openPerson(location.hash);
+if(location.hash) openModal(location.hash.slice(1));
 </script>
 
 </body>
