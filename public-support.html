@@ -75,6 +75,9 @@
   .lead-note { font-size: 0.95rem; color: var(--text-muted); max-width: 70ch; margin: 0 auto 2rem; text-align: center; }
 
   /* Proximity spectrum */
+  .railgroup { margin-bottom: 2.25rem; }
+  .railgroup:last-child { margin-bottom: 0; }
+  .railgroup-title { font-family: var(--serif); font-weight: 600; font-size: 1.12rem; margin-bottom: 0.55rem; text-align: center; }
   .rail-ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 0.5rem; }
   .rail-ends span { max-width: 40%; }
   .rail-ends span:last-child { text-align: right; }
@@ -224,20 +227,15 @@
 
 <div class="filterbar" role="group" aria-label="Filter speakers by type">
   <button class="filter-btn is-active" data-filter="all" type="button">All</button>
-  <button class="filter-btn" data-filter="pol" type="button">Politicians</button>
-  <button class="filter-btn" data-filter="corp" type="button">Corporate bigwigs</button>
+  <button class="filter-btn" data-filter="corp" type="button">Corporate</button>
+  <button class="filter-btn" data-filter="pol" type="button">Political</button>
+  <button class="filter-btn" data-filter="fin" type="button">Finance</button>
 </div>
 
-<section class="section-wrap" aria-label="Proximity spectrum">
-  <p class="kicker">Arranged by proximity of position</p>
-  <p class="lead-note">This is an interpretive axis, not a ranking. The left is AI as a global, borderless commercial layer; the right is AI owned and controlled within national borders. Global platform and frontier companies sit left; sovereign-AI champions and nation-states sit right. Tap any name to jump to their clips.</p>
-  <div class="rail-ends">
-    <span>Global, borderless AI</span>
-    <span>Sovereign, national AI</span>
-  </div>
-  <div class="rail-axis" aria-hidden="true"></div>
-  <p class="rail-hint">Dot colour marks position on the axis, blue (global, borderless) to red (sovereign, national)</p>
-  <nav class="rail" id="rail" aria-label="Speakers"></nav>
+<section class="section-wrap" aria-label="Ranked categories">
+  <p class="kicker">Grouped by category, ranked within each</p>
+  <p class="lead-note">Not everyone is arguing about the same thing, so rather than force one line-up, each category is ranked on its own scale. Within every group, left to right runs blue to red as the end labels describe. Tap any name to open its card.</p>
+  <div id="rail"></div>
 </section>
 
 <div class="section-wrap" style="padding-bottom:0">
@@ -578,12 +576,29 @@ function lerpColor(t){
 }
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function fmtTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+String(sec).padStart(2,'0'); }
-// Axis order, left to right: build-fast / frontier commercial (blue) to AI as national and state power (red).
-const ORDER = ['garman','nadella','pichai','altman','son','suleyman','cook','tangen','amodei','thiel','vance','gomez','meloni','mattarella','burnham','lagarde','sanders','rutte','starmer','calvino','alolama','ek','furstenberg','asml','jetten','schoof','huang','vonderleyen','macron','merz','modi','lee','takaichi','mensch','andrulis','pengxiao','xi','putin'];
+// Three categories, each ranked on its own scale (blue left to red right).
+const CATS = [
+  { id:'corp', title:'Companies', left:'Open / distributed', right:'Closed / concentrated' },
+  { id:'pol',  title:'Governments & officials', left:'Light-touch / global', right:'Sovereign / state-controlled' },
+  { id:'fin',  title:'Money: funds, banks & VCs', left:'Private / market capital', right:'Public / state capital' }
+];
+const ORDER_BY_CAT = {
+  corp: ['mensch','andrulis','gomez','huang','garman','suleyman','nadella','pichai','cook','amodei','altman','ek','asml','pengxiao'],
+  pol:  ['vance','starmer','alolama','burnham','mattarella','meloni','sanders','jetten','vonderleyen','macron','merz','modi','lee','takaichi','schoof','rutte','xi','putin'],
+  fin:  ['thiel','son','furstenberg','tangen','calvino','lagarde']
+};
+const CAT = {};
+for (const c in ORDER_BY_CAT) ORDER_BY_CAT[c].forEach(id => CAT[id] = c);
+
+const ORDER = [...ORDER_BY_CAT.corp, ...ORDER_BY_CAT.pol, ...ORDER_BY_CAT.fin];
 PEOPLE.sort((a,b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
+// Colour each person by position within their own category (blue to red).
 const colorFor = {};
-PEOPLE.forEach((p,i)=>{ colorFor[p.id] = lerpColor(PEOPLE.length>1 ? i/(PEOPLE.length-1) : 0); });
+for (const c in ORDER_BY_CAT) {
+  const arr = ORDER_BY_CAT[c];
+  arr.forEach((id,i) => { colorFor[id] = lerpColor(arr.length>1 ? i/(arr.length-1) : 0); });
+}
 
 // Short affiliation tags for the spectrum rail (company or country, not job title).
 const TAGS = {
@@ -595,14 +610,7 @@ const TAGS = {
   takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
 };
 
-// Category for the top filter: 'pol' = politician / public official, 'corp' = company exec or investor.
-const TYPE = {
-  altman:'corp', huang:'corp', amodei:'corp', suleyman:'corp', nadella:'corp', pichai:'corp', garman:'corp', mensch:'corp', gomez:'corp', andrulis:'corp', vance:'pol',
-  son:'corp', thiel:'corp', ek:'corp', tangen:'corp', furstenberg:'corp', asml:'corp',
-  cook:'corp', alolama:'pol', pengxiao:'corp', calvino:'pol', lagarde:'pol', vonderleyen:'pol',
-  macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', schoof:'pol', meloni:'pol', mattarella:'pol', lee:'pol',
-  takaichi:'pol', rutte:'pol', sanders:'pol', xi:'pol', putin:'pol'
-};
+// Category (corp / pol / fin) is derived into CAT above.
 
 // One line on each person's specific stance toward AI sovereignty.
 const SOV = {
@@ -739,13 +747,25 @@ const clustersEl = document.getElementById('clusters');
 const peopleEl = document.getElementById('people');
 
 function renderRail(list){
-  railEl.innerHTML = list.map(p =>
-    `<a class="node" href="#${p.id}">
-       <span class="node-dot" style="background:${colorFor[p.id]}"></span>
-       <span class="node-name">${esc(p.short)}</span>
-       <span class="node-role">${esc(TAGS[p.id] || p.role)}</span>
-     </a>`
-  ).join('');
+  const ids = new Set(list.map(p => p.id));
+  railEl.innerHTML = CATS.map(cat => {
+    const members = ORDER_BY_CAT[cat.id].filter(id => ids.has(id));
+    if (!members.length) return '';
+    const nodes = members.map(id => {
+      const p = PEOPLE.find(x => x.id === id);
+      return `<a class="node" href="#${id}">
+         <span class="node-dot" style="background:${colorFor[id]}"></span>
+         <span class="node-name">${esc(p.short)}</span>
+         <span class="node-role">${esc(TAGS[id] || p.role)}</span>
+       </a>`;
+    }).join('');
+    return `<div class="railgroup">
+       <h3 class="railgroup-title">${esc(cat.title)}</h3>
+       <div class="rail-ends"><span>${esc(cat.left)}</span><span>${esc(cat.right)}</span></div>
+       <div class="rail-axis" aria-hidden="true"></div>
+       <nav class="rail" aria-label="${esc(cat.title)}">${nodes}</nav>
+     </div>`;
+  }).join('');
 }
 
 function renderClusters(list){
@@ -831,7 +851,7 @@ function buildModal(p){
 }
 
 function applyFilter(type){
-  const list = type === 'all' ? PEOPLE : PEOPLE.filter(p => TYPE[p.id] === type);
+  const list = type === 'all' ? PEOPLE : PEOPLE.filter(p => CAT[p.id] === type);
   renderRail(list);
   renderClusters(list);
   renderCards(list);
