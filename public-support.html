@@ -565,7 +565,7 @@ function lerpColor(t){
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function fmtTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+String(sec).padStart(2,'0'); }
 // Axis order, left to right: build-fast / frontier commercial (blue) to AI as national and state power (red).
-const ORDER = ['son','altman','thiel','nadella','pichai','garman','cook','tangen','suleyman','huang','amodei','gomez','furstenberg','ek','mensch','andrulis','asml','pengxiao','alolama','starmer','burnham','calvino','lagarde','jetten','vonderleyen','macron','merz','modi','lee','takaichi','schoof','sanders','vance','rutte','xi','putin'];
+const ORDER = ['gomez','vance','thiel','son','garman','tangen','altman','nadella','cook','pichai','huang','mensch','merz','suleyman','alolama','vonderleyen','macron','starmer','calvino','modi','schoof','andrulis','furstenberg','asml','amodei','ek','lee','takaichi','lagarde','jetten','pengxiao','sanders','rutte','burnham','xi','putin'];
 PEOPLE.sort((a,b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
 const colorFor = {};
