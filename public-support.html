@@ -449,6 +449,20 @@ const PEOPLE = [
       {id:'XN0UchHnWPI', title:'AI Action Summit, Paris (leaders livestream)', desc:'The official summit stream co-chaired by Macron, where he frames France and Europe’s return to the AI race. February 2025.', ts:'Approx.', channel:'Associated Press'},
       {id:'r7omaj8BDh8', title:'AI is an opportunity for Europe and India to seize', desc:'An exclusive interview where Macron frames AI as an opportunity and presses the case for European tech sovereignty.', ts:'Approx.', channel:'Firstpost'}
     ]},
+  { id:'meloni', name:'Giorgia Meloni', short:'Giorgia Meloni', role:'Prime Minister of Italy', cluster:'shared',
+    stance:'Made AI a centrepiece of Italy’s 2024 G7 presidency, pushing international guardrails focused on risks, the labour market, and keeping AI human-centred.',
+    quote:'AI must stay human-centred, with guardrails for workers and against its dangers.', verbatim:false,
+    videos:[
+      {id:'RC1OTuJR2bk', title:'AI as a key G7 issue for Italy', desc:'Meloni makes AI a priority of Italy’s G7 presidency, focused on its risks and the labour market.', ts:'Approx.', channel:'WION'},
+      {id:'ozjjMwuQSgw', title:'"Verify and think": on AI deepfakes', desc:'Meloni warns about AI-generated deepfakes after fake images of her spread online.', ts:'Approx.', channel:'Firstpost'}
+    ]},
+  { id:'mattarella', name:'Sergio Mattarella', short:'Sergio Mattarella', role:'President of Italy', cluster:'beyond',
+    stance:'A values-first head of state: AI is an unstoppable revolution that must stay human-centred, with its effects on work carefully weighed.',
+    quote:'Unstoppable progress, but it must remain human.', verbatim:true,
+    videos:[
+      {id:'ogThxiqVpKk', title:'Keep the person at the centre', desc:'Mattarella on how social media and AI change everything, and on putting the person back at the centre. (Italian.)', ts:'Approx.', channel:'Il Sole 24 ORE'},
+      {id:'xkyGsWUfdHk', title:'"Progress that must remain human"', desc:'Mattarella calls AI unstoppable progress that must stay human-centred. (Italian.)', ts:'Approx.', channel:'Vista Agenzia Televisiva Nazionale'}
+    ]},
   { id:'merz', name:'Friedrich Merz', short:'Friedrich Merz', role:'Chancellor of Germany', cluster:'sovereignty',
     stance:'Frames Europe’s digital and tech sovereignty, including AI and quantum, as a strategic necessity for the continent.',
     quote:'Europe must secure its digital and technological sovereignty.', verbatim:false,
@@ -552,8 +566,8 @@ const SOVCLUSTER = {
   lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
   furstenberg:'stack', asml:'stack', tangen:'stack', jetten:'stack', mensch:'stack', gomez:'stack', andrulis:'stack',
   vance:'race', altman:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
-  suleyman:'shared', schoof:'shared', lagarde:'shared',
-  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond', nadella:'beyond', garman:'beyond'
+  suleyman:'shared', schoof:'shared', meloni:'shared', lagarde:'shared',
+  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond', nadella:'beyond', garman:'beyond', mattarella:'beyond'
 };
 
 function lerpColor(t){
@@ -565,7 +579,7 @@ function lerpColor(t){
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function fmtTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+String(sec).padStart(2,'0'); }
 // Axis order, left to right: build-fast / frontier commercial (blue) to AI as national and state power (red).
-const ORDER = ['gomez','vance','thiel','son','garman','tangen','altman','nadella','cook','pichai','huang','mensch','merz','suleyman','alolama','vonderleyen','macron','starmer','calvino','modi','schoof','andrulis','furstenberg','asml','amodei','ek','lee','takaichi','lagarde','jetten','pengxiao','sanders','rutte','burnham','xi','putin'];
+const ORDER = ['thiel','vance','son','garman','tangen','altman','nadella','cook','pichai','huang','mensch','gomez','merz','suleyman','alolama','vonderleyen','macron','starmer','meloni','calvino','modi','schoof','andrulis','furstenberg','asml','amodei','ek','lee','takaichi','lagarde','mattarella','jetten','pengxiao','sanders','rutte','burnham','xi','putin'];
 PEOPLE.sort((a,b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 
 const colorFor = {};
@@ -577,7 +591,7 @@ const TAGS = {
   vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund',
   furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
   calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
-  modi:'India PM', starmer:'UK PM', burnham:'Manchester Mayor', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', lee:'Korea President',
+  modi:'India PM', starmer:'UK PM', burnham:'Manchester Mayor', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', meloni:'Italy PM', mattarella:'Italy President', lee:'Korea President',
   takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
 };
 
@@ -586,7 +600,7 @@ const TYPE = {
   altman:'corp', huang:'corp', amodei:'corp', suleyman:'corp', nadella:'corp', pichai:'corp', garman:'corp', mensch:'corp', gomez:'corp', andrulis:'corp', vance:'pol',
   son:'corp', thiel:'corp', ek:'corp', tangen:'corp', furstenberg:'corp', asml:'corp',
   cook:'corp', alolama:'pol', pengxiao:'corp', calvino:'pol', lagarde:'pol', vonderleyen:'pol',
-  macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', schoof:'pol', lee:'pol',
+  macron:'pol', merz:'pol', modi:'pol', starmer:'pol', burnham:'pol', jetten:'pol', schoof:'pol', meloni:'pol', mattarella:'pol', lee:'pol',
   takaichi:'pol', rutte:'pol', sanders:'pol', xi:'pol', putin:'pol'
 };
 
@@ -622,6 +636,8 @@ const SOV = {
   burnham:'Comes at it from inclusion rather than statecraft: make sure the AI transition does not leave regions and workers behind.',
   jetten:'Approaches sovereignty as innovation capacity and partnership: invest in knowledge, AI, and chips, and deepen ties such as with India rather than go it alone.',
   schoof:'Links Dutch sovereignty to chips and AI: deepens semiconductor and AI ties abroad while pressing for global rules and readiness for AI-enabled warfare.',
+  meloni:'Frames AI sovereignty through G7-level governance and a human-centred, labour-aware lens, wary of Big Tech power and deepfakes.',
+  mattarella:'Casts it less as state power than human dignity: AI is unstoppable but must remain human-centred, with care for its effects on work.',
   lee:'Makes sovereign AI a national mission for Korea: domestic models and compute as the answer to the country’s transformation.',
   takaichi:'Treats AI and semiconductors as strategic assets for Japan, to be built at home as part of an economic-security agenda.',
   rutte:'Views it through collective defence: technological sovereignty and industrial capacity are now alliance security questions.',
@@ -666,6 +682,8 @@ const ORG = {
   burnham:'Greater Manchester pitches itself as a UK tech and digital hub, with AI and skills investment.',
   jetten:'The Netherlands hosts ASML, the chip-tool linchpin, and is deepening AI and semiconductor ties abroad.',
   schoof:'Dutch AI weight runs through ASML and the chip supply chain, paired with AI-security diplomacy.',
+  meloni:'Italy used its 2024 G7 presidency to put AI risks, labour, and ethics on the global agenda.',
+  mattarella:'As head of state, Mattarella repeatedly urges Italy and Europe to keep AI human-centred and weigh its impact on jobs.',
   lee:'Korea backs sovereign models and compute, with Samsung and SK Hynix supplying much of the world’s AI memory.',
   takaichi:'Japan invests in domestic AI and semiconductors, including Rapidus, as part of an economic-security agenda.',
   rutte:'NATO runs the DIANA accelerator and an innovation fund, treating AI as an alliance capability.',
@@ -706,6 +724,8 @@ const PHOTOS = {
   burnham: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Andy_Burnham_on_13_August_2024_%28cropped_2%29.jpg/330px-Andy_Burnham_on_13_August_2024_%28cropped_2%29.jpg',
   jetten: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rob_Jetten%2C_March_2026_-_02.jpg/330px-Rob_Jetten%2C_March_2026_-_02.jpg',
   schoof: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Dick_Schoof_in_2025.jpg/330px-Dick_Schoof_in_2025.jpg',
+  meloni: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Giorgia_Meloni_Official_2024_%28cropped%29.jpg/330px-Giorgia_Meloni_Official_2024_%28cropped%29.jpg',
+  mattarella: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Sergio_Mattarella_Presidente_della_Repubblica_Italiana.jpg/330px-Sergio_Mattarella_Presidente_della_Repubblica_Italiana.jpg',
   lee: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/President_Lee_Jae_Myung_20260306.jpg/330px-President_Lee_Jae_Myung_20260306.jpg',
   takaichi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Official_portrait_of_Sanae_Takaichi%2C_Prime_Minister_of_Japan_%28HD%29.jpg/330px-Official_portrait_of_Sanae_Takaichi%2C_Prime_Minister_of_Japan_%28HD%29.jpg',
   rutte: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mark_Rutte%2C_23.03.23_%28cropped%29.jpg/330px-Mark_Rutte%2C_23.03.23_%28cropped%29.jpg',
