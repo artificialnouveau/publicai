@@ -282,6 +282,14 @@ const PEOPLE = [
       {id:'fP5YdyjTfG0', title:'Senate testimony on AI oversight', desc:'Altman tells the Senate Judiciary subcommittee that regulation will be critical to manage increasingly powerful models. May 16, 2023.', ts:'Approx.', channel:'CNBC Television'},
       {id:'15UZCAr3shU', title:'World Government Summit, Dubai', desc:'Altman speaks with the UAE AI minister on AI’s trajectory and what governments should do. February 2024.', ts:'Approx.', channel:'Reuters'}
     ]},
+  { id:'musk', name:'Elon Musk', short:'Elon Musk', role:'CEO, xAI; CEO, Tesla', cluster:'race',
+    stance:'Warned for a decade that AI is an existential risk needing oversight, then built it himself: he co-founded OpenAI, broke with it and sued it, and now runs xAI and its Grok models on one of the world’s largest single training clusters.',
+    quote:'"With artificial intelligence, we are summoning the demon."', verbatim:true,
+    reading:{label:'Washington Post, Musk on "summoning the demon"', url:'https://www.washingtonpost.com/news/innovations/wp/2014/10/24/elon-musk-with-artificial-intelligence-we-are-summoning-the-demon/'},
+    videos:[
+      {id:'R2meHtrO1n8', title:'In conversation with Rishi Sunak', desc:'Musk and the UK PM discuss AI’s promise and existential risk at the close of the Bletchley Park AI Safety Summit. November 2023.', ts:'Approx.', channel:'AI Safety Summit fireside'},
+      {id:'cL-TdxFsqaw', title:'A future where "no job is needed"', desc:'In the same Bletchley conversation, Musk predicts AI will eventually be able to do every job. November 2023.', ts:'Approx.', channel:'Summit interview clip'}
+    ]},
   { id:'huang', name:'Jensen Huang', short:'Jensen Huang', role:'CEO, NVIDIA', cluster:'sovereignty',
     stance:'The most-quoted voice on sovereign AI: every nation should own the production of its own intelligence, its data, and its culture. Sits closest to Altman, one step toward the state side because his pitch is aimed squarely at governments.',
     quote:'"Every country needs to own the production of their own intelligence."', verbatim:true,
@@ -332,6 +340,14 @@ const PEOPLE = [
     videos:[
       {id:'325gGv0eWV8', title:'Europe’s $14 billion AI challenger', desc:'Mensch on Mistral’s bid to prove Europe can build frontier AI of its own.', ts:'Approx.', channel:'CNBC International'},
       {id:'J-DDSskLgOM', title:'"Europe can build successful AI tech"', desc:'Mensch makes the case that European sovereign AI is viable, not just aspirational.', ts:'Approx.', channel:'CNBC International Live'}
+    ]},
+  { id:'liang', name:'Liang Wenfeng', short:'Liang Wenfeng', role:'Founder and CEO, DeepSeek', cluster:'stack',
+    stance:'The face of China’s open-source AI: DeepSeek’s freely released R1 matched top US labs at a fraction of the cost, a moment widely called AI’s "Sputnik." Argues China should lead rather than follow, and that open weights build a shared ecosystem.',
+    quote:'China’s AI must lead, not follow forever, and open source is how you build a shared ecosystem.', verbatim:false,
+    reading:{label:'MIT Technology Review on DeepSeek', url:'https://www.technologyreview.com/2025/01/24/1110526/china-deepseek-top-ai-despite-sanctions/'},
+    videos:[
+      {id:'4WECPzmgfzA', title:'"China’s AI must lead, not follow forever"', desc:'A translated interview with the reclusive DeepSeek founder on open source, cost, and why China should set the pace rather than copy US labs. January 2025.', ts:'Approx.', channel:'Interview (translated)'},
+      {id:'LomadNRFWpE', title:'Received by China’s Premier Li Qiang', desc:'Footage of Liang welcomed by Premier Li Qiang, a sign of how central DeepSeek’s open-source breakthrough became to the Chinese state. January 2025.', ts:'Approx.', channel:'News footage'}
     ]},
   { id:'gomez', name:'Aidan Gomez', short:'Aidan Gomez', role:'CEO, Cohere', cluster:'stack',
     stance:'Builds enterprise-and-government AI that runs inside the customer’s own environment, positioning Cohere as the private, sovereign alternative to consumer AI giants.',
@@ -468,6 +484,14 @@ const PEOPLE = [
       {id:'j1O-5V3Y2wY', title:'Unveiling Europe’s digital future', desc:'A keynote on Europe’s push for digital and tech sovereignty, AI adoption, and reducing dependence.', ts:'Approx.', channel:'DWS News'},
       {id:'k2MvgOgO3Ls', title:'Macron and Merz on EU digital sovereignty', desc:'Joint announcement on digital sovereignty, AI adoption, and quantum chips.', ts:'Approx.', channel:'DRM News'}
     ]},
+  { id:'sanchez', name:'Pedro Sánchez', short:'Pedro Sánchez', role:'Prime Minister of Spain', cluster:'shared',
+    stance:'Pushes a "humanist," heavily regulated model of AI: a publicly funded Spanish-language model (ALIA), Europe’s first AI supervisory agency, and a loud call for common global rules so the technology strengthens democracy rather than a few platforms.',
+    quote:'AI should expand human freedom, democracy, and rights, not undermine them, governed by common rules for all.', verbatim:false,
+    reading:{label:'La Moncloa, Sánchez at the AI Impact Summit', url:'https://www.lamoncloa.gob.es/lang/en/presidente/intervenciones/Paginas/2026/20260219-global-ai-impact-summit-speech.aspx'},
+    videos:[
+      {id:'9ikUQaQ1mzM', title:'Special address at Davos 2025', desc:'Sánchez tells the World Economic Forum that a few platforms and their algorithms threaten democracy, and proposes EU rules to rein them in. January 2025.', ts:'Approx.', channel:'Davos 2025 livestream'},
+      {id:'t3Vj1z90MkA', title:'"AI is the central theme at Davos"', desc:'A short clip of Sánchez framing artificial intelligence as the defining issue for world leaders at Davos. (Spanish.)', ts:'Approx.', channel:'News short'}
+    ]},
   { id:'modi', name:'Narendra Modi', short:'Narendra Modi', role:'Prime Minister of India', cluster:'sovereignty',
     stance:'Co-chaired the Paris summit and frames India’s sovereignty across the full AI stack: applications, models, compute, talent, and energy, with open-source and the Global South in mind.',
     quote:'India’s AI ambition spans the full stack and the Global South.', verbatim:false,
@@ -532,7 +556,8 @@ const PEOPLE = [
     quote:'Technology and industrial capacity are now security questions for the alliance.', verbatim:false,
     videos:[
       {id:'zEza6fjUBFI', title:'Speech at the NATO-Industry Forum', desc:'Rutte on defence, technology, and industrial capacity. November 6, 2025. (Defence-focused; tech sovereignty features.)', ts:'Approx.', channel:'NATO News'},
-      {id:'lYiE82ufdHM', title:'"Building a better NATO" (Chatham House)', desc:'Rutte on defence, innovation, and the technology edge the alliance needs. June 2025.', ts:'Approx.', channel:'NATO News'}
+      {id:'lYiE82ufdHM', title:'"Building a better NATO" (Chatham House)', desc:'Rutte on defence, innovation, and the technology edge the alliance needs. June 2025.', ts:'Approx.', channel:'NATO News'},
+      {id:'uqouPARJbew', title:'Address at the NATO Cloud Conference', desc:'At the third NATO Cloud Conference in Brussels, Rutte says "there simply is no strong defence without a strong and also an innovative industry," tying cloud and edge computing to alliance security. November 24, 2025.', ts:'Approx.', channel:'NATO News'}
     ]},
   { id:'sanders', name:'Bernie Sanders', short:'Bernie Sanders', role:'U.S. Senator, Vermont', cluster:'guard',
     stance:'The sharpest labour-and-democracy warning: AI built by billionaires could hollow out the working class.',
@@ -570,9 +595,9 @@ const CLUSTERS = [
 const SOVCLUSTER = {
   huang:'stack', vonderleyen:'stack', macron:'stack', merz:'stack', modi:'stack', lula:'stack', starmer:'stack',
   lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
-  furstenberg:'stack', asml:'stack', tangen:'stack', jetten:'stack', mensch:'stack', gomez:'stack', andrulis:'stack',
-  vance:'race', altman:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
-  suleyman:'shared', schoof:'shared', meloni:'shared', lagarde:'shared',
+  furstenberg:'stack', asml:'stack', tangen:'stack', jetten:'stack', mensch:'stack', liang:'stack', gomez:'stack', andrulis:'stack',
+  vance:'race', altman:'race', musk:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
+  suleyman:'shared', schoof:'shared', meloni:'shared', lagarde:'shared', sanchez:'shared',
   cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond', nadella:'beyond', garman:'beyond', mattarella:'beyond'
 };
 
@@ -591,8 +616,8 @@ const CATS = [
   { id:'fin',  title:'Money: funds, banks & VCs', left:'Funds a shared consortium', right:'Backs a single superpower' }
 ];
 const ORDER_BY_CAT = {
-  corp: ['mensch','andrulis','gomez','ek','asml','huang','pengxiao','nadella','garman','pichai','suleyman','cook','amodei','altman'],
-  pol:  ['vonderleyen','macron','modi','lula','merz','jetten','meloni','starmer','lee','schoof','takaichi','alolama','sanders','rutte','mattarella','burnham','vance','xi','putin'],
+  corp: ['mensch','liang','andrulis','gomez','ek','asml','huang','pengxiao','nadella','garman','pichai','suleyman','cook','amodei','altman','musk'],
+  pol:  ['vonderleyen','macron','modi','lula','merz','sanchez','jetten','meloni','starmer','lee','schoof','takaichi','alolama','sanders','rutte','mattarella','burnham','vance','xi','putin'],
   fin:  ['calvino','furstenberg','tangen','lagarde','son','thiel']
 };
 const CAT = {};
@@ -610,11 +635,11 @@ for (const c in ORDER_BY_CAT) {
 
 // Short affiliation tags for the spectrum rail (company or country, not job title).
 const TAGS = {
-  altman:'OpenAI', huang:'NVIDIA', amodei:'Anthropic', suleyman:'Microsoft AI', nadella:'Microsoft', pichai:'Google', garman:'AWS', mensch:'Mistral AI', gomez:'Cohere', andrulis:'Aleph Alpha',
-  vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund',
+  altman:'OpenAI', musk:'xAI', huang:'NVIDIA', amodei:'Anthropic', suleyman:'Microsoft AI', nadella:'Microsoft', pichai:'Google', garman:'AWS', mensch:'Mistral AI', gomez:'Cohere', andrulis:'Aleph Alpha',
+  vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund', liang:'DeepSeek',
   furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
   calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
-  modi:'India PM', lula:'Brazil President', starmer:'UK PM', burnham:'Makerfield MP', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', meloni:'Italy PM', mattarella:'Italy President', lee:'Korea President',
+  modi:'India PM', lula:'Brazil President', sanchez:'Spain PM', starmer:'UK PM', burnham:'Makerfield MP', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', meloni:'Italy PM', mattarella:'Italy President', lee:'Korea President',
   takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
 };
 
@@ -623,12 +648,14 @@ const TAGS = {
 // One line on each person's specific stance toward AI sovereignty.
 const SOV = {
   altman:'Less a sovereignty hawk than a builder: frames the priority as US and allied leadership on frontier models, with compute and energy as the real strategic bottleneck.',
+  musk:'Treats AI as an existential and great-power race: warns of catastrophe yet argues the safest path is to build the most capable, "truth-seeking" AI himself rather than let rivals lead.',
   huang:'The defining sovereign-AI evangelist. Every nation should build its own models on its own data and compute, so its culture and intelligence are not outsourced.',
   amodei:'Casts AI leadership as a democratic-sovereignty contest, backing export controls to keep frontier capability with the US and its allies rather than authoritarian states.',
   suleyman:'Argues sovereignty itself is at stake: nation-states must build the capacity to contain AI, or cede power to whoever controls the technology.',
   nadella:'Offers sovereignty as a service: in-country sovereign cloud and data residency on Azure, while the underlying models and global scale stay Microsoft and partner.',
   garman:'Sells sovereignty as infrastructure: the AWS European Sovereign Cloud and in-region data control on top of a globally standardised platform.',
   mensch:'The sharpest European-sovereignty case from a builder: open-weight models, European compute, and data control so the continent owns its AI rather than renting it.',
+  liang:'A paradox of sovereignty: builds China’s own frontier models under US chip sanctions, yet open-sources the weights so anyone, including middle powers, can run them, loosening the US labs’ grip even as it serves Chinese self-reliance.',
   gomez:'Sells sovereignty to enterprises and governments: deploy models privately, on your own cloud or on-prem, so sensitive data never leaves your control.',
   andrulis:'Pitches sovereignty as trust and control: on-prem, transparent models for European states and firms that cannot hand data to US or Chinese clouds.',
   pichai:'A platform view more than a sovereignty one. Offers sovereign-cloud and in-country options, but sees AI delivered globally through Google’s infrastructure.',
@@ -646,6 +673,7 @@ const SOV = {
   lagarde:'Comes at it through stability and regulation, but stresses Europe should not be a passive taker of AI built elsewhere.',
   vonderleyen:'The standard-bearer for European AI sovereignty: mobilize public investment and shared infrastructure so the bloc builds AI, not just buys it.',
   macron:'Champions European sovereign AI: domestic, nuclear-powered compute, homegrown labs, and rules, so France and Europe do not depend on the US or China.',
+  sanchez:'Frames sovereignty as public and multilateral: a publicly funded Spanish-language model and EU rules at home, paired with a push for common global governance so no handful of firms or states controls AI.',
   merz:'Frames digital and technological sovereignty as a strategic necessity for Germany and Europe, spanning AI, chips, and quantum.',
   modi:'Defines sovereignty across the full stack, from applications to compute to energy, with open models and the Global South so AI is not a monopoly of a few nations.',
   lula:'Casts sovereignty as Global-South autonomy: Brazil and other developing nations should build their own AI and pool efforts, rather than depend on a handful of US or Chinese firms.',
@@ -670,12 +698,14 @@ const LOGO = { pengxiao:true };
 // One line on what each person's company, country, or institution is doing in AI.
 const ORG = {
   altman:'OpenAI built ChatGPT and the GPT models and is one of the handful of labs defining the frontier.',
+  musk:'xAI builds the Grok models on the Colossus supercomputer in Memphis; Musk also drives AI at Tesla (self-driving, Optimus) and owns X, where Grok is deployed.',
   huang:'NVIDIA designs the GPUs that train and run nearly all frontier AI, the pick-and-shovel giant of the boom.',
   amodei:'Anthropic builds the Claude models and champions safety-focused frontier AI as a leading US lab.',
   suleyman:'Microsoft AI runs Copilot and consumer AI on a deep OpenAI partnership and vast Azure compute.',
   nadella:'Microsoft runs Copilot across its products, hosts much of OpenAI on Azure, and is among the biggest builders of AI data-centre capacity.',
   garman:'AWS builds custom AI chips (Trainium), hosts Anthropic’s Claude, and runs a large share of the world’s cloud and AI compute.',
   mensch:'Mistral builds open-weight European models (Le Chat, Mistral Large) and is France’s flagship sovereign-AI champion.',
+  liang:'DeepSeek released the open-weight V3 and R1 models that rivalled top US systems at far lower cost, built by a lean team spun out of the High-Flyer quant fund.',
   gomez:'Cohere builds enterprise LLMs (Command) and retrieval tooling, and partners with governments on private, sovereign deployments.',
   andrulis:'Aleph Alpha builds sovereign, transparent AI infrastructure for European governments and industry, a German answer to OpenAI.',
   pichai:'Google builds the Gemini models and DeepMind research, shipping AI through Search, Cloud, and Android at planetary scale.',
@@ -693,6 +723,7 @@ const ORG = {
   lagarde:'The ECB studies AI’s effect on productivity, jobs, and financial stability, and uses AI in its own work.',
   vonderleyen:'The Commission runs the AI Act, the AI Continent plan, and InvestAI to mobilise European AI capacity.',
   macron:'France hosts Mistral and a 100-billion-euro investment wave, and convened the Paris AI Action Summit.',
+  sanchez:'Spain funds ALIA, a public open model in Spanish and co-official languages, set up the AESIA supervisory agency, and Sánchez champions AI regulation at the EU, the UN, and global summits.',
   merz:'Germany backs Aleph Alpha, industrial AI, and a European push on chips and quantum.',
   modi:'India runs the IndiaAI Mission, building shared compute, datasets, and homegrown models for a billion-plus people.',
   lula:'Brazil runs the multi-billion-real PBIA plan to build sovereign compute, data, and a Portuguese-language model, and uses the G20 and BRICS to push AI cooperation for the Global South.',
@@ -713,6 +744,7 @@ const ORG = {
 // Portrait photos (Wikipedia / Wikimedia Commons). null falls back to initials.
 const PHOTOS = {
   altman: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Meeting_with_Masayoshi_Son_and_Sam_Altman_%28February_3%2C_2025%29_%283x4_cropped_on_Altman%29.jpg/330px-Meeting_with_Masayoshi_Son_and_Sam_Altman_%28February_3%2C_2025%29_%283x4_cropped_on_Altman%29.jpg',
+  musk: 'https://commons.wikimedia.org/wiki/Special:FilePath/Elon%20Musk%20%2854816836217%29%20%28cropped%29.jpg?width=400',
   huang: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Jen-Hsun_Huang_2025.jpg/330px-Jen-Hsun_Huang_2025.jpg',
   amodei: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Dario_Amodei_at_TechCrunch_Disrupt_2023_01_%28cropped%29.jpg/330px-Dario_Amodei_at_TechCrunch_Disrupt_2023_01_%28cropped%29.jpg',
   suleyman: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Mustafa_Suleyman_photo_%28cropped%29.jpg/330px-Mustafa_Suleyman_photo_%28cropped%29.jpg',
@@ -736,6 +768,7 @@ const PHOTOS = {
   lagarde: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Lagarde_ECB_Portrait_2019.jpg/330px-Lagarde_ECB_Portrait_2019.jpg',
   vonderleyen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Prime_Minister_of_Bharat%2C_Shri_Narendra_Damodardas_Modi_greets_the_President_of_the_European_Council%2C_Mr._Ant%C3%B3nio_Costa_and_the_President_of_the_European_Commission%2C_Ms._Ursula_von_der_Leyen_%283x4_cropped%29.jpg/330px-thumbnail.jpg',
   macron: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Emmanuel_Macron_2025_%28cropped%29.jpg/330px-Emmanuel_Macron_2025_%28cropped%29.jpg',
+  sanchez: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pedro%20S%C3%A1nchez%202023%20%28cropped%29.jpg?width=400',
   merz: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg/330px-2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg',
   modi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg/330px-The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg',
   lula: 'https://commons.wikimedia.org/wiki/Special:FilePath/Foto%20oficial%20de%20Luiz%20In%C3%A1cio%20Lula%20da%20Silva%20%282023%E2%80%932027%29.jpg?width=400',
