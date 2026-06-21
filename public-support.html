@@ -455,6 +455,19 @@ const PEOPLE = [
       {id:'5nby8hra8Js', title:'Address at the AI Action Summit, Paris', desc:'Von der Leyen sets out Europe’s AI investment push and the case for a European model. February 2025.', ts:'Approx.', channel:'The New Citizen'},
       {id:'_pDYT-cu0SA', title:'"We will spare no effort to make Europe an AI continent"', desc:'Von der Leyen on Europe’s ambition to build, not just buy, its AI capacity.', ts:'Approx.', channel:'European Commission'}
     ]},
+  { id:'eupublic', name:'European Public', short:'European Public', role:'EU citizens and public opinion', cluster:'shared',
+    stance:'Polls steadily back public, well-regulated AI: large majorities want public authorities to shape AI around rights and prefer firm regulation to an unchecked race, and many trust the EU more than their own governments or Big Tech to govern it.',
+    quote:'Most Europeans want AI built in the public interest and firmly regulated, not left to a few companies.', verbatim:false,
+    reading:{label:'Eurobarometer, AI and the future of work', url:'https://europa.eu/eurobarometer/surveys/detail/3222'},
+    videos:[] },
+  { id:'pope', name:'Pope Leo XIV', short:'Pope Leo XIV', role:'Head of the Catholic Church', cluster:'beyond',
+    stance:'Made AI a defining theme of his papacy, even citing it in his choice of name: his encyclical Magnifica Humanitas warns that AI threatens human dignity, justice, and labour, and that control of it must not stay "in the hands of a few."',
+    quote:'AI must serve humanity, not concentrate power; technical power does not by itself confer the right to rule.', verbatim:false,
+    reading:{label:'Vatican, encyclical Magnifica Humanitas', url:'https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html'},
+    videos:[
+      {id:'yC9JTc4mVBM', title:'What Pope Leo said about AI', desc:'A news report on the Pope’s warnings about artificial intelligence and its impact on human dignity and work. 2026.', ts:'Approx.', channel:'News report'},
+      {id:'RqXXs-ZIDNo', title:'A manifesto warning about AI', desc:'Coverage of Magnifica Humanitas, Leo XIV’s encyclical calling for AI to serve humanity rather than concentrate power. May 2026.', ts:'Approx.', channel:'News report'}
+    ]},
   { id:'macron', name:'Emmanuel Macron', short:'Emmanuel Macron', role:'President of France', cluster:'sovereignty',
     stance:'Pairs a 109-billion-euro investment pledge with a vision of European, nuclear-powered, rights-respecting AI.',
     quote:'France and Europe are back in the AI race.', verbatim:false,
@@ -597,8 +610,8 @@ const SOVCLUSTER = {
   lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
   furstenberg:'stack', asml:'stack', tangen:'stack', jetten:'stack', mensch:'stack', liang:'stack', gomez:'stack', andrulis:'stack',
   vance:'race', altman:'race', musk:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
-  suleyman:'shared', schoof:'shared', meloni:'shared', lagarde:'shared', sanchez:'shared',
-  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond', nadella:'beyond', garman:'beyond', mattarella:'beyond'
+  suleyman:'shared', schoof:'shared', meloni:'shared', lagarde:'shared', sanchez:'shared', eupublic:'shared',
+  cook:'beyond', sanders:'beyond', burnham:'beyond', pichai:'beyond', nadella:'beyond', garman:'beyond', mattarella:'beyond', pope:'beyond'
 };
 
 function lerpColor(t){
@@ -617,7 +630,7 @@ const CATS = [
 ];
 const ORDER_BY_CAT = {
   corp: ['mensch','liang','andrulis','gomez','ek','asml','huang','pengxiao','nadella','garman','pichai','suleyman','cook','amodei','altman','musk'],
-  pol:  ['vonderleyen','macron','modi','lula','merz','sanchez','jetten','meloni','starmer','lee','schoof','takaichi','alolama','sanders','rutte','mattarella','burnham','vance','xi','putin'],
+  pol:  ['eupublic','vonderleyen','macron','modi','lula','merz','sanchez','jetten','meloni','starmer','lee','schoof','takaichi','alolama','sanders','rutte','pope','mattarella','burnham','vance','xi','putin'],
   fin:  ['calvino','furstenberg','tangen','lagarde','son','thiel']
 };
 const CAT = {};
@@ -640,7 +653,7 @@ const TAGS = {
   furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
   calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
   modi:'India PM', lula:'Brazil President', sanchez:'Spain PM', starmer:'UK PM', burnham:'Makerfield MP', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', meloni:'Italy PM', mattarella:'Italy President', lee:'Korea President',
-  takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
+  takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President', pope:'Vatican', eupublic:'EU citizens'
 };
 
 // Category (corp / pol / fin) is derived into CAT above.
@@ -672,6 +685,7 @@ const SOV = {
   calvino:'Channels EU public finance toward strategic autonomy, funding the chips, compute, and AI capacity Europe needs to not depend on others.',
   lagarde:'Comes at it through stability and regulation, but stresses Europe should not be a passive taker of AI built elsewhere.',
   vonderleyen:'The standard-bearer for European AI sovereignty: mobilize public investment and shared infrastructure so the bloc builds AI, not just buys it.',
+  eupublic:'Wants AI kept in trustworthy, public hands: strong majorities back EU-level rules and digital sovereignty, trusting the EU over national governments or Big Tech to decide how AI is used.',
   macron:'Champions European sovereign AI: domestic, nuclear-powered compute, homegrown labs, and rules, so France and Europe do not depend on the US or China.',
   sanchez:'Frames sovereignty as public and multilateral: a publicly funded Spanish-language model and EU rules at home, paired with a push for common global governance so no handful of firms or states controls AI.',
   merz:'Frames digital and technological sovereignty as a strategic necessity for Germany and Europe, spanning AI, chips, and quantum.',
@@ -683,6 +697,7 @@ const SOV = {
   schoof:'Links Dutch sovereignty to chips and AI: deepens semiconductor and AI ties abroad while pressing for global rules and readiness for AI-enabled warfare.',
   meloni:'Frames AI sovereignty through G7-level governance and a human-centred, labour-aware lens, wary of Big Tech power and deepfakes.',
   mattarella:'Casts it less as state power than human dignity: AI is unstoppable but must remain human-centred, with care for its effects on work.',
+  pope:'Locates the question beyond states and markets, in human dignity: AI must not be concentrated "in the hands of a few," and technical power does not by itself confer the right to rule.',
   lee:'Makes sovereign AI a national mission for Korea: domestic models and compute as the answer to the country’s transformation.',
   takaichi:'Treats AI and semiconductors as strategic assets for Japan, to be built at home as part of an economic-security agenda.',
   rutte:'Views it through collective defence: technological sovereignty and industrial capacity are now alliance security questions.',
@@ -693,7 +708,7 @@ const SOV = {
 
 // Per-photo crop override and logo flag.
 const POS = { asml:'right top' };
-const LOGO = { pengxiao:true };
+const LOGO = { pengxiao:true, eupublic:true };
 
 // One line on what each person's company, country, or institution is doing in AI.
 const ORG = {
@@ -722,6 +737,7 @@ const ORG = {
   calvino:'The EIB is scaling financing for European chips, compute, and AI to back strategic autonomy.',
   lagarde:'The ECB studies AI’s effect on productivity, jobs, and financial stability, and uses AI in its own work.',
   vonderleyen:'The Commission runs the AI Act, the AI Continent plan, and InvestAI to mobilise European AI capacity.',
+  eupublic:'Eurobarometer and other 2024-26 surveys: roughly 78% want public authorities to shape AI, most prioritise firm regulation over a race, and many trust the EU more than their own governments to govern it.',
   macron:'France hosts Mistral and a 100-billion-euro investment wave, and convened the Paris AI Action Summit.',
   sanchez:'Spain funds ALIA, a public open model in Spanish and co-official languages, set up the AESIA supervisory agency, and Sánchez champions AI regulation at the EU, the UN, and global summits.',
   merz:'Germany backs Aleph Alpha, industrial AI, and a European push on chips and quantum.',
@@ -733,6 +749,7 @@ const ORG = {
   schoof:'Dutch AI weight runs through ASML and the chip supply chain, paired with AI-security diplomacy.',
   meloni:'Italy used its 2024 G7 presidency to put AI risks, labour, and ethics on the global agenda.',
   mattarella:'As head of state, Mattarella repeatedly urges Italy and Europe to keep AI human-centred and weigh its impact on jobs.',
+  pope:'The Holy See has made AI a central theme: the encyclical Magnifica Humanitas (2026) and Vatican messages call for ethical guardrails, protection of workers, and global governance.',
   lee:'Korea backs sovereign models and compute, with Samsung and SK Hynix supplying much of the world’s AI memory.',
   takaichi:'Japan invests in domestic AI and semiconductors, including Rapidus, as part of an economic-security agenda.',
   rutte:'NATO runs the DIANA accelerator and an innovation fund, treating AI as an alliance capability.',
@@ -769,6 +786,8 @@ const PHOTOS = {
   vonderleyen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Prime_Minister_of_Bharat%2C_Shri_Narendra_Damodardas_Modi_greets_the_President_of_the_European_Council%2C_Mr._Ant%C3%B3nio_Costa_and_the_President_of_the_European_Commission%2C_Ms._Ursula_von_der_Leyen_%283x4_cropped%29.jpg/330px-thumbnail.jpg',
   macron: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Emmanuel_Macron_2025_%28cropped%29.jpg/330px-Emmanuel_Macron_2025_%28cropped%29.jpg',
   sanchez: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pedro%20S%C3%A1nchez%202023%20%28cropped%29.jpg?width=400',
+  eupublic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/330px-Flag_of_Europe.svg.png',
+  pope: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pope%20Leo%20XIV.png?width=400',
   merz: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg/330px-2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg',
   modi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg/330px-The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg',
   lula: 'https://commons.wikimedia.org/wiki/Special:FilePath/Foto%20oficial%20de%20Luiz%20In%C3%A1cio%20Lula%20da%20Silva%20%282023%E2%80%932027%29.jpg?width=400',
