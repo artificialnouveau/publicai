@@ -222,7 +222,7 @@
 <header class="hero">
   <div class="hero-eyebrow">Voices on public AI</div>
   <h1>Players in the Game</h1>
-  <p class="hero-sub">Political leaders, tech CEOs, and financiers in their own words on the future of AI, public AI, and AI sovereignty. Arranged by how close their positions sit to one another, and clustered by what they actually argue.</p>
+  <p class="hero-sub">Political leaders, tech CEOs, and financiers in their own words on the future of AI, public AI, and AI sovereignty. Ranked, within each group, by how likely they are to commit to a Large Model Training Consortium: a shared, multi-party effort to build frontier AI together rather than depend on a single superpower.</p>
 </header>
 
 <div class="filterbar" role="group" aria-label="Filter speakers by type">
@@ -233,8 +233,8 @@
 </div>
 
 <section class="section-wrap" aria-label="Ranked categories">
-  <p class="kicker">Grouped by category, ranked within each</p>
-  <p class="lead-note">Not everyone is arguing about the same thing, so rather than force one line-up, each category is ranked on its own scale. Within every group, left to right runs blue to red as the end labels describe. Tap any name to open its card.</p>
+  <p class="kicker">Ranked by readiness to join a Large Model Training Consortium</p>
+  <p class="lead-note">A Large Model Training Consortium means many states or firms pooling compute, data, and money to build frontier AI together, instead of depending on the US or China. Each group is ranked on its own scale: left to right runs blue to red, from the most likely to commit to such a consortium to the least, as the end labels describe. Tap any name to open its card.</p>
   <div id="rail"></div>
 </section>
 
@@ -476,6 +476,14 @@ const PEOPLE = [
       {id:'2x2ZnoJ77kY', title:'Full speech at the Paris AI Summit', desc:'Modi on the dawn of the AI age, guarding against bias, and India’s role co-chairing the summit. February 2025.', ts:'Approx.', channel:'Mint'},
       {id:'YD4iC02EZeA', title:'Speech at the India AI Impact Summit', desc:'Hosting the summit in New Delhi, Modi argues India is not catching up on AI but leaping ahead. February 2026.', ts:'Approx.', channel:'Narendra Modi'}
     ]},
+  { id:'lula', name:'Luiz Inácio Lula da Silva', short:'Lula da Silva', role:'President of Brazil', cluster:'stack',
+    stance:'Frames AI as a question of sovereignty and development for Brazil and the Global South, pairing a national AI plan with a push for multilateral cooperation so poorer nations are not locked out or left dependent on a few US and Chinese firms.',
+    quote:'AI must not be a privilege of a few countries, nor a tool of manipulation in the hands of billionaires.', verbatim:false,
+    reading:{label:'G20 Brasil, Brazil’s $4bn national AI plan', url:'https://www.gov.br/g20/en/news/brasil-launches-a-usd-4-billion-plan-for-ai-and-prepares-global-action'},
+    videos:[
+      {id:'6BmooMHoJ2Q', title:'Full speech at the BRICS Summit 2025', desc:'Lula’s full address at the BRICS summit, where he pushed for a shared declaration on AI governance and warned that compute and capital sit with a few countries and firms. Rio de Janeiro, July 2025.', ts:'Approx.', channel:'Full-speech upload'},
+      {id:'sWjNvwXrxHs', title:'Defending multilateral AI governance at BRICS', desc:'Lula argues AI must not be a privilege of a few countries or a tool of manipulation in the hands of the rich, and calls for shared governance. (Portuguese.)', ts:'Approx.', channel:'Brazilian media (Portuguese)'}
+    ]},
   { id:'starmer', name:'Keir Starmer', short:'Keir Starmer', role:'Prime Minister of the United Kingdom', cluster:'sovereignty',
     stance:'Ties AI opportunity to building sovereign UK compute and an activist industrial approach.',
     quote:'Seize the AI opportunity and build the UK’s own sovereign compute.', verbatim:false,
@@ -560,7 +568,7 @@ const CLUSTERS = [
 
 // Which sovereignty cluster each person falls into.
 const SOVCLUSTER = {
-  huang:'stack', vonderleyen:'stack', macron:'stack', merz:'stack', modi:'stack', starmer:'stack',
+  huang:'stack', vonderleyen:'stack', macron:'stack', merz:'stack', modi:'stack', lula:'stack', starmer:'stack',
   lee:'stack', takaichi:'stack', alolama:'stack', pengxiao:'stack', calvino:'stack', ek:'stack',
   furstenberg:'stack', asml:'stack', tangen:'stack', jetten:'stack', mensch:'stack', gomez:'stack', andrulis:'stack',
   vance:'race', altman:'race', amodei:'race', son:'race', thiel:'race', xi:'race', putin:'race', rutte:'race',
@@ -578,14 +586,14 @@ function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/
 function fmtTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+String(sec).padStart(2,'0'); }
 // Three categories, each ranked on its own scale (blue left to red right).
 const CATS = [
-  { id:'corp', title:'Companies', left:'Open / distributed', right:'Closed / concentrated' },
-  { id:'pol',  title:'Governments & officials', left:'Light-touch / global', right:'Sovereign / state-controlled' },
-  { id:'fin',  title:'Money: funds, banks & VCs', left:'Private / market capital', right:'Public / state capital' }
+  { id:'corp', title:'Companies', left:'Pools into a shared effort', right:'Builds alone / own platform' },
+  { id:'pol',  title:'Governments & officials', left:'Backs a middle-power consortium', right:'Superpower pole / goes alone' },
+  { id:'fin',  title:'Money: funds, banks & VCs', left:'Funds a shared consortium', right:'Backs a single superpower' }
 ];
 const ORDER_BY_CAT = {
-  corp: ['mensch','andrulis','gomez','huang','garman','suleyman','nadella','pichai','cook','amodei','altman','ek','asml','pengxiao'],
-  pol:  ['vance','starmer','alolama','burnham','mattarella','meloni','sanders','jetten','vonderleyen','macron','merz','modi','lee','takaichi','schoof','rutte','xi','putin'],
-  fin:  ['thiel','son','furstenberg','tangen','calvino','lagarde']
+  corp: ['mensch','andrulis','gomez','ek','asml','huang','pengxiao','nadella','garman','pichai','suleyman','cook','amodei','altman'],
+  pol:  ['vonderleyen','macron','modi','lula','merz','jetten','meloni','starmer','lee','schoof','takaichi','alolama','sanders','rutte','mattarella','burnham','vance','xi','putin'],
+  fin:  ['calvino','furstenberg','tangen','lagarde','son','thiel']
 };
 const CAT = {};
 for (const c in ORDER_BY_CAT) ORDER_BY_CAT[c].forEach(id => CAT[id] = c);
@@ -606,7 +614,7 @@ const TAGS = {
   vance:'US Vice President', son:'SoftBank', thiel:'Founders Fund', ek:'Spotify', tangen:'Norway fund',
   furstenberg:'General Catalyst', asml:'ASML', cook:'Apple', alolama:'UAE AI Minister', pengxiao:'G42',
   calvino:'EIB President', lagarde:'ECB President', vonderleyen:'EU Commission Pres.', macron:'France President', merz:'Germany Chancellor',
-  modi:'India PM', starmer:'UK PM', burnham:'Makerfield MP', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', meloni:'Italy PM', mattarella:'Italy President', lee:'Korea President',
+  modi:'India PM', lula:'Brazil President', starmer:'UK PM', burnham:'Makerfield MP', jetten:'Netherlands PM', schoof:'Netherlands ex-PM', meloni:'Italy PM', mattarella:'Italy President', lee:'Korea President',
   takaichi:'Japan PM', rutte:'NATO Sec-Gen', sanders:'US Senator', xi:'China President', putin:'Russia President'
 };
 
@@ -640,6 +648,7 @@ const SOV = {
   macron:'Champions European sovereign AI: domestic, nuclear-powered compute, homegrown labs, and rules, so France and Europe do not depend on the US or China.',
   merz:'Frames digital and technological sovereignty as a strategic necessity for Germany and Europe, spanning AI, chips, and quantum.',
   modi:'Defines sovereignty across the full stack, from applications to compute to energy, with open models and the Global South so AI is not a monopoly of a few nations.',
+  lula:'Casts sovereignty as Global-South autonomy: Brazil and other developing nations should build their own AI and pool efforts, rather than depend on a handful of US or Chinese firms.',
   starmer:'Ties opportunity to sovereign capability: build the UK’s own compute and AI infrastructure rather than rely entirely on US clouds.',
   burnham:'Comes at it from inclusion rather than statecraft: make sure the AI transition does not leave regions and workers behind.',
   jetten:'Approaches sovereignty as innovation capacity and partnership: invest in knowledge, AI, and chips, and deepen ties such as with India rather than go it alone.',
@@ -686,6 +695,7 @@ const ORG = {
   macron:'France hosts Mistral and a 100-billion-euro investment wave, and convened the Paris AI Action Summit.',
   merz:'Germany backs Aleph Alpha, industrial AI, and a European push on chips and quantum.',
   modi:'India runs the IndiaAI Mission, building shared compute, datasets, and homegrown models for a billion-plus people.',
+  lula:'Brazil runs the multi-billion-real PBIA plan to build sovereign compute, data, and a Portuguese-language model, and uses the G20 and BRICS to push AI cooperation for the Global South.',
   starmer:'The UK has the AI Safety Institute, DeepMind’s home base, and an AI plan for sovereign compute.',
   burnham:'Greater Manchester pitches itself as a UK tech and digital hub, with AI and skills investment.',
   jetten:'The Netherlands hosts ASML, the chip-tool linchpin, and is deepening AI and semiconductor ties abroad.',
@@ -728,6 +738,7 @@ const PHOTOS = {
   macron: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Emmanuel_Macron_2025_%28cropped%29.jpg/330px-Emmanuel_Macron_2025_%28cropped%29.jpg',
   merz: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg/330px-2024-08-21_Friedrich_Merz_in_Erfurt_2024_STP_3041_by_Stepro_%283x4_cropped%29.jpg',
   modi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg/330px-The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg',
+  lula: 'https://commons.wikimedia.org/wiki/Special:FilePath/Foto%20oficial%20de%20Luiz%20In%C3%A1cio%20Lula%20da%20Silva%20%282023%E2%80%932027%29.jpg?width=400',
   starmer: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Prime_Minister_Keir_Starmer_Portrait_%28cropped%29.jpg/330px-Prime_Minister_Keir_Starmer_Portrait_%28cropped%29.jpg',
   burnham: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Andy_Burnham_on_13_August_2024_%28cropped_2%29.jpg/330px-Andy_Burnham_on_13_August_2024_%28cropped_2%29.jpg',
   jetten: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rob_Jetten%2C_March_2026_-_02.jpg/330px-Rob_Jetten%2C_March_2026_-_02.jpg',
