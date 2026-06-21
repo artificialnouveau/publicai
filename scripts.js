@@ -2339,6 +2339,38 @@ function castCat(key){ return (window.CastMarks && CastMarks.has(key)) ? CastMar
       '</div>').join('');
     header.insertAdjacentElement('afterend', row);
   });
+
+  // A single roll-up of every character/stakeholder, tucked under the preface's
+  // "2027: You Sleep With a Scorpion..." part line so readers can meet the
+  // whole cast before the story proper starts.
+  const preface = document.getElementById('scene-preface');
+  if (preface) {
+    const anchor = preface.querySelector('.scene-part') || preface.querySelector('.scene-header');
+    if (anchor) {
+      const seen = {}, all = [];
+      Object.keys(CAST).forEach(id => CAST[id].forEach(c => {
+        if (!(c.art in seen)) { seen[c.art] = true; all.push(c); }
+      }));
+      const det = document.createElement('details');
+      det.className = 'cast-summary';
+      det.innerHTML =
+        '<summary class="cast-summary-bar">' +
+          '<span class="cast-summary-label">The cast &middot; ' + all.length + ' characters &amp; stakeholders</span>' +
+        '</summary>' +
+        '<p class="cast-summary-intro">Everyone who moves through the twelve chapters, grouped by the bloc they answer to. Each gets a fuller dossier when they first appear.</p>' +
+        '<ul class="cast-sum-grid">' + all.map(c =>
+          '<li class="cast-sum-item" style="--cat:' + castCat(c.art) + '">' +
+            '<span class="cast-sum-mark">' + markerChip(c.art) + '</span>' +
+            '<div class="cast-sum-body">' +
+              '<div class="cast-sum-name">' + esc(c.name) + '</div>' +
+              '<div class="cast-sum-desc">' + esc(c.cls) + ' &middot; ' + esc(c.claim) + '</div>' +
+            '</div>' +
+            factionTag(c.art) +
+          '</li>').join('') +
+        '</ul>';
+      anchor.insertAdjacentElement('afterend', det);
+    }
+  }
 })();
 
 // ============================================================

@@ -35,6 +35,15 @@ function doGet(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 
+  // Maintenance: strip cross-section leads_to so each section is self-contained.
+  // ?action=cleanleads&dry=1 previews; ?action=cleanleads writes the change.
+  if (e && e.parameter && e.parameter.action === 'cleanleads') {
+    var dry = !!(e.parameter.dry && e.parameter.dry !== '0');
+    return ContentService
+      .createTextOutput(JSON.stringify(cleanLeadsToIntraSection(dry)))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
   return HtmlService.createTemplateFromFile('Index')
     .evaluate()
     .setTitle('Sovereign AI Consortium — Decision Tree')
@@ -70,14 +79,149 @@ function sheetToObjects(ss, sheetName) {
     .filter(function(o) { return o[headers[0]]; });
 }
 
+var CACHE_KEY = 'tree_data_v1';
+var CACHE_TTL = 600; // seconds
+
+// Cached read. First call rebuilds from the sheets (~4s); subsequent calls
+// (across all users) return instantly until a write invalidates the cache.
 function getData() {
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get(CACHE_KEY);
+  if (hit) { try { return JSON.parse(hit); } catch (e) {} }
+
+  var data = getDataRaw();
+  try {
+    var json = JSON.stringify(data);
+    if (json.length < 95000) cache.put(CACHE_KEY, json, CACHE_TTL); // cache cap is 100KB
+  } catch (e) {}
+  return data;
+}
+
+function getDataRaw() {
   var ss = getSpreadsheet();
+  getOrCreateNotesSheet(ss);
+  getOrCreateSessionsSheet(ss);
   return {
     branches:     sheetToObjects(ss, 'Branches'),
     nodes:        sheetToObjects(ss, 'Nodes'),
     options:      sheetToObjects(ss, 'Options'),
-    criticalPath: sheetToObjects(ss, 'CriticalPath')
+    criticalPath: sheetToObjects(ss, 'CriticalPath'),
+    notes:        sheetToObjects(ss, 'Notes'),
+    sessions:     sheetToObjects(ss, 'Sessions')
   };
+}
+
+function invalidateCache() {
+  try { CacheService.getScriptCache().remove(CACHE_KEY); } catch (e) {}
+}
+
+// ---------------------------------------------------------------------------
+// Sessions — each person's saved path of choices, all in one sheet
+//   columns: session_name | author | node_id | option_id | updated
+// ---------------------------------------------------------------------------
+
+function getOrCreateSessionsSheet(ss) {
+  var sheet = ss.getSheetByName('Sessions');
+  if (!sheet) {
+    sheet = ss.insertSheet('Sessions');
+    sheet.appendRow(['session_name', 'author', 'node_id', 'option_id', 'updated']);
+    sheet.getRange(1, 1, 1, 5).setFontWeight('bold').setBackground('#0d1b2a').setFontColor('#ffffff');
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function getSessions() {
+  var ss = getSpreadsheet();
+  getOrCreateSessionsSheet(ss);
+  return sheetToObjects(ss, 'Sessions');
+}
+
+// payload: { session_name, author, selections: { nodeId: optionId, ... } }
+// Replaces all rows for this session_name with the current selections.
+function saveSession(payload) {
+  var ss = getSpreadsheet();
+  var sheet = getOrCreateSessionsSheet(ss);
+  var name = String(payload.session_name || '').trim();
+  if (!name) throw new Error('A session name is required.');
+
+  // Remove existing rows for this session (case-insensitive match on name)
+  var values = sheet.getDataRange().getValues();
+  for (var i = values.length - 1; i >= 1; i--) {
+    if (String(values[i][0]).toLowerCase() === name.toLowerCase()) sheet.deleteRow(i + 1);
+  }
+
+  // Append one row per selected option
+  var now = new Date().toISOString();
+  var sel = payload.selections || {};
+  var rows = [];
+  Object.keys(sel).forEach(function(nodeId) {
+    var v = sel[nodeId];
+    var opts = Array.isArray(v) ? v : (v ? [v] : []);
+    opts.forEach(function(optId) { if (optId) rows.push([name, payload.author || '', nodeId, optId, now]); });
+  });
+  if (rows.length) {
+    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 5).setValues(rows);
+  }
+  invalidateCache();
+  return getSessions();
+}
+
+function deleteSession(sessionName) {
+  var ss = getSpreadsheet();
+  var sheet = getOrCreateSessionsSheet(ss);
+  var name = String(sessionName || '').toLowerCase();
+  var values = sheet.getDataRange().getValues();
+  for (var i = values.length - 1; i >= 1; i--) {
+    if (String(values[i][0]).toLowerCase() === name) sheet.deleteRow(i + 1);
+  }
+  invalidateCache();
+  return getSessions();
+}
+
+// ---------------------------------------------------------------------------
+// Notes (post-its) — stored in their own sheet, keyed by target_id
+//   columns: id | target_id | target_type | text | author | updated
+// ---------------------------------------------------------------------------
+
+function getOrCreateNotesSheet(ss) {
+  var sheet = ss.getSheetByName('Notes');
+  if (!sheet) {
+    sheet = ss.insertSheet('Notes');
+    sheet.appendRow(['id', 'target_id', 'target_type', 'text', 'author', 'updated']);
+    sheet.getRange(1, 1, 1, 6).setFontWeight('bold').setBackground('#0d1b2a').setFontColor('#ffffff');
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function getNotes() {
+  var ss = getSpreadsheet();
+  getOrCreateNotesSheet(ss);
+  return sheetToObjects(ss, 'Notes');
+}
+
+function saveNote(note) {
+  var ss = getSpreadsheet();
+  var sheet = getOrCreateNotesSheet(ss);
+  if (!note.id) {
+    note.id = 'n' + new Date().getTime() + Math.floor(Math.random() * 1000);
+  }
+  note.updated = new Date().toISOString();
+  upsertRow(sheet, note, ['id', 'target_id', 'target_type', 'text', 'author', 'updated']);
+  invalidateCache();
+  return note;
+}
+
+function deleteNote(id) {
+  var ss = getSpreadsheet();
+  var sheet = getOrCreateNotesSheet(ss);
+  var values = sheet.getDataRange().getValues();
+  for (var i = values.length - 1; i >= 1; i--) {
+    if (String(values[i][0]) === String(id)) { sheet.deleteRow(i + 1); break; }
+  }
+  invalidateCache();
+  return true;
 }
 
 function getLinks() {
@@ -95,34 +239,121 @@ function getLinks() {
 function saveBranch(branch) {
   var ss = getSpreadsheet();
   upsertRow(ss.getSheetByName('Branches'), branch, ['id','name','description']);
+  invalidateCache();
   syncDocFromSheet();
   return true;
 }
 
 function saveNode(node) {
   var ss = getSpreadsheet();
-  upsertRow(ss.getSheetByName('Nodes'), node, ['id','branch_id','question','description']);
+  var sheet = ss.getSheetByName('Nodes');
+  ensureColumn(sheet, 'multi');
+  upsertRow(sheet, node, ['id','branch_id','question','description','multi']);
+  invalidateCache();
   syncDocFromSheet();
   return true;
 }
 
 function saveOption(option) {
   var ss = getSpreadsheet();
-  upsertRow(ss.getSheetByName('Options'), option, ['id','node_id','label','what_it_means','key_tradeoffs','leads_to']);
+  var sheet = ss.getSheetByName('Options');
+  ensureColumn(sheet, 'persona');
+  upsertRow(sheet, option, ['id','node_id','label','what_it_means','key_tradeoffs','leads_to','persona']);
+  invalidateCache();
+  syncDocFromSheet();
+  return true;
+}
+
+// Append a header column to a sheet if it doesn't already have it.
+function ensureColumn(sheet, name) {
+  var lastCol = Math.max(1, sheet.getLastColumn());
+  var header = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  if (header.indexOf(name) === -1) sheet.getRange(1, lastCol + 1).setValue(name);
+}
+
+// Reorder phases (branches): rewrite the Branches sheet rows in the given id order.
+function reorderBranches(orderedIds) {
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName('Branches');
+  var values = sheet.getDataRange().getValues();
+  if (values.length <= 1) return true;
+  var header = values[0];
+  var rows = values.slice(1).filter(function(r) { return String(r[0]) !== ''; });
+  var byId = {};
+  rows.forEach(function(r) { byId[String(r[0])] = r; });
+  var newRows = [];
+  (orderedIds || []).forEach(function(id) { if (byId[id]) { newRows.push(byId[id]); delete byId[id]; } });
+  rows.forEach(function(r) { if (byId[String(r[0])]) { newRows.push(r); delete byId[String(r[0])]; } });
+  if (newRows.length) sheet.getRange(2, 1, newRows.length, header.length).setValues(newRows);
+  invalidateCache();
   syncDocFromSheet();
   return true;
 }
 
 function deleteItem(type, id) {
   var ss = getSpreadsheet();
-  var names = { branch: 'Branches', node: 'Nodes', option: 'Options' };
-  var sheet = ss.getSheetByName(names[type]);
-  var values = sheet.getDataRange().getValues();
-  for (var i = values.length - 1; i >= 1; i--) {
-    if (String(values[i][0]) === String(id)) { sheet.deleteRow(i + 1); break; }
+  if (type === 'branch') {
+    // remove the section, its questions, and those questions' choices
+    var data = getDataRaw();
+    var nodeIds = data.nodes.filter(function(n) { return n.branch_id === id; }).map(function(n) { return String(n.id); });
+    deleteRowsWhere(ss.getSheetByName('Options'), function(r) { return nodeIds.indexOf(String(r[1])) >= 0; });
+    deleteRowsWhere(ss.getSheetByName('Nodes'),   function(r) { return String(r[1]) === String(id); });
+    deleteRowsWhere(ss.getSheetByName('Branches'), function(r) { return String(r[0]) === String(id); });
+  } else if (type === 'node') {
+    // remove the question and its choices
+    deleteRowsWhere(ss.getSheetByName('Options'), function(r) { return String(r[1]) === String(id); });
+    deleteRowsWhere(ss.getSheetByName('Nodes'),   function(r) { return String(r[0]) === String(id); });
+  } else {
+    deleteRowsWhere(ss.getSheetByName('Options'), function(r) { return String(r[0]) === String(id); });
   }
+  invalidateCache();
   syncDocFromSheet();
   return true;
+}
+
+// Delete every data row (skipping the header) for which pred(row) is true.
+function deleteRowsWhere(sheet, pred) {
+  if (!sheet) return;
+  var values = sheet.getDataRange().getValues();
+  for (var i = values.length - 1; i >= 1; i--) {
+    if (pred(values[i])) sheet.deleteRow(i + 1);
+  }
+}
+
+// Rewrite every option's leads_to to keep only targets inside its own section.
+// Cross-section links are dropped; option-id targets resolve to their question.
+// Pass dry=true to preview without writing.
+function cleanLeadsToIntraSection(dry) {
+  var ss = getSpreadsheet();
+  var sheet = ss.getSheetByName('Options');
+  var values = sheet.getDataRange().getValues();
+  if (values.length <= 1) return { changed: 0, details: [] };
+  var header = values[0];
+  var idIdx = header.indexOf('id'), nodeIdx = header.indexOf('node_id'), leadsIdx = header.indexOf('leads_to');
+  if (leadsIdx < 0) return { changed: 0, details: ['no leads_to column'] };
+
+  var data = getDataRaw();
+  var nodeById = {}; data.nodes.forEach(function(n) { nodeById[n.id] = n; });
+  var optById = {}; data.options.forEach(function(o) { optById[o.id] = o; });
+  function resolveNode(tok) { tok = String(tok).trim(); if (nodeById[tok]) return tok; if (optById[tok]) return optById[tok].node_id; return null; }
+
+  var changes = [];
+  for (var i = 1; i < values.length; i++) {
+    var oid = String(values[i][idIdx]); if (!oid) continue;
+    var nodeId = String(values[i][nodeIdx]);
+    var sec = nodeById[nodeId] ? nodeById[nodeId].branch_id : String(nodeId).charAt(0);
+    var lt = String(values[i][leadsIdx] || '');
+    if (!lt.trim()) continue;
+    var kept = [];
+    lt.split(/[,;]/).forEach(function(tok) {
+      var rn = resolveNode(tok);
+      if (rn && nodeById[rn] && nodeById[rn].branch_id === sec && rn !== nodeId && kept.indexOf(rn) < 0) kept.push(rn);
+    });
+    var nv = kept.join(', ');
+    if (nv !== lt.trim()) { values[i][leadsIdx] = nv; changes.push(oid + ': "' + lt + '" -> "' + nv + '"'); }
+  }
+  if (changes.length && !dry) { sheet.getDataRange().setValues(values); invalidateCache(); syncDocFromSheet(); }
+  return { changed: changes.length, dryRun: !!dry, details: changes };
 }
 
 function upsertRow(sheet, obj, cols) {
@@ -144,9 +375,15 @@ function upsertRow(sheet, obj, cols) {
 function syncDocFromSheet() {
   var docId = PropertiesService.getScriptProperties().getProperty(DOC_KEY);
   if (!docId) return false;
-  var doc = DocumentApp.openById(docId);
-  generateDoc(doc, getData());
-  return true;
+  // Never let a doc-generation hiccup block a sheet save.
+  try {
+    var doc = DocumentApp.openById(docId);
+    generateDoc(doc, getData());
+    return true;
+  } catch (err) {
+    Logger.log('syncDocFromSheet failed: ' + err);
+    return false;
+  }
 }
 
 function generateDoc(doc, data) {
@@ -204,9 +441,7 @@ function generateDoc(doc, data) {
         ['Option (branch)', 'What it means', 'Key tradeoffs', 'Leads to'].forEach(function(h) {
           var cell = hdr.appendTableCell(h);
           cell.setBackgroundColor('#1a1a2e');
-          cell.getParagraphs()[0].editAsText()
-            .setForegroundColor('#ffffff')
-            .setBold(true);
+          try { cell.editAsText().setForegroundColor('#ffffff').setBold(true); } catch (e) {}
         });
         opts.forEach(function(o) {
           var r = table.appendTableRow();

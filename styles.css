@@ -486,6 +486,55 @@
     color: var(--cat, var(--accent)); flex: 0 0 2.4rem;
   }
 
+  /* Cast roll-up dropdown under the preface title */
+  .cast-summary {
+    margin: 1.1rem 0 1.8rem;
+    border: 1px solid var(--hairline-strong); border-radius: 8px;
+    background: var(--paper-2);
+  }
+  .cast-summary-bar {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 0.7rem 0.95rem;
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text);
+  }
+  .cast-summary-bar::-webkit-details-marker { display: none; }
+  .cast-summary-bar::after {
+    content: 'Show'; flex: 0 0 auto;
+    font-size: 0.58rem; letter-spacing: 0.1em; color: var(--accent);
+    border: 1px solid rgba(0,87,255,0.4); border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+  .cast-summary[open] .cast-summary-bar::after { content: 'Hide'; }
+  .cast-summary-intro {
+    font-family: var(--font); font-size: 0.86rem; color: var(--text-soft);
+    line-height: 1.5; text-transform: none; letter-spacing: 0;
+    margin: 0; padding: 0 0.95rem 0.8rem;
+  }
+  .cast-sum-grid {
+    list-style: none; margin: 0; padding: 0 0.7rem 0.8rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); gap: 0.4rem;
+  }
+  .cast-sum-item {
+    display: flex; align-items: flex-start; gap: 0.55rem;
+    padding: 0.5rem 0.6rem; border-radius: 6px;
+    border-left: 3px solid var(--cat, var(--accent));
+    background: var(--paper, #fff);
+  }
+  .cast-sum-mark { flex: 0 0 auto; margin-top: 0.1rem; }
+  .cast-sum-mark .cast-flag { width: 22px; height: 14px; }
+  .cast-sum-body { flex: 1 1 auto; min-width: 0; }
+  .cast-sum-name {
+    font-family: var(--serif); font-size: 0.95rem; font-weight: 600;
+    line-height: 1.2; color: var(--text);
+  }
+  .cast-sum-desc {
+    font-family: var(--font); font-size: 0.76rem; line-height: 1.4;
+    color: var(--text-soft); margin-top: 0.15rem;
+  }
+  .cast-sum-item .cast-cat { margin-left: 0.4rem; align-self: flex-start; }
+
   /* Part divider line inside the preface */
   .scene-part {
     font-family: var(--mono) !important; font-size: 0.72rem !important;

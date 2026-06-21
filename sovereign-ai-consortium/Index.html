@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sovereign AI Consortium — Decision Tree</title>
+  <?!= include('Stylesheet'); ?>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Top bar -->
+  <header id="topbar">
+    <div class="topbar-left">
+      <div class="title-block">
+        <h1>Sovereign AI Consortium</h1>
+        <span class="subtitle">Decision Tree</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a id="sheet-link" href="#" target="_blank" class="ext-link">Spreadsheet</a>
+      <a id="doc-link"   href="#" target="_blank" class="ext-link">Document</a>
+      <button onclick="App.syncDoc()" class="btn-outline" id="sync-btn">Sync Doc</button>
+      <span id="sync-status"></span>
+    </div>
+  </header>
+
+  <!-- Intro / description (directly under the title) -->
+  <div id="intro">
+    A decision tree for building a sovereign AI consortium. Each section (A, B, C ...) is its own small tree of questions; the colored pills are the choices. Click a choice to pick it. The final <strong>Bringing it together</strong> section combines the decision from each section into the overall plan. Use the edit, del, and “+” controls on any section, question, or choice. Switch between <strong>My session</strong> (pick and save your own path) and <strong>Collaborative</strong> (see how everyone’s choices compare).
+  </div>
+
+  <!-- Session / mode bar -->
+  <div id="session-bar">
+    <div class="mode-switch" role="tablist">
+      <button id="mode-solo"   class="mode-btn active" onclick="App.setMode('solo')">My session</button>
+      <button id="mode-collab" class="mode-btn"        onclick="App.setMode('collab')">Collaborative</button>
+    </div>
+
+    <div id="solo-controls" class="session-controls">
+      <input id="session-name" type="text" placeholder="Your name" autocomplete="off">
+      <button class="btn-primary btn-compact" onclick="App.saveSession()" id="save-session-btn">Save my choices</button>
+      <select id="load-session" onchange="App.loadSession(this.value)">
+        <option value="">Load a saved session…</option>
+      </select>
+      <button class="btn-ghost btn-compact" onclick="App.clearChoices()">Clear</button>
+      <span id="session-status" class="session-status"></span>
+    </div>
+
+    <div id="collab-legend" class="collab-legend hidden">
+      <span class="legend-dot"></span>
+      <span id="collab-summary">Showing everyone's saved choices</span>
+    </div>
+  </div>
+
+  <!-- Path breadcrumb -->
+  <div id="path-bar" class="hidden"></div>
+
+  <!-- Phase header rail (per-phase controls) -->
+  <div id="phase-rail" class="hidden"></div>
+
+  <!-- Main content: the decision-tree outline -->
+  <main id="content">
+    <div id="loading">Loading decision tree…</div>
+    <div id="graph"></div>
+
+    <div id="graph-controls" class="hidden">
+      <button id="focus-btn" onclick="App.toggleFullscreen()" title="Hide the title, intro and section bars for a taller view">Hide header</button>
+      <button id="expand-btn" onclick="App.expandAll()" title="Open every section and question">Expand all</button>
+      <button id="collapse-btn" onclick="App.collapseAll()" title="Close every section back to the top">Collapse all</button>
+      <button id="summary-btn" onclick="App.fit()" title="Scroll back to the top">Top</button>
+      <button id="restart-btn" onclick="App.clearChoices()" title="Clear the highlighted path">Clear path</button>
+    </div>
+  </main>
+
+</div>
+
+<!-- Modal -->
+<div id="modal-backdrop" class="hidden" onclick="App.closeModal()"></div>
+<div id="modal" class="hidden" role="dialog" aria-modal="true">
+  <div class="modal-header">
+    <h2 id="modal-title"></h2>
+    <button class="modal-close" onclick="App.closeModal()">&times;</button>
+  </div>
+  <div id="modal-body" class="modal-body"></div>
+  <div class="modal-footer">
+    <button onclick="App.closeModal()" class="btn-ghost">Cancel</button>
+    <button onclick="App.saveModal()" class="btn-primary" id="modal-save">Save</button>
+  </div>
+</div>
+
+<!-- Confirm dialog -->
+<div id="confirm-backdrop" class="hidden" onclick="App.closeConfirm()"></div>
+<div id="confirm-dialog" class="hidden" role="alertdialog">
+  <p id="confirm-text"></p>
+  <div class="modal-footer">
+    <button onclick="App.closeConfirm()" class="btn-ghost">Cancel</button>
+    <button onclick="App.doConfirm()" class="btn-danger">Delete</button>
+  </div>
+</div>
+
+<?!= include('JavaScript'); ?>
+</body>
+</html>

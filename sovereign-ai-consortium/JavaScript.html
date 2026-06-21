@@ -1,0 +1,775 @@
+<script>
+// ============================================================
+// Sovereign AI Consortium — Decision Tree (collapsible outline)
+// ============================================================
+var App = (function() {
+
+  var BRANCH_COLORS = {
+    A: '#2d7dd2', B: '#19a974', C: '#e8710a', D: '#7c4dff',
+    E: '#0a9396', F: '#d7263d', G: '#1b998b', H: '#5e6472'
+  };
+  function branchColor(id) { return BRANCH_COLORS[String(id || '').charAt(0)] || '#2d7dd2'; }
+
+  // Options hidden from view (non-destructive; still in the sheet).
+  var HIDE_OPTIONS = { 'A1-1': 1 };
+  var MULTI_OPTS = [{ value: '', text: 'Single choice (pick one)' }, { value: 'yes', text: 'Allow multiple (pick any)' }];
+  // Persona archetypes a choice can signal; section/overall labels are derived from picks.
+  var PERSONAS = [
+    { id: 'Doomer', color: '#d7263d' },
+    { id: 'Accelerationist', color: '#e8710a' },
+    { id: 'Boomer', color: '#b8860b' },
+    { id: 'Open-source diehard', color: '#19a974' },
+    { id: 'Safetyist', color: '#2d7dd2' },
+    { id: 'Sovereigntist', color: '#7c4dff' },
+    { id: 'Pragmatist', color: '#5e6472' }
+  ];
+  function personaColor(p) { var f = PERSONAS.find(function(x) { return x.id === p; }); return f ? f.color : '#5e6472'; }
+
+  var state = {
+    data: null,
+    mode: 'solo',
+    selected: {},        // nodeId -> [optionId, ...]
+    order: [],           // decision order
+    currentSessionName: '',
+    expanded: null,      // nodeId/branchId -> expanded in the outline
+    activeNode: null,
+    pendingFocus: null,  // {node, addOption} applied after the next refresh
+    modalType: null,
+    modalData: null,
+    confirmCallback: null,
+    noteTarget: null,
+    dragBranch: null
+  };
+
+  // ============================================================
+  // Boot
+  // ============================================================
+  function init() {
+    google.script.run
+      .withSuccessHandler(function(links) {
+        if (links.ssId) document.getElementById('sheet-link').href = 'https://docs.google.com/spreadsheets/d/' + links.ssId + '/edit';
+        if (links.docId) document.getElementById('doc-link').href = 'https://docs.google.com/document/d/' + links.docId + '/edit';
+      })
+      .withFailureHandler(function() {})
+      .getLinks();
+
+    google.script.run
+      .withSuccessHandler(function(data) {
+        state.data = normalize(data);
+        renderBranchNav();
+        populateSessionDropdown();
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('graph-controls').classList.remove('hidden');
+        initGraph();
+        updatePathBar();
+      })
+      .withFailureHandler(function(err) {
+        document.getElementById('loading').textContent = 'Error loading data: ' + err.message;
+      })
+      .getData();
+  }
+  function normalize(data) { data.notes = data.notes || []; data.sessions = data.sessions || []; return data; }
+
+  // ============================================================
+  // Decision tree: a plain top-down tree. Each question branches
+  // down into its options; an option leads to the next question
+  // (expanded once) or to a leaf outcome. Loop-backs render as a
+  // small "shown above" reference so it stays a clean tree.
+  // ============================================================
+  function isTerminal(o) { return !o.leads_to || !o.leads_to.trim(); }
+
+  function resolveNode(token) {
+    var t = String(token || '').trim();
+    if (state.data.nodes.find(function(n) { return n.id === t; })) return t;
+    var o = state.data.options.find(function(o) { return o.id === t; });
+    return o ? o.node_id : null;
+  }
+  function optById(id) { return state.data.options.find(function(o) { return o.id === id; }); }
+  function nodeById(id) { return state.data.nodes.find(function(n) { return n.id === id; }); }
+  function branchById(id) { return state.data.branches.find(function(b) { return b.id === id; }); }
+  function optionsFor(nid) { return state.data.options.filter(function(o) { return o.node_id === nid && !HIDE_OPTIONS[o.id]; }); }
+  // selection is stored per node as an array of option ids (supports multi-choice)
+  function isMulti(node) { if (!node) return false; var v = String(node.multi || '').toLowerCase(); return v === 'yes' || v === 'true' || v === '1' || v === 'y' || v === 'multi'; }
+  function selectedArr(nid) { var v = state.selected[nid]; return Array.isArray(v) ? v : (v ? [v] : []); }
+  function isChosen(nid, oid) { return selectedArr(nid).indexOf(oid) >= 0; }
+  function optionTarget(o) {
+    if (!o.leads_to) return null;
+    var tgt = null;
+    o.leads_to.split(/[,;]/).some(function(raw) { var n = resolveNode(raw); if (n) { tgt = n; return true; } return false; });
+    return tgt;
+  }
+
+  function initGraph() { renderTree(); }
+  function refreshGraph() { renderTree(); }
+
+  function renderTree() {
+    var host = document.getElementById('graph'); if (!host) return;
+    host.innerHTML = '';
+    if (!state.data.nodes.length) { host.appendChild(text('div', 'No questions yet. Add one with “+ question” on a phase.', 'flow-empty')); return; }
+    // default: sections open, questions closed
+    if (!state.expanded) { state.expanded = {}; state.data.branches.forEach(function(b) { state.expanded[b.id] = true; }); }
+    var aggregate = state.mode === 'collab' ? buildAggregate() : null;
+    var outline = el('div', 'outline');
+    state.data.branches.forEach(function(b) { outline.appendChild(buildOutlineSection(b, aggregate)); });
+    host.appendChild(outline);
+    var conv = el('div', 'sections'); conv.appendChild(buildConvergeSection(aggregate)); host.appendChild(conv);
+    if (document.getElementById('phase-rail')) renderPhaseRail();
+  }
+
+  function buildOutlineSection(b, aggregate) {
+    var nodesIn = state.data.nodes.filter(function(n) { return n.branch_id === b.id; });
+    var bc = branchColor(b.id);
+    var sec = el('div', 'ol-section'); sec.style.setProperty('--bc', bc); sec.setAttribute('data-branch', b.id);
+    var open = state.expanded[b.id] !== false;
+
+    var head = el('div', 'ol-sec-head');
+    head.appendChild(text('span', open ? '▾' : '▸', 'ol-caret'));
+    var badge = text('span', b.id, 'ol-sec-badge'); badge.style.background = bc; head.appendChild(badge);
+    head.appendChild(text('span', b.name, 'ol-sec-name'));
+    head.appendChild(text('span', nodesIn.length + (nodesIn.length === 1 ? ' question' : ' questions'), 'ol-sec-count'));
+    var sp = sectionPersona(b.id, aggregate);
+    if (sp) { var pp = text('span', sp.persona, 'ol-sec-persona'); pp.style.background = personaColor(sp.persona); pp.title = 'Based on the choices here, this section reads as ' + sp.persona; head.appendChild(pp); }
+    var acts = el('div', 'ol-acts');
+    acts.appendChild(makeBtn('edit', function(e) { e.stopPropagation(); openEditBranch(b); }));
+    acts.appendChild(makeBtn('del', function(e) { e.stopPropagation(); confirmDelete('branch', b.id, b.name); }, 'delete'));
+    acts.appendChild(makeBtn('+ question', function(e) { e.stopPropagation(); openAddNode(b.id); }));
+    head.appendChild(acts);
+    head.addEventListener('click', function() { state.expanded[b.id] = !open; renderTree(); });
+    sec.appendChild(head);
+
+    if (open) {
+      var body = el('div', 'ol-sec-body');
+      if (b.description) body.appendChild(text('div', b.description, 'ol-sec-desc'));
+      if (!nodesIn.length) body.appendChild(text('div', 'No questions yet.', 'ol-empty'));
+      nodesIn.forEach(function(n) { body.appendChild(buildOutlineQuestion(n, bc, aggregate)); });
+      sec.appendChild(body);
+    }
+    return sec;
+  }
+
+  function buildOutlineQuestion(n, bc, aggregate) {
+    var opts = optionsFor(n.id), open = !!state.expanded[n.id], multi = isMulti(n);
+    var chosenArr = selectedArr(n.id), answered = chosenArr.length > 0;
+    var wrap = el('div', 'ol-q'); wrap.style.setProperty('--bc', bc); wrap.setAttribute('data-node', n.id);
+
+    var head = el('div', 'ol-q-head'); if (state.activeNode === n.id) head.classList.add('active');
+    head.appendChild(text('span', opts.length ? (open ? '▾' : '▸') : '·', 'ol-caret'));
+    head.appendChild(text('span', n.id, 'ol-q-id'));
+    head.appendChild(text('span', n.question, 'ol-q-text'));
+    if (multi) head.appendChild(text('span', 'multi', 'ol-q-multi'));
+    if (answered) {
+      var lbl;
+      if (chosenArr.length === 1) { var ch = optById(chosenArr[0]); lbl = ch ? ch.label : 'chosen'; }
+      else lbl = chosenArr.length + ' chosen';
+      head.appendChild(text('span', lbl, 'ol-q-chosen'));
+    } else head.appendChild(text('span', opts.length + ' choice' + (opts.length === 1 ? '' : 's'), 'ol-q-count'));
+    var acts = el('div', 'ol-acts');
+    acts.appendChild(iconBtn('note', 'Add note', function(e) { e.stopPropagation(); openNoteEditor(n.id, 'node', n.id + ' — ' + n.question); }));
+    acts.appendChild(iconBtn('edit', 'Edit', function(e) { e.stopPropagation(); openEditNode(n); }));
+    acts.appendChild(iconBtn('del', 'Delete', function(e) { e.stopPropagation(); confirmDelete('node', n.id, n.question); }));
+    head.appendChild(acts);
+    head.addEventListener('click', function() { state.expanded[n.id] = !open; renderTree(); });
+    wrap.appendChild(head);
+
+    if (open) {
+      var body = el('div', 'ol-q-body');
+      if (n.description) body.appendChild(text('div', n.description, 'ol-q-desc'));
+      if (multi) body.appendChild(text('div', 'Choose any that apply', 'ol-q-multihint'));
+      if (noteFor(n.id)) appendNote(body, n.id);
+      opts.forEach(function(o) { body.appendChild(buildOutlineOption(o, n, bc, aggregate)); });
+      var add = el('button', 'ol-addopt'); add.textContent = '+ option';
+      add.addEventListener('click', function(e) { e.stopPropagation(); openAddOption(n.id); });
+      body.appendChild(add);
+      wrap.appendChild(body);
+    }
+    return wrap;
+  }
+
+  function buildOutlineOption(o, n, bc, aggregate) {
+    var sel = isChosen(n.id, o.id);
+    var row = el('div', 'ol-opt'); row.style.setProperty('--bc', bc); row.setAttribute('data-opt', o.id);
+    if (sel) row.classList.add('is-chosen');
+    row.appendChild(el('div', 'ol-opt-pick' + (isMulti(n) ? ' multi' : '')));
+
+    var main = el('div', 'ol-opt-main');
+    main.appendChild(text('div', o.label, 'ol-opt-label'));
+    if (o.what_it_means) main.appendChild(text('div', o.what_it_means, 'ol-opt-what'));
+    if (o.key_tradeoffs) { var tr = el('div', 'ol-opt-trade'); tr.appendChild(text('span', 'Tradeoffs ', 'ol-trade-k')); tr.appendChild(text('span', o.key_tradeoffs, 'ol-trade-v')); main.appendChild(tr); }
+    var tgt = optionTarget(o), tn = tgt && nodeById(tgt);
+    // only show a "leads to" link when it stays inside this section; cross-section
+    // links are ignored so a section never jumps you into the next one
+    if (tn && tn.branch_id === n.branch_id) { var lt = text('div', 'leads to ' + tn.id + ' →', 'ol-opt-leads'); lt.title = 'Go to ' + tn.id + ': ' + tn.question; lt.addEventListener('click', function(e) { e.stopPropagation(); state.expanded[n.id] = false; focusNode(tn.id); }); main.appendChild(lt); }
+    if (noteFor(o.id)) appendNote(main, o.id);
+    row.appendChild(main);
+
+    if (o.persona) { var pc = text('span', o.persona, 'ol-opt-persona'); pc.style.color = personaColor(o.persona); pc.style.borderColor = personaColor(o.persona); row.appendChild(pc); }
+    if (aggregate) { var names = aggregate[o.id] || []; var pb = text('span', String(names.length), 'ol-opt-badge'); pb.title = names.length ? names.join(', ') : 'No one picked this'; if (!names.length) pb.classList.add('zero'); row.appendChild(pb); }
+
+    var acts = el('div', 'ol-acts');
+    acts.appendChild(iconBtn('edit', 'Edit', function(e) { e.stopPropagation(); openEditOption(o); }));
+    acts.appendChild(iconBtn('note', 'Note', function(e) { e.stopPropagation(); openNoteEditor(o.id, 'option', o.label); }));
+    acts.appendChild(iconBtn('del', 'Delete', function(e) { e.stopPropagation(); confirmDelete('option', o.id, o.label); }));
+    row.appendChild(acts);
+
+    row.addEventListener('click', function() { treeSelect(n.id, o.id); });
+    return row;
+  }
+
+  // decisions made within a section (solo: your picks; collab: top pick per question)
+  function sectionDecisions(branchId, aggregate) {
+    var out = [];
+    state.data.nodes.filter(function(n) { return n.branch_id === branchId; }).forEach(function(n) {
+      if (aggregate) {
+        var best = null, bestC = 0;
+        optionsFor(n.id).forEach(function(o) { var c = (aggregate[o.id] || []).length; if (c > bestC) { bestC = c; best = o; } });
+        if (best && bestC > 0) out.push(best.label);
+      } else { selectedArr(n.id).forEach(function(oid) { var o2 = optById(oid); if (o2) out.push(o2.label); }); }
+    });
+    return out;
+  }
+
+  // ---- Persona derived from the chosen options ----
+  // collect the option objects chosen in a section (solo: your picks; collab: top pick per question)
+  function chosenOptionsIn(branchId, aggregate) {
+    var arr = [];
+    state.data.nodes.filter(function(n) { return n.branch_id === branchId; }).forEach(function(n) {
+      if (aggregate) {
+        var best = null, bestC = 0;
+        optionsFor(n.id).forEach(function(o) { var c = (aggregate[o.id] || []).length; if (c > bestC) { bestC = c; best = o; } });
+        if (best && bestC > 0) arr.push(best);
+      } else { selectedArr(n.id).forEach(function(oid) { var o = optById(oid); if (o) arr.push(o); }); }
+    });
+    return arr;
+  }
+  function personaTally(optList) { var t = {}; optList.forEach(function(o) { var p = (o.persona || '').trim(); if (p) t[p] = (t[p] || 0) + 1; }); return t; }
+  function topPersona(tally) { var best = null, bc = 0; Object.keys(tally).forEach(function(p) { if (tally[p] > bc) { bc = tally[p]; best = p; } }); return best ? { persona: best, count: bc } : null; }
+  function sectionPersona(branchId, aggregate) { return topPersona(personaTally(chosenOptionsIn(branchId, aggregate))); }
+  function overallPersona(aggregate) {
+    var all = [];
+    state.data.branches.forEach(function(b) { all = all.concat(chosenOptionsIn(b.id, aggregate)); });
+    return { top: topPersona(personaTally(all)), tally: personaTally(all) };
+  }
+
+  // final section: each section's decision flows into the overall plan
+  function buildConvergeSection(aggregate) {
+    var sec = el('section', 'tsection tsection-final');
+    var head = el('div', 'tsection-head');
+    head.appendChild(text('span', '✦', 'tsection-badge'));
+    head.appendChild(text('span', 'Bringing it together', 'tsection-name'));
+    sec.appendChild(head);
+    sec.appendChild(text('div', 'The decisions from each section above combine into the overall consortium plan.', 'tsection-desc'));
+
+    var op = overallPersona(aggregate);
+    if (op.top) {
+      var pb = el('div', 'cv-persona');
+      pb.appendChild(text('span', state.mode === 'collab' ? 'The room reads as' : 'Your profile', 'cv-persona-k'));
+      var pill = text('span', op.top.persona, 'cv-persona-pill'); pill.style.background = personaColor(op.top.persona); pb.appendChild(pill);
+      var bd = el('span', 'cv-persona-bd');
+      Object.keys(op.tally).sort(function(a, c) { return op.tally[c] - op.tally[a]; }).forEach(function(p) {
+        var chip = text('span', p + ' ' + op.tally[p], 'cv-persona-chip'); chip.style.borderColor = personaColor(p); chip.style.color = personaColor(p); bd.appendChild(chip);
+      });
+      pb.appendChild(bd);
+      sec.appendChild(pb);
+    }
+
+    var cv = el('div', 'converge');
+    var cards = el('div', 'cv-cards');
+    state.data.branches.forEach(function(b) {
+      if (!state.data.nodes.some(function(n) { return n.branch_id === b.id; })) return;
+      var bc = branchColor(b.id);
+      var card = el('div', 'cv-card'); card.style.setProperty('--bc', bc);
+      var ch = el('div', 'cv-card-h');
+      var sb = text('span', b.id, 'cv-card-badge'); sb.style.background = bc; ch.appendChild(sb);
+      ch.appendChild(text('span', b.name, 'cv-card-name'));
+      card.appendChild(ch);
+      var decs = sectionDecisions(b.id, aggregate);
+      if (decs.length) { var box = el('div', 'cv-card-decs'); decs.forEach(function(d) { box.appendChild(text('span', d, 'cv-dec')); }); card.appendChild(box); }
+      else card.appendChild(text('div', 'No decision yet', 'cv-card-empty'));
+      card.addEventListener('click', function() { focusBranch(b.id); });
+      cards.appendChild(card);
+    });
+    cv.appendChild(cards);
+    cv.appendChild(text('div', '↓', 'cv-arrow'));
+    var fin = el('div', 'cv-final');
+    fin.appendChild(text('div', 'Sovereign AI consortium', 'cv-final-t'));
+    fin.appendChild(text('div', 'Your combined blueprint', 'cv-final-s'));
+    cv.appendChild(fin);
+    sec.appendChild(cv);
+    return sec;
+  }
+
+  function treeSelect(nodeId, optId) {
+    var multi = isMulti(nodeById(nodeId));
+    var arr = selectedArr(nodeId).slice(), i = arr.indexOf(optId);
+    if (multi) { if (i >= 0) arr.splice(i, 1); else arr.push(optId); }
+    else { arr = (i >= 0 && arr.length === 1) ? [] : [optId]; }
+    if (arr.length) { state.selected[nodeId] = arr; if (state.order.indexOf(nodeId) === -1) state.order.push(nodeId); }
+    else { delete state.selected[nodeId]; state.order = state.order.filter(function(x) { return x !== nodeId; }); }
+    renderTree(); updatePathBar();
+  }
+
+  function focusNode(nodeId) {
+    if (!state.expanded) state.expanded = {};
+    var n = nodeById(nodeId);
+    if (n) { state.expanded[n.branch_id] = true; state.expanded[nodeId] = true; } // open its section + this question
+    state.activeNode = nodeId; renderTree();
+    var box = document.querySelector('.ol-q[data-node="' + nodeId + '"]');
+    if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function focusBranch(branchId) {
+    if (!state.expanded) state.expanded = {};
+    state.expanded[branchId] = true; state.activeNode = null; renderTree();
+    var sec = document.querySelector('.ol-section[data-branch="' + branchId + '"]');
+    if (sec && sec.scrollIntoView) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function expandAll() { state.expanded = {}; state.data.branches.forEach(function(b) { state.expanded[b.id] = true; }); state.data.nodes.forEach(function(n) { state.expanded[n.id] = true; }); renderTree(); }
+  function collapseAll() { state.expanded = {}; state.data.branches.forEach(function(b) { state.expanded[b.id] = false; }); renderTree(); }
+  function fit() { var h = document.getElementById('graph'); if (h && h.scrollTo) h.scrollTo({ top: 0, left: 0, behavior: 'smooth' }); }
+
+  // ============================================================
+  // Sessions + mode
+  // ============================================================
+  function setMode(mode) {
+    state.mode = mode;
+    document.getElementById('mode-solo').classList.toggle('active', mode === 'solo');
+    document.getElementById('mode-collab').classList.toggle('active', mode === 'collab');
+    document.getElementById('solo-controls').classList.toggle('hidden', mode !== 'solo');
+    document.getElementById('collab-legend').classList.toggle('hidden', mode !== 'collab');
+    if (mode === 'collab') {
+      var nn = uniqueSessionNames().length;
+      document.getElementById('collab-summary').textContent = nn ? ('Showing choices from ' + nn + ' saved session' + (nn === 1 ? '' : 's') + ' — edge thickness = popularity') : 'No saved sessions yet';
+    }
+    refreshGraph(); updatePathBar();
+  }
+
+  function uniqueSessionNames() {
+    var seen = {}, out = [];
+    (state.data.sessions || []).forEach(function(r) { if (r.session_name && !seen[r.session_name.toLowerCase()]) { seen[r.session_name.toLowerCase()] = true; out.push(r.session_name); } });
+    return out;
+  }
+  function populateSessionDropdown() {
+    var sel = document.getElementById('load-session'), cur = sel.value;
+    sel.innerHTML = '<option value="">Load a saved session…</option>';
+    uniqueSessionNames().forEach(function(name) { var o = document.createElement('option'); o.value = name; o.textContent = name; sel.appendChild(o); });
+    sel.value = cur;
+  }
+  function loadSession(name) {
+    if (!name) return;
+    state.selected = {}; state.order = [];
+    (state.data.sessions || []).forEach(function(r) {
+      if (r.session_name === name && r.node_id && r.option_id) {
+        var a = state.selected[r.node_id]; if (!Array.isArray(a)) a = state.selected[r.node_id] = (a ? [a] : []);
+        if (a.indexOf(r.option_id) < 0) a.push(r.option_id);
+        if (state.order.indexOf(r.node_id) === -1) state.order.push(r.node_id);
+      }
+    });
+    state.currentSessionName = name;
+    document.getElementById('session-name').value = name;
+    if (state.mode !== 'solo') setMode('solo');
+    updatePathBar();
+    setStatus('Loaded “' + name + '”');
+    renderTree();
+    if (state.order.length) focusNode(state.order[0]);
+  }
+  function clearChoices() {
+    state.selected = {}; state.order = []; state.currentSessionName = '';
+    document.getElementById('load-session').value = '';
+    renderTree();
+    updatePathBar(); setStatus('Choices cleared');
+  }
+  function saveSession() {
+    var name = document.getElementById('session-name').value.trim();
+    if (!name) { setStatus('Enter your name first', true); return; }
+    if (!Object.keys(state.selected).length) { setStatus('Make at least one choice first', true); return; }
+    var btn = document.getElementById('save-session-btn'); btn.disabled = true; btn.textContent = 'Saving…';
+    google.script.run
+      .withSuccessHandler(function(sessions) {
+        state.data.sessions = sessions || []; state.currentSessionName = name;
+        populateSessionDropdown(); document.getElementById('load-session').value = name;
+        btn.disabled = false; btn.textContent = 'Save my choices';
+        setStatus('Saved “' + name + '” to the spreadsheet');
+      })
+      .withFailureHandler(function(err) { btn.disabled = false; btn.textContent = 'Save my choices'; setStatus('Error: ' + err.message, true); })
+      .saveSession({ session_name: name, author: name, selections: state.selected });
+  }
+  function setStatus(msg, isError) {
+    var elx = document.getElementById('session-status');
+    elx.textContent = msg; elx.style.color = isError ? 'var(--red)' : 'var(--green)';
+    if (!isError) setTimeout(function() { if (elx.textContent === msg) elx.textContent = ''; }, 4000);
+  }
+  function buildAggregate() {
+    var agg = {};
+    (state.data.sessions || []).forEach(function(r) { if (r.option_id) (agg[r.option_id] = agg[r.option_id] || []).push(r.session_name || r.author || '?'); });
+    return agg;
+  }
+
+  // ============================================================
+  // Path breadcrumb
+  // ============================================================
+  function updatePathBar() {
+    var bar = document.getElementById('path-bar'); if (!bar) return;
+    var steps = state.order.filter(function(nid) { return selectedArr(nid).length; });
+    if (state.mode !== 'solo' || !steps.length) { bar.classList.add('hidden'); bar.innerHTML = ''; return; }
+    bar.classList.remove('hidden'); bar.innerHTML = '';
+    bar.appendChild(text('span', 'Your path:', 'path-label'));
+    steps.forEach(function(nid, i) {
+      var labels = selectedArr(nid).map(function(oid) { var o = optById(oid); return o ? o.label : ''; }).filter(Boolean);
+      var crumb = el('button', 'path-crumb');
+      crumb.innerHTML = '<span class="path-nid">' + nid + '</span> ' + escapeHtml(labels.join(', '));
+      crumb.addEventListener('click', function() { focusNode(nid); });
+      bar.appendChild(crumb);
+      if (i < steps.length - 1) bar.appendChild(text('span', '›', 'path-sep'));
+    });
+  }
+
+  // ============================================================
+  // Phase rail
+  // ============================================================
+  function renderBranchNav() { renderPhaseRail(); }
+
+  function toggleFullscreen() {
+    document.body.classList.toggle('fullscreen');
+    var on = document.body.classList.contains('fullscreen');
+    var btn = document.getElementById('focus-btn'); if (btn) { btn.textContent = on ? 'Show header' : 'Hide header'; btn.classList.toggle('active', on); }
+  }
+
+  // Per-phase header chips: name (click to filter) + edit/del/+question, draggable to reorder
+  function renderPhaseRail() {
+    var rail = document.getElementById('phase-rail'); if (!rail) return;
+    rail.classList.remove('hidden'); rail.innerHTML = '';
+    state.data.branches.forEach(function(b) {
+      var chip = el('div', 'phase-chip'); chip.style.setProperty('--bc', branchColor(b.id));
+      chip.setAttribute('draggable', 'true'); chip.setAttribute('data-branch', b.id);
+      var curNode = nodeById(state.activeNode);
+      if (curNode && curNode.branch_id === b.id) chip.classList.add('active');
+
+      var name = el('div', 'phase-name'); name.title = 'Click to jump to this phase; drag to reorder';
+      name.appendChild(el('span', 'phase-grip'));
+      name.appendChild(el('span', 'phase-dot'));
+      name.appendChild(text('span', b.id + ' · ' + b.name, 'phase-nm'));
+      name.addEventListener('click', function() { focusBranch(b.id); });
+      chip.appendChild(name);
+
+      var acts = el('div', 'phase-acts');
+      acts.appendChild(makeBtn('edit', function() { openEditBranch(b); }));
+      acts.appendChild(makeBtn('del', function() { confirmDelete('branch', b.id, b.name); }, 'delete'));
+      acts.appendChild(makeBtn('+ question', function() { openAddNode(b.id); }));
+      chip.appendChild(acts);
+
+      chip.addEventListener('dragstart', function(e) { state.dragBranch = b.id; chip.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+      chip.addEventListener('dragend', function() { chip.classList.remove('dragging'); });
+      chip.addEventListener('dragover', function(e) { e.preventDefault(); chip.classList.add('drop-target'); });
+      chip.addEventListener('dragleave', function() { chip.classList.remove('drop-target'); });
+      chip.addEventListener('drop', function(e) { e.preventDefault(); chip.classList.remove('drop-target'); dropPhase(b.id); });
+
+      rail.appendChild(chip);
+    });
+  }
+
+  function dropPhase(targetId) {
+    var dragged = state.dragBranch; state.dragBranch = null;
+    if (!dragged || dragged === targetId) return;
+    var ids = state.data.branches.map(function(b) { return b.id; });
+    ids = ids.filter(function(id) { return id !== dragged; });
+    var ti = ids.indexOf(targetId);
+    ids.splice(ti, 0, dragged); // insert before target
+    // reorder locally for instant feedback
+    state.data.branches.sort(function(a, b) { return ids.indexOf(a.id) - ids.indexOf(b.id); });
+    renderBranchNav(); refreshGraph();
+    google.script.run
+      .withSuccessHandler(function() {})
+      .withFailureHandler(function(err) { alert('Error saving order: ' + err.message); })
+      .reorderBranches(ids);
+  }
+
+  // ============================================================
+  // Notes
+  // ============================================================
+  function noteFor(id) { return (state.data.notes || []).find(function(n) { return n.target_id === id; }); }
+  function appendNote(containerEl, targetId) {
+    var note = noteFor(targetId); if (!note || !note.text) return;
+    var pit = el('div', 'postit');
+    if (note.author) pit.appendChild(text('div', note.author, 'postit-author'));
+    pit.appendChild(text('div', note.text, 'postit-text'));
+    var acts = el('div', 'postit-acts');
+    acts.appendChild(iconBtn('edit', 'Edit note', function(e) { e.stopPropagation(); openNoteEditor(targetId, note.target_type || 'node', note.target_id, note); }));
+    acts.appendChild(iconBtn('del', 'Delete note', function(e) { e.stopPropagation(); deleteNote(note.id); }));
+    pit.appendChild(acts);
+    pit.addEventListener('click', function(e) { e.stopPropagation(); });
+    containerEl.appendChild(pit);
+  }
+  function ensureNoteEditor() {
+    if (document.getElementById('note-editor')) return;
+    var ne = document.createElement('div'); ne.id = 'note-editor'; ne.className = 'hidden';
+    ne.innerHTML = '<div class="ne-card"><div class="ne-head"><span>Post-it note</span><button class="modal-close" id="ne-close">&times;</button></div>' +
+      '<div class="ne-target" id="ne-target"></div><textarea id="ne-text" placeholder="Leave a note for the team…"></textarea>' +
+      '<input id="ne-author" type="text" placeholder="Your name (optional)">' +
+      '<div class="ne-actions"><button class="btn-danger btn-compact" id="ne-del">Delete</button><span style="flex:1"></span>' +
+      '<button class="btn-ghost btn-compact" id="ne-cancel">Cancel</button><button class="btn-primary btn-compact" id="ne-save">Save note</button></div></div>';
+    document.body.appendChild(ne);
+    var bd = document.createElement('div'); bd.id = 'note-backdrop'; bd.className = 'hidden'; document.body.appendChild(bd);
+    document.getElementById('ne-close').addEventListener('click', closeNoteEditor);
+    document.getElementById('ne-cancel').addEventListener('click', closeNoteEditor);
+    bd.addEventListener('click', closeNoteEditor);
+    document.getElementById('ne-save').addEventListener('click', saveNoteFromEditor);
+    document.getElementById('ne-del').addEventListener('click', deleteNoteFromEditor);
+  }
+  function openNoteEditor(targetId, targetType, label, existing) {
+    ensureNoteEditor();
+    existing = existing || noteFor(targetId);
+    state.noteTarget = { id: targetId, type: targetType, label: label };
+    document.getElementById('ne-target').textContent = label || targetId;
+    document.getElementById('ne-text').value = existing ? existing.text : '';
+    document.getElementById('ne-author').value = existing ? (existing.author || '') : (document.getElementById('session-name').value || '');
+    document.getElementById('ne-del').style.display = existing ? '' : 'none';
+    document.getElementById('note-editor').classList.remove('hidden');
+    document.getElementById('note-backdrop').classList.remove('hidden');
+    setTimeout(function() { document.getElementById('ne-text').focus(); }, 40);
+  }
+  function closeNoteEditor() {
+    var ne = document.getElementById('note-editor'), bd = document.getElementById('note-backdrop');
+    if (ne) ne.classList.add('hidden'); if (bd) bd.classList.add('hidden'); state.noteTarget = null;
+  }
+  function saveNoteFromEditor() {
+    if (!state.noteTarget) return;
+    var t = state.noteTarget, txt = document.getElementById('ne-text').value.trim(), author = document.getElementById('ne-author').value.trim();
+    if (!txt) { deleteNoteFromEditor(); return; }
+    var existing = noteFor(t.id);
+    var note = { id: existing ? existing.id : '', target_id: t.id, target_type: t.type, text: txt, author: author };
+    var saveBtn = document.getElementById('ne-save'); saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+    google.script.run
+      .withSuccessHandler(function(saved) { upsertLocalNote(saved); saveBtn.disabled = false; saveBtn.textContent = 'Save note'; closeNoteEditor(); renderTree(); })
+      .withFailureHandler(function(err) { saveBtn.disabled = false; saveBtn.textContent = 'Save note'; alert('Error saving note: ' + err.message); })
+      .saveNote(note);
+  }
+  function deleteNoteFromEditor() { if (!state.noteTarget) { closeNoteEditor(); return; } var ex = noteFor(state.noteTarget.id); if (!ex) { closeNoteEditor(); return; } deleteNote(ex.id); }
+  function deleteNote(id) {
+    google.script.run
+      .withSuccessHandler(function() { state.data.notes = (state.data.notes || []).filter(function(n) { return n.id !== id; }); closeNoteEditor(); renderTree(); })
+      .withFailureHandler(function(err) { alert('Error deleting note: ' + err.message); })
+      .deleteNote(id);
+  }
+  function upsertLocalNote(saved) {
+    if (!saved || !saved.id) return;
+    var arr = state.data.notes || (state.data.notes = []);
+    var i = arr.findIndex(function(n) { return n.id === saved.id || n.target_id === saved.target_id; });
+    if (i >= 0) arr[i] = saved; else arr.push(saved);
+  }
+
+  // ============================================================
+  // CRUD modals
+  // ============================================================
+  function openAddBranch() {
+    state.modalType = 'branch'; state.modalData = { _new: true };
+    setModal('Add Branch', field('id', 'Branch ID', 'Single uppercase letter, e.g. I', 'text') + field('name', 'Name', 'e.g. Partnerships') + field('description', 'Description', '', 'textarea'));
+  }
+  function openEditBranch(b) {
+    state.modalType = 'branch'; state.modalData = Object.assign({}, b);
+    setModal('Edit Branch ' + b.id, field('id', 'Branch ID', '', 'text', b.id, true) + field('name', 'Name', '', 'text', b.name) + field('description', 'Description', '', 'textarea', b.description));
+  }
+  function openAddNode(branchId) {
+    state.modalType = 'node'; state.modalData = { _new: true, branch_id: branchId };
+    var suggestedId = branchId + nextNodeNum(branchId);
+    setModal('Add Question to Section ' + branchId,
+      field('id', 'Question ID', 'Auto-filled; you can change it', 'text', suggestedId) +
+      field('branch_id', 'Section', '', 'text', branchId, true) +
+      field('question', 'Decision question', '') +
+      selectFieldHtml('multi', 'Selection', '', MULTI_OPTS) +
+      '<div class="field"><label>Choices (options for this question)</label>' +
+      '<div class="ichoice-head"><span>Choice</span><span>Next question (optional)</span></div>' +
+      '<div id="inline-choices">' + inlineChoiceRowHtml(branchId) + inlineChoiceRowHtml(branchId) + inlineChoiceRowHtml(branchId) + '</div>' +
+      '<button type="button" class="btn-add-row sm" onclick="App.addChoiceRow()">+ another choice</button>' +
+      '<div class="hint">Type each choice and, optionally, which question in this section it leads to. Leave rows blank to skip.</div></div>' +
+      field('description', 'Question description (optional)', '', 'textarea'));
+  }
+  function inlineChoiceRowHtml(branchId) {
+    var qs = state.data.nodes.filter(function(n) { return n.branch_id === branchId; });
+    var optsHtml = '<option value="">— ends here —</option>' + qs.map(function(n) { return '<option value="' + n.id + '">→ ' + n.id + ': ' + escapeHtml(n.question) + '</option>'; }).join('');
+    return '<div class="ichoice-row"><input type="text" class="ichoice-label" placeholder="e.g. Multilateral treaty"><select class="ichoice-leads" title="Where this choice leads next">' + optsHtml + '</select></div>';
+  }
+  function addChoiceRow() {
+    var c = document.getElementById('inline-choices'); if (!c || !state.modalData) return;
+    c.insertAdjacentHTML('beforeend', inlineChoiceRowHtml(state.modalData.branch_id));
+  }
+  function openEditNode(node) {
+    state.modalType = 'node'; state.modalData = Object.assign({}, node);
+    setModal('Edit ' + node.id, field('id', 'Node ID', '', 'text', node.id, true) + field('branch_id', 'Branch ID', '', 'text', node.branch_id, true) + field('question', 'Decision question', '', 'text', node.question) + selectFieldHtml('multi', 'Selection', node.multi, MULTI_OPTS) + field('description', 'Description', '', 'textarea', node.description));
+  }
+  function openAddOption(nodeId) {
+    state.modalType = 'option';
+    var nn = state.data.options.filter(function(o) { return o.node_id === nodeId; }).length + 1;
+    state.modalData = { _new: true, node_id: nodeId, id: nodeId + '-' + nn };
+    setModal('Add Option to ' + nodeId, field('id', 'Option ID', 'Auto: ' + nodeId + '-' + nn, 'text', nodeId + '-' + nn) + field('node_id', 'Node', '', 'text', nodeId, true) + field('label', 'Option label', '') + field('what_it_means', 'What it means', '', 'textarea') + field('key_tradeoffs', 'Key tradeoffs', '', 'textarea') + personaFieldHtml('') + leadsFieldHtml(''));
+    populateLeadsPicker(''); wireLeadsSearch();
+  }
+  function openEditOption(opt) {
+    state.modalType = 'option'; state.modalData = Object.assign({}, opt);
+    setModal('Edit option: ' + opt.label, field('id', 'Option ID', '', 'text', opt.id, true) + field('node_id', 'Node', '', 'text', opt.node_id, true) + field('label', 'Option label', '', 'text', opt.label) + field('what_it_means', 'What it means', '', 'textarea', opt.what_it_means) + field('key_tradeoffs', 'Key tradeoffs', '', 'textarea', opt.key_tradeoffs) + personaFieldHtml(opt.persona) + leadsFieldHtml(opt.leads_to));
+    populateLeadsPicker(opt.leads_to); wireLeadsSearch();
+  }
+  function personaFieldHtml(current) {
+    var opts = [{ value: '', text: '— none —' }].concat(PERSONAS.map(function(p) { return { value: p.id, text: p.id }; }));
+    return selectFieldHtml('persona', 'Persona this choice signals', current, opts, 'Each section is labelled with the persona your picks add up to.');
+  }
+
+  function leadsFieldHtml(current) {
+    return '<div class="field"><label>Leads to (next decisions)</label>' +
+      '<input type="hidden" data-field="leads_to" id="leads-hidden" value="' + String(current || '').replace(/"/g, '&quot;') + '">' +
+      '<input type="text" id="leads-search" class="leads-search" placeholder="Filter questions…">' +
+      '<div id="leads-picker" class="leads-picker"></div>' +
+      '<div class="hint">Check the question(s) this option should take you to. Leave all unchecked to make it an endpoint (triangle).</div></div>';
+  }
+  function populateLeadsPicker(current) {
+    var picker = document.getElementById('leads-picker'); if (!picker) return;
+    var sel = {};
+    String(current || '').split(/[,;]/).forEach(function(s) { s = s.trim(); if (s) { var n = resolveNode(s); if (n) sel[n] = true; } });
+    picker.innerHTML = '';
+    state.data.branches.forEach(function(b) {
+      var qs = state.data.nodes.filter(function(n) { return n.branch_id === b.id; });
+      if (!qs.length) return;
+      var grp = el('div', 'lp-group');
+      grp.appendChild(text('div', 'Branch ' + b.id + ' — ' + b.name, 'lp-branch'));
+      qs.forEach(function(n) {
+        var row = document.createElement('label'); row.className = 'lp-row'; row.setAttribute('data-q', (n.id + ' ' + n.question).toLowerCase());
+        var cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = n.id; cb.checked = !!sel[n.id];
+        cb.addEventListener('change', updateLeadsHidden);
+        row.appendChild(cb);
+        row.appendChild(text('span', n.id + ' — ' + n.question, 'lp-text'));
+        grp.appendChild(row);
+      });
+      picker.appendChild(grp);
+    });
+    updateLeadsHidden();
+  }
+  function updateLeadsHidden() {
+    var picker = document.getElementById('leads-picker'), hidden = document.getElementById('leads-hidden');
+    if (!picker || !hidden) return;
+    var vals = [];
+    picker.querySelectorAll('input[type=checkbox]:checked').forEach(function(cb) { vals.push(cb.value); });
+    hidden.value = vals.join(', ');
+  }
+  function wireLeadsSearch() {
+    var s = document.getElementById('leads-search'); if (!s) return;
+    s.addEventListener('input', function() {
+      var term = s.value.toLowerCase();
+      document.querySelectorAll('#leads-picker .lp-row').forEach(function(r) { r.style.display = r.getAttribute('data-q').indexOf(term) >= 0 ? '' : 'none'; });
+    });
+  }
+  function nextNodeNum(branchId) { return state.data.nodes.filter(function(n) { return n.branch_id === branchId; }).length + 1; }
+
+  function setModal(title, bodyHtml) { document.getElementById('modal-title').textContent = title; document.getElementById('modal-body').innerHTML = bodyHtml; showModal(); }
+  function showModal() {
+    document.getElementById('modal-backdrop').classList.remove('hidden');
+    document.getElementById('modal').classList.remove('hidden');
+    var first = document.querySelector('#modal-body input:not([readonly]), #modal-body textarea:not([readonly])');
+    if (first) setTimeout(function() { first.focus(); }, 50);
+  }
+  function closeModal() { document.getElementById('modal-backdrop').classList.add('hidden'); document.getElementById('modal').classList.add('hidden'); state.modalType = null; state.modalData = null; }
+  function saveModal() {
+    var obj = Object.assign({}, state.modalData);
+    document.querySelectorAll('#modal-body [data-field]').forEach(function(e) { obj[e.dataset.field] = e.value.trim(); });
+    var saveBtn = document.getElementById('modal-save'); saveBtn.textContent = 'Saving…'; saveBtn.disabled = true;
+    var type = state.modalType, wasNew = !!(state.modalData && state.modalData._new);
+    var fn = { branch: 'saveBranch', node: 'saveNode', option: 'saveOption' }[type];
+    if (!fn) { closeModal(); return; }
+
+    // optional inline choices entered on the Add Question form
+    var inlineOpts = [];
+    if (type === 'node' && wasNew) {
+      var idx = 1;
+      document.querySelectorAll('#inline-choices .ichoice-row').forEach(function(r) {
+        var labEl = r.querySelector('.ichoice-label'), leadEl = r.querySelector('.ichoice-leads');
+        var label = labEl ? labEl.value.trim() : '';
+        if (!label) return;
+        inlineOpts.push({ id: obj.id + '-' + idx, node_id: obj.id, label: label, leads_to: leadEl ? leadEl.value.trim() : '' });
+        idx++;
+      });
+    }
+
+    // after refresh: new question -> open it; prompt to add a choice only if none were added inline.
+    if (type === 'node' && wasNew) state.pendingFocus = { node: obj.id, addOption: inlineOpts.length === 0 };
+    else if (type === 'option') state.pendingFocus = { node: obj.node_id, addOption: false };
+
+    function done() { closeModal(); saveBtn.textContent = 'Save'; saveBtn.disabled = false; refreshData(); }
+    google.script.run
+      .withSuccessHandler(function() { if (inlineOpts.length) saveOptionsSeq(inlineOpts.slice(), done); else done(); })
+      .withFailureHandler(function(err) { saveBtn.textContent = 'Error: ' + err.message; saveBtn.disabled = false; })
+      [fn](obj);
+  }
+  function saveOptionsSeq(list, done) {
+    if (!list.length) { done(); return; }
+    var o = list.shift();
+    google.script.run
+      .withSuccessHandler(function() { saveOptionsSeq(list, done); })
+      .withFailureHandler(function(err) { alert('Error saving choice “' + o.label + '”: ' + err.message); saveOptionsSeq(list, done); })
+      .saveOption(o);
+  }
+  function confirmDelete(type, id, label) {
+    var extra = '';
+    if (type === 'branch') { var nq = state.data.nodes.filter(function(n) { return n.branch_id === id; }).length; if (nq) extra = ' This also deletes its ' + nq + ' question' + (nq === 1 ? '' : 's') + ' and their choices.'; }
+    else if (type === 'node') { var no = optionsFor(id).length; if (no) extra = ' This also deletes its ' + no + ' choice' + (no === 1 ? '' : 's') + '.'; }
+    document.getElementById('confirm-text').textContent = 'Delete “' + label + '”?' + extra + ' This cannot be undone.';
+    state.confirmCallback = function() { google.script.run.withSuccessHandler(refreshData).withFailureHandler(function(err) { alert('Error: ' + err.message); }).deleteItem(type, id); };
+    document.getElementById('confirm-backdrop').classList.remove('hidden');
+    document.getElementById('confirm-dialog').classList.remove('hidden');
+  }
+  function closeConfirm() { document.getElementById('confirm-backdrop').classList.add('hidden'); document.getElementById('confirm-dialog').classList.add('hidden'); state.confirmCallback = null; }
+  function doConfirm() { if (state.confirmCallback) state.confirmCallback(); closeConfirm(); }
+  function syncDoc() {
+    var btn = document.getElementById('sync-btn'), status = document.getElementById('sync-status');
+    btn.disabled = true; btn.textContent = 'Syncing…'; status.textContent = '';
+    google.script.run
+      .withSuccessHandler(function() { btn.disabled = false; btn.textContent = 'Sync Doc'; status.textContent = 'Synced'; setTimeout(function() { status.textContent = ''; }, 3000); })
+      .withFailureHandler(function() { btn.disabled = false; btn.textContent = 'Sync Doc'; status.style.color = 'var(--red)'; status.textContent = 'Error'; })
+      .syncDocFromSheet();
+  }
+  function refreshData() {
+    google.script.run
+      .withSuccessHandler(function(data) {
+        state.data = normalize(data); renderBranchNav(); populateSessionDropdown(); updatePathBar();
+        var pf = state.pendingFocus; state.pendingFocus = null;
+        if (pf && state.data.nodes.find(function(n) { return n.id === pf.node; })) {
+          focusNode(pf.node);
+          if (pf.addOption) setTimeout(function() { openAddOption(pf.node); }, 150);
+        } else if (state.activeNode && state.data.nodes.find(function(n) { return n.id === state.activeNode; })) {
+          focusNode(state.activeNode);
+        } else { refreshGraph(); }
+      })
+      .withFailureHandler(function(err) { alert('Refresh error: ' + err.message); })
+      .getData();
+  }
+
+  // ============================================================
+  // Helpers
+  // ============================================================
+  function el(tag, cls) { var e = document.createElement(tag); if (cls) e.className = cls; return e; }
+  function text(tag, content, cls) { var e = el(tag, cls); e.textContent = content; return e; }
+  function makeBtn(label, fn, variant) { var b = document.createElement('button'); b.className = 'btn-sm' + (variant ? ' ' + variant : ''); b.textContent = label; b.addEventListener('click', fn); return b; }
+  function iconBtn(kind, title, fn) { var g = { note: 'note', edit: 'edit', del: 'del' }[kind] || '?'; var b = document.createElement('button'); b.className = 'icon-btn icon-' + kind; b.title = title; b.textContent = g; b.addEventListener('click', fn); return b; }
+  function field(name, label, hint, type, value, readonly) {
+    type = type || 'text';
+    var val = value !== undefined ? String(value).replace(/"/g, '&quot;') : '';
+    var ro = readonly ? 'readonly class="ro"' : '';
+    var hintHtml = hint ? '<div class="hint">' + hint + '</div>' : '';
+    if (type === 'textarea') return '<div class="field"><label>' + label + '</label><textarea data-field="' + name + '" rows="3" ' + ro + '>' + (value || '') + '</textarea>' + hintHtml + '</div>';
+    return '<div class="field"><label>' + label + '</label><input type="text" data-field="' + name + '" value="' + val + '" ' + ro + '>' + hintHtml + '</div>';
+  }
+  function selectFieldHtml(name, label, value, opts, hint) {
+    var o = opts.map(function(p) { return '<option value="' + p.value + '"' + (String(value || '') === String(p.value) ? ' selected' : '') + '>' + p.text + '</option>'; }).join('');
+    return '<div class="field"><label>' + label + '</label><select data-field="' + name + '">' + o + '</select>' + (hint ? '<div class="hint">' + hint + '</div>' : '') + '</div>';
+  }
+  function escapeHtml(s) { return String(s || '').replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  return {
+    init: init, setMode: setMode, saveSession: saveSession, loadSession: loadSession, clearChoices: clearChoices,
+    fit: fit, toggleFullscreen: toggleFullscreen,
+    expandAll: expandAll, collapseAll: collapseAll, addChoiceRow: addChoiceRow,
+    openAddBranch: openAddBranch, closeModal: closeModal, saveModal: saveModal, closeConfirm: closeConfirm, doConfirm: doConfirm, syncDoc: syncDoc
+  };
+})();
+
+document.addEventListener('DOMContentLoaded', App.init);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { App.closeModal(); App.closeConfirm(); var ne = document.getElementById('note-editor'); if (ne) ne.classList.add('hidden'); var bd = document.getElementById('note-backdrop'); if (bd) bd.classList.add('hidden'); }
+});
+</script>

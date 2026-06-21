@@ -69,32 +69,31 @@
   .h-cue { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-top: 2rem; display: flex; align-items: center; gap: 0.6rem; }
   .h-cue::after { content: ''; flex: 1; height: 1px; background: var(--hairline-strong); }
 
-  /* --- scrolly: sticky stage + scrolling steps --- */
-  .h-scrolly { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 2.5rem; align-items: start; }
+  /* --- scrolly: steps on the left, animated stage sticky on the right --- */
+  .h-scrolly { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 2.5rem; align-items: start; }
+  @media (min-width: 901px) { .h-stage-wrap { order: 2; } .h-steps { order: 1; } }
   @media (max-width: 900px) { .h-scrolly { grid-template-columns: 1fr; gap: 0; } }
 
-  .h-stage-wrap { position: sticky; top: 52px; height: calc(100vh - 52px); display: flex; align-items: center; }
+  .h-stage-wrap { position: sticky; top: 52px; height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; }
+  @media (max-width: 900px) { .h-stage-wrap { position: static; height: auto; padding: 1.5rem 0; } }
   .h-stage {
-    width: 100%; background: #11141c; color: #d7e2ff;
+    width: 100%; max-width: 520px; background: #11141c; color: #d7e2ff;
     border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
     padding: 1.2rem 1.1rem 1rem; box-shadow: 0 26px 60px -30px rgba(0,0,0,0.7);
   }
   .h-stage-label { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: #8aa0d6; margin-bottom: 0.5rem; }
   .h-stage-label b { color: var(--gold); font-weight: 700; }
-  .h-art { font-family: var(--mono); font-size: clamp(0.5rem, 1.5vw, 0.8rem); line-height: 1.32; white-space: pre; overflow: hidden; color: #cfe0ff; margin: 0; }
+  .h-art { font-family: var(--mono); font-size: clamp(0.46rem, 1.05vw, 0.7rem); line-height: 1.25; white-space: pre; overflow: hidden; color: #cfe0ff; margin: 0; }
   .h-art.sky { color: #bcd0ff; }
   .h-art.rack { color: #7fe0b0; margin-top: 0.2rem; }
   .h-stage-divider { display: flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6b7ba6; margin: 0.7rem 0 0.35rem; }
   .h-stage-divider::before, .h-stage-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
   .h-parallel { margin-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.7rem; font-size: 0.86rem; color: #e7edfb; }
   .h-parallel b { color: var(--gold); font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 0.25rem; }
-  .h-scrub { width: 100%; margin-top: 0.9rem; accent-color: var(--accent); cursor: pointer; }
-  .h-scrub-note { font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7ba6; text-align: center; margin-top: 0.3rem; }
-
   .h-steps { padding: 30vh 0; }
   @media (max-width: 900px) { .h-steps { padding: 4vh 0 30vh; } }
   .h-step { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; opacity: 0.32; transition: opacity 0.3s ease; }
-  @media (max-width: 900px) { .h-step { min-height: 0; padding: 18vh 0; opacity: 1; } }
+  @media (max-width: 900px) { .h-step { min-height: 0; padding: 16vh 0; opacity: 1; } }
   .h-step.is-active { opacity: 1; }
   .h-step-year { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); }
   .h-step-place { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 0.6rem; }
@@ -105,19 +104,23 @@
   /* --- people + outro --- */
   .h-people { max-width: 900px; margin: 1rem auto 0; padding: 2.5rem 1.5rem; border-top: 1px solid var(--hairline-strong); }
   .h-section-title { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.4rem; }
-  .h-people-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.1rem; }
+  .h-people-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
+  @media (max-width: 560px) { .h-people-grid { grid-template-columns: 1fr; } }
   .h-person { border: 1px solid var(--hairline); border-radius: 10px; padding: 1rem 1.1rem; background: var(--paper-2); }
+  .h-person-head { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.15rem; }
+  .h-person-head h3 { margin-bottom: 0; }
+  .h-flags { display: inline-flex; gap: 0.3rem; flex: 0 0 auto; }
+  .h-flag { flex: 0 0 auto; width: 25px; height: 16px; border: 1px solid var(--hairline-strong); border-radius: 2px; overflow: hidden; display: inline-block; }
+  .h-flag svg { width: 100%; height: 100%; display: block; }
   .h-person h3 { font-family: var(--serif); font-weight: 600; font-size: 1.1rem; margin-bottom: 0.15rem; }
   .h-person .h-role { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
   .h-person p { font-size: 0.9rem; color: #3a3a3a; }
 
-  .h-outro { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; text-align: center; }
-  .h-outro p { font-family: var(--serif); font-size: 1.25rem; color: #2c2c2c; margin-bottom: 1.6rem; }
-  .h-cta { display: inline-flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
-  .h-cta a { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.7rem 1.3rem; border-radius: 999px; border: 1px solid var(--accent); }
-  .h-cta a.solid { background: var(--accent); color: #fff; }
-  .h-cta a.solid:hover { text-decoration: none; background: #0046d0; }
-  .h-foot { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.05em; color: var(--text-soft); margin-top: 2.5rem; line-height: 1.7; }
+  .h-sources { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; border-top: 1px solid var(--hairline-strong); }
+  .h-sources-note { font-size: 0.92rem; color: var(--text-soft); margin-bottom: 1.2rem; }
+  .h-refs { margin: 0 0 1.4rem 1.1rem; padding: 0; }
+  .h-refs li { font-size: 0.88rem; color: #3a3a3a; line-height: 1.55; margin-bottom: 0.75rem; }
+  .h-refs li::marker { color: var(--accent); font-family: var(--mono); font-size: 0.78rem; }
 
   @media (prefers-reduced-motion: reduce) { .h-step { transition: none; } }
 </style>
@@ -126,26 +129,20 @@
 
 <header class="g-top">
   <a class="g-back" href="../index.html">&larr; the story</a>
-  <div class="g-brand">Airbus for AI</div>
-  <nav class="g-tabs" aria-label="Sections">
-    <a class="g-tab" href="game.html">The game</a>
-    <a class="g-tab is-active" href="history.html" aria-current="page">History of Airbus</a>
-  </nav>
-  <div class="g-meta">the original coalition</div>
 </header>
 
 <section class="h-hero">
   <div class="h-eyebrow">History of Airbus</div>
-  <h1>Once, the sky belonged to America. <em>Europe pooled itself</em> and built a rival.</h1>
+  <h1>The sky belonged to America. Europe built a rival by building it together.</h1>
   <p class="h-lede">Airbus is the proof behind the proposal: a fragmented Europe, unable to compete one nation at a time, agreed to build together, survived a near-fatal start, and ended up the largest planemaker on earth. The same recipe is what an "Airbus for AI" is asking for. Here is the short version, with the parallel running alongside.</p>
-  <div class="h-cue">Scroll to fly the timeline &middot; or drag the slider</div>
+  <div class="h-cue">Scroll to advance the timeline</div>
 </section>
 
 <div class="h-scrolly">
   <!-- sticky stage: a plane flies across while the stack comes online -->
   <div class="h-stage-wrap">
     <div class="h-stage" aria-hidden="true">
-      <div class="h-stage-label"><span>The aircraft &middot; pooled and flying</span><b id="hYear">1969</b></div>
+      <div class="h-stage-label"><span>The aircraft &middot; engines turning</span><b id="hYear">1969</b></div>
       <pre class="h-art sky" id="hSky"></pre>
       <div class="h-stage-divider">the same move, one stack down</div>
       <div class="h-stage-label"><span>The stack &middot; coming online</span><span id="hRackPct">0%</span></div>
@@ -154,8 +151,6 @@
         <b>The AI parallel</b>
         <span id="hParallel">No single European country was large enough to compete with the United States alone.</span>
       </div>
-      <input class="h-scrub" id="hScrub" type="range" min="0" max="1000" value="0" aria-label="Scrub the timeline">
-      <div class="h-scrub-note">Paris 1969 &rarr; Toulouse, today</div>
     </div>
   </div>
 
@@ -167,38 +162,51 @@
   <div class="h-section-title">Who made it happen</div>
   <div class="h-people-grid">
     <div class="h-person">
-      <h3>Roger B&eacute;teille</h3>
+      <div class="h-person-head">
+        <span class="h-flags"><span class="h-flag" aria-label="France"><svg viewBox="0 0 18 12"><rect width="18" height="12" fill="#FFFFFF"/><rect width="6" height="12" fill="#0055A4"/><rect x="12" width="6" height="12" fill="#EF4135"/></svg></span></span>
+        <h3>Roger B&eacute;teille</h3>
+      </div>
       <div class="h-role">"Mister Airbus"</div>
       <p>The engineer who set the shared fuselage and the work-share deal that gave each country a real stake. Bought the bulbous Super Guppy planes to ferry the parts to Toulouse.</p>
     </div>
     <div class="h-person">
-      <h3>Henri Ziegler</h3>
+      <div class="h-person-head">
+        <span class="h-flags"><span class="h-flag" aria-label="France"><svg viewBox="0 0 18 12"><rect width="18" height="12" fill="#FFFFFF"/><rect width="6" height="12" fill="#0055A4"/><rect x="12" width="6" height="12" fill="#EF4135"/></svg></span></span>
+        <h3>Henri Ziegler</h3>
+      </div>
       <div class="h-role">First chief executive</div>
       <p>Won French government backing for the A300 in 1969 and became Airbus Industrie's first CEO. "There would be no Airbus without Henri Ziegler," a later boss said.</p>
     </div>
     <div class="h-person">
-      <h3>Franz Josef Strauss</h3>
+      <div class="h-person-head">
+        <span class="h-flags"><span class="h-flag" aria-label="Germany"><svg viewBox="0 0 18 12"><rect width="18" height="12" fill="#1a1a1a"/><rect y="4" width="18" height="4" fill="#DD0000"/><rect y="8" width="18" height="4" fill="#FFCE00"/></svg></span></span>
+        <h3>Franz Josef Strauss</h3>
+      </div>
       <div class="h-role">German political muscle</div>
       <p>The Bavarian heavyweight who pushed the German side and served as chairman. Munich's airport carries his name.</p>
     </div>
     <div class="h-person">
-      <h3>Chamant &amp; Schiller</h3>
+      <div class="h-person-head">
+        <span class="h-flags"><span class="h-flag" aria-label="France"><svg viewBox="0 0 18 12"><rect width="18" height="12" fill="#FFFFFF"/><rect width="6" height="12" fill="#0055A4"/><rect x="12" width="6" height="12" fill="#EF4135"/></svg></span><span class="h-flag" aria-label="Germany"><svg viewBox="0 0 18 12"><rect width="18" height="12" fill="#1a1a1a"/><rect y="4" width="18" height="4" fill="#DD0000"/><rect y="8" width="18" height="4" fill="#FFCE00"/></svg></span></span>
+        <h3>Chamant &amp; Schiller</h3>
+      </div>
       <div class="h-role">The signatories, May 1969</div>
       <p>France's transport minister and Germany's economics minister signed the founding agreement at the Paris Air Show. A political decision, not a commercial one.</p>
     </div>
   </div>
 </section>
 
-<section class="h-outro">
-  <p>Airbus took a treaty, shared money and risk, one agreed standard, and the patience to lose for a decade first. That is the bet the game asks you to make in sixteen months.</p>
-  <div class="h-cta">
-    <a class="solid" href="game.html">Play the game &rarr;</a>
-    <a href="../index.html">Read the story</a>
-    <a href="../research.html">The proposal</a>
-  </div>
-  <p class="h-foot">
-    Overview compiled and rewritten from Airbus corporate history, the "25 years as an integrated company" note, and Wikipedia entries on Airbus, Roger B&eacute;teille, Henri Ziegler and Franz Josef Strauss. Figures are approximate and for orientation, not citation.
-  </p>
+<section class="h-sources">
+  <div class="h-section-title">Sources &amp; references</div>
+  <p class="h-sources-note">This is a condensed overview, rewritten in our own words. Dates and milestones are drawn from the sources below; figures (employee counts, revenue, delivery totals) are rounded for orientation. Check the primary sources for exact numbers.</p>
+  <ol class="h-refs">
+    <li id="ref1">Airbus, "Our origins" and "Our history" (company history pages). <a href="https://www.airbus.com/en/who-we-are/our-history" target="_blank" rel="noopener">airbus.com/en/who-we-are/our-history</a>. Used for the 1969 Franco-German agreement, the 1970 GIE, the work-share (wings UK, fuselage Germany, assembly Toulouse) and the founders.</li>
+    <li id="ref2">Airbus newsroom, "A daring vision takes flight: 25 years of Airbus as an integrated company" (10 July 2025). <a href="https://www.airbus.com/en/newsroom" target="_blank" rel="noopener">airbus.com/en/newsroom</a>. Used for the 2000 EADS merger, the 2017 renaming to Airbus SE, and the headcount and revenue figures.</li>
+    <li id="ref3">Airbus newsroom, "Airbus celebrates the 40th anniversary of its first aircraft programme" (May 2009). Used for the 29 May 1969 signing at the Paris Air Show, the GIE partners and the A300 production totals (business case 300; 822 A300/A310 built).</li>
+    <li id="ref4">Wikipedia, "Airbus." <a href="https://en.wikipedia.org/wiki/Airbus" target="_blank" rel="noopener">en.wikipedia.org/wiki/Airbus</a>. Used for the A300 slow start, the 1976 ETOPS rule change, the 1987 A320 fly-by-wire breakthrough, and the 2025 milestone of the A320 family passing the Boeing 737.</li>
+    <li id="ref5">Wikipedia, "History of Airbus," "Roger B&eacute;teille," "Henri Ziegler" and "Franz Josef Strauss." Used for the consortium ownership split, the Super Guppy and work-share, the 1969 government backing, and the founders' roles. <a href="https://en.wikipedia.org/wiki/History_of_Airbus" target="_blank" rel="noopener">History of Airbus</a> &middot; <a href="https://en.wikipedia.org/wiki/Roger_B%C3%A9teille" target="_blank" rel="noopener">B&eacute;teille</a> &middot; <a href="https://en.wikipedia.org/wiki/Henri_Ziegler" target="_blank" rel="noopener">Ziegler</a> &middot; <a href="https://en.wikipedia.org/wiki/Franz_Josef_Strauss" target="_blank" rel="noopener">Strauss</a>.</li>
+  </ol>
+  <p class="h-sources-note">The AI-parallel lines are our own interpretation, drawn from the <a href="../research.html">Airbus for AI proposal</a> and the <a href="../index.html">story's sourced data</a>, not from the Airbus sources above. The front-view A300B ASCII aircraft is after Enrico Piazza.</p>
 </section>
 
 <script>
@@ -273,43 +281,38 @@
   var rackPct = document.getElementById('hRackPct');
   var yearEl = document.getElementById('hYear');
   var parallelEl = document.getElementById('hParallel');
-  var scrub = document.getElementById('hScrub');
 
-  var TRACK = 50;           // sky width in chars
-  var SPRITE_W = 17;        // plane footprint
-  // plane sprite, nose pointing right (3 rows)
-  var SPRITE = ['     /|', '  __/_|____', ' (__________)===>'];
+  function padR(s, n){ while (s.length < n) s += ' '; return s; }
 
+  // front-view airliner (A300B, after Enrico Piazza); the engine asterisks spin
+  var PLANE = [
+    "              ___|___",
+    "   ___________( o )____________",
+    "          (*)    ~~~    (*)"
+  ];
+  var SPIN = ['|', '/', '-', '\\'];
   function sky(p){
-    var x = Math.round(p * (TRACK - SPRITE_W));
-    if (x < 0) x = 0;
-    var pad = new Array(x + 1).join(' ');
-    var trail = new Array(x + 1).join('·');   // middot contrail
-    var rows = [
-      '  ' + pad + SPRITE[0],
-      '  ' + pad + SPRITE[1],
-      '  ' + trail + SPRITE[2],
-      '  ' + new Array(TRACK + 1).join('_')
-    ];
-    return rows.join('\n');
+    var fan = SPIN[Math.floor(p * 32) % 4];   // scroll turns the engine fans; nothing moves on its own
+    return PLANE.map(function(line){ return '  ' + line.split('*').join(fan); }).join('\n');
   }
 
+  // isometric 3D server cabinet; nodes light column by column, power bar fills
   function rack(p){
-    var COLS = 16, ROWS = 4, total = COLS * ROWS;
-    var lit = Math.round(p * total);
-    var lines = ['  +' + new Array(COLS + 1).join('-') + '+'];
-    for (var r = 0; r < ROWS; r++){
-      var row = '  |';
-      for (var c = 0; c < COLS; c++){
-        var idx = c * ROWS + r;            // fill column by column: racks light left to right
-        row += idx < lit ? '▉' : '·';
-      }
-      lines.push(row + '|');
-    }
-    lines.push('  +' + new Array(COLS + 1).join('-') + '+');
-    var pw = Math.round(p * COLS);
-    lines.push('  pwr [' + new Array(pw + 1).join('=') + new Array(COLS - pw + 1).join(' ') + ']');
-    return lines.join('\n');
+    var NC = 7, NR = 3, total = NC * NR, lit = Math.round(p * total), W = 15;
+    function nodes(r){ var a = []; for (var c = 0; c < NC; c++){ a.push((c * NR + r) < lit ? '█' : '░'); } return padR(a.join(' '), W); }
+    var pw = Math.round(p * 11), bar = new Array(pw + 1).join('▓') + new Array(11 - pw + 1).join('·');
+    return [
+      '        _________________',
+      '       /                /|',
+      '      /________________/ |',
+      '      | ' + padR('THE CLUSTER', W) + ' | |',
+      '      | ' + nodes(0) + ' | |',
+      '      | ' + nodes(1) + ' |/|',
+      '      | ' + nodes(2) + ' | |',
+      '      |' + new Array(W + 3).join('=') + '| /',
+      '      | ' + padR('pwr ' + bar, W) + ' |/',
+      '      |' + new Array(W + 3).join('_') + '|/'
+    ].join('\n');
   }
 
   function render(p){
@@ -339,20 +342,10 @@
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function(){
-      var p = progress();
-      render(p);
-      scrub.value = Math.round(p * 1000);
+      render(progress());
       ticking = false;
     });
   }
-
-  // slider scrubs by scrolling the page to the matching position
-  scrub.addEventListener('input', function(){
-    var p = scrub.value / 1000;
-    var top = scrolly.offsetTop + p * (scrolly.offsetHeight - window.innerHeight);
-    window.scrollTo({ top: top, behavior: 'auto' });
-    render(p);
-  });
 
   // IntersectionObserver picks the active milestone
   if ('IntersectionObserver' in window){
